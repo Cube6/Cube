@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Cube.Board.Domain</AssemblyName>
+    <RootNamespace>Cube.Board.Domain</RootNamespace>
+  </PropertyGroup>
+
+</Project>

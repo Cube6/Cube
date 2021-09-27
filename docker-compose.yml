@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  board.api:
+    image: ${DOCKER_REGISTRY-}boardapi
+    build:
+      context: .
+      dockerfile: src/Services/Board/Board.API/Dockerfile
+
+  user.api:
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: src/Services/User/User.API/Dockerfile
+
+
+  identity.api:
+    image: ${DOCKER_REGISTRY-}identityapi
+    build:
+      context: .
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
+
+
+  web.bff.discussionboard:
+    image: ${DOCKER_REGISTRY-}webbffdiscussionboard
+    build:
+      context: .
+      dockerfile: src/ApiGateways/Web.Bff.DiscussionBoard/Dockerfile
+
