@@ -1,3 +1,5 @@
+using Board.API.Infrastructure.Responsitories;
+using Board.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +34,8 @@ namespace Board.API
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
+
+			services.AddTransient<IBoardRepository, SQLBoardRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
