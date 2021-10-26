@@ -17,7 +17,7 @@ namespace Web.Bff.DiscussionBoard.Controllers
         {
             return new Response()
             {
-                Success = true,
+                Succeed = true,
             };
         }
 
