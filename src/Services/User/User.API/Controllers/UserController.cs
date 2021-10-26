@@ -28,7 +28,11 @@ namespace Board.API.Controllers
             {
                 new User()
                 {
-                    Name ="Testing User",
+                    Name ="Testing User 001",
+                },
+                new User()
+                {
+                    Name="Testing User 002"
                 }
             };
         }
