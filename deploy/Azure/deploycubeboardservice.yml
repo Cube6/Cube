@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment # Deployment为多个Pod副本
+metadata:
+  name: cubeboardservice-deployment
+  labels:
+    app: cubeboardservice-deployment
+spec:
+  replicas: 2 # 实例数量
+  selector:
+    matchLabels: # 定义该部署匹配哪些Pod
+      app: cubeboardservice
+  minReadySeconds: 3 # 可选，指定Pod可以变成可用状态的最小秒数，默认是0
+  strategy:
+    type: RollingUpdate # 部署策略类型，使用RollingUpdate可以保证部署期间服务不间断
+    rollingUpdate:
+      maxUnavailable: 1 # 部署时最大允许停止的Pod数量
+      maxSurge: 1 # 部署时最大允许创建的Pod数量
+  template: # 用来指定Pod的模板，与Pod的定义类似
+    metadata:
+      labels: # Pod标签，与上面matchLabels对应
+        app: cubeboardservice
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+        - name: cubeboardservice
+          image: docker.io/yuanzhitang/cubeboardservice
+          imagePullPolicy: Always # Always每次拉去新镜像
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cubeboardservice-service
+  labels:  
+    name: cubeboardservice-service
+spec:
+  selector:
+    app: cubeboardservice #与template-labels参数pod标签一致
+  ports:
+    - protocol: TCP
+      port: 80 #clusterIP开放的端口
+      targetPort: 80 #container开放的端口，与containerPort一致
+      nodePort: 30002 # 所有的节点都会开放此端口，此端口供外部调用。
+  type: NodePort
