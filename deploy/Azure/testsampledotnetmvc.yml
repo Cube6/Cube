@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment # Deployment为多个Pod副本
+metadata:
+  name: testsampledotnetmvc-deployment
+  labels:
+    app: testsampledotnetmvc-deployment
+spec:
+  replicas: 2 # 实例数量
+  selector:
+    matchLabels: # 定义该部署匹配哪些Pod
+      app: testsampledotnetmvc
+  minReadySeconds: 3 # 可选，指定Pod可以变成可用状态的最小秒数，默认是0
+  strategy:
+    type: RollingUpdate # 部署策略类型，使用RollingUpdate可以保证部署期间服务不间断
+    rollingUpdate:
+      maxUnavailable: 1 # 部署时最大允许停止的Pod数量
+      maxSurge: 1 # 部署时最大允许创建的Pod数量
+  template: # 用来指定Pod的模板，与Pod的定义类似
+    metadata:
+      labels: # Pod标签，与上面matchLabels对应
+        app: testsampledotnetmvc
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+        - name: testsampledotnetmvc
+          image: docker.io/yuanzhitang/sampledotnetmvc
+          imagePullPolicy: Always # Always每次拉去新镜像
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testsampledotnetmvc-service
+  labels:  
+    name: testsampledotnetmvc-service
+spec:
+  selector:
+    app: testsampledotnetmvc #与template-labels参数pod标签一致
+  ports:
+    - protocol: TCP
+      port: 80 #clusterIP开放的端口
+      targetPort: 80 #container开放的端口，与containerPort一致
+      nodePort: 31221 # 所有的节点都会开放此端口，此端口供外部调用。
+  type: NodePort
