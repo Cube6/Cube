@@ -1,0 +1,24 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file ./src/Services/Board/Board.API/Dockerfile --tag yuanzhitang/cubeboardservice:latest
+    - name: Login to registry
+      run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_TOKEN }} docker.io
+    - name: Push Image
+      run: docker push yuanzhitang/cubeboardservice:latest
+
+      
