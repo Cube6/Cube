@@ -15,10 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file ./src/Services/Board/Board.API/Dockerfile --tag BoardAPI:latest
+      run: docker build . --file ./src/Services/Board/Board.API/Dockerfile --tag cubeboardservice:latest
     - name: Login to registry
       run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_TOKEN }} docker.io
     - name: Push Image
-      run: docker push BoardAPI:latest
+      run: docker push cubeboardservice:latest
 
       
