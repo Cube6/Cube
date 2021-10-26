@@ -4,7 +4,7 @@ namespace Web.Bff.DiscussionBoard.Responses
 {
     public class Response
     {
-        public bool Success = false;
+        public bool Succeed = false;
 
         public string Message = string.Empty;
 
