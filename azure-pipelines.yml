@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: '2e2aae88-86a1-4a4e-8aa0-ec3d537909a3'
   imageRepository: 'cubecube'
   containerRegistry: 'techgroup.azurecr.io'
-  dockerfilePath: './src/Services/User/User.API/Dockerfile'
+  dockerfilePath: './Services/User/User.API/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'techgroup42b4-auth'
 
