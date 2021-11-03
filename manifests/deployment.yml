@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: cubecube 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cubecube
+  template:
+    metadata:
+      labels:
+        app: cubecube 
+    spec:
+      containers:
+        - name: cubecube 
+          image: techgroup.azurecr.io/cubecube
+          ports:
+          - containerPort: 80
