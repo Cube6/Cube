@@ -25,3 +25,32 @@ C:\Michael\Leadship\2021\2021 Software Design Tech Group\Cube-System\src\ApiGate
 C:\Michael\Leadship\2021\2021 Software Design Tech Group\Cube-System\src\ApiGateway\obj\Debug\net5.0\ref\GetwayService.dll
 C:\Michael\Leadship\2021\2021 Software Design Tech Group\Cube-System\src\ApiGateway\obj\Debug\net5.0\GetwayService.pdb
 C:\Michael\Leadship\2021\2021 Software Design Tech Group\Cube-System\src\ApiGateway\obj\Debug\net5.0\GetwayService.genruntimeconfig.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\appsettings.Development.json
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\appsettings.json
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\GetwayService.exe
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\GetwayService.deps.json
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\GetwayService.runtimeconfig.json
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\GetwayService.runtimeconfig.dev.json
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\GetwayService.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\ref\GetwayService.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\GetwayService.pdb
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.csprojAssemblyReference.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.AssemblyInfoInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.AssemblyInfo.cs
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.csproj.CoreCompileInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.MvcApplicationPartsAssemblyInfo.cs
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.MvcApplicationPartsAssemblyInfo.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\staticwebassets\GetwayService.StaticWebAssets.Manifest.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\staticwebassets\GetwayService.StaticWebAssets.xml
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\scopedcss\bundle\GetwayService.styles.css
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.RazorTargetAssemblyInfo.cache
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.csproj.CopyComplete
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\ref\GetwayService.dll
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.pdb
+C:\Projects\Projects\Cube6\Cube\src\ApiGateway\obj\Debug\net5.0\GetwayService.genruntimeconfig.cache

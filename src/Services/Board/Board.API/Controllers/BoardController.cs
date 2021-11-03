@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Board.Domain;
-using Board.API.Models;
+using Board.Respository;
 
 namespace Board.API.Controllers
 {
@@ -36,9 +36,9 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<IEnumerable<DisscussionBoardItem>> FindItemsByIdAsync(long id)
+		public async Task<DisscussionBoardItem> FindItemsByIdAsync(long id)
         {
-			return await _repository.GetBoardItemAsync(id);
+			return await _repository.GetBoardItemByIdAsync(id);
         }
 
 		[HttpDelete("{id}")]

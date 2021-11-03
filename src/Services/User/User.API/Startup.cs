@@ -1,5 +1,4 @@
-using Board.API.Infrastructure.Responsitories;
-using Cube.User.API.Models;
+using Board.Respository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +32,7 @@ namespace Cube.User.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cube.User.API", Version = "v1" });
 			});
 
-			services.AddTransient<IUserRepository, SQLUserRepository>();
+			services.AddTransient<IUserRepository, UserRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -24,6 +24,7 @@ namespace Board.Respository
 			return _context.SaveChanges() > 0;
 		}
 
+
 		public async Task<DisscussionBoardItem> GetBoardItemByIdAsync(long id)
 		{
 			var result = await _context.DisscussionBoardItems.FirstAsync(it => it.Id == id);

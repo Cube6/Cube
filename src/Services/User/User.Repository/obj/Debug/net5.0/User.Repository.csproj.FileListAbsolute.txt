@@ -5,3 +5,13 @@ C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5
 C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.AssemblyInfo.cs
 C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.csprojAssemblyReference.cache
 C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.csproj.CoreCompileInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\User.Repository.deps.json
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\User.Repository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\ref\User.Repository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\User.Repository.pdb
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\Cube.User.Domain.pdb
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\Data.pdb
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.csproj.CopyComplete
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\ref\User.Repository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.pdb
