@@ -1,4 +1,5 @@
 ﻿using Board.Respository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -46,5 +47,13 @@ namespace Board.API.Controllers
         public async Task DeleteUserByIdAsync(long id)
         {
         }
-    }
+
+		[Authorize]
+		[HttpGet]
+		[Route("SecureAction")]
+		public IActionResult SecureAction()
+		{
+			return Ok("SecureAction");
+		}
+	}
 }

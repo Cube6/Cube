@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Board.Domain;
 using Board.Respository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Board.API.Controllers
 {
@@ -46,5 +47,13 @@ namespace Board.API.Controllers
         {
 			await _repository.DeleteBoardAsync(id);
         }
+
+		[Authorize]
+		[HttpGet]
+		[Route("SecureAction")]
+		public IActionResult SecureAction()
+		{
+			return Ok("SecureAction");
+		}
 	}
 }
