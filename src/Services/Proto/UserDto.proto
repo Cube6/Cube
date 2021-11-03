@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "CommonDto.proto";
+
+option csharp_namespace = "Cube.Grpc.Service";
+
+package UserDto;
+
+message User{
+	CommonDto.Id Id = 1;
+	string UserName = 2;
+	string Password = 3;
+}
