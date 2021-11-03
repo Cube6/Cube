@@ -1,0 +1,17 @@
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Cube.Board.Domain.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.csprojAssemblyReference.cache
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.AssemblyInfoInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.AssemblyInfo.cs
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Board.Respository.deps.json
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Board.Respository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\ref\Board.Respository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Board.Respository.pdb
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Data.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Cube.Board.Domain.pdb
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\bin\Debug\net5.0\Data.pdb
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.csproj.CoreCompileInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.csproj.CopyComplete
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\ref\Board.Respository.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\Board\Board.Respository\obj\Debug\net5.0\Board.Respository.pdb

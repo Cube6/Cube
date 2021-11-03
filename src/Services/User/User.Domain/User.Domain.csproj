@@ -6,4 +6,8 @@
     <RootNamespace>Cube.User.Domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\Data\Data.csproj" />
+  </ItemGroup>
+
 </Project>

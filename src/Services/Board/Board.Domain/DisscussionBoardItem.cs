@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Data;
+using System;
 
 namespace Board.Domain
 {
-	public class DisscussionBoardItem
+	public class DisscussionBoardItem : DataModel
 	{
 		public long Id { get; set; }
 		public BoardItemType Type { set; get; }

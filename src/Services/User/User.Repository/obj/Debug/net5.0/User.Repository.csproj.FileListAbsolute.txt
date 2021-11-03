@@ -1,0 +1,7 @@
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\Cube.User.Domain.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\bin\Debug\net5.0\Data.dll
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.AssemblyInfoInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.AssemblyInfo.cs
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.csprojAssemblyReference.cache
+C:\Projects\Projects\Cube6\Cube\src\Services\User\User.Repository\obj\Debug\net5.0\User.Repository.csproj.CoreCompileInputs.cache
