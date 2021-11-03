@@ -1,9 +1,0 @@
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\bin\Debug\netcoreapp3.1\Data.deps.json
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\bin\Debug\netcoreapp3.1\Data.dll
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\bin\Debug\netcoreapp3.1\Data.pdb
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\obj\Debug\netcoreapp3.1\Data.csprojAssemblyReference.cache
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\obj\Debug\netcoreapp3.1\Data.AssemblyInfoInputs.cache
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\obj\Debug\netcoreapp3.1\Data.AssemblyInfo.cs
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\obj\Debug\netcoreapp3.1\Data.csproj.CoreCompileInputs.cache
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\obj\Debug\netcoreapp3.1\Data.dll
-C:\Projects\Projects\Cube6\Cube\src\Infrastructure\Data\obj\Debug\netcoreapp3.1\Data.pdb
