@@ -27,6 +27,6 @@ jobs:
     - name: Push Image for User Service
       run: docker push yuanzhitang/cubeuserservice:latest
     - name: Push Image for Identity Service
-      run: docker push yuanzhitang/cubeidentityervice:latest
+      run: docker push yuanzhitang/cubeidentityservice:latest
 
       

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cube-identity-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cube-identity-service
+  minReadySeconds: 3 # 可选，指定Pod可以变成可用状态的最小秒数，默认是0
+  strategy:
+    type: RollingUpdate # 部署策略类型，使用RollingUpdate可以保证部署期间服务不间断
+    rollingUpdate:
+      maxUnavailable: 1 # 部署时最大允许停止的Pod数量
+      maxSurge: 1 # 部署时最大允许创建的Pod数量
+  template:
+    metadata:
+      labels:
+        app: cube-identity-service
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: cubeidentityservice
+        image: docker.io/yuanzhitang/cubeidentityservice
+        imagePullPolicy: Always # Always每次拉去新镜像
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+        env:
+        - name: REDIS
+          value: "azure-vote-back"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cube-identity-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: cube-identity-service
