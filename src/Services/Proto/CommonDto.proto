@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-option csharp_namespace = "Cube.Grpc.Service";
-
-package CommonDto;
-
-message Id{
-	string guid = 1;
-}
