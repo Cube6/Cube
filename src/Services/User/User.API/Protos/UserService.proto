@@ -10,7 +10,7 @@ package UserService;
 service UserService{
 	rpc FindUserById(UserServiceDto.Id) returns (UserServiceDto.User){
 		option (google.api.http) = {
-			get: "/v1/API/FindUserById/{Guid}"
+			get: "/v1/Cube.User.API/FindUserById/{Guid}"
 		};
 	};
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -16,6 +16,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Board.Domain\Board.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\User\User.API\Protos\UserService.proto" GrpcServices="Client">
+      <Link>Protos\UserService.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\User\User.API\Protos\UserServiceDto.proto" GrpcServices="None">
+      <Link>Protos\UserServiceDto.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

@@ -24,9 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
-    <Protobuf Include="Protos\google\api\annotations.proto" GrpcServices="None" ProtoRoot=".\Protos" />
-    <Protobuf Include="Protos\google\api\http.proto" GrpcServices="None" ProtoRoot=".\Protos" />
-    <Protobuf Include="Protos\UserService.proto" ProtoRoot=".\Protos" />
+    <Protobuf Include="Protos\UserService.proto" GrpcServices="Server" ProtoRoot=".\Protos" />
     <Protobuf Include="Protos\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
   </ItemGroup>
 
