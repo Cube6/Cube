@@ -10,14 +10,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\google\api\annotations.proto" />
+    <None Remove="Protos\google\api\http.proto" />
+    <None Remove="Protos\UserService.proto" />
+    <None Remove="Protos\UserServiceDto.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.1.0-alpha.21317.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
-  
-	<Protobuf Include="UserService.proto" GrpcServices="Server" ProtoRoot=".\Protos" />
+    <Protobuf Include="Protos\google\api\annotations.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+    <Protobuf Include="Protos\google\api\http.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+    <Protobuf Include="Protos\UserService.proto" ProtoRoot=".\Protos" />
+    <Protobuf Include="Protos\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
   </ItemGroup>
 
 </Project>

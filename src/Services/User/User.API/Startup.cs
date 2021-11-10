@@ -1,4 +1,5 @@
 using Board.API.Infrastructure.Responsitories;
+using Cube.User.API.Controllers;
 using Cube.User.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,10 +29,17 @@ namespace Cube.User.API
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
+
+			services.AddGrpc();
+
+			services.AddGrpcHttpApi();
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cube.User.API", Version = "v1" });
 			});
+
+			services.AddGrpcSwagger();
 
 			services.AddTransient<IUserRepository, SQLUserRepository>();
 		}
@@ -54,6 +62,7 @@ namespace Cube.User.API
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+				endpoints.MapGrpcService<UserService>();
 			});
 		}
 	}
