@@ -15,5 +15,7 @@
 /.vs
 /src/Services/Board/Board.Domain/bin
 /src/Services/Board/Board.Domain/obj
+/src/Services/ServiceProtos/bin
+/src/Services/ServiceProtos/obj
 /src/Tests/Application.FunctionalTests/bin
 /src/Tests/Application.FunctionalTests/obj

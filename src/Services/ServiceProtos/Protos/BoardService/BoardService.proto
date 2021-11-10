@@ -1,16 +1,18 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 
 import "google/api/annotations.proto";
-import "UserServiceDto.proto";
+import "BoardService/BoardServiceDto.proto";
 
 option csharp_namespace = "Cube.User.API.Protos";
 
-package UserService;
+package BoardService;
 
-service UserService{
+service BoardService{
 	rpc FindUserById(UserServiceDto.Id) returns (UserServiceDto.User){
 		option (google.api.http) = {
 			get: "/v1/Cube.User.API/FindUserById/{Guid}"
 		};
 	};
+
+	rpc FindBoardById
 }

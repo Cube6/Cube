@@ -19,12 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\User\User.API\Protos\UserService.proto" GrpcServices="Client">
-      <Link>Protos\UserService.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\User\User.API\Protos\UserServiceDto.proto" GrpcServices="None">
-      <Link>Protos\UserServiceDto.proto</Link>
-    </Protobuf>
+    <Folder Include="Protos\" />
   </ItemGroup>
 
 </Project>

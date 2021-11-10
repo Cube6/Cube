@@ -1,4 +1,7 @@
-﻿using Cube.User.API.Protos;
+﻿using AutoMapper;
+using Cube.User.API.Models;
+using Cube.User.API.Protos;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using System;
 using System.Collections.Generic;
@@ -10,13 +13,45 @@ namespace Cube.User.API.Controllers
 {
 	public class UserService : UserServiceBase
 	{
-		public override Task<Protos.User> FindUserById(Id request, ServerCallContext context)
+		private readonly IUserRepository _userRepository;
+		private readonly IMapper _mapper;
+
+		public UserService(IUserRepository userRepository, IMapper mapper)
 		{
-			return Task.FromResult(new Protos.User()
+			this._userRepository = userRepository;
+			this._mapper = mapper;
+		}
+
+		public override async Task<AllUsers> GetAllAsync(Empty request, ServerCallContext context)
+		{
+			var users = new AllUsers();
+
+			for(int i = 0; i < 10; i++)
 			{
-				Username = "testUser",
-				PhoneNumber = "1234"
-			});
+				users.Users.Add(new Protos.User
+				{
+					Name = "1234",
+					AvatarUrl = "test"
+				});
+			}
+
+			return await Task.FromResult(users);
+		}
+
+		public override async Task<Protos.User> FindUserByIdAsync(Id request, ServerCallContext context)
+		{
+
+			var userPo = await _userRepository.GetUserByIdAsync(request.Id_);
+
+			var userDto = _mapper.Map<Protos.User>(userPo);
+
+			return userDto;
+		}
+
+		public override async Task<Result> DeleteUserByIdAsync(Id request, ServerCallContext context)
+		{
+			var result = await _userRepository.DeleteUserByIdAsync(request.Id_);
+			return new Result() { Success = result };
 		}
 	}
 }

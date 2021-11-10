@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Domain", "src\Services
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "cube", "src\Web\cube\cube.esproj", "{E9BA8DAB-7A9B-464E-8B7F-783F8C46DA12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceProtos", "src\Services\ServiceProtos\ServiceProtos.csproj", "{38EAC2B9-A30D-4F0F-8874-4286A75D421C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{E9BA8DAB-7A9B-464E-8B7F-783F8C46DA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9BA8DAB-7A9B-464E-8B7F-783F8C46DA12}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9BA8DAB-7A9B-464E-8B7F-783F8C46DA12}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{8E6581F9-B24D-40A9-B0F0-530B374F40E7} = {71EEA16E-EE79-4BCF-8F3F-621218C4F411}
 		{244990BB-0CBB-4148-A710-97494C483172} = {71EEA16E-EE79-4BCF-8F3F-621218C4F411}
 		{E9BA8DAB-7A9B-464E-8B7F-783F8C46DA12} = {89A876EE-A919-45CB-9139-BAC460322CDF}
+		{38EAC2B9-A30D-4F0F-8874-4286A75D421C} = {9743EC17-9D2A-4C1A-BDDB-2929A83AF2F5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45DA94DF-2FDD-4B55-9EDC-E05AC0BBC81C}

@@ -10,13 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\google\api\annotations.proto" />
-    <None Remove="Protos\google\api\http.proto" />
-    <None Remove="Protos\UserService.proto" />
-    <None Remove="Protos\UserServiceDto.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
     <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.1.0-alpha.21317.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
@@ -24,8 +18,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
-    <Protobuf Include="Protos\UserService.proto" GrpcServices="Server" ProtoRoot=".\Protos" />
-    <Protobuf Include="Protos\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\ServiceProtos\Protos\UserService\UserService.proto" GrpcServices="Server" ProtoRoot="..\..\ServiceProtos\Protos\">
+      <Link>Protos\UserService.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\ServiceProtos\Protos\UserService\UserServiceDto.proto" GrpcServices="None" ProtoRoot="..\..\ServiceProtos\Protos\">
+      <Link>Protos\UserServiceDto.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>
