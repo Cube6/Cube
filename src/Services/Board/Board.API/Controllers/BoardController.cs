@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Board.Domain;
-using Board.API.Models;
+using Board.Respository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Board.API.Controllers
 {
@@ -36,9 +37,9 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<IEnumerable<DisscussionBoardItem>> FindItemsByIdAsync(long id)
+		public async Task<DisscussionBoardItem> FindItemsByIdAsync(long id)
         {
-			return await _repository.GetBoardItemAsync(id);
+			return await _repository.GetBoardItemByIdAsync(id);
         }
 
 		[HttpDelete("{id}")]
@@ -46,5 +47,13 @@ namespace Board.API.Controllers
         {
 			await _repository.DeleteBoardAsync(id);
         }
+
+		[Authorize]
+		[HttpGet]
+		[Route("SecureAction")]
+		public IActionResult SecureAction()
+		{
+			return Ok("SecureAction");
+		}
 	}
 }

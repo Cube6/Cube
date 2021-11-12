@@ -1,5 +1,5 @@
-﻿using Cube.User.API.Models;
-using Cube.User.Domain;
+﻿using Board.Respository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -21,16 +21,16 @@ namespace Board.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<User> GetAll()
+        public IEnumerable<User.Domain.User> GetAll()
         {
             //Show come from Repository
-            return new List<User>()
+            return new List<User.Domain.User>()
             {
-                new User()
+                new User.Domain.User()
                 {
                     Name ="Testing User 001",
                 },
-                new User()
+                new User.Domain.User()
                 {
                     Name="Testing User 002"
                 }
@@ -38,7 +38,7 @@ namespace Board.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<User> FindUserByIdAsync(long id)
+        public async Task<User.Domain.User> FindUserByIdAsync(long id)
         {
             return await _repository.GetUserByIdAsync(id);
         }
@@ -46,7 +46,14 @@ namespace Board.API.Controllers
         [HttpDelete("{id}")]
         public async Task DeleteUserByIdAsync(long id)
         {
-            await _repository.DeleteUserByIdAsync(id);
         }
-    }
+
+		[Authorize]
+		[HttpGet]
+		[Route("SecureAction")]
+		public IActionResult SecureAction()
+		{
+			return Ok("SecureAction");
+		}
+	}
 }

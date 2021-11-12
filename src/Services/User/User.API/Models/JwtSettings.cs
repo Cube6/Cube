@@ -1,4 +1,4 @@
-﻿namespace Identity.API.Models
+﻿namespace User.API.Models
 {
 	public class JwtSettings
 	{

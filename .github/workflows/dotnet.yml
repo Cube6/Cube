@@ -21,5 +21,3 @@ jobs:
       run: dotnet restore Cube.sln
     - name: Build
       run: dotnet build Cube.sln --no-restore
-    - name: Test
-      run: dotnet test Cube.sln --no-build --verbosity normal

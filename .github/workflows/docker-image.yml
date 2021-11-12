@@ -18,11 +18,15 @@ jobs:
       run: docker build . --file ./src/Services/Board/Board.API/Dockerfile --tag yuanzhitang/cubeboardservice:latest
     - name: Build Docker image For User Service
       run: docker build . --file ./src/Services/User/User.API/Dockerfile --tag yuanzhitang/cubeuserservice:latest
+    - name: Build Docker image For Identity Service
+      run: docker build . --file ./src/Services/Identity/Identity.API/Dockerfile --tag yuanzhitang/cubeidentityservice:latest
     - name: Login to registry
       run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_TOKEN }} docker.io
     - name: Push Image for Board Service
       run: docker push yuanzhitang/cubeboardservice:latest
     - name: Push Image for User Service
       run: docker push yuanzhitang/cubeuserservice:latest
+    - name: Push Image for Identity Service
+      run: docker push yuanzhitang/cubeidentityservice:latest
 
       

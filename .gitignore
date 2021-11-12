@@ -1,8 +1,6 @@
 /.vs
 /bin
 /obj
-/src/ApiGateways/Web.Bff.DiscussionBoard/obj
-/src/ApiGateways/Web.Bff.DiscussionBoard/bin
 /src/Services/Board/Board.API/obj
 /src/Services/Board/Board.API/bin
 /src/Services/Identity/Identity.API/obj
@@ -17,3 +15,11 @@
 /src/Services/Board/Board.Domain/obj
 /src/Tests/Application.FunctionalTests/bin
 /src/Tests/Application.FunctionalTests/obj
+/src/ApiGateway/bin
+/src/ApiGateway/obj
+/src/Services/User/User.Repository/bin
+/src/Services/User/User.Repository/obj
+/src/Services/Board/Board.Respository/bin
+/src/Services/Board/Board.Respository/obj
+/src/Infrastructure/Data/bin
+/src/Infrastructure/Data/obj
