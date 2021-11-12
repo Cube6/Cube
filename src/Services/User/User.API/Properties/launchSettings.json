@@ -11,19 +11,12 @@
   "profiles": {
     "Cube.User.API": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:30001",
+      "applicationUrl": "https://localhost:30001",
       "dotnetRunMessages": "true"
-    },
-    //"Docker": {
-    //  "commandName": "Docker",
-    //  "launchBrowser": true,
-    //  "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-    //  "publishAllPorts": true
-    //}
+    }
   }
 }
