@@ -1,62 +1,34 @@
 ﻿<template>
-    <div class="post">
-        <input type="text" v-model="loginForm.username" placeholder="用户名" />
-        <input type="text" v-model="loginForm.password" placeholder="密码" />
-        <button @click="login">登录</button>
+    <div class="wrap" id="wrap">
+        <div class="logGet">
+            <div class="logD logDtip">
+                <p class="p1">Login</p>
+            </div>
+            <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
+                <FormItem prop="user" class="lgD">
+                    <Input type="text" v-model="formInline.user" placeholder="Username">
+                    <Icon type="ios-person-outline" slot="prepend"></Icon>
+                    </Input>
+                </FormItem>
+                <FormItem prop="password" class="lgD">
+                    <Input type="password" v-model="formInline.password" password placeholder="Password">
+                    <Icon type="ios-lock-outline" slot="prepend" style="z-index:1"></Icon>
+                    </Input>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="handleSubmit('formInline')">Login</Button>
+                </FormItem>
+            </Form>
+        </div>
     </div>
+
 </template>
 
-<script lang="js">
-    import axios from 'axios';
-    import { mapMutations } from 'vuex';
-
-    export default{
-        data() {
-            return {
-                loginForm: {
-                    username: '',
-                    password: ''
-
-                }
-            };
-        },
-        created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
-            this.login();
-        },
-        watch: {
-            // call again the method if the route changes
-            '$route': 'login'
-        },
-        methods: {
-            ...mapMutations(['changeLogin']),
-
-            login()
-            {
-                let _this = this;
-                if (this.loginForm.username === '' || this.loginForm.password === '') {
-                    alert('username or password can not empty');
-                }
-                else {
-                    axios({
-                        method: 'get',
-                        url: '/User',
-                        data: _this.loginForm
-                    }).then(res => {
-                        console.log(res.data);
-                        _this.userToken = 'test ' + res.data[0].name;
-                        _this.changeLogin({ Authorization: _this.userToken });
-                        _this.$router.push('/board');
-                        alert('login success');
-                    }).catch(error => {
-                        alert('username or password error');
-                        console.log(error);
-                    })
-                }
-             }
-        },
-    };
+<script>
+    import login from "../scripts/login.js";
+    export default login;
 </script>
 
-
+<style>
+    @import "../styles/login.css";
+</style>

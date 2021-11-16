@@ -1,6 +1,6 @@
 <template>
-    <div class="post">
-        <div v-if="post" class="content">
+    <div class="board">
+        <div class="content">
             <table>
                 <thead>
                     <tr>
@@ -22,37 +22,6 @@
 </template>
 
 <script lang="js">
-    import Vue from 'vue';
-
-    export default Vue.extend({
-        data() {
-            return {
-                loading: false,
-                post: null
-            };
-        },
-        created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
-            this.fetchData();
-        },
-        watch: {
-            // call again the method if the route changes
-            '$route': 'fetchData'
-        },
-        methods: {
-            fetchData() {
-                this.post = null;
-                this.loading = true;
-
-                fetch('User')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
-            }
-        },
-    });
+    import board from "../scripts/board.js";
+    export default board;
 </script>
