@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Domain = User.Domain;
 
-namespace Board.Respository
+namespace User.Respository
 {
 	public interface IUserRepository
 	{

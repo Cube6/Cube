@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "UserService/UserServiceDto.proto";
+import "google/protobuf/Empty.proto";
+
+option csharp_namespace = "Cube.User.API.Protos";
+
+package UserService;
+
+service UserService{
+	
+	rpc GetAllAsync(google.protobuf.Empty) returns (UserServiceDto.AllUsers){
+		option (google.api.http) = {
+			get: "/User/GetAll"
+		};
+	};
+
+	rpc FindUserByIdAsync(UserServiceDto.Id) returns (UserServiceDto.User){
+		option (google.api.http) = {
+			get: "/User/{Id}"
+		};
+	};
+
+	rpc DeleteUserByIdAsync(UserServiceDto.Id) returns (UserServiceDto.Result){
+		option (google.api.http) = {
+			delete: "/User/{Id}"
+		};
+	};
+}
