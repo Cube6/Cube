@@ -60,6 +60,9 @@ namespace Cube.User.API
 					IssuerSigningKey = key
 				};
 			});
+
+			services.AddAuthorization();
+
 			services.AddGrpcSwagger();
 
 			services.AddTransient<IUserRepository, UserRepository>();
