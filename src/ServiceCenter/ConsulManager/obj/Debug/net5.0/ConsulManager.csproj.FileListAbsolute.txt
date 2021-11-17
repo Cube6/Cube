@@ -1,0 +1,12 @@
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\bin\Debug\net5.0\ConsulManager.deps.json
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\bin\Debug\net5.0\ConsulManager.dll
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\bin\Debug\net5.0\ref\ConsulManager.dll
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\bin\Debug\net5.0\ConsulManager.pdb
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.AssemblyInfoInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.AssemblyInfo.cs
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.csproj.CoreCompileInputs.cache
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.dll
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ref\ConsulManager.dll
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.pdb
+C:\Projects\Projects\Cube6\Cube\src\ServiceCenter\ConsulManager\obj\Debug\net5.0\ConsulManager.csprojAssemblyReference.cache

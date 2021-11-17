@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ServiceCenter\ConsulManager\ConsulManager.csproj" />
     <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
     <ProjectReference Include="..\User.Repository\User.Repository.csproj" />
   </ItemGroup>

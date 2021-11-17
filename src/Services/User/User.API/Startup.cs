@@ -1,4 +1,5 @@
-using Board.Respository;
+﻿using Board.Respository;
+using ConsulManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,7 @@ namespace Cube.User.API
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
 		{
 			if (env.IsDevelopment())
 			{
@@ -76,6 +77,9 @@ namespace Cube.User.API
 			{
 				endpoints.MapControllers();
 			});
+
+			//服务注册
+			app.RegisterConsul(Configuration, lifetime);
 		}
 	}
 }
