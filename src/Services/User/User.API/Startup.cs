@@ -1,4 +1,4 @@
-using Board.Respository;
+using User.Respository;
 using Cube.User.API.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User.API.Models;
+using Cube.User.API.Controllers;
 
 namespace Cube.User.API
 {
@@ -61,7 +62,7 @@ namespace Cube.User.API
 			});
 			services.AddGrpcSwagger();
 
-			services.AddTransient<IUserRepository, SQLUserRepository>();
+			services.AddTransient<IUserRepository, UserRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

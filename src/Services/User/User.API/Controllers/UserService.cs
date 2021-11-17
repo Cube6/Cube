@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Cube.User.API.Models;
 using Cube.User.API.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using User.Respository;
 using static Cube.User.API.Protos.UserService;
 
 namespace Cube.User.API.Controllers
@@ -50,8 +47,7 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<Result> DeleteUserByIdAsync(Id request, ServerCallContext context)
 		{
-			var result = await _userRepository.DeleteUserByIdAsync(request.Id_);
-			return new Result() { Success = result };
+			return new Result() { Success = true };
 		}
 	}
 }

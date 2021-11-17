@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Data;
 
-namespace Board.Respository
+namespace User.Respository
 {
 	public class UserRepository : Repository, IUserRepository
 	{
