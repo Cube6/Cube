@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\UserService\UserService.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+    <Protobuf Include="Protos\UserService\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+  </ItemGroup>
+
+</Project>

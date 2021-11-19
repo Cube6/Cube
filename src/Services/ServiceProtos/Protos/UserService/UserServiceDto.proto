@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "Cube.User.API.Protos";
+
+package UserServiceDto;
+
+message Id{
+	int64 Id = 1;
+}
+
+message User{
+	int64 Id = 1;
+	string Name = 2;
+	string AvatarUrl = 3;
+}
+
+message AllUsers{
+	repeated User Users = 1;
+}
+
+message Result{
+	bool Success = 1;
+}

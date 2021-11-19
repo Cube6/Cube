@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Cube.Board.API.Protos";
+
+package BoardServiceDto;
+
+message Id{
+	string Guid = 1;
+}
+
+message Board{
+	string BoardName = 1;
+	string BoardNumber = 2;
+}
