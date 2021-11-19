@@ -1,5 +1,6 @@
 ﻿using Board.API.Models;
 using Board.Respository;
+using ConsulManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -61,7 +62,7 @@ namespace Board.API
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
 		{
 			if (env.IsDevelopment())
 			{
@@ -83,6 +84,9 @@ namespace Board.API
 			{
 				endpoints.MapControllers();
 			});
+
+			//服务注册
+			app.RegisterConsul(Configuration, lifetime);
 		}
 	}
 }

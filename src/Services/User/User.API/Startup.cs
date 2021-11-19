@@ -1,21 +1,16 @@
-using User.Respository;
+using ConsulManager;
 using Cube.User.API.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using User.API.Models;
 using Cube.User.API.Controllers;
+using User.Respository;
 
 namespace Cube.User.API
 {
@@ -69,7 +64,7 @@ namespace Cube.User.API
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
 		{
 			if (env.IsDevelopment())
 			{
@@ -89,6 +84,9 @@ namespace Cube.User.API
 			{
 				endpoints.MapGrpcService<UserService>();
 			});
+
+			//服务注册
+			app.RegisterConsul(Configuration, lifetime);
 		}
 	}
 }
