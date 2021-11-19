@@ -1,7 +1,7 @@
 ﻿using User.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Board.Respository
+namespace User.Respository
 {
 	public class UserContext : DbContext
 	{

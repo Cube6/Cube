@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 ﻿using Board.Respository;
 using ConsulManager;
+=======
+using User.Respository;
+using Cube.User.API.Util;
+>>>>>>> 51c9dfd90804660fc99b56adcae8594fbca5446e
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User.API.Models;
+using Cube.User.API.Controllers;
 
 namespace Cube.User.API
 {
@@ -30,7 +36,12 @@ namespace Cube.User.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllers();
+			services.AddAutoMapper(typeof(UserApiProfile));
+
+			services.AddGrpc();
+
+			services.AddGrpcHttpApi();
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cube.User.API", Version = "v1" });
@@ -54,6 +65,12 @@ namespace Cube.User.API
 					IssuerSigningKey = key
 				};
 			});
+
+			services.AddAuthorization();
+
+			services.AddGrpcSwagger();
+
+			services.AddTransient<IUserRepository, UserRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,7 +92,7 @@ namespace Cube.User.API
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllers();
+				endpoints.MapGrpcService<UserService>();
 			});
 
 			//服务注册

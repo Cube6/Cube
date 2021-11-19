@@ -1,7 +1,7 @@
 export default {
-    name: "board",
     data() {
         return {
+            isCollapsed: false,
             loading: false,
             post: null
         };
@@ -11,16 +11,17 @@ export default {
         // already being observed
         this.fetchData();
     },
-    watch: {
-        // call again the method if the route changes
-        '$route': 'fetchData'
+    computed: {
+        menuitemClasses: function () {
+            return [
+                'menu-item',
+                this.isCollapsed ? 'collapsed-menu' : ''
+            ]
+        }
     },
     methods: {
         fetchData() {
-            this.post = null;
-            this.loading = true;
-
-            fetch('User')
+            fetch('Board')
                 .then(r => r.json())
                 .then(json => {
                     this.post = json;
@@ -29,4 +30,4 @@ export default {
                 });
         }
     },
-};
+}

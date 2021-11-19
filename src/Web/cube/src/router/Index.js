@@ -26,12 +26,7 @@ const router = new Router({
         {
             path: '/board',
             name: 'board',
-            component: board
-        },
-        {
-            path: '/index',
-            name: 'index',
-            component: () => import('../components/index.vue'),
+            component: board,
             children: [//二级路由
                 {
                     path: '/one',
