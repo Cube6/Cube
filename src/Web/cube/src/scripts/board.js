@@ -1,9 +1,9 @@
 export default {
+    compontents: {
+    },
     data() {
         return {
             isCollapsed: false,
-            loading: false,
-            post: null
         };
     },
     created() {
@@ -21,13 +21,10 @@ export default {
     },
     methods: {
         fetchData() {
-            fetch('Board')
-                .then(r => r.json())
-                .then(json => {
-                    this.post = json;
-                    this.loading = false;
-                    return;
-                });
+            this.$router.push('/boardAll');
+        },
+        AddBoard() {
+            this.$router.push('/addboard');
         }
     },
 }

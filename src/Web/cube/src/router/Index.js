@@ -2,14 +2,17 @@
 import Router from 'vue-router';
 import login from '@/components/login';
 import board from '@/components/board';
+import addboard from '@/components/addboard';
+import boardAll from '@/components/boardAll';
+import boardDetail from '@/components/boardDetail';
 
 Vue.use(Router);
 
-//const original = Router.prototype.push;
+const original = Router.prototype.push;
 
-//Router.prototype.push = function push(location) {
-//    return original.call(this, location).catch(err => err);
-//};
+Router.prototype.push = function push(location) {
+    return original.call(this, location).catch(err => err);
+};
 
 const router = new Router({
     mode: 'history',
@@ -29,14 +32,19 @@ const router = new Router({
             component: board,
             children: [//二级路由
                 {
-                    path: '/one',
-                    name: 'one',
-                    component: () => import('../components/one.vue')
+                    path: '/addboard',
+                    name: 'addboard',
+                    component: addboard
                 },
                 {
-                    path: '/two',
-                    name: 'two',
-                    component: () => import('../components/two.vue')
+                    path: '/boardAll',
+                    name: 'boardAll',
+                    component: boardAll
+                },
+                {
+                    path: '/boardDetail',
+                    name: 'boardDetail',
+                    component: boardDetail
                 }
             ]
         }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,9 @@ namespace Board.API
 					ValidAudience = jwtSettings.Audience,
 					IssuerSigningKey = key
 				};
+			});
+			services.AddControllers().AddNewtonsoftJson(options => {
+				options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 			});
 		}
 

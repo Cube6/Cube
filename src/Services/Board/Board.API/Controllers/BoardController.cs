@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Board.Domain;
+﻿using Board.Domain;
 using Board.Respository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Board.API.Controllers
 {
@@ -15,8 +13,7 @@ namespace Board.API.Controllers
 	public class BoardController : ControllerBase
 	{
 		private readonly IBoardRepository _repository;
-		private readonly ILogger<BoardController> _logger;
-
+		private readonly ILogger<BoardController> _logger;	
 		public BoardController(IBoardRepository repository,ILogger<BoardController> logger)
 		{
 			_repository = repository;
@@ -31,9 +28,9 @@ namespace Board.API.Controllers
 			{
 				new DisscussionBoard()
 				{
-					Name ="Testing Board",
+					Name = "Testing Board",
 				}
-			};
+			}; 
 		}
 
 		[HttpGet("{id}")]
@@ -41,6 +38,12 @@ namespace Board.API.Controllers
         {
 			return await _repository.GetBoardItemByIdAsync(id);
         }
+
+		[HttpPost]
+		public async Task CreateBoardByIdAsync(DisscussionBoard disscussionBoard)
+		{
+			await _repository.CreateBoardAsync(disscussionBoard);
+		}
 
 		[HttpDelete("{id}")]
 		public async Task DeleteBoardByIdAsync(long id)

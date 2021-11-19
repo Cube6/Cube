@@ -16,6 +16,11 @@ namespace Board.Respository
 
 		}
 
+		public async Task<bool> CreateBoardAsync(DisscussionBoard disscussionBoard)
+		{
+			return true;
+		}
+
 		public async Task<bool> DeleteBoardAsync(long id)
 		{
 			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == id);

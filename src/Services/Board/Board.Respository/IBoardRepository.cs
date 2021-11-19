@@ -7,5 +7,7 @@ namespace Board.Respository
 	{
 		Task<DisscussionBoardItem> GetBoardItemByIdAsync(long boardId);
 		Task<bool> DeleteBoardAsync(long id);
+
+		Task<bool> CreateBoardAsync(DisscussionBoard disscussionBoard);
 	}
 }

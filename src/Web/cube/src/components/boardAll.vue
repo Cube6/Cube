@@ -1,0 +1,50 @@
+﻿<template>
+    <div>
+        <div style="height: 600px">
+            <table>
+                <thead>
+                    <tr>
+                        <th width="200px">Id</th>
+                        <th width="200px">Name</th>
+                        <th width="200px">DateCreated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="board in post" :key="board.Id">
+                        <td>{{ board.Id }}</td>
+                        <td>{{ board.Name }}</td>
+                        <td>{{ board.DateCreated }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                post: null
+            };
+        },
+        created() {
+            // fetch the data when the view is created and the data is
+            // already being observed
+            this.fetchData();
+        },
+        methods: {
+            fetchData() {
+                fetch('Board')
+                    .then(r => r.json())
+                    .then(json => {
+                        this.post = json;
+                        return;
+                    });
+            }
+        },
+    }
+</script>
+
+<style>
+</style>

@@ -1,4 +1,4 @@
-import axios from 'axios';
+//import axios from 'axios';
 export default {
     name:"login",
     data() {
@@ -22,21 +22,22 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    axios({
-                        method: 'get',
-                        url: '/User',
-                        data: this.formInline
-                    }).then(res => {
-                        console.log(res.data);
-                        //_this.userToken = 'test ' + res.data[0].name;
-                        //  _this.changeLogin({ Authorization: _this.userToken });
-                        this.$Message.success('Success!');
-                        this.$router.replace('/board');
-                    }).catch(error => {
-                        alert('username or password error');
-                        console.log(error);
-                    })
-
+                    //axios({
+                    //    method: 'get',
+                    //    url: '/User',
+                    //    data: this.formInline
+                    //}).then(res => {
+                    //    console.log(res.data);
+                    //    //_this.userToken = 'test ' + res.data[0].name;
+                    //    //  _this.changeLogin({ Authorization: _this.userToken });
+                    //    this.$Message.success('Success!');
+                    //    this.$router.replace('/board');
+                    //}).catch(error => {
+                    //    alert('username or password error');
+                    //    console.log(error);
+                    //})
+                    this.$Message.success('Success!');
+                    this.$router.replace('/board');
 
                 } else {
                     this.$Message.error('Fail!');
