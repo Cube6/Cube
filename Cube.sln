@@ -1,11 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-<<<<<<< HEAD
-VisualStudioVersion = 16.0.30711.63
-=======
-VisualStudioVersion = 16.0.31313.79
->>>>>>> 51c9dfd90804660fc99b56adcae8594fbca5446e
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9743EC17-9D2A-4C1A-BDDB-2929A83AF2F5}"
 EndProject
@@ -49,17 +45,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "src\Infrastructure\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Repository", "src\Services\User\User.Repository\User.Repository.csproj", "{756AB10E-C8FC-46DA-9A2D-E3447C7BE764}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GetwayService", "src\ApiGateway\GetwayService.csproj", "{E71874A2-453F-4BF2-B246-E6F2B7F751EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayService", "src\ApiGateway\GatewayService.csproj", "{E71874A2-453F-4BF2-B246-E6F2B7F751EC}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "cube", "src\Web\cube\cube.esproj", "{2F34A763-12B2-47C1-B991-E9905393C1A7}"
 EndProject
-<<<<<<< HEAD
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceCenter", "ServiceCenter", "{66C2FF37-AEFC-4DE9-A568-82FE183E31C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsulManager", "src\ServiceCenter\ConsulManager\ConsulManager.csproj", "{7BC0241A-760E-4A60-96BA-A55D8412BC9C}"
-=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulManager", "src\ServiceCenter\ConsulManager\ConsulManager.csproj", "{7BC0241A-760E-4A60-96BA-A55D8412BC9C}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceProtos", "src\Services\ServiceProtos\ServiceProtos.csproj", "{38EAC2B9-A30D-4F0F-8874-4286A75D421C}"
->>>>>>> 51c9dfd90804660fc99b56adcae8594fbca5446e
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,17 +109,14 @@ Global
 		{2F34A763-12B2-47C1-B991-E9905393C1A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F34A763-12B2-47C1-B991-E9905393C1A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F34A763-12B2-47C1-B991-E9905393C1A7}.Release|Any CPU.Deploy.0 = Release|Any CPU
-<<<<<<< HEAD
 		{7BC0241A-760E-4A60-96BA-A55D8412BC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7BC0241A-760E-4A60-96BA-A55D8412BC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BC0241A-760E-4A60-96BA-A55D8412BC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BC0241A-760E-4A60-96BA-A55D8412BC9C}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
 		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38EAC2B9-A30D-4F0F-8874-4286A75D421C}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> 51c9dfd90804660fc99b56adcae8594fbca5446e
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
