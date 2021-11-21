@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Web.Bff.DiscussionBoard.Responses
+namespace Cube.GatewayService.Responses
 {
     public class Response
     {

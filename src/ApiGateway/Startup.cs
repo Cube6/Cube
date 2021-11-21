@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Bff.DiscussionBoard
+namespace Cube.GatewayService
 {
 	public class Startup
 	{

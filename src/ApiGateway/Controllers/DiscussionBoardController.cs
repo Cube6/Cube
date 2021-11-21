@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Bff.DiscussionBoard.Responses;
+using Cube.GatewayService.Responses;
 
-namespace Web.Bff.DiscussionBoard.Controllers
+namespace Cube.GatewayService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
