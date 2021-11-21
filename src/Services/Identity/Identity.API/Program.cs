@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Identity.API
+namespace Cube.Identity.API
 {
 	public class Program
 	{

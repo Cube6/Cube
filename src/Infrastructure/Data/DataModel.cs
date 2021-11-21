@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Data
+namespace Cube.Data
 {
-
 	public class DataModel
 	{
 		public DateTime CreateTime { get; set; }

@@ -1,4 +1,4 @@
-﻿using Identity.API.Models;
+﻿using Cube.Identity.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
-namespace Identity.API
+namespace Cube.Identity.API
 {
 	public class Startup
 	{

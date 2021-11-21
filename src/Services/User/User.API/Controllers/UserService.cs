@@ -3,7 +3,7 @@ using Cube.User.API.Protos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using System.Threading.Tasks;
-using User.Respository;
+using Cube.User.Respository;
 using static Cube.User.API.Protos.UserService;
 
 namespace Cube.User.API.Controllers

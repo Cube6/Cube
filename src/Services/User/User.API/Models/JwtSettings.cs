@@ -1,4 +1,4 @@
-﻿namespace User.API.Models
+﻿namespace Cube.User.API.Models
 {
 	public class JwtSettings
 	{

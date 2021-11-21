@@ -1,4 +1,4 @@
-﻿using Identity.API.Models;
+﻿using Cube.Identity.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Identity.API.Controllers
+namespace Cube.Identity.API.Controllers
 {
 	[Route("[controller]")]
 	[ApiController]
