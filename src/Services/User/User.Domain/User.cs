@@ -1,6 +1,6 @@
-﻿using Data;
+﻿using Cube.Data;
 
-namespace User.Domain
+namespace Cube.User.Domain
 {
 	public class User : DataModel
 	{

@@ -1,4 +1,4 @@
-﻿namespace Data
+﻿namespace Cube.Data
 {
 	public interface IRepository
 	{

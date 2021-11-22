@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cube.User.API.Protos;
-using Domain = User.Domain;
+using Domain = Cube.User.Domain;
 
 namespace Cube.User.API.Util
 {

@@ -1,4 +1,4 @@
-﻿using Data;
+﻿using Cube.Data;
 using System;
 
 namespace Board.Domain

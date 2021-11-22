@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Identity.API.Models
+namespace Cube.Identity.API.Models
 {
 	public class LoginViewModel
 	{

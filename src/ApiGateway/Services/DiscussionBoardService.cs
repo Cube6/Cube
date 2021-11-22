@@ -1,4 +1,4 @@
-﻿namespace Web.Bff.DiscussionBoard.Services
+﻿namespace Cube.GatewayService.Services
 {
     public class DiscussionBoardService
     {

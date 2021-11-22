@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Cube.Data</RootNamespace>
   </PropertyGroup>
 
 </Project>

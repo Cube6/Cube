@@ -8,9 +8,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using User.API.Models;
+using Cube.User.API.Models;
 using Cube.User.API.Controllers;
-using User.Respository;
+using Cube.User.Respository;
 
 namespace Cube.User.API
 {

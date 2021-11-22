@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Domain = User.Domain;
+using Domain = Cube.User.Domain;
 
-namespace User.Respository
+namespace Cube.User.Respository
 {
 	public interface IUserRepository
 	{

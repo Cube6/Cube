@@ -1,11 +1,11 @@
-﻿using User.Respository;
+﻿using Cube.User.Respository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace User.API.Controllers
+namespace Cube.User.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
