@@ -1,8 +1,11 @@
 ﻿using Consul;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
 
 namespace ConsulManager
 {
@@ -18,30 +21,30 @@ namespace ConsulManager
 			var consulClient = new ConsulClient(c =>
 			{
 				//consul地址
-				c.Address = new Uri(configuration["ConsulSetting:ConsulAddress"]);
+				c.Address = new Uri(configuration["Consul:Address"]);
 			});
 
 			bool isHttps = false;
 
-			if (configuration["ConsulSetting:IsHttps"] != null)
-			{
-				isHttps = bool.Parse(configuration["ConsulSetting:IsHttps"].ToString());
-			}
+			//if (configuration["ConsulSetting:IsHttps"] != null)
+			//{
+			//	isHttps = bool.Parse(configuration["ConsulSetting:IsHttps"].ToString());
+			//}
 
 			string uriPrex = isHttps ? "https" : "http";
-
+			//var uri = new Uri(address);
 			var registration = new AgentServiceRegistration()
 			{
 				ID = Guid.NewGuid().ToString(),//服务实例唯一标识
-				Name = configuration["ConsulSetting:ServiceName"],//服务名
-				Address = configuration["ConsulSetting:ServiceIP"], //服务IP
-				Port = int.Parse(configuration["ConsulSetting:ServicePort"]),//服务端口 因为要运行多个实例，端口不能在appsettings.json里配置，在docker容器运行时传入
-				Check = new AgentServiceCheck()
+				Name = configuration["Consul:Name"], // 服务名
+				Address = configuration["Consul:Ip"], // 服务绑定IP
+				Port = Convert.ToInt32(configuration["Consul:Port"]), // 服务绑定端口
+				Check = new AgentServiceCheck
 				{
-					DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),//服务启动多久后注册
-					Interval = TimeSpan.FromSeconds(10),//健康检查时间间隔
-					HTTP = $"{uriPrex}://{configuration["ConsulSetting:ServiceIP"]}:{configuration["ConsulSetting:ServicePort"]}{configuration["ConsulSetting:ServiceHealthCheck"]}",//健康检查地址
-					Timeout = TimeSpan.FromSeconds(5)//超时时间
+					DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5), // 服务启动多久后注册
+					Interval = TimeSpan.FromSeconds(10), // 健康检查时间间隔
+					HTTP = $"http://{configuration["Consul:Ip"]}:{configuration["Consul:Port"]}{configuration["Consul:HealthCheck"]}", // 健康检查地址
+					Timeout = TimeSpan.FromSeconds(5) // 超时时间
 				}
 			};
 
