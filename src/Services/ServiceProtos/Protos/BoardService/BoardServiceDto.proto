@@ -1,14 +1,38 @@
 ﻿syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+import "Infrastructure/DataModel.proto";
+
 option csharp_namespace = "Cube.Board.API.Protos";
 
 package BoardServiceDto;
 
+enum BoardItemType{
+	WentWell = 0;
+	NeedsImproved = 1;
+	Action = 2;
+}
+
 message Id{
-	string Guid = 1;
+	int64 Id = 1;
 }
 
 message Board{
 	string BoardName = 1;
 	string BoardNumber = 2;
+}
+
+message DiscussionBoard{
+	Infrastructure.DataModel DataModel = 1;
+	Id Id = 2;
+	string Name = 3;
+	google.protobuf.timestamp DateCreated = 4;
+}
+
+message DiscussionBoardItem{
+	Infrastructure.DataModel DataModel = 1;
+	Id Id = 2;
+	BoardItemType Type = 3;
+	string Detail = 4;
+	DiscussionBoard Board = 5;
 }

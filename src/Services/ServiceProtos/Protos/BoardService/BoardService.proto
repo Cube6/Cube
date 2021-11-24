@@ -2,17 +2,40 @@
 
 import "google/api/annotations.proto";
 import "BoardService/BoardServiceDto.proto";
+import "google/protobuf/empty.proto";
 
 option csharp_namespace = "Cube.User.API.Protos";
 
 package BoardService;
 
 service BoardService{
-	rpc FindUserById(UserServiceDto.Id) returns (UserServiceDto.User){
+	rpc GetAllAsync(BoardServiceDto.DiscussionBoard) returns (google.protobuf.Empty){
 		option (google.api.http) = {
-			get: "/v1/Cube.User.API/FindUserById/{Guid}"
+			get:"/Board/GetAll"
 		};
 	};
 
-	rpc FindBoardById
+	rpc FindItemByIdAsync(BoardServiceDto.Id) returns (BoardServiceDto.DiscusionBoardItem){
+		option (google.api.http) = {
+			get: "/Board/FindItemById/{Id}"
+		};
+	};
+
+	rpc CreateBoardByIdAsync(BoardServiceDto.DiscussionBoard) returns (google.protobuf.empty){
+		option (google.api.http) = {
+			post: "/Board/CreateBoard"
+		};
+	};
+
+	rpc DeleteBoardByIdAsync(BoardServiceDto.Id) returns (google.protobuf.empty){
+		option (google.api.http) = {
+			delete: "/Board/DeleteBoard/{Id}"
+		};
+	}
+
+	rpc SecureAction(google.protobuf.empty) returns (google.protobuf.empty){
+		option (google.api.http) = {
+			get: "/Board/SecureAction"
+		};
+	};
 }
