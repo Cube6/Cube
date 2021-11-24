@@ -26,13 +26,12 @@ namespace ConsulManager
 
 			bool isHttps = false;
 
-			//if (configuration["ConsulSetting:IsHttps"] != null)
-			//{
-			//	isHttps = bool.Parse(configuration["ConsulSetting:IsHttps"].ToString());
-			//}
+			if (configuration["Consul:IsHttps"] != null)
+			{
+				isHttps = bool.Parse(configuration["Consul:IsHttps"].ToString());
+			}
 
 			string uriPrex = isHttps ? "https" : "http";
-			//var uri = new Uri(address);
 			var registration = new AgentServiceRegistration()
 			{
 				ID = Guid.NewGuid().ToString(),//服务实例唯一标识
@@ -43,7 +42,7 @@ namespace ConsulManager
 				{
 					DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5), // 服务启动多久后注册
 					Interval = TimeSpan.FromSeconds(10), // 健康检查时间间隔
-					HTTP = $"http://{configuration["Consul:Ip"]}:{configuration["Consul:Port"]}{configuration["Consul:HealthCheck"]}", // 健康检查地址
+					HTTP = $"{uriPrex}://{configuration["Consul:Ip"]}:{configuration["Consul:Port"]}{configuration["Consul:HealthCheck"]}", // 健康检查地址
 					Timeout = TimeSpan.FromSeconds(5) // 超时时间
 				}
 			};
