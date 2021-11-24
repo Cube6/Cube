@@ -85,8 +85,10 @@ namespace Board.API
 				endpoints.MapControllers();
 			});
 
+#if RELEASE
 			//服务注册
 			app.RegisterConsul(Configuration, lifetime);
+#endif
 		}
 	}
 }

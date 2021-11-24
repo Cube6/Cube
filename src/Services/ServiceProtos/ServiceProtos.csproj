@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\Infrasturcture\DataModel.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Protos\Infrasturcture\DataModel.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="Protos\UserService\UserService.proto" GrpcServices="None" ProtoRoot=".\Protos" />
     <Protobuf Include="Protos\UserService\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
   </ItemGroup>

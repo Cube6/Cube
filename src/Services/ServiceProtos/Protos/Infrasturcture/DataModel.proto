@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Cube.Infrastructure.Data";
+
+package Infrastructure;
+
+message DataModel{
+	google.protobuf.timestamp CreateTime = 1;
+	google.protobuf.timestamp ModifyTime = 2;
+}
+
