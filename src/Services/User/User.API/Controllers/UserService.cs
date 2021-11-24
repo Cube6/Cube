@@ -5,6 +5,7 @@ using Grpc.Core;
 using System.Threading.Tasks;
 using Cube.User.Respository;
 using static Cube.User.API.Protos.UserService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cube.User.API.Controllers
 {
@@ -47,7 +48,13 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<Result> DeleteUserByIdAsync(Id request, ServerCallContext context)
 		{
-			return new Result() { Success = true };
+			return await Task.FromResult(new Result() { Success = true });
+		}
+
+		[Authorize]
+		public override async Task<Result> SecureActionAsync(Empty request, ServerCallContext context)
+		{
+			return await Task.FromResult(new Protos.Result() { Success = true }) ;
 		}
 	}
 }

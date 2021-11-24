@@ -27,4 +27,10 @@ service UserService{
 			delete: "/User/{Id}"
 		};
 	};
+
+	rpc SecureActionAsync(google.protobuf.Empty) returns (UserServiceDto.Result){
+		option (google.api.http) = {
+			get: "/User/SecureAction"
+		};
+	};
 }
