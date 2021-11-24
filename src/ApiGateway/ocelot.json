@@ -30,10 +30,10 @@
 
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:9070",
+    "BaseUrl": "http://gateway:9070",
     "ServiceDiscoveryProvider": {
       "Scheme": "http",
-      "Host": "localhost",
+      "Host": "consul",
       "Port": 8500,
       "Type": "Consul"
     },

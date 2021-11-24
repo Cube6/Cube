@@ -6,16 +6,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["src/ApiGateways/Web.Bff.DiscussionBoard/Web.Bff.DiscussionBoard.csproj", "src/ApiGateways/Web.Bff.DiscussionBoard/"]
-RUN dotnet restore "src/ApiGateways/Web.Bff.DiscussionBoard/Web.Bff.DiscussionBoard.csproj"
+COPY ["src/ApiGateway/GatewayService.csproj", "src/ApiGateway/"]
+RUN dotnet restore "src/ApiGateway/GatewayService.csproj"
 COPY . .
-WORKDIR "/src/src/ApiGateways/Web.Bff.DiscussionBoard"
-RUN dotnet build "Web.Bff.DiscussionBoard.csproj" -c Release -o /app/build
+WORKDIR "/src/src/ApiGateway"
+RUN dotnet build "GatewayService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Web.Bff.DiscussionBoard.csproj" -c Release -o /app/publish
+RUN dotnet publish "GatewayService.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Web.Bff.DiscussionBoard.dll"]
+ENTRYPOINT ["dotnet", "GatewayService.dll"]

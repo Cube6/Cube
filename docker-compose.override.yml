@@ -1,36 +1,87 @@
 version: '3.4'
 
 services:
-  board.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-    ports:
-      - "80"
-      - "443"
-    volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-  user.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
+  #board.api:
+  #  image: boardapi
+  #  build:
+  #    context: .
+  #    dockerfile: ./src/Services/Board/Board.API/Dockerfile
+
+  #user.api:
+  #  image: ${DOCKER_REGISTRY-}userapi
+  #  build:
+  #    context: .
+  #    dockerfile: src/Services/User/User.API/Dockerfile
 
 
-  identity.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
-    ports:
-      - "80"
-      - "443"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  #identity.api:
+  #  image: ${DOCKER_REGISTRY-}identityapi
+  #  build:
+  #    context: .
+  #    dockerfile: src/Services/Identity/Identity.API/Dockerfile
 
-  web.bff.discussionboard:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    ports:
-      - "80"
+  boardapi1: #定义"productapi1"服务 对应的产品服务项目
+     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+     build: 
+       context: .
+       dockerfile: ./src/Services/Board/Board.API/Dockerfile
+     ports: 
+        - '9011:9011'
+     environment: 
+            - ASPNETCORE_URLS=http://+:9011
+            - Consul:Ip=boardapi1
+            - Consul:Port=9011 #程序参数
+     networks: 
+            - my-net
+     depends_on: 
+            - consul
 
+  boardapi2: #定义"productapi1"服务 对应的产品服务项目
+     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+     ports: 
+        - '9012:9012'
+     environment: 
+            - ASPNETCORE_URLS=http://+:9012
+            - Consul:Ip=boardapi2
+            - Consul:Port=9012 #程序参数
+     networks: 
+            - my-net
+     depends_on: 
+            - boardapi1
+
+  boardapi3: #定义"productapi1"服务 对应的产品服务项目
+     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+     ports: 
+        - '9013:9013'
+     environment: 
+            - ASPNETCORE_URLS=http://+:9013
+            - Consul:Ip=boardapi3
+            - Consul:Port=9013 #程序参数
+     networks: 
+            - my-net
+     depends_on: 
+            - boardapi1
+  gateway:
+    build:
+      context: .
+      dockerfile: ./src/ApiGateway/Dockerfile
+    ports:
+         - '9070:9070' 
+    environment: 
+         - ASPNETCORE_URLS=http://+:9070
+    networks:
+         - my-net
+    depends_on: 
+         - boardapi1
+         - boardapi2
+         - boardapi3
+
+  consul:
+     image: consul #指定镜像名称为consul，本地如果没有consul镜像，会从docker远程仓库拉取
+     ports: 
+           - '8500:8500'
+     networks: 
+           - my-net
+networks: #定义容器网络
+  my-net: #my-net网络
+    driver: bridge #网络模式为bridge

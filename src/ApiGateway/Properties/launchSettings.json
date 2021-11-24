@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Web.Bff.DiscussionBoard": {
+    "gateway": {
       "commandName": "Project",
       "launchUrl": "swagger",
       "environmentVariables": {
