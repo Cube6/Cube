@@ -85,8 +85,10 @@ namespace Cube.User.API
 				endpoints.MapGrpcService<UserService>();
 			});
 
+#if RELEASE	
 			//服务注册
-			app.RegisterConsul(Configuration, lifetime);
+			app.RegisterConsul(Configuration, lifetime);		
+#endif
 		}
 	}
 }
