@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Cube.User.Respository
@@ -22,6 +23,11 @@ namespace Cube.User.Respository
 		{
 			var result = await _context.Users.FirstOrDefaultAsync(it => it.Id == id);
 			return result;
+		}
+
+		public Task<List<Domain.User>> ListAsync()
+		{
+			return _context.Users.ToListAsync();
 		}
 	}
 }

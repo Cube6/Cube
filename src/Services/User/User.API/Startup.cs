@@ -37,7 +37,7 @@ namespace Cube.User.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cube.User.API", Version = "v1" });
 			});
 
-			services.AddTransient<IUserRepository, UserRepository>();
+			services.AddScoped<IUserRepository, UserRepository>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();
@@ -59,8 +59,6 @@ namespace Cube.User.API
 			services.AddAuthorization();
 
 			services.AddGrpcSwagger();
-
-			services.AddTransient<IUserRepository, UserRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

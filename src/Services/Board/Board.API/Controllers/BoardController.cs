@@ -24,15 +24,7 @@ namespace Board.API.Controllers
 		[HttpGet]
 		public IEnumerable<DisscussionBoard> GetAll()
 		{
-			//Show come from Repository
-			return new List<DisscussionBoard>()
-			{
-				new DisscussionBoard()
-				{
-					Name = "Testing Board",
-					DateCreated= DateTime.Now
-				}
-			};
+			return _repository.ListAsync().Result;
 		}
 
 		[HttpGet("{id}")]

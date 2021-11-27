@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Domain = Cube.User.Domain;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Cube.User.Respository
 {
@@ -7,6 +7,7 @@ namespace Cube.User.Respository
 	{
 		Task Save(Domain.User user);
 		Task<User.Domain.User> GetUserByIdAsync(long id);
+		Task<List<Domain.User>> ListAsync();
 
 	}
 }

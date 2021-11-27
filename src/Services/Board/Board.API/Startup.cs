@@ -38,7 +38,7 @@ namespace Board.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
 
-			services.AddTransient<IBoardRepository, BoardRepository>();
+			services.AddScoped<IBoardRepository, BoardRepository>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();

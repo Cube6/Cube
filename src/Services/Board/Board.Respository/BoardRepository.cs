@@ -13,12 +13,13 @@ namespace Board.Respository
 
 		public BoardRepository()
 		{
-
+			_context.Database.EnsureCreated();
 		}
 
-		public async Task<bool> CreateBoardAsync(DisscussionBoard disscussionBoard)
+		public Task CreateBoardAsync(DisscussionBoard disscussionBoard)
 		{
-			return true;
+			_context.DisscussionBoards.Add(disscussionBoard);
+			return _context.SaveChangesAsync();
 		}
 
 		public async Task<bool> DeleteBoardAsync(long id)
@@ -34,6 +35,11 @@ namespace Board.Respository
 		{
 			var result = await _context.DisscussionBoardItems.FirstAsync(it => it.Id == id);
 			return result;
+		}
+
+		public Task<List<DisscussionBoard>> ListAsync()
+		{
+			return _context.DisscussionBoards.ToListAsync();
 		}
 	}
 }

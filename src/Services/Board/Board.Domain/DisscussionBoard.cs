@@ -1,14 +1,16 @@
 ﻿using Cube.Data;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Board.Domain
 {
-	public class DisscussionBoard: DataModel
+	public class DisscussionBoard: Entity
 	{
-		public int Id { get; set; }
 		[MaxLength(30)]
 		public string Name { get; set; }
+		public string CreatedUser { get; set; }
 		public DateTime DateCreated { get; set; }
+		public List<DisscussionBoardItem> BoardItems { get; set; }
 	}
 }

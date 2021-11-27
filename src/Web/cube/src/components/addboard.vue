@@ -19,9 +19,8 @@
         data() {
             return {
                 formInline: {
-                    id:1,
-                    name: "",
-                    DateCreated: new Date("2019-11-19 10:23:22")
+                    Name: "",
+                    DateCreated: new Date("2021-11-19 10:23:22")
                 },
                 ruleInline: {
                     name: [
