@@ -19,6 +19,12 @@ namespace Cube.User.Respository
 			return _context.SaveChangesAsync();
 		}
 
+		public Task Update(Domain.User user)
+		{
+			_context.Entry(user).State = EntityState.Modified;
+			return _context.SaveChangesAsync();
+		}
+
 		public async Task<Domain.User> GetUserByIdAsync(long id)
 		{
 			var result = await _context.Users.FirstOrDefaultAsync(it => it.Id == id);
