@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Cube.User.API.Protos;
+using Cube.User.Respository;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using System.Threading.Tasks;
-using Cube.User.Respository;
-using static Cube.User.API.Protos.UserService;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using static Cube.User.API.Protos.UserService;
 
 namespace Cube.User.API.Controllers
 {
@@ -16,15 +16,28 @@ namespace Cube.User.API.Controllers
 
 		public UserService(IUserRepository userRepository, IMapper mapper)
 		{
-			this._userRepository = userRepository;
-			this._mapper = mapper;
+			_userRepository = userRepository;
+			_mapper = mapper;
+		}
+
+		public override async Task<Result> Register(CreateUserRequest request, ServerCallContext context)
+		{
+			var user = new Domain.User
+			{
+				Name = request.Name,
+				Password = request.Password,
+			};
+
+			await _userRepository.Save(user);
+
+			return await Task.FromResult(new Protos.Result() { Success = true });
 		}
 
 		public override async Task<AllUsers> GetAllAsync(Empty request, ServerCallContext context)
 		{
 			var users = new AllUsers();
 
-			for(int i = 0; i < 10; i++)
+			for (int i = 0; i < 10; i++)
 			{
 				users.Users.Add(new Protos.User
 				{
@@ -38,7 +51,6 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<Protos.User> FindUserByIdAsync(Id request, ServerCallContext context)
 		{
-
 			var userPo = await _userRepository.GetUserByIdAsync(request.Id_);
 
 			var userDto = _mapper.Map<Protos.User>(userPo);
@@ -54,7 +66,7 @@ namespace Cube.User.API.Controllers
 		[Authorize]
 		public override async Task<Result> SecureActionAsync(Empty request, ServerCallContext context)
 		{
-			return await Task.FromResult(new Protos.Result() { Success = true }) ;
+			return await Task.FromResult(new Protos.Result() { Success = true });
 		}
 	}
 }

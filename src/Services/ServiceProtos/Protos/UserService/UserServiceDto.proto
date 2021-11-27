@@ -8,6 +8,11 @@ message Id{
 	int64 Id = 1;
 }
 
+message CreateUserRequest{
+	string Name = 1;
+	string Password = 2;
+}
+
 message User{
 	int64 Id = 1;
 	string Name = 2;

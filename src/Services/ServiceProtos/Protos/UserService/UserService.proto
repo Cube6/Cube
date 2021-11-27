@@ -9,6 +9,12 @@ option csharp_namespace = "Cube.User.API.Protos";
 package UserService;
 
 service UserService{
+
+	rpc Register(UserServiceDto.CreateUserRequest) returns (UserServiceDto.Result){
+		option (google.api.http) = {
+			get: "/User/Register"
+		};
+	}
 	
 	rpc GetAllAsync(google.protobuf.Empty) returns (UserServiceDto.AllUsers){
 		option (google.api.http) = {
