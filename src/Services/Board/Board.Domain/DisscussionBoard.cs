@@ -1,9 +1,8 @@
-﻿using Cube.Data;
-using System;
+﻿using Cube.Infrastructure.Repository;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Board.Domain
+namespace Cube.Board.Domain
 {
 	public class DisscussionBoard: Entity
 	{
@@ -13,7 +12,6 @@ namespace Board.Domain
 
 		[Required]
 		public string CreatedUser { get; set; }
-		public DateTime DateCreated { get; set; }
 		public List<DisscussionBoardItem> BoardItems { get; set; }
 	}
 }

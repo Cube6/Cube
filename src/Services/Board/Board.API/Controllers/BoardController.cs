@@ -1,5 +1,5 @@
-﻿using Board.Domain;
-using Board.Respository;
+﻿using Cube.Board.Domain;
+using Cube.Board.Respository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,14 +28,16 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<DisscussionBoardItem> FindItemsByIdAsync(long id)
+		public async Task<DisscussionBoardItem> FindBoardByIdAsync(long id)
 		{
 			return await _repository.GetBoardItemByIdAsync(id);
 		}
 
 		[HttpPost]
-		public async Task CreateBoardByIdAsync(DisscussionBoard disscussionBoard)
+		public async Task CreateBoard(DisscussionBoard disscussionBoard)
 		{
+			disscussionBoard.DateCreated = DateTime.Now;
+			disscussionBoard.DateModified = DateTime.Now;
 			await _repository.CreateBoardAsync(disscussionBoard);
 		}
 

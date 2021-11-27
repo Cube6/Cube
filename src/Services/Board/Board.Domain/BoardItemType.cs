@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Board.Domain
+namespace Cube.Board.Domain
 {
 	public enum BoardItemType
 	{

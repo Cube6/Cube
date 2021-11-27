@@ -1,5 +1,5 @@
 ﻿using Board.API.Models;
-using Board.Respository;
+using Cube.Board.Respository;
 using ConsulManager;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

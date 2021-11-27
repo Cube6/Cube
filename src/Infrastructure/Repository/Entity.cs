@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Cube.Data
+namespace Cube.Infrastructure.Repository
 {
 	public class Entity
 	{
 		[Key]
 		public int Id { get; set; }
-		public DateTime CreateTime { get; set; }
-		public DateTime ModifyTime { get; set; }
+		public DateTime DateCreated { get; set; }
+		public DateTime DateModified { get; set; }
 	}
 }

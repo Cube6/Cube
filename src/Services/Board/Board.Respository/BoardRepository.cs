@@ -1,11 +1,10 @@
-﻿using Board.Domain;
-using Cube.Data;
+﻿using Cube.Board.Domain;
+using Cube.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Board.Respository
+namespace Cube.Board.Respository
 {
 	public class BoardRepository : Repository, IBoardRepository
 	{

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Cube.User.Respository
 {
-	public class UserRepository : Cube.Data.Repository, IUserRepository
+	public class UserRepository : Infrastructure.Repository.Repository, IUserRepository
 	{
 		private UserContext _context = new UserContext();
 

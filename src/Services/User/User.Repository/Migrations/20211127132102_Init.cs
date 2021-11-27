@@ -17,8 +17,8 @@ namespace Cube.User.Repository.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NickName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AvatarUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+					DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+					DateModified = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

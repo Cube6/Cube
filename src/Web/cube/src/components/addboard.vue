@@ -21,7 +21,6 @@
                 formInline: {
                     Name: "",
                     CreatedUser:"Michael",
-                    DateCreated: new Date("2021-11-19 10:23:22")
                 },
                 ruleInline: {
                     name: [

@@ -1,7 +1,7 @@
-﻿using Board.Domain;
+﻿using Cube.Board.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Board.Respository
+namespace Cube.Board.Respository
 {
 	public class BoardContext : DbContext
 	{

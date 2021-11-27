@@ -1,10 +1,5 @@
-﻿namespace Cube.Data
+﻿namespace Cube.Infrastructure.Repository
 {
-	public interface IRepository
-	{
-		void ExcuteSql(string sql);
-	}
-
 	public class Repository : IRepository
 	{
 		public virtual void ExcuteSql(string sql)

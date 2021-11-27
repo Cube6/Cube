@@ -1,8 +1,8 @@
-﻿using Board.Domain;
+﻿using Cube.Board.Domain;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Board.Respository
+namespace Cube.Board.Respository
 {
 	public interface IBoardRepository
 	{

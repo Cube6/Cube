@@ -29,10 +29,10 @@ namespace Cube.User.Repository.Migrations
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateTime")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
