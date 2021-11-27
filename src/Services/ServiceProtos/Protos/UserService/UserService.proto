@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/api/annotations.proto";
 import "UserService/UserServiceDto.proto";
-import "google/protobuf/Empty.proto";
+import "google/protobuf/empty.proto";
 
 option csharp_namespace = "Cube.User.API.Protos";
 
