@@ -38,7 +38,6 @@ namespace Cube.User.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cube.User.API", Version = "v1" });
 			});
 
-			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserAppService, UserAppService>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));

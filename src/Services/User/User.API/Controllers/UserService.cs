@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Cube.User.API.Protos;
 using Cube.User.Application;
+using Cube.User.Application.Dtos;
 using Cube.User.Respository;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -12,33 +13,27 @@ namespace Cube.User.API.Controllers
 {
 	public class UserService : UserServiceBase
 	{
-		private readonly IUserRepository _userRepository;
 		private readonly IUserAppService _appService;
 		private readonly IMapper _mapper;
 
-		public UserService(IUserRepository repository, IUserAppService appService, IMapper mapper)
+		public UserService(IUserAppService appService, IMapper mapper)
 		{
-			_userRepository = repository;
 			_appService = appService;
 			_mapper = mapper;
 		}
 
 		public override async Task<Result> Register(CreateUserRequest request, ServerCallContext context)
 		{
-			var user = new Domain.User
-			{
-				Name = request.Name,
-				Password = request.Password,
-			};
+			var dto = _mapper.Map<CreateUserDto>(request);
 
-			await _userRepository.Save(user);
+			var result = await _appService.Register(dto);
 
-			return await Task.FromResult(new Protos.Result() { Success = true });
+			return await Task.FromResult(_mapper.Map<Result>(result));
 		}
 
 		public override async Task<AllUsers> GetAllAsync(Empty request, ServerCallContext context)
 		{
-			var users = await _userRepository.ListAsync();
+			var users = await _appService.GetAllAsync();
 
 			var allUsers = new AllUsers();
 			foreach (var user in users)
@@ -51,7 +46,7 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<Protos.User> FindUserByIdAsync(Id request, ServerCallContext context)
 		{
-			var userPo = await _userRepository.GetUserByIdAsync(request.Id_);
+			var userPo = await _appService.FindUserByIdAsync(request.Id_);
 
 			var userDto = _mapper.Map<Protos.User>(userPo);
 
@@ -60,7 +55,8 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<Result> DeleteUserByIdAsync(Id request, ServerCallContext context)
 		{
-			return await Task.FromResult(new Result() { Success = true });
+			var result = await _appService.DeleteUserByIdAsync(request.Id_);
+			return await Task.FromResult(_mapper.Map<Result>(result));
 		}
 
 		[Authorize]

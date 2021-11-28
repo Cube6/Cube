@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cube.User.API.Protos;
 using Domain = Cube.User.Domain;
+using Cube.User.Application.Dtos;
 
 namespace Cube.User.API.Util
 {
@@ -13,6 +14,9 @@ namespace Cube.User.API.Util
 		public UserApiProfile()
 		{
 			CreateMap<Domain.User, Protos.User>();
+			CreateMap<UserDto, Protos.User>();
+			CreateMap<ResultDto, Protos.Result>();
+			CreateMap<CreateUserRequest, CreateUserDto>();
 		}
 	}
 }
