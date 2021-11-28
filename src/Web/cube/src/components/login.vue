@@ -2,7 +2,7 @@
     <div class="wrap" id="wrap">
         <div class="logGet">
             <div class="logD logDtip">
-                <p class="p1">Login</p>
+                <p class="p1">Cube Retro System</p>
             </div>
             <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
                 <FormItem prop="user" class="lgD">
