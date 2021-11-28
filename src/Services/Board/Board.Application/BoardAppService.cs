@@ -1,4 +1,6 @@
-﻿using Cube.Board.Application.Dtos;
+﻿using AutoMapper;
+using Cube.Board.Application.Dtos;
+using Cube.Board.Application.Util;
 using Cube.Board.Domain;
 using Cube.Board.Respository;
 using System;
@@ -10,20 +12,19 @@ namespace Cube.Board.Application
 	public class BoardAppService : IBoardAppService
 	{
 		private IBoardRepository _repository = new BoardRepository();
+		private IMapper _mapper = MapperFactory.GetMapper();
+
+		public BoardAppService()
+		{
+		}
 
 		public IEnumerable<BoardDto> GetAll()
 		{
 			var list = new List<BoardDto>();
 			foreach (var item in _repository.ListAsync().Result)
 			{
-				list.Add(new BoardDto()
-				{
-					Id = item.Id,
-					Name = item.Name,
-					CreatedUser = item.CreatedUser,
-					DateCreated = item.DateCreated,
-					DateModified = item.DateModified,
-				});
+				var boardDto = _mapper.Map<BoardDto>(item);
+				list.Add(boardDto);
 			}
 			return list;
 		}
@@ -52,13 +53,8 @@ namespace Cube.Board.Application
 			{
 				return null;
 			}
-			return new BoardItemDto()
-			{
-				Id = item.Id,
-				Detail = item.Detail,
-				DateCreated = item.DateCreated,
-				DateModified = item.DateModified,
-			};
+
+			return _mapper.Map<BoardItemDto>(item);
 		}
 	}
 }

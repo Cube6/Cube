@@ -8,7 +8,7 @@ namespace Cube.Board.Respository
 {
 	public class BoardRepository : Repository, IBoardRepository
 	{
-		BoardContext _context = new BoardContext();
+		private BoardContext _context = new BoardContext();
 
 		public BoardRepository()
 		{
@@ -25,10 +25,8 @@ namespace Cube.Board.Respository
 		{
 			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == id);
 			_context.DisscussionBoards.Remove(board);
-			_context.SaveChanges();
 			return _context.SaveChanges() > 0;
 		}
-
 
 		public async Task<DisscussionBoardItem> GetBoardItemByIdAsync(long id)
 		{

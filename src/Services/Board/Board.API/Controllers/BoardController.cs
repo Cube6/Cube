@@ -1,11 +1,8 @@
 ﻿using Cube.Board.Application;
 using Cube.Board.Application.Dtos;
-using Cube.Board.Domain;
-using Cube.Board.Respository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
