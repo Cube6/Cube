@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cube.Board.Application.Dtos;
-using Cube.Board.Application.Util;
+using Cube.Board.Application.Configuration;
 using Cube.Board.Domain;
 using Cube.Board.Respository;
 using System;

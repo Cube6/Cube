@@ -11,6 +11,7 @@ using System.Text;
 using Cube.User.API.Models;
 using Cube.User.API.Controllers;
 using Cube.User.Respository;
+using Cube.User.Application;
 
 namespace Cube.User.API
 {
@@ -38,6 +39,7 @@ namespace Cube.User.API
 			});
 
 			services.AddScoped<IUserRepository, UserRepository>();
+			services.AddScoped<IUserAppService, UserAppService>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();

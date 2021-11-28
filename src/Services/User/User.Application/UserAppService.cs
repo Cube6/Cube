@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Cube.User.Application.Configuration;
+using Cube.User.Respository;
 
 namespace Cube.User.Application
 {
-    internal class UserAppService
-    {
-    }
+	public class UserAppService : IUserAppService
+	{
+		private IUserRepository _repository = new UserRepository();
+		private IMapper _mapper = MapperFactory.GetMapper();
+	}
 }

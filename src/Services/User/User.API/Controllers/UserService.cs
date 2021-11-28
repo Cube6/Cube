@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Cube.User.API.Protos;
+using Cube.User.Application;
 using Cube.User.Respository;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
@@ -12,11 +13,13 @@ namespace Cube.User.API.Controllers
 	public class UserService : UserServiceBase
 	{
 		private readonly IUserRepository _userRepository;
+		private readonly IUserAppService _appService;
 		private readonly IMapper _mapper;
 
-		public UserService(IUserRepository userRepository, IMapper mapper)
+		public UserService(IUserRepository repository, IUserAppService appService, IMapper mapper)
 		{
-			_userRepository = userRepository;
+			_userRepository = repository;
+			_appService = appService;
 			_mapper = mapper;
 		}
 
