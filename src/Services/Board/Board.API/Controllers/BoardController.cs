@@ -1,4 +1,6 @@
-﻿using Cube.Board.Domain;
+﻿using Cube.Board.Application;
+using Cube.Board.Application.Dtos;
+using Cube.Board.Domain;
 using Cube.Board.Respository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,38 +15,36 @@ namespace Board.API.Controllers
 	[Route("[controller]")]
 	public class BoardController : ControllerBase
 	{
-		private readonly IBoardRepository _repository;
+		private readonly IBoardAppService _appservice;
 		private readonly ILogger<BoardController> _logger;
-		public BoardController(IBoardRepository repository, ILogger<BoardController> logger)
+		public BoardController(IBoardAppService appservice, ILogger<BoardController> logger)
 		{
-			_repository = repository;
+			_appservice = appservice;
 			_logger = logger;
 		}
 
 		[HttpGet]
-		public IEnumerable<DisscussionBoard> GetAll()
+		public IEnumerable<BoardDto> GetAll()
 		{
-			return _repository.ListAsync().Result;
-		}
-
-		[HttpGet("{id}")]
-		public async Task<DisscussionBoardItem> FindBoardByIdAsync(long id)
-		{
-			return await _repository.GetBoardItemByIdAsync(id);
+			return _appservice.GetAll();
 		}
 
 		[HttpPost]
-		public async Task CreateBoard(DisscussionBoard disscussionBoard)
+		public async Task CreateBoard(CreateBoardDto ceateBoard)
 		{
-			disscussionBoard.DateCreated = DateTime.Now;
-			disscussionBoard.DateModified = DateTime.Now;
-			await _repository.CreateBoardAsync(disscussionBoard);
+			await _appservice.CreateBoard(ceateBoard);
 		}
 
 		[HttpDelete("{id}")]
 		public async Task DeleteBoardByIdAsync(long id)
 		{
-			await _repository.DeleteBoardAsync(id);
+			await _appservice.DeleteBoardByIdAsync(id);
+		}
+
+		[HttpGet("{id}")]
+		public async Task<BoardItemDto> FindBoardItemByIdAsync(long id)
+		{
+			return await _appservice.FindBoardItemByIdAsync(id);
 		}
 
 		[Authorize]

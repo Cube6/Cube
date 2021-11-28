@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cube.Board.Application.Dtos
 {
-	public class BoardDto
+	public class CreateBoardDto
 	{
-		public int Id { get; set; }
 		public string Name { get; set; }
 		public string CreatedUser { get; set; }
-		public DateTime DateCreated { get; set; }
-		public DateTime DateModified { get; set; }
-
-		public List<BoardItemDto> BoardItems { get; set; }
 	}
 }

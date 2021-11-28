@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cube.Board.Application;
 
 namespace Board.API
 {
@@ -38,7 +39,7 @@ namespace Board.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
 
-			services.AddScoped<IBoardRepository, BoardRepository>();
+			services.AddScoped<IBoardAppService, BoardAppService>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();

@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cube.Board.Domain;
+using System;
 
 namespace Cube.Board.Application.Dtos
 {
-	internal class BoardItemDto
+	public class BoardItemDto
 	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string CreatedUser { get; set; }
+		public DateTime DateCreated { get; set; }
+		public DateTime DateModified { get; set; }
+		public BoardItemType Type { set; get; }
+		public string Detail { get; set; }
+
+		public int BoardId { get; set; }
 	}
 }

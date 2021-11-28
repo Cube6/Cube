@@ -6,4 +6,9 @@
     <RootNamespace>Cube.Board.Application</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Board.Domain\Board.Domain.csproj" />
+    <ProjectReference Include="..\Board.Respository\Board.Respository.csproj" />
+  </ItemGroup>
+
 </Project>

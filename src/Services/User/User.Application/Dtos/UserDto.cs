@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cube.User.Application.Dtos
 {
-	internal class UserDto
+	public class UserDto
 	{
 	}
 }
