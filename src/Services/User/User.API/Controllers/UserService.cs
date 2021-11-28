@@ -38,18 +38,15 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<AllUsers> GetAllAsync(Empty request, ServerCallContext context)
 		{
-			var users = new AllUsers();
+			var users = await _userRepository.ListAsync();
 
-			for (int i = 0; i < 10; i++)
+			var allUsers = new AllUsers();
+			foreach (var user in users)
 			{
-				users.Users.Add(new Protos.User
-				{
-					Name = "1234",
-					AvatarUrl = "test"
-				});
+				allUsers.Users.Add(_mapper.Map<Protos.User>(user));
 			}
 
-			return await Task.FromResult(users);
+			return await Task.FromResult(allUsers);
 		}
 
 		public override async Task<Protos.User> FindUserByIdAsync(Id request, ServerCallContext context)
