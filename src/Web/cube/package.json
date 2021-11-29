@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "node aspnetcore-https.js && vue-cli-service serve",
-    "start": "SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
-    "build": "vue-cli-service build",
+    "build": "export NODE_OPTIONS=--openssl-legacy-provider;vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
