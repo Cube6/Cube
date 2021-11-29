@@ -5,7 +5,7 @@ WORKDIR /app
 COPY "./src/Web/cube/package*.json" ./
 RUN npm install
 COPY ./ .
-RUN export NODE_OPTIONS=--openssl-legacy-provider
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 
 FROM nginx as production-stage
