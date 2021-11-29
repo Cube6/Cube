@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.4.0-alpha">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.4.0-alpha">
   <PropertyGroup Label="Globals">
     <ProjectGuid>2f34a763-12b2-47c1-b991-e9905393c1a7</ProjectGuid>
   </PropertyGroup>
@@ -13,6 +13,9 @@
   <ItemGroup>
     <Folder Include=".vscode\" />
     <Folder Include="src\scripts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dockerfile" />
   </ItemGroup>
   <!-- This target is copied from the ASP.NET SPA template in order to ensure node_modules are in place. -->
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
