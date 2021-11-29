@@ -2,7 +2,7 @@
 
 FROM node:latest as build-stage
 WORKDIR /app
-COPY package*.json ./
+COPY "./src/Web/cube/package*.json" ./
 RUN npm install
 COPY ./ .
 RUN npm run build
