@@ -4,7 +4,7 @@ FROM node:latest as build-stage
 WORKDIR /app
 COPY "./src/Web/cube/package*.json" ./
 RUN npm install
-COPY "./src/Web/cube/" .
+COPY "./src/Web/cube/" /app
 RUN npm run build
 
 FROM nginx as production-stage
