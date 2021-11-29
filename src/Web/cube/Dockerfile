@@ -4,7 +4,8 @@ FROM node:latest as build-stage
 WORKDIR /app
 COPY "./src/Web/cube/package*.json" ./
 RUN npm install
-COPY "./src/Web/cube/" /app
+COPY "./src/Web/cube/" .
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 
 FROM nginx as production-stage
