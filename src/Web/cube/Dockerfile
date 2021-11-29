@@ -3,7 +3,7 @@
 FROM node:latest as build-stage
 WORKDIR /app
 COPY "./src/Web/cube/package*.json" ./
-RUN export NODE_OPTIONS=--openssl-legacy-provider && yarn build && yarn install --production --ignore-scripts --prefer-offline
+RUN export NODE_OPTIONS=--openssl-legacy-provider
 RUN npm install
 COPY ./ .
 RUN npm run build
