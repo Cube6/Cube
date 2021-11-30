@@ -20,8 +20,6 @@ jobs:
       run: docker build . --file ./src/Services/User/User.API/Dockerfile --tag yuanzhitang/cubeuserservice:latest
     - name: Build Docker image For Identity Service
       run: docker build . --file ./src/Services/Identity/Identity.API/Dockerfile --tag yuanzhitang/cubeidentityservice:latest
-    - name: Build Docker image For Web
-      # run: docker build . --file ./src/Web/cube/Dockerfile --tag yuanzhitang/cubewebapp:latest
     - name: Login to registry
       run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_TOKEN }} docker.io
     - name: Push Image for Board Service
@@ -30,7 +28,5 @@ jobs:
       run: docker push yuanzhitang/cubeuserservice:latest
     - name: Push Image for Identity Service
       run: docker push yuanzhitang/cubeidentityservice:latest
-    - name: Push Image for Web App
-      # run: docker push yuanzhitang/cubewebapp:latest
 
       
