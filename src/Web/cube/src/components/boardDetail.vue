@@ -63,7 +63,10 @@
                         this.post = json;
                         return;
                     });
-            }
+            },
+            AddWentWell() { },
+            AddImporved() { },
+            AddAction()
         },
     }
 </script>
