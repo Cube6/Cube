@@ -66,7 +66,7 @@
             },
             AddWentWell() { },
             AddImporved() { },
-            AddAction()
+            AddAction() { }
         },
     }
 </script>
