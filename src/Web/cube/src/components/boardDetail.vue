@@ -44,6 +44,7 @@
 </template>
 
 <script>
+
     export default {
         data() {
             return {
@@ -57,12 +58,17 @@
         },
         methods: {
             fetchData() {
-                fetch('Board')
-                    .then(r => r.json())
+                this.axios({
+                    method: 'get',
+                    url: '/Board',
+                    data: { id: this.$route.params.boardId},
+                }).then(r => r.json())
                     .then(json => {
-                        this.post = json;
-                        return;
-                    });
+                    this.post = json;
+                    return;
+                }).catch(error => {
+                    console.log(error);
+                })
             },
             AddWentWell() { },
             AddImporved() { },

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import axios from 'axios';
+   
     export default {
         data() {
             return {
@@ -33,13 +33,11 @@
             addDiscussionBoard(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        console.log(this.formInline);
-                        axios({
+                        this.axios({
                             method: 'post',
                             url: '/Board',
                             data: this.formInline,
                         }).then(() => {
-                            this.$Message.success('Success!');
                             this.$router.replace('/boardDetail');
                         }).catch(error => {
                             console.log(error);
