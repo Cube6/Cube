@@ -5,7 +5,7 @@ namespace Cube.Board.Respository
 {
 	public class BoardContext : DbContext
 	{
-		private const string _connectionString = "Server=tcp:techgroup.database.windows.net,1433;Initial Catalog=cube_board;Persist Security Info=False;User ID=techgroupdba;Password=Welcome1*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+		private const string _connectionString = "Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;Persist Security Info=False;User ID=sa;Password=Welcome1*;MultipleActiveResultSets=False;Connection Timeout=30;";
 
 		public DbSet<DisscussionBoard> DisscussionBoards { get; set; }
 		public DbSet<DisscussionBoardItem> DisscussionBoardItems { get; set; }
