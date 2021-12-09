@@ -61,6 +61,39 @@ services:
             - my-net
      depends_on: 
             - boardapi1
+
+
+  userapi1: #定义"productapi1"服务 对应的产品服务项目
+     image: userapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+     build: 
+       context: .
+       dockerfile: ./src/Services/User/User.API/Dockerfile
+     ports: 
+        - '8011:8011'
+     environment: 
+            - ASPNETCORE_URLS=http://+:8011
+            - Consul:Ip=userapi1
+            - Consul:Port=8011 #程序参数
+     networks: 
+            - my-net
+     depends_on: 
+            - consul
+
+  identityapi1:
+     image: identityapi
+     build: 
+       context: .
+       dockerfile: ./src/Services/Identity/Identity.API/Dockerfile
+     ports: 
+        - '7011:7011'
+     environment: 
+            - ASPNETCORE_URLS=http://+:7011
+            - Consul:Ip=identityapi1
+            - Consul:Port=7011 #程序参数
+     networks: 
+            - my-net
+     depends_on: 
+            - consul
   gateway:
     build:
       context: .
@@ -75,6 +108,8 @@ services:
          - boardapi1
          - boardapi2
          - boardapi3
+         - userapi1
+         - identityapi1
 
   consul:
      image: consul #指定镜像名称为consul，本地如果没有consul镜像，会从docker远程仓库拉取

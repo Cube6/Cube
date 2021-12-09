@@ -1,6 +1,6 @@
 ﻿using Board.API.Models;
 using Cube.Board.Respository;
-using ConsulManager;
+using Cube.ConsulService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
