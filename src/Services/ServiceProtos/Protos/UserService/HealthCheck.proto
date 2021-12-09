@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "UserService/UserServiceDto.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Cube.User.API.Protos";
+
+package HealthCheckService;
+
+service HealthCheckService{
+
+	rpc Get(google.protobuf.Empty) returns (UserServiceDto.Result){
+		option (google.api.http) = {
+			get: "/HealthCheck"
+		};
+	};
+}

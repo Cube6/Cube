@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\..\ServiceProtos\Protos\UserService\HealthCheck.proto" GrpcServices="Server" ProtoRoot="..\..\ServiceProtos\Protos\">
+      <Link>Protos\HealthCheck.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\..\ServiceProtos\Protos\UserService\UserService.proto" GrpcServices="Server" ProtoRoot="..\..\ServiceProtos\Protos\">
       <Link>Protos\UserService.proto</Link>
     </Protobuf>

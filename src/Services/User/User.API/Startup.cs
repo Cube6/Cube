@@ -82,6 +82,7 @@ namespace Cube.User.API
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapGrpcService<UserService>();
+				endpoints.MapGrpcService<HealthCheckService>();
 			});
 
 #if RELEASE	
