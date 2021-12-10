@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>Cube.User.API</AssemblyName>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>Cube.User.API</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..\..</DockerfileContext>
@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\..\ServiceProtos\Protos\UserService\HealthCheck.proto" GrpcServices="Server" ProtoRoot="..\..\ServiceProtos\Protos\">
+      <Link>Protos\HealthCheck.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\..\ServiceProtos\Protos\UserService\UserService.proto" GrpcServices="Server" ProtoRoot="..\..\ServiceProtos\Protos\">
       <Link>Protos\UserService.proto</Link>
     </Protobuf>

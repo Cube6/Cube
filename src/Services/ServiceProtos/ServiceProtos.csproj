@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\UserService\UserService.proto" GrpcServices="None" ProtoRoot=".\Protos" />
-    <Protobuf Include="Protos\UserService\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+	<Protobuf Include="Protos\UserService\HealthCheck.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+	<Protobuf Include="Protos\UserService\UserService.proto" GrpcServices="None" ProtoRoot=".\Protos" />
+	<Protobuf Include="Protos\UserService\UserServiceDto.proto" GrpcServices="None" ProtoRoot=".\Protos" />
   </ItemGroup>
 
 </Project>

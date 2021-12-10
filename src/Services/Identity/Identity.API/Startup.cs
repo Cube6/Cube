@@ -1,4 +1,5 @@
-﻿using Cube.Identity.API.Models;
+﻿using Cube.ConsulService;
+using Cube.Identity.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +34,7 @@ namespace Cube.Identity.API
 			Configuration.Bind("JwtSettings", jwtSettings);
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
 		{
 			if (env.IsDevelopment())
 			{
@@ -52,6 +53,11 @@ namespace Cube.Identity.API
 			{
 				endpoints.MapControllers();
 			});
+
+#if RELEASE
+			//服务注册
+			app.RegisterConsul(Configuration, lifetime);
+#endif
 		}
 	}
 }

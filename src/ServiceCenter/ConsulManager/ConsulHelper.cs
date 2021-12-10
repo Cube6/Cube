@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 
-namespace ConsulManager
+namespace Cube.ConsulService
 {
 	public static class ConsulHelper
 	{

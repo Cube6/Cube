@@ -1,4 +1,4 @@
-using ConsulManager;
+using Cube.ConsulService;
 using Cube.User.API.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -82,6 +82,7 @@ namespace Cube.User.API
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapGrpcService<UserService>();
+				endpoints.MapGrpcService<HealthCheckService>();
 			});
 
 #if RELEASE	
