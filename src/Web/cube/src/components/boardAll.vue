@@ -45,7 +45,7 @@
                     });
             },
             ViewBoard(val) {
-                this.$router.push({ name:'boardDetail', params: { boradId: val } });
+                this.$router.push({ name:'boardDetail', params: { boardId: val } });
             }
         },
     }

@@ -6,6 +6,7 @@ using Cube.Board.Respository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Cube.Board.Application
 {
@@ -29,6 +30,12 @@ namespace Cube.Board.Application
 			return list;
 		}
 
+		public BoardDto GetDetail(long boardId)
+		{
+			var DisscussionBoard = _repository.ListAsync().Result.Where(b=>b.Id==boardId).FirstOrDefault();
+			return _mapper.Map<BoardDto>(DisscussionBoard);
+		}
+
 		public async Task CreateBoard(CreateBoardDto createBoardDto)
 		{
 			var board = new DisscussionBoard()
@@ -41,14 +48,27 @@ namespace Cube.Board.Application
 			await _repository.CreateBoardAsync(board);
 		}
 
+		public async Task CreateBoardItem(BoardItemDto boardItemDto)
+		{
+			var boardItem = new DisscussionBoardItem()
+			{
+				Board = _repository.ListAsync().Result.Where(b => b.Id == boardItemDto.BoardId).FirstOrDefault(),
+				Detail = boardItemDto.Detail,
+				DateCreated = DateTime.Now,
+				DateModified = DateTime.Now,
+				Type= boardItemDto.Type,
+			};
+			await _repository.CreateBoardItemAsync(boardItem);
+		}
+
 		public async Task DeleteBoardByIdAsync(long id)
 		{
 			await _repository.DeleteBoardAsync(id);
 		}
 
-		public async Task<BoardItemDto> FindBoardItemByIdAsync(long id)
+		public async Task<BoardItemDto> FindBoardItemByIdAsync(long boardId)
 		{
-			var item = await _repository.GetBoardItemByIdAsync(id);
+			var item = await _repository.GetBoardItemByIdAsync(boardId);
 			if (item == null)
 			{
 				return null;

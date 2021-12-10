@@ -8,6 +8,7 @@ namespace Cube.Board.Application
 	public interface IBoardAppService
 	{
 		Task CreateBoard(CreateBoardDto disscussionBoard);
+		Task CreateBoardItem(BoardItemDto boardItemDto);
 		Task DeleteBoardByIdAsync(long id);
 		IEnumerable<BoardDto> GetAll();
 
