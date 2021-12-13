@@ -1,4 +1,5 @@
 ﻿using Cube.ConsulService;
+using Cube.Identity.API.Application;
 using Cube.Identity.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,8 @@ namespace Cube.Identity.API
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity.API", Version = "v1" });
 			});
+
+			services.AddScoped<IIdentityAppService, IdentityAppService>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();

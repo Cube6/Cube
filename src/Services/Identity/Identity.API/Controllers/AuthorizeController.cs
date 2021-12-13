@@ -1,4 +1,6 @@
-﻿using Cube.Identity.API.Models;
+﻿using Cube.Identity.API.Application;
+using Cube.Identity.API.Models;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -15,16 +17,18 @@ namespace Cube.Identity.API.Controllers
 	public class AuthorizeController : Controller
 	{
 		private JwtSettings _jwtSettings;
+		private IIdentityAppService _appService;
 
-		public AuthorizeController(IOptions<JwtSettings> jwtSetting)
+		public AuthorizeController(IIdentityAppService appService, IOptions<JwtSettings> jwtSetting)
 		{
 			_jwtSettings = jwtSetting.Value;
+			_appService = appService;
 		}
 
 		[HttpPost]
 		public IActionResult Login(string userName, string pwd)
 		{
-			if (!(userName == "cube" && pwd == "123456"))
+			if (!_appService.Validate(userName,pwd))
 			{
 				return BadRequest();
 			}

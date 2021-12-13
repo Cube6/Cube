@@ -20,4 +20,13 @@
     <ProjectReference Include="..\..\..\ServiceCenter\ConsulManager\ConsulManager.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Protobuf Include="..\..\ServiceProtos\Protos\UserService\UserService.proto" GrpcServices="Client" ProtoRoot="..\..\ServiceProtos\Protos\">
+      <Link>Protos\UserService.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\ServiceProtos\Protos\UserService\UserServiceDto.proto" GrpcServices="Client">
+      <Link>Protos\UserServiceDto.proto</Link>
+    </Protobuf>
+  </ItemGroup>
+
 </Project>
