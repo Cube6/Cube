@@ -26,11 +26,11 @@ services:
        context: .
        dockerfile: ./src/Services/Board/Board.API/Dockerfile
      ports: 
-        - '9011:9011'
+        - '5001:5001'
      environment: 
-            - ASPNETCORE_URLS=http://+:9011
+            - ASPNETCORE_URLS=http://+:5001
             - Consul:Ip=boardapi1
-            - Consul:Port=9011 #程序参数
+            - Consul:Port=5001 #程序参数
      networks: 
             - my-net
      depends_on: 
@@ -39,11 +39,11 @@ services:
   boardapi2: #定义"productapi1"服务 对应的产品服务项目
      image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
      ports: 
-        - '9012:9012'
+        - '5002:5002'
      environment: 
-            - ASPNETCORE_URLS=http://+:9012
+            - ASPNETCORE_URLS=http://+:5002
             - Consul:Ip=boardapi2
-            - Consul:Port=9012 #程序参数
+            - Consul:Port=5002 #程序参数
      networks: 
             - my-net
      depends_on: 
@@ -52,11 +52,11 @@ services:
   boardapi3: #定义"productapi1"服务 对应的产品服务项目
      image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
      ports: 
-        - '9013:9013'
+        - '5003:5003'
      environment: 
-            - ASPNETCORE_URLS=http://+:9013
+            - ASPNETCORE_URLS=http://+:5003
             - Consul:Ip=boardapi3
-            - Consul:Port=9013 #程序参数
+            - Consul:Port=5003 #程序参数
      networks: 
             - my-net
      depends_on: 
@@ -69,11 +69,11 @@ services:
        context: .
        dockerfile: ./src/Services/User/User.API/Dockerfile
      ports: 
-        - '8011:8011'
+        - '4000:4000'
      environment: 
-            - ASPNETCORE_URLS=http://+:8011
+            - ASPNETCORE_URLS=http://+:4000
             - Consul:Ip=userapi1
-            - Consul:Port=8011 #程序参数
+            - Consul:Port=4000 #程序参数
      networks: 
             - my-net
      depends_on: 
@@ -85,11 +85,11 @@ services:
        context: .
        dockerfile: ./src/Services/Identity/Identity.API/Dockerfile
      ports: 
-        - '7011:7011'
+        - '3000:3000'
      environment: 
-            - ASPNETCORE_URLS=http://+:7011
+            - ASPNETCORE_URLS=http://+:3000
             - Consul:Ip=identityapi1
-            - Consul:Port=7011 #程序参数
+            - Consul:Port=3000 #程序参数
      networks: 
             - my-net
      depends_on: 

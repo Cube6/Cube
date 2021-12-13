@@ -25,10 +25,10 @@ module.exports = {
         },
         proxy: {
             '^/Board': {
-                target: 'https://localhost:30002'
+                target: 'https://localhost:5000'
             },
             '^/User': {
-                target: 'https://localhost:30001'
+                target: 'https://localhost:4000'
             }
         },
         port: 5002

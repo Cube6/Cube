@@ -36,7 +36,7 @@ namespace Cube.Board.Respository
 
 		public async Task<DisscussionBoardItem> GetBoardItemByIdAsync(long boardId)
 		{
-			var result = await _context.DisscussionBoardItems.FirstAsync(it => it.Board.Id == boardId);
+			var result = await _context.DisscussionBoardItems.FirstOrDefaultAsync(it => it.Board.Id == boardId);
 			return result;
 		}
 

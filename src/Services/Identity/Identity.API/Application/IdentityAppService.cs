@@ -6,7 +6,7 @@ namespace Cube.Identity.API.Application
 	{
 		public bool Validate(string user, string password)
 		{
-			var channel = GrpcChannel.ForAddress("https://localhost:30001");
+			var channel = GrpcChannel.ForAddress("https://localhost:4000");
 			var client = new UserService.UserServiceClient(channel);
 
 			return client.Validate(new ValidateUserRequest()
