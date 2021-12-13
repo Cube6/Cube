@@ -7,6 +7,7 @@ namespace Cube.User.Application
 	public interface IUserAppService
 	{
 		Task<ResultDto> Register(CreateUserDto request);
+		Task<ResultDto> Validate(ValidateUserDto request);
 		Task<List<UserDto>> GetAllAsync();
 		Task<UserDto> FindUserByIdAsync(long id);
 		Task<ResultDto> DeleteUserByIdAsync(long id);

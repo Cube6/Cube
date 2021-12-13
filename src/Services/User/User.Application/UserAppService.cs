@@ -12,7 +12,6 @@ namespace Cube.User.Application
 		private IUserRepository _repository = new UserRepository();
 		private IMapper _mapper = MapperFactory.GetMapper();
 
-
 		public async Task<ResultDto> Register(CreateUserDto request)
 		{
 			var user = _mapper.Map<Domain.User>(request); 
@@ -20,6 +19,13 @@ namespace Cube.User.Application
 			await _repository.Save(user);
 
 			return await Task.FromResult(new ResultDto() { Success = true });
+		}
+
+		public async Task<ResultDto> Validate(ValidateUserDto request)
+		{
+			var result = await _repository.Exist(request.Name, request.Password);
+
+			return await Task.FromResult(new ResultDto() { Success = result });
 		}
 
 		public async Task<List<UserDto>> GetAllAsync()

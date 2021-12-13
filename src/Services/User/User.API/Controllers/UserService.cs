@@ -31,6 +31,15 @@ namespace Cube.User.API.Controllers
 			return await Task.FromResult(_mapper.Map<Result>(result));
 		}
 
+		public override async Task<Result> Validate(ValidateUserRequest request, ServerCallContext context)
+		{
+			var dto = _mapper.Map<ValidateUserDto>(request);
+
+			var result = await _appService.Validate(dto);
+
+			return await Task.FromResult(_mapper.Map<Result>(result));
+		}
+
 		public override async Task<AllUsers> GetAllAsync(Empty request, ServerCallContext context)
 		{
 			var users = await _appService.GetAllAsync();

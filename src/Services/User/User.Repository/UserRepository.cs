@@ -31,6 +31,12 @@ namespace Cube.User.Respository
 			return result;
 		}
 
+		public async Task<bool> Exist(string name, string password)
+		{
+			var result = await _context.Users.AnyAsync(u=>u.Name.Equals(name) && u.Password.Equals(password));
+			return result;
+		}
+
 		public Task<List<Domain.User>> ListAsync()
 		{
 			return _context.Users.ToListAsync();
