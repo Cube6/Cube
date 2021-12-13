@@ -1,6 +1,5 @@
 ﻿using Cube.Identity.API.Application;
 using Cube.Identity.API.Models;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -28,7 +27,7 @@ namespace Cube.Identity.API.Controllers
 		[HttpPost]
 		public IActionResult Login(string userName, string pwd)
 		{
-			if (!_appService.Validate(userName,pwd))
+			if (!_appService.Validate(userName, pwd))
 			{
 				return BadRequest();
 			}

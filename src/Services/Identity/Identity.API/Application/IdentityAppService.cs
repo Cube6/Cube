@@ -1,5 +1,6 @@
 ﻿using Grpc.Net.Client;
 using Cube.User.API.Protos;
+
 namespace Cube.Identity.API.Application
 {
 	public class IdentityAppService : IIdentityAppService
@@ -9,11 +10,13 @@ namespace Cube.Identity.API.Application
 			var channel = GrpcChannel.ForAddress("https://localhost:4000");
 			var client = new UserService.UserServiceClient(channel);
 
-			return client.Validate(new ValidateUserRequest()
+			var result = client.Validate(new ValidateUserRequest()
 			{
 				Name = user,
 				Password = password
-			}).Success;
+			});
+
+			return result.Success;
 		}
 	}
 }

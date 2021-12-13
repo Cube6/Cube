@@ -30,6 +30,15 @@ module.exports = {
             '^/User': {
                 target: 'https://localhost:4000'
             }
+
+            /*Connect to local Gateway Service*/
+
+            //'^/Board': {
+            //    target: 'http://localhost:9070'
+            //},
+            //'^/User': {
+            //    target: 'http://localhost:9070'
+            //}
         },
         port: 5002
     }
