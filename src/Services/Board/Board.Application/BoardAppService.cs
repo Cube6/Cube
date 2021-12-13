@@ -12,11 +12,12 @@ namespace Cube.Board.Application
 {
 	public class BoardAppService : IBoardAppService
 	{
-		private IBoardRepository _repository = new BoardRepository();
+		private IBoardRepository _repository;
 		private IMapper _mapper = MapperFactory.GetMapper();
 
-		public BoardAppService()
+		public BoardAppService(IBoardRepository repository)
 		{
+			_repository = repository;
 		}
 
 		public IEnumerable<BoardDto> GetAll()

@@ -20,7 +20,7 @@ namespace Board.API.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet]
+		[HttpGet("")]
 		public IEnumerable<BoardDto> GetAll()
 		{
 			return _appservice.GetAll();
@@ -32,7 +32,6 @@ namespace Board.API.Controllers
 			await _appservice.CreateBoard(ceateBoard);
 		}
 
-
 		[HttpPost]
 		[Route("CreateBoardItem")]
 		public async Task CreateBoardItem(BoardItemDto boardItemDto)
@@ -40,15 +39,14 @@ namespace Board.API.Controllers
 			await _appservice.CreateBoardItem(boardItemDto);
 		}
 
-
 		[HttpDelete("{id}")]
 		public async Task DeleteBoardByIdAsync(long id)
 		{
 			await _appservice.DeleteBoardByIdAsync(id);
 		}
 
-		[HttpGet("{id}")]
-		[Route("FindBoardItemById")]
+		[HttpGet("BoardItem/{id}")]
+		//[Route("FindBoardItemById")]
 		public async Task<BoardItemDto> FindBoardItemByIdAsync(long id)
 		{
 			return await _appservice.FindBoardItemByIdAsync(id);

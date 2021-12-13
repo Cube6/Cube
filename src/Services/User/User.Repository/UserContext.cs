@@ -2,15 +2,14 @@
 
 namespace Cube.User.Respository
 {
-	public class UserContext : DbContext
+	public class UserContext : DbContext, IUserContext
 	{
-		private const string _connectionString = "Server=tcp:10.63.223.58,1433;Initial Catalog=cube_user;Persist Security Info=False;User ID=sa;Password=Welcome1*;MultipleActiveResultSets=False;Connection Timeout=30;";
-
 		public DbSet<Domain.User> Users { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder options)
+		public UserContext(DbContextOptions options)
+			: base(options)
 		{
-			options.UseSqlServer(_connectionString);
+
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

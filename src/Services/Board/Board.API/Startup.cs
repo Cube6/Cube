@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cube.Board.Application;
+using Microsoft.EntityFrameworkCore;
 
 namespace Board.API
 {
@@ -39,6 +40,10 @@ namespace Board.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
 
+			services.AddDbContext<BoardContext>(
+						options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddScoped<IBoardRepository, BoardRepository>();
 			services.AddScoped<IBoardAppService, BoardAppService>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));

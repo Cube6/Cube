@@ -6,10 +6,11 @@ namespace Cube.User.Respository
 {
 	public class UserRepository : Infrastructure.Repository.Repository, IUserRepository
 	{
-		private UserContext _context = new UserContext();
+		private UserContext _context;
 
-		public UserRepository()
+		public UserRepository(UserContext context)
 		{
+			_context = context;
 			_context.Database.EnsureCreated();
 		}
 

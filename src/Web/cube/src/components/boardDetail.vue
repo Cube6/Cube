@@ -64,7 +64,7 @@
         methods: {
             fetchData() {
                 console.log(this.$route.params.boardId);
-                this.axios.get('/Board/FindBoardItemById',{
+                this.axios.get('/Board/BoardItem',{
                     params: { id: this.$route.params.boardId }
                 }).then(r => r.json())
                     .then(json => {

@@ -8,10 +8,11 @@ namespace Cube.Board.Respository
 {
 	public class BoardRepository : Repository, IBoardRepository
 	{
-		private BoardContext _context = new BoardContext();
+		private BoardContext _context;
 
-		public BoardRepository()
+		public BoardRepository(BoardContext context)
 		{
+			_context = context;
 			_context.Database.EnsureCreated();
 		}
 
