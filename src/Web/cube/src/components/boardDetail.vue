@@ -16,8 +16,8 @@
                                 {{well.Name}}
                             </li>
                         </ul>
-                        <textarea></textarea>
-                        <Button type="primary" @click="AddWentWell()">Send</Button>
+                        <textarea v-model="boardDetail.WellDetail"></textarea>
+                        <Button type="primary" @click="AddWentWell('boardDetail')">Send</Button>
                     </td>
                     <td>
                         <ul>
@@ -25,8 +25,8 @@
                                 {{imporve.Name}}
                             </li>
                         </ul>
-                        <textarea></textarea>
-                        <Button type="primary" @click="AddImporved()">Send</Button>
+                        <textarea v-model="boardDetail.ImporveDetail"></textarea>
+                        <Button type="primary" @click="AddImporved('boardDetail')">Send</Button>
                     </td>
                     <td>
                         <ul>
@@ -34,8 +34,8 @@
                                 {{action.Name}}
                             </li>
                         </ul>
-                        <textarea></textarea>
-                        <Button type="primary" @click="AddAction()">Send</Button>
+                        <textarea v-model="boardDetail.ActionDetail"></textarea>
+                        <Button type="primary" @click="AddAction('boardDetail')">Send</Button>
                     </td>
                 </tr>
             </tbody>
@@ -48,7 +48,12 @@
     export default {
         data() {
             return {
-                post: null
+                post: null,
+                boardDetail: {
+                    WellDetail: "",
+                    ImporveDetail: "",
+                    ActionDetail: "",
+                }
             };
         },
         created() {
@@ -58,10 +63,9 @@
         },
         methods: {
             fetchData() {
-                this.axios({
-                    method: 'get',
-                    url: '/Board',
-                    data: { id: this.$route.params.boardId},
+                console.log(this.$route.params.boardId);
+                this.axios.get('/Board/FindBoardItemById',{
+                    params: { id: this.$route.params.boardId }
                 }).then(r => r.json())
                     .then(json => {
                     this.post = json;
@@ -70,9 +74,57 @@
                     console.log(error);
                 })
             },
-            AddWentWell() { },
-            AddImporved() { },
-            AddAction() { }
+            AddWentWell(boardDetail) {
+                console.log(this.$refs[boardDetail]);
+                console.log(this.$route.params.boardId);
+                this.axios({
+                    method: 'post',
+                    url: '/Board/CreateBoardItem',
+                    data: {
+                        BoardId: this.$route.params.boardId,
+                        detail: this.boardDetail.WellDetail,
+                        type: 0,
+                    },
+                }).then(this.fetchData()).catch(error => {
+                        console.log(error);
+                    })
+            },
+            AddImporved(boardDetail) {
+                console.log(this.$refs[boardDetail]);
+                this.axios({
+                    method: 'post',
+                    url: '/Board/CreateBoardItem',
+                    data: {
+                        boardid: this.$route.params.boardId,
+                        detail: this.boardDetail.ImporveDetail,
+                        type: 1,
+                    },
+                }).then(r => r.json())
+                    .then(json => {
+                        this.post = json;
+                        return;
+                    }).catch(error => {
+                        console.log(error);
+                    })
+            },
+            AddAction(boardDetail) {
+                console.log(this.$refs[boardDetail]);
+                this.axios({
+                    method: 'post',
+                    url: '/Board/CreateBoardItem',
+                    data: {
+                        boardid: this.$route.params.boardId,
+                        detail: this.boardDetail.ActionDetail,
+                        type: 2,
+                    },
+                }).then(r => r.json())
+                    .then(json => {
+                        this.post = json;
+                        return;
+                    }).catch(error => {
+                        console.log(error);
+                    })
+            }
         },
     }
 </script>

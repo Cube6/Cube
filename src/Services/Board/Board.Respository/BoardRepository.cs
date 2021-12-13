@@ -21,16 +21,22 @@ namespace Cube.Board.Respository
 			return _context.SaveChangesAsync();
 		}
 
-		public async Task<bool> DeleteBoardAsync(long id)
+		public Task CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem)
 		{
-			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == id);
+			_context.DisscussionBoardItems.Add(disscussionBoardItem);
+			return _context.SaveChangesAsync();
+		}
+
+		public async Task<bool> DeleteBoardAsync(long boardId)
+		{
+			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == boardId);
 			_context.DisscussionBoards.Remove(board);
 			return _context.SaveChanges() > 0;
 		}
 
-		public async Task<DisscussionBoardItem> GetBoardItemByIdAsync(long id)
+		public async Task<DisscussionBoardItem> GetBoardItemByIdAsync(long boardId)
 		{
-			var result = await _context.DisscussionBoardItems.FirstAsync(it => it.Id == id);
+			var result = await _context.DisscussionBoardItems.FirstAsync(it => it.Board.Id == boardId);
 			return result;
 		}
 
