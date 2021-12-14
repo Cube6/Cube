@@ -1,3 +1,4 @@
+using Cube.ConsulService;
 using Cube.User.API.Controllers;
 using Cube.User.API.Models;
 using Cube.User.API.Util;
