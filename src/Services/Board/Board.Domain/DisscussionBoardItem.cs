@@ -11,6 +11,7 @@ namespace Cube.Board.Domain
 		[Required]
 		public string Detail { get; set; }
 
-		public DisscussionBoard Board { get; set; }
+		public long BoardId { get; set; }
+		public virtual DisscussionBoard Board { get; set; }
 	}
 }
