@@ -32,24 +32,10 @@ namespace Board.API.Controllers
 			await _appservice.CreateBoard(ceateBoard);
 		}
 
-		[HttpPost]
-		[Route("CreateBoardItem")]
-		public async Task CreateBoardItem(BoardItemDto boardItemDto)
-		{
-			await _appservice.CreateBoardItem(boardItemDto);
-		}
-
 		[HttpDelete("{id}")]
 		public async Task DeleteBoardByIdAsync(long id)
 		{
 			await _appservice.DeleteBoardByIdAsync(id);
-		}
-
-		[HttpGet("BoardItem/{id}")]
-		//[Route("FindBoardItemById")]
-		public async Task<BoardItemDto> FindBoardItemByIdAsync(long id)
-		{
-			return await _appservice.FindBoardItemByIdAsync(id);
 		}
 
 		[Authorize]
