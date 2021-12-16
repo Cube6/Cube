@@ -2,6 +2,8 @@
 using Cube.Board.Application.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Board.API.Controllers
@@ -25,9 +27,11 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<BoardItemDto> Find(long id)
+		public IEnumerable<BoardItemDto> Find(long id)
 		{
-			return await _appservice.FindBoardItemByIdAsync(id);
+			var ss = _appservice.FindBoardItemByIdAsync(id);
+			var result= ss.Result;
+			return result;
 		}
 	}
 }

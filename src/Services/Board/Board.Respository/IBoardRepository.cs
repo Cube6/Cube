@@ -7,7 +7,7 @@ namespace Cube.Board.Respository
 	public interface IBoardRepository
 	{
 		Task CreateBoardAsync(DisscussionBoard disscussionBoard);
-		Task<DisscussionBoardItem> GetBoardItemByIdAsync(long boardId);
+		Task<List<DisscussionBoardItem>> GetBoardItemByIdAsync(long boardId);
 		Task CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
 		Task<List<DisscussionBoard>> ListAsync();
 		Task<bool> DeleteBoardAsync(long id);
