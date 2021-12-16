@@ -67,15 +67,22 @@ namespace Cube.Board.Application
 			await _repository.DeleteBoardAsync(id);
 		}
 
-		public async Task<BoardItemDto> FindBoardItemByIdAsync(long boardId)
+		public async Task<List<BoardItemDto>> FindBoardItemByIdAsync(long boardId)
 		{
-			var item = await _repository.GetBoardItemByIdAsync(boardId);
-			if (item == null)
+			var ListBoardItemDto = await _repository.GetBoardItemByIdAsync(boardId);
+			if (ListBoardItemDto == null)
 			{
 				return null;
 			}
 
-			return _mapper.Map<BoardItemDto>(item);
+
+			var list = new List<BoardItemDto>();
+			foreach (var item in ListBoardItemDto)
+			{
+				var boardItemDto = _mapper.Map<BoardItemDto>(item);
+				list.Add(boardItemDto);
+			}
+			return list;
 		}
 	}
 }
