@@ -1,6 +1,7 @@
 ﻿using Grpc.Net.Client;
 using Cube.User.API.Protos;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Cube.Identity.API.Application
 {
@@ -15,7 +16,10 @@ namespace Cube.Identity.API.Application
 
 		public bool Validate(string user, string password)
 		{
-			var address = Configuration["UserService:Address"];
+			var address = $"{Configuration["UserService:Scheme"]}://{Configuration["UserService:Host"]}:{Configuration["UserService:Port"]}" ;
+
+			Console.WriteLine($"Try to connect to the user service: {address}");
+
 			var channel = GrpcChannel.ForAddress(address);
 			var client = new UserService.UserServiceClient(channel);
 
