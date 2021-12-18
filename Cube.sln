@@ -44,7 +44,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.API", "src\Services\Us
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Domain", "src\Services\User\User.Domain\User.Domain.csproj", "{244990BB-0CBB-4148-A710-97494C483172}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Board.Respository", "src\Services\Board\Board.Respository\Board.Respository.csproj", "{ED5D9B33-36B2-4C13-AC48-94682CAD0674}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Board.Infrastructure", "src\Services\Board\Board.Respository\Board.Infrastructure.csproj", "{ED5D9B33-36B2-4C13-AC48-94682CAD0674}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{65A88BC6-15AC-4F22-A78B-16B5F2BFE8CF}"
 EndProject
