@@ -1,28 +1,10 @@
 version: '3.4'
 
 services:
-  #board.api:
-  #  image: boardapi
-  #  build:
-  #    context: .
-  #    dockerfile: ./src/Services/Board/Board.API/Dockerfile
 
-  #user.api:
-  #  image: ${DOCKER_REGISTRY-}userapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/User/User.API/Dockerfile
-
-
-  #identity.api:
-  #  image: ${DOCKER_REGISTRY-}identityapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/Identity/Identity.API/Dockerfile
-  
   # Board Microservice #
-  boardapi1: #定义"productapi1"服务 对应的产品服务项目
-     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+  boardapi1: #定义"boardapi1"服务 对应的Board服务项目
+     image: boardapi #指定镜像名称
      build: 
        context: .
        dockerfile: ./src/Services/Board/Board.API/Dockerfile
