@@ -2,17 +2,17 @@ version: '3.4'
 
 services:
  
-  boardapi1:
-     image: boardapi
+  boardapi1: #定义"boardapi1"服务 对应的Board服务项目
+     image: boardapi #指定镜像名称
      build: 
        context: .
        dockerfile: ./src/Services/Board/Board.API/Dockerfile
      ports: 
-        - '5001:5001'
+        - '5000:5000'
      environment: 
-            - ASPNETCORE_URLS=http://+:5001
+            - ASPNETCORE_URLS=http://+:5000
             - Consul:Ip=boardapi1
-            - Consul:Port=5001
+            - Consul:Port=5000 #程序参数
      networks: 
             - my-net
      depends_on: 
@@ -21,11 +21,11 @@ services:
   boardapi2:
      image: boardapi
      ports: 
-        - '5002:5002'
+        - '5001:5001'
      environment: 
-            - ASPNETCORE_URLS=http://+:5002
+            - ASPNETCORE_URLS=http://+:5001
             - Consul:Ip=boardapi2
-            - Consul:Port=5002
+            - Consul:Port=5001
      networks: 
             - my-net
      depends_on: 
@@ -34,11 +34,11 @@ services:
   boardapi3:
      image: boardapi
      ports: 
-        - '5003:5003'
+        - '5002:5002'
      environment: 
-            - ASPNETCORE_URLS=http://+:5003
+            - ASPNETCORE_URLS=http://+:5002
             - Consul:Ip=boardapi3
-            - Consul:Port=5003
+            - Consul:Port=5002
      networks: 
             - my-net
      depends_on: 
