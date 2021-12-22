@@ -66,7 +66,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Board.Application", "src\Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Application", "src\Services\User\User.Application\User.Application.csproj", "{80B6B35B-5F77-4039-8E31-3745D12011D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisUtil", "src\Infrastructure\RedisUtil\RedisUtil.csproj", "{990AC818-92C6-4658-A03B-207CA47FCABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisRepository", "src\Infrastructure\RedisUtil\RedisRepository.csproj", "{990AC818-92C6-4658-A03B-207CA47FCABD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
