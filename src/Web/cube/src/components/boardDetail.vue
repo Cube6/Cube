@@ -17,7 +17,7 @@
                             </li>
                         </ul>
                         <textarea v-model="boardDetail.WellDetail"></textarea>
-                        <Button type="primary" @click="AddWentWell('boardDetail')">Send</Button>
+                        <Button type="primary" @click="AddWentWell()">Send</Button>
                     </td>
                     <td>
                         <ul>
@@ -26,7 +26,7 @@
                             </li>
                         </ul>
                         <textarea v-model="boardDetail.ImporveDetail"></textarea>
-                        <Button type="primary" @click="AddImporved('boardDetail')">Send</Button>
+                        <Button type="primary" @click="AddImporved()">Send</Button>
                     </td>
                     <td>
                         <ul>
@@ -35,7 +35,7 @@
                             </li>
                         </ul>
                         <textarea v-model="boardDetail.ActionDetail"></textarea>
-                        <Button type="primary" @click="AddAction('boardDetail')">Send</Button>
+                        <Button type="primary" @click="AddAction()">Send</Button>
                     </td>
                 </tr>
             </tbody>
@@ -63,58 +63,22 @@
         },
         methods: {
             fetchData() {
-                console.log(this.$route.params.boardId);
-                this.axios.get('/Board/FindBoardItemById',{
-                    params: { id: this.$route.params.boardId }
-                }).then(r => r.json())
-                    .then(json => {
-                    this.post = json;
+                this.axios.get('/BoardItem/' + this.$route.params.boardId + '')
+                    .then(r => {
+                        console.log(r.data);
+                        this.post = JSON.parse(r.data);
                     return;
                 }).catch(error => {
                     console.log(error);
                 })
             },
-            AddWentWell(boardDetail) {
-                console.log(this.$refs[boardDetail]);
-                console.log(this.$route.params.boardId);
+            AddBoardDetail(boardDetail) {
                 this.axios({
                     method: 'post',
-                    url: '/Board/CreateBoardItem',
-                    data: {
-                        BoardId: this.$route.params.boardId,
-                        detail: this.boardDetail.WellDetail,
-                        type: 0,
-                    },
-                }).then(this.fetchData()).catch(error => {
-                        console.log(error);
-                    })
-            },
-            AddImporved(boardDetail) {
-                console.log(this.$refs[boardDetail]);
-                this.axios({
-                    method: 'post',
-                    url: '/Board/CreateBoardItem',
+                    url: '/BoardItem',
                     data: {
                         boardid: this.$route.params.boardId,
-                        detail: this.boardDetail.ImporveDetail,
-                        type: 1,
-                    },
-                }).then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        return;
-                    }).catch(error => {
-                        console.log(error);
-                    })
-            },
-            AddAction(boardDetail) {
-                console.log(this.$refs[boardDetail]);
-                this.axios({
-                    method: 'post',
-                    url: '/Board/CreateBoardItem',
-                    data: {
-                        boardid: this.$route.params.boardId,
-                        detail: this.boardDetail.ActionDetail,
+                        detail: boardDetail,
                         type: 2,
                     },
                 }).then(r => r.json())
@@ -124,7 +88,17 @@
                     }).catch(error => {
                         console.log(error);
                     })
-            }
+            },
+            AddWentWell() {
+                this.AddBoardDetail(this.boardDetail.WellDetail);
+            },
+            AddImporved() {
+                this.AddBoardDetail(this.boardDetail.ImporveDetail);
+            },
+            AddAction() {
+                this.AddBoardDetail(this.boardDetail.ActionDetail);
+            },
+           
         },
     }
 </script>

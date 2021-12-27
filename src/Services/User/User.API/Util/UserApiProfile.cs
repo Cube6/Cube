@@ -17,6 +17,7 @@ namespace Cube.User.API.Util
 			CreateMap<UserDto, Protos.User>();
 			CreateMap<ResultDto, Protos.Result>();
 			CreateMap<CreateUserRequest, CreateUserDto>();
+			CreateMap<ValidateUserRequest, ValidateUserDto>();
 		}
 	}
 }

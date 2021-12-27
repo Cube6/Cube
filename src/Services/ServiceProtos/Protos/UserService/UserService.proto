@@ -15,6 +15,12 @@ service UserService{
 			get: "/User/Register"
 		};
 	}
+
+	rpc Validate(UserServiceDto.ValidateUserRequest) returns (UserServiceDto.Result){
+		option (google.api.http) = {
+			get: "/User/Validate"
+		};
+	}
 	
 	rpc GetAllAsync(google.protobuf.Empty) returns (UserServiceDto.AllUsers){
 		option (google.api.http) = {

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Cube.User.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,11 +7,14 @@ namespace Cube.User.Respository
 {
 	public class UserRepository : Infrastructure.Repository.Repository, IUserRepository
 	{
-		private UserContext _context = new UserContext();
+		private UserContext _context;
 
-		public UserRepository()
+		public UserRepository(UserContext context)
 		{
+			_context = context;
 			_context.Database.EnsureCreated();
+
+			//DbInitializer.InitializeAsync(context);
 		}
 
 		public Task Save(Domain.User user)
@@ -28,6 +32,12 @@ namespace Cube.User.Respository
 		public async Task<Domain.User> GetUserByIdAsync(long id)
 		{
 			var result = await _context.Users.FirstOrDefaultAsync(it => it.Id == id);
+			return result;
+		}
+
+		public async Task<bool> Exist(string name, string password)
+		{
+			var result = await _context.Users.AnyAsync(u=>u.Name.Equals(name) && u.Password.Equals(password));
 			return result;
 		}
 

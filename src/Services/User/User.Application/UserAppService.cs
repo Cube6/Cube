@@ -9,9 +9,13 @@ namespace Cube.User.Application
 {
 	public class UserAppService : IUserAppService
 	{
-		private IUserRepository _repository = new UserRepository();
+		private IUserRepository _repository;
 		private IMapper _mapper = MapperFactory.GetMapper();
 
+		public UserAppService(IUserRepository repository)
+		{
+			_repository = repository;
+		}
 
 		public async Task<ResultDto> Register(CreateUserDto request)
 		{
@@ -20,6 +24,13 @@ namespace Cube.User.Application
 			await _repository.Save(user);
 
 			return await Task.FromResult(new ResultDto() { Success = true });
+		}
+
+		public async Task<ResultDto> Validate(ValidateUserDto request)
+		{
+			var result = await _repository.Exist(request.Name, request.Password);
+
+			return await Task.FromResult(new ResultDto() { Success = result });
 		}
 
 		public async Task<List<UserDto>> GetAllAsync()

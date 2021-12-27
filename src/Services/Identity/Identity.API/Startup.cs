@@ -1,4 +1,5 @@
 ﻿using Cube.ConsulService;
+using Cube.Identity.API.Application;
 using Cube.Identity.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,8 @@ namespace Cube.Identity.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity.API", Version = "v1" });
 			});
 
+			services.AddScoped<IIdentityAppService, IdentityAppService>();
+
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();
 			Configuration.Bind("JwtSettings", jwtSettings);
@@ -39,9 +42,10 @@ namespace Cube.Identity.API
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseSwagger();
-				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity.API v1"));
 			}
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Identity.API v1"));
 
 			app.UseHttpsRedirection();
 

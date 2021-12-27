@@ -1,17 +1,18 @@
 using Cube.ConsulService;
+using Cube.User.API.Controllers;
+using Cube.User.API.Models;
 using Cube.User.API.Util;
+using Cube.User.Application;
+using Cube.User.Respository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using Cube.User.API.Models;
-using Cube.User.API.Controllers;
-using Cube.User.Respository;
-using Cube.User.Application;
 
 namespace Cube.User.API
 {
@@ -38,6 +39,10 @@ namespace Cube.User.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cube.User.API", Version = "v1" });
 			});
 
+			services.AddDbContext<UserContext>(
+				options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserAppService, UserAppService>();
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
@@ -85,7 +90,7 @@ namespace Cube.User.API
 				endpoints.MapGrpcService<HealthCheckService>();
 			});
 
-#if RELEASE	
+#if RELEASE
 			//服务注册
 			app.RegisterConsul(Configuration, lifetime);		
 #endif

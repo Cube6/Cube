@@ -2,16 +2,18 @@
 using Cube.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cube.Board.Respository
 {
 	public class BoardRepository : Repository, IBoardRepository
 	{
-		private BoardContext _context = new BoardContext();
+		private BoardContext _context;
 
-		public BoardRepository()
+		public BoardRepository(BoardContext context)
 		{
+			_context = context;
 			_context.Database.EnsureCreated();
 		}
 
@@ -34,9 +36,9 @@ namespace Cube.Board.Respository
 			return _context.SaveChanges() > 0;
 		}
 
-		public async Task<DisscussionBoardItem> GetBoardItemByIdAsync(long boardId)
+		public async Task<List<DisscussionBoardItem>> GetBoardItemByIdAsync(long boardId)
 		{
-			var result = await _context.DisscussionBoardItems.FirstAsync(it => it.Board.Id == boardId);
+			var result = await _context.DisscussionBoardItems.Where(it => it.Board.Id == (int)boardId).ToListAsync();
 			return result;
 		}
 
