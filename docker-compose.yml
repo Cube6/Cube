@@ -1,5 +1,17 @@
 version: '3.4'
 
+# Steps:
+
+# Go the root directory of Cube
+# 1. 
+# Generate Certificate from .NET CLI or CMD
+# dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p Welcome1
+# dotnet dev-certs https --trust
+
+# 2. 
+# docker-compose build
+# docker-compose up
+
 services:
 
   # Board Microservice #
