@@ -12,13 +12,15 @@ service UserService{
 
 	rpc Register(UserServiceDto.CreateUserRequest) returns (UserServiceDto.Result){
 		option (google.api.http) = {
-			get: "/User/Register"
+			post: "/User/Register"
+			body: "*"
 		};
 	}
 
 	rpc Validate(UserServiceDto.ValidateUserRequest) returns (UserServiceDto.Result){
 		option (google.api.http) = {
-			get: "/User/Validate"
+			put: "/User/Validate"
+			body: "*"
 		};
 	}
 	
