@@ -11,9 +11,14 @@ services:
      ports: 
         - '5000:5000'
      environment: 
-            - ASPNETCORE_URLS=http://+:5000
+            - ASPNETCORE_URLS=https://+:5000
             - Consul:Ip=boardapi1
-            - Consul:Port=5000 #程序参数
+            - Consul:Port=5000            
+            - Consul:IsHttps=true
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
      networks: 
             - my-net
      depends_on: 
@@ -24,9 +29,14 @@ services:
      ports: 
         - '5001:5001'
      environment: 
-            - ASPNETCORE_URLS=http://+:5001
+            - ASPNETCORE_URLS=https://+:5001
             - Consul:Ip=boardapi2
-            - Consul:Port=5001
+            - Consul:Port=5001            
+            - Consul:IsHttps=true
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
      networks: 
             - my-net
      depends_on: 
@@ -37,9 +47,14 @@ services:
      ports: 
         - '5002:5002'
      environment: 
-            - ASPNETCORE_URLS=http://+:5002
+            - ASPNETCORE_URLS=https://+:5002
             - Consul:Ip=boardapi3
-            - Consul:Port=5002
+            - Consul:Port=5002            
+            - Consul:IsHttps=true
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
      networks: 
             - my-net
      depends_on: 
@@ -54,9 +69,14 @@ services:
      ports: 
         - '4000:4000'
      environment: 
-            - ASPNETCORE_URLS=http://+:4000
+            - ASPNETCORE_URLS=https://+:4000
             - Consul:Ip=userapi1
             - Consul:Port=4000
+            - Consul:IsHttps=true
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
      networks: 
             - my-net
      depends_on: 
@@ -71,13 +91,18 @@ services:
      ports: 
         - '3000:3000'
      environment: 
-            - ASPNETCORE_URLS=http://+:3000
+            - ASPNETCORE_URLS=https://+:3000
             - Consul:Ip=identityapi1
-            - Consul:Port=3000
-            - UserService:Scheme=http
+            - Consul:Port=3000            
+            - Consul:IsHttps=true
+            - UserService:Scheme=https
             - UserService:Host=userapi1
             - UserService:Port=4000
-     networks: 
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
+     networks:
             - my-net
      depends_on: 
             - consul
