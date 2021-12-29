@@ -1,70 +1,53 @@
 version: '3.4'
 
 services:
-  #board.api:
-  #  image: boardapi
-  #  build:
-  #    context: .
-  #    dockerfile: ./src/Services/Board/Board.API/Dockerfile
 
-  #user.api:
-  #  image: ${DOCKER_REGISTRY-}userapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/User/User.API/Dockerfile
-
-
-  #identity.api:
-  #  image: ${DOCKER_REGISTRY-}identityapi
-  #  build:
-  #    context: .
-  #    dockerfile: src/Services/Identity/Identity.API/Dockerfile
-
-  boardapi1: #定义"productapi1"服务 对应的产品服务项目
-     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+  # Board Microservice #
+  boardapi1: #定义"boardapi1"服务 对应的Board服务项目
+     image: boardapi #指定镜像名称
      build: 
        context: .
        dockerfile: ./src/Services/Board/Board.API/Dockerfile
      ports: 
-        - '5001:5001'
+        - '5000:5000'
      environment: 
-            - ASPNETCORE_URLS=http://+:5001
+            - ASPNETCORE_URLS=http://+:5000
             - Consul:Ip=boardapi1
-            - Consul:Port=5001 #程序参数
+            - Consul:Port=5000 #程序参数
      networks: 
             - my-net
      depends_on: 
             - consul
 
-  boardapi2: #定义"productapi1"服务 对应的产品服务项目
-     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+  boardapi2:
+     image: boardapi
+     ports: 
+        - '5001:5001'
+     environment: 
+            - ASPNETCORE_URLS=http://+:5001
+            - Consul:Ip=boardapi2
+            - Consul:Port=5001
+     networks: 
+            - my-net
+     depends_on: 
+            - boardapi1
+
+  boardapi3:
+     image: boardapi
      ports: 
         - '5002:5002'
      environment: 
             - ASPNETCORE_URLS=http://+:5002
-            - Consul:Ip=boardapi2
-            - Consul:Port=5002 #程序参数
-     networks: 
-            - my-net
-     depends_on: 
-            - boardapi1
-
-  boardapi3: #定义"productapi1"服务 对应的产品服务项目
-     image: boardapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
-     ports: 
-        - '5003:5003'
-     environment: 
-            - ASPNETCORE_URLS=http://+:5003
             - Consul:Ip=boardapi3
-            - Consul:Port=5003 #程序参数
+            - Consul:Port=5002
      networks: 
             - my-net
      depends_on: 
             - boardapi1
 
-
-  userapi1: #定义"productapi1"服务 对应的产品服务项目
-     image: userapi #指定镜像名称，如果不指定 默认是：netcoremicroservicedemo_productapi1，因为下面要用到所以指定一下
+  # User Microservice #
+  userapi1:
+     image: userapi
      build: 
        context: .
        dockerfile: ./src/Services/User/User.API/Dockerfile
@@ -73,12 +56,13 @@ services:
      environment: 
             - ASPNETCORE_URLS=http://+:4000
             - Consul:Ip=userapi1
-            - Consul:Port=4000 #程序参数
+            - Consul:Port=4000
      networks: 
             - my-net
      depends_on: 
             - consul
 
+  # Identity Microservice #
   identityapi1:
      image: identityapi
      build: 
@@ -89,11 +73,17 @@ services:
      environment: 
             - ASPNETCORE_URLS=http://+:3000
             - Consul:Ip=identityapi1
-            - Consul:Port=3000 #程序参数
+            - Consul:Port=3000
+            - UserService:Scheme=http
+            - UserService:Host=userapi1
+            - UserService:Port=4000
      networks: 
             - my-net
      depends_on: 
             - consul
+            - userapi1
+
+  # Gateway Service #
   gateway:
     build:
       context: .
@@ -111,6 +101,7 @@ services:
          - userapi1
          - identityapi1
 
+  # Consul Service #
   consul:
      image: consul #指定镜像名称为consul，本地如果没有consul镜像，会从docker远程仓库拉取
      ports: 

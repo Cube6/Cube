@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Cube.User.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace Cube.User.Respository
 		{
 			_context = context;
 			_context.Database.EnsureCreated();
+
+			//DbInitializer.InitializeAsync(context);
 		}
 
 		public Task Save(Domain.User user)

@@ -53,12 +53,5 @@ namespace Cube.Identity.API.Controllers
 				access_token = new JwtSecurityTokenHandler().WriteToken(token)
 			});
 		}
-
-		[HttpGet]
-		[Authorize]
-		public IActionResult Secret()
-		{
-			return Ok();
-		}
 	}
 }
