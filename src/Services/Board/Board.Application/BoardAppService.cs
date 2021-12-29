@@ -62,9 +62,25 @@ namespace Cube.Board.Application
 			await _repository.CreateBoardItemAsync(boardItem);
 		}
 
+		public async Task UpdateBoardItem(BoardItemDto boardItemDto)
+		{
+			var boardItem = new DisscussionBoardItem()
+			{
+				Id = boardItemDto.Id,
+				Detail = boardItemDto.Detail,
+				DateModified = DateTime.Now,
+			};
+			await _repository.UpdateBoardItemAsync(boardItem);
+		}
+
 		public async Task DeleteBoardByIdAsync(long id)
 		{
 			await _repository.DeleteBoardAsync(id);
+		}
+
+		public async Task DeleteBoardItemByIdAsync(long id)
+		{
+			await _repository.DeleteBoardItemAsync(id);
 		}
 
 		public async Task<List<BoardItemDto>> FindBoardItemByIdAsync(long boardId)

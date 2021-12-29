@@ -29,10 +29,23 @@ namespace Cube.Board.Respository
 			return _context.SaveChangesAsync();
 		}
 
+		public Task UpdateBoardItemAsync(DisscussionBoardItem disscussionBoardItem)
+		{
+			_context.DisscussionBoardItems.Update(disscussionBoardItem);
+			return _context.SaveChangesAsync();
+		}
+
 		public async Task<bool> DeleteBoardAsync(long boardId)
 		{
 			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == boardId);
 			_context.DisscussionBoards.Remove(board);
+			return _context.SaveChanges() > 0;
+		}
+
+		public async Task<bool> DeleteBoardItemAsync(long boardItemId)
+		{
+			var boardItem = await _context.DisscussionBoardItems.SingleAsync(it => it.Id == boardItemId);
+			_context.DisscussionBoardItems.Remove(boardItem);
 			return _context.SaveChanges() > 0;
 		}
 

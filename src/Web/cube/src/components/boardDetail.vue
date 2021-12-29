@@ -1,46 +1,73 @@
 ﻿<template>
-    <div style="height: 600px">
+    <div>
         <table>
             <thead>
                 <tr>
-                    <th width="400px">What went well</th>
-                    <th width="400px">What need to be imporved</th>
-                    <th width="200px">Actions</th>
+                    <th width="400px">
+                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Send" @on-search="addWentWell" />
+                    </th>
+                    <th width="400px">
+                        <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Send" @on-search="addImporved" />
+                    </th>
+                    <th width="400px">
+                        <Input v-model="boardDetail.ActionDetail" placeholder="A brilliant idea to share ?" search enter-button="Send" @on-search="addAction" />
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>
+                    <td style="vertical-align:top">
                         <ul>
-                            <li v-for="well in post" :key="well.Id">
-                                {{well.Name}}
+                            <li v-for="well in WellContent" :key="well.Id">
+                                <Card style="width:380px">
+                                    <Input v-model="well.Detail" type="textarea" :autosize="true" @onblur="updateBoardItem(well)" />
+                                    <p slot="title">
+                                        <Icon type="ios-film-outline"></Icon>
+                                    </p>
+                                    <a href="#" slot="extra" @click.prevent="deleteBoardItem(well)">
+                                        <Icon type="ios-loop-strong"></Icon>
+                                        Delete
+                                    </a>
+                                </Card>
                             </li>
                         </ul>
-                        <textarea v-model="boardDetail.WellDetail"></textarea>
-                        <Button type="primary" @click="AddWentWell()">Send</Button>
                     </td>
-                    <td>
+                    <td style="vertical-align:top">
                         <ul>
-                            <li v-for="imporve in post" :key="imporve.Id">
-                                {{imporve.Name}}
+                            <li v-for="imporve in ImporveContent" :key="imporve.Id">
+                                <Card style="width:380px">
+                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @onblur="updateBoardItem(imporve)" />
+                                    <p slot="title">
+                                        <Icon type="ios-film-outline"></Icon>
+                                    </p>
+                                    <a href="#" slot="extra" @click.prevent="deleteBoardItem(imporve)">
+                                        <Icon type="ios-loop-strong"></Icon>
+                                        Delete
+                                    </a>
+                                </Card>
                             </li>
                         </ul>
-                        <textarea v-model="boardDetail.ImporveDetail"></textarea>
-                        <Button type="primary" @click="AddImporved()">Send</Button>
                     </td>
-                    <td>
+                    <td style="vertical-align:top">
                         <ul>
-                            <li v-for="action in post" :key="action.Id">
-                                {{action.Name}}
+                            <li v-for="action in ActionContent" :key="action.Id">
+                                <Card style="width:380px">
+                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @onblur="updateBoardItem(action)"/>
+                                    <p slot="title">
+                                        <Icon type="ios-film-outline"></Icon>
+                                    </p>
+                                    <a href="#" slot="extra" @click.prevent="deleteBoardItem(action)">
+                                        <Icon type="ios-loop-strong"></Icon>
+                                        Delete
+                                    </a>
+                                </Card>
                             </li>
                         </ul>
-                        <textarea v-model="boardDetail.ActionDetail"></textarea>
-                        <Button type="primary" @click="AddAction()">Send</Button>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
+   </div>
 </template>
 
 <script>
@@ -48,7 +75,12 @@
     export default {
         data() {
             return {
-                post: null,
+                ActionContent: null,
+                WellContent: null,
+                ImporveContent: null,
+                deleteActionId: null,
+                deleteWellId: null,
+                deleteImporveId: null,
                 boardDetail: {
                     WellDetail: "",
                     ImporveDetail: "",
@@ -57,48 +89,61 @@
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         methods: {
             fetchData() {
                 this.axios.get('/BoardItem/' + this.$route.params.boardId + '')
-                    .then(r => {
-                        console.log(r.data);
-                        this.post = JSON.parse(r.data);
+                    .then(all => {
+                        this.WellContent = all.data.filter(item => item.Type == 1);
+                        this.ImporveContent = all.data.filter(item => item.Type == 2);
+                        this.ActionContent = all.data.filter(item=>item.Type==3);
                     return;
                 }).catch(error => {
                     console.log(error);
                 })
             },
-            AddBoardDetail(boardDetail) {
+            addBoardDetail(boardDetail,type) {
                 this.axios({
                     method: 'post',
                     url: '/BoardItem',
                     data: {
                         boardid: this.$route.params.boardId,
                         detail: boardDetail,
-                        type: 2,
+                        type: type,
                     },
-                }).then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        return;
-                    }).catch(error => {
-                        console.log(error);
+                }).then(() => {
+                    this.fetchData();
+                })
+            },
+            addWentWell() {
+                this.addBoardDetail(this.boardDetail.WellDetail,1);
+            },
+            addImporved() {
+                this.addBoardDetail(this.boardDetail.ImporveDetail,2);
+            },
+            addAction() {
+                this.addBoardDetail(this.boardDetail.ActionDetail,3);
+            },
+            deleteBoardItem(boardItem) {
+                this.axios.delete('/BoardItem/' + boardItem.Id + '')
+                    .then(() => {
+                        this.fetchData();
                     })
             },
-            AddWentWell() {
-                this.AddBoardDetail(this.boardDetail.WellDetail);
+            updateBoardItem(boardItem) {
+                console.log(boardItem.Id);
+                this.axios({
+                    method: 'put',
+                    url: '/BoardItem',
+                    data: {
+                        boardid: boardItem.Id,
+                        detail: boardItem.Detail,
+                    },
+                }).then(() => {
+                    this.fetchData();
+                })
             },
-            AddImporved() {
-                this.AddBoardDetail(this.boardDetail.ImporveDetail);
-            },
-            AddAction() {
-                this.AddBoardDetail(this.boardDetail.ActionDetail);
-            },
-           
         },
     }
 </script>

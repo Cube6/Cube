@@ -11,5 +11,12 @@ namespace Cube.Board.Respository
 		Task CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
 		Task<List<DisscussionBoard>> ListAsync();
 		Task<bool> DeleteBoardAsync(long id);
+
+		Task<bool> DeleteBoardItemAsync(long id);
+
+
+		Task UpdateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
+		
+
 	}
 }
