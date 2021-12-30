@@ -33,5 +33,17 @@ namespace Board.API.Controllers
 			var result= ss.Result;
 			return result;
 		}
+
+		[HttpDelete("{id}")]
+		public async Task DeleteBoardItemByIdAsync(long id)
+		{
+			await _appservice.DeleteBoardItemByIdAsync(id);
+		}
+
+		[HttpPut]
+		public async Task Update(BoardItemDto boardItemDto)
+		{
+			await _appservice.UpdateBoardItem(boardItemDto);
+		}
 	}
 }

@@ -33,7 +33,7 @@ module.exports = {
             },
             '^/User': {
                 target: 'https://localhost:4000'
-            },,
+            },
             '^/Identity': {
                 target: 'https://localhost:3000'
             },

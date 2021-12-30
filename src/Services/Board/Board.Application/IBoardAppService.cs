@@ -13,5 +13,9 @@ namespace Cube.Board.Application
 		IEnumerable<BoardDto> GetAll();
 
 		Task<List<BoardItemDto>> FindBoardItemByIdAsync(long id);
+
+		Task DeleteBoardItemByIdAsync(long id);
+
+		Task UpdateBoardItem(BoardItemDto boardItemDto);
 	}
 }
