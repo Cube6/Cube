@@ -1,10 +1,10 @@
 ﻿{
   "Routes": [
     {
-      "DownstreamPathTemplate": "/board",
+      "DownstreamPathTemplate": "/{url}",
       "DownstreamScheme": "https",
-      "UpstreamPathTemplate": "/board",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "UpstreamPathTemplate": "/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "Board.API",
       "LoadBalancerOptions": {
@@ -29,10 +29,10 @@
 
     },
     {
-      "DownstreamPathTemplate": "/user",
+      "DownstreamPathTemplate": "/user/{everything}",
       "DownstreamScheme": "https",
-      "UpstreamPathTemplate": "/user",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "UpstreamPathTemplate": "/user/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "User.API",
       "LoadBalancerOptions": {
@@ -57,10 +57,10 @@
 
     },
     {
-      "DownstreamPathTemplate": "/authorize",
+      "DownstreamPathTemplate": "/authorize?userName={userName}&pwd={password}",
       "DownstreamScheme": "https",
-      "UpstreamPathTemplate": "/authorize",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "UpstreamPathTemplate": "/authorize/{userName}/{password}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "Identity.API",
       "LoadBalancerOptions": {
