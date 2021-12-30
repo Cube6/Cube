@@ -20,7 +20,7 @@
                         <ul>
                             <li v-for="well in WellContent" :key="well.Id">
                                 <Card style="width:380px">
-                                    <Input v-model="well.Detail" type="textarea" :autosize="true" @onblur="updateBoardItem(well)" />
+                                    <Input v-model="well.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(well)" />
                                     <p slot="title">
                                         <Icon type="ios-film-outline"></Icon>
                                     </p>
@@ -36,7 +36,7 @@
                         <ul>
                             <li v-for="imporve in ImporveContent" :key="imporve.Id">
                                 <Card style="width:380px">
-                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @onblur="updateBoardItem(imporve)" />
+                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
                                     <p slot="title">
                                         <Icon type="ios-film-outline"></Icon>
                                     </p>
@@ -52,7 +52,7 @@
                         <ul>
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width:380px">
-                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @onblur="updateBoardItem(action)"/>
+                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)"/>
                                     <p slot="title">
                                         <Icon type="ios-film-outline"></Icon>
                                     </p>
@@ -137,8 +137,10 @@
                     method: 'put',
                     url: '/BoardItem',
                     data: {
-                        boardid: boardItem.Id,
+                        id: boardItem.Id,
                         detail: boardItem.Detail,
+                        type: boardItem.Type,
+                        boardid: this.$route.params.boardId
                     },
                 }).then(() => {
                     this.fetchData();
