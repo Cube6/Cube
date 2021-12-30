@@ -25,6 +25,7 @@ module.exports = {
         },
         proxy: {
 
+/* Development */
             /*Connect to local Microservices*/
 
             '^/Board': {
@@ -37,18 +38,6 @@ module.exports = {
                 target: 'https://localhost:3000'
             },
 
-            /*Connect to remote Microservices*/
-
-            //'^/Board': {
-            //    target: 'http://10.63.224.86:5000'
-            //},
-            //'^/User': {
-            //    target: 'http://10.63.224.86:4000'
-            //},
-            //'^/Identity': {
-            //    target: 'http://10.63.224.86:3000'
-            //}
-
             /*Connect to local microservices via Gateway Service*/
 
             //'^/Board': {
@@ -59,6 +48,32 @@ module.exports = {
             //},
             //'^/Identity': {
             //    target: 'http://localhost:9070'
+            //}
+
+/* Production */
+
+            /*Connect to remote Microservices directly*/
+
+            //'^/Board': {
+            //    target: 'https://10.63.224.86:5000'
+            //},
+            //'^/User': {
+            //    target: 'https://10.63.224.86:4000'
+            //},
+            //'^/Identity': {
+            //    target: 'https://10.63.224.86:3000'
+            //}
+
+            /*Connect to remote microservices via Gateway Service*/
+
+            //'^/Board': {
+            //    target: 'http://10.63.224.86:9070'
+            //},
+            //'^/User': {
+            //    target: 'http://10.63.224.86:9070'
+            //},
+            //'^/Identity': {
+            //    target: 'http://10.63.224.86:9070'
             //}
         },
         port: 5002

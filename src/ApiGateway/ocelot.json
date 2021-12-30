@@ -2,9 +2,10 @@
   "Routes": [
     {
       "DownstreamPathTemplate": "/board",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamPathTemplate": "/board",
       "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "Board.API",
       "LoadBalancerOptions": {
         "Type": "RoundRobin" //负载均衡，轮询机制 LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
@@ -29,9 +30,10 @@
     },
     {
       "DownstreamPathTemplate": "/user",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamPathTemplate": "/user",
       "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "User.API",
       "LoadBalancerOptions": {
         "Type": "RoundRobin" //负载均衡，轮询机制 LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
@@ -56,9 +58,10 @@
     },
     {
       "DownstreamPathTemplate": "/authorize",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "UpstreamPathTemplate": "/authorize",
       "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "Identity.API",
       "LoadBalancerOptions": {
         "Type": "RoundRobin" //负载均衡，轮询机制 LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
