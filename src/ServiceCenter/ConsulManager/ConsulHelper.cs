@@ -40,7 +40,8 @@ namespace Cube.ConsulService
 					DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5), // 服务启动多久后注册
 					Interval = TimeSpan.FromSeconds(10), // 健康检查时间间隔
 					HTTP = $"{uriPrex}://{configuration["Consul:Ip"]}:{configuration["Consul:Port"]}{configuration["Consul:HealthCheck"]}", // 健康检查地址
-					Timeout = TimeSpan.FromSeconds(5) // 超时时间
+					Timeout = TimeSpan.FromSeconds(5), // 超时时间
+					TLSSkipVerify = true
 				}
 			};
 

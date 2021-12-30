@@ -1,63 +1,6 @@
 version: '3.4'
 
 services:
- 
-  boardapi1: #定义"boardapi1"服务 对应的Board服务项目
-     image: boardapi #指定镜像名称
-     build: 
-       context: .
-       dockerfile: ./src/Services/Board/Board.API/Dockerfile
-     ports: 
-        - '5000:5000'
-     environment: 
-            - ASPNETCORE_URLS=http://+:5000
-            - Consul:Ip=boardapi1
-            - Consul:Port=5000 #程序参数
-     networks: 
-            - my-net
-     depends_on: 
-            - consul
-
-  boardapi2:
-     image: boardapi
-     ports: 
-        - '5001:5001'
-     environment: 
-            - ASPNETCORE_URLS=http://+:5001
-            - Consul:Ip=boardapi2
-            - Consul:Port=5001
-     networks: 
-            - my-net
-     depends_on: 
-            - boardapi1
-
-  boardapi3:
-     image: boardapi
-     ports: 
-        - '5002:5002'
-     environment: 
-            - ASPNETCORE_URLS=http://+:5002
-            - Consul:Ip=boardapi3
-            - Consul:Port=5002
-     networks: 
-            - my-net
-     depends_on: 
-            - boardapi1
-  gateway:
-    build:
-      context: .
-      dockerfile: ./src/ApiGateway/Dockerfile
-    ports:
-         - '9070:9070' 
-    environment: 
-         - ASPNETCORE_URLS=http://+:9070
-    networks:
-         - my-net
-    depends_on: 
-         - boardapi1
-         - boardapi2
-         - boardapi3
-
   consul:
      image: consul #指定镜像名称为consul，本地如果没有consul镜像，会从docker远程仓库拉取
      ports: 
