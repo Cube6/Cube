@@ -16,7 +16,7 @@ services:
 
   # Board Microservice #
   boardservice1: #定义"boardservice1"服务 对应的Board服务项目
-     image: boardapi #指定镜像名称
+     image: cubeboardservice #指定镜像名称
      build: 
        context: .
        dockerfile: ./src/Services/Board/Board.API/Dockerfile
@@ -37,7 +37,7 @@ services:
             - consul
 
   boardservice2:
-     image: boardapi
+     image: cubeboardservice
      ports: 
         - '5001:5001'
      environment: 
@@ -55,7 +55,7 @@ services:
             - boardservice1
 
   boardservice3:
-     image: boardapi
+     image: cubeboardservice
      ports: 
         - '5002:5002'
      environment: 
@@ -74,7 +74,7 @@ services:
 
   # User Microservice #
   userservice1:
-     image: userapi
+     image: cubeuserservice
      build: 
        context: .
        dockerfile: ./src/Services/User/User.API/Dockerfile
@@ -95,7 +95,7 @@ services:
             - consul
 
   userservice2:
-     image: userapi
+     image: cubeuserservice
      build: 
        context: .
        dockerfile: ./src/Services/User/User.API/Dockerfile
@@ -117,7 +117,7 @@ services:
 
   # Identity Microservice #
   identityservice1:
-     image: identityapi
+     image: cubeidentityservice
      build: 
        context: .
        dockerfile: ./src/Services/Identity/Identity.API/Dockerfile
@@ -143,7 +143,7 @@ services:
             - userservice2
 
   identityservice2:
-     image: identityapi
+     image: cubeidentityservice
      build: 
        context: .
        dockerfile: ./src/Services/Identity/Identity.API/Dockerfile
@@ -170,6 +170,7 @@ services:
 
   # Gateway Service #
   gateway:
+    image: cubegatewayservice
     build:
       context: .
       dockerfile: ./src/ApiGateway/Dockerfile

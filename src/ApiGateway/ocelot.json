@@ -6,7 +6,7 @@
       "UpstreamPathTemplate": "/{url}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
-      "ServiceName": "Board.API",
+      "ServiceName": "BoardService",
       "LoadBalancerOptions": {
         "Type": "RoundRobin" //LoadBanlancer LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
       },
@@ -29,7 +29,7 @@
       "UpstreamPathTemplate": "/user/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
-      "ServiceName": "User.API",
+      "ServiceName": "UserService",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
@@ -51,7 +51,7 @@
       "UpstreamPathTemplate": "/authorize/{userName}/{password}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
-      "ServiceName": "Identity.API",
+      "ServiceName": "IdentityService",
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       },
