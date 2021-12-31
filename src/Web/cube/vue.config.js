@@ -28,27 +28,27 @@ module.exports = {
 /* Development */
             /*Connect to local Microservices*/
 
-            '^/Board': {
-                target: 'https://localhost:5000'
-            },
-            '^/User': {
-                target: 'https://localhost:4000'
-            },
-            '^/Identity': {
-                target: 'https://localhost:3000'
-            },
+            //'^/Board': {
+            //    target: 'https://localhost:5000'
+            //},
+            //'^/User': {
+            //    target: 'https://localhost:4000'
+            //},
+            //'^/Identity': {
+            //    target: 'https://localhost:3000'
+            //},
 
             /*Connect to local microservices via Gateway Service*/
 
-            //'^/Board': {
-            //    target: 'http://localhost:9070'
-            //},
-            //'^/User': {
-            //    target: 'http://localhost:9070'
-            //},
-            //'^/Identity': {
-            //    target: 'http://localhost:9070'
-            //}
+            // '^/Board': {
+            //     target: 'http://localhost:9070'
+            // },
+            // '^/User': {
+            //     target: 'http://localhost:9070'
+            // },
+            // '^/Identity': {
+            //     target: 'http://localhost:9070'
+            // }
 
 /* Production */
 
@@ -66,15 +66,15 @@ module.exports = {
 
             /*Connect to remote microservices via Gateway Service*/
 
-            //'^/Board': {
-            //    target: 'http://10.63.224.86:9070'
-            //},
-            //'^/User': {
-            //    target: 'http://10.63.224.86:9070'
-            //},
-            //'^/Identity': {
-            //    target: 'http://10.63.224.86:9070'
-            //}
+            '^/Board': {
+               target: 'http://10.63.224.86:9070'
+            },
+            '^/User': {
+               target: 'http://10.63.224.86:9070'
+            },
+            '^/Identity': {
+               target: 'http://10.63.224.86:9070'
+            }
         },
         port: 5002
     }
