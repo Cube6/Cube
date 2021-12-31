@@ -8,7 +8,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "Board.API",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin" //负载均衡，轮询机制 LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
+        "Type": "RoundRobin" //LoadBanlancer LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
       },
       "FileCacheOptions": {
         "TtlSeconds": 5,
@@ -20,11 +20,6 @@
         "Period": "5s",
         "PeriodTimespan": 2,
         "Limit": 1
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 3,
-        "DurationOfBreak": 10000,
-        "TimeoutValue": 5000
       }
 
     },
@@ -36,7 +31,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "User.API",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin" //负载均衡，轮询机制 LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
+        "Type": "RoundRobin"
       },
       "FileCacheOptions": {
         "TtlSeconds": 5,
@@ -48,13 +43,7 @@
         "Period": "5s",
         "PeriodTimespan": 2,
         "Limit": 1
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 3,
-        "DurationOfBreak": 10000,
-        "TimeoutValue": 5000
       }
-
     },
     {
       "DownstreamPathTemplate": "/authorize?userName={userName}&pwd={password}",
@@ -64,7 +53,7 @@
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "Identity.API",
       "LoadBalancerOptions": {
-        "Type": "RoundRobin" //负载均衡，轮询机制 LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
+        "Type": "RoundRobin"
       },
       "FileCacheOptions": {
         "TtlSeconds": 5,
@@ -76,13 +65,7 @@
         "Period": "5s",
         "PeriodTimespan": 2,
         "Limit": 1
-      },
-      "QoSOptions": {
-        "ExceptionsAllowedBeforeBreaking": 3,
-        "DurationOfBreak": 10000,
-        "TimeoutValue": 5000
       }
-
     }
 
   ],
@@ -99,6 +82,11 @@
       "QuotaExceededMessage": "too many requests...",
       "HttpStatusCode": 999,
       "ClientIdHeader": "Test"
+    },
+    "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 10000,
+        "TimeoutValue": 5000
     }
   }
 }

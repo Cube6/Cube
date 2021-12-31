@@ -15,7 +15,7 @@ version: '3.4'
 services:
 
   # Board Microservice #
-  boardapi1: #定义"boardapi1"服务 对应的Board服务项目
+  boardservice1: #定义"boardservice1"服务 对应的Board服务项目
      image: boardapi #指定镜像名称
      build: 
        context: .
@@ -24,7 +24,7 @@ services:
         - '5000:5000'
      environment: 
             - ASPNETCORE_URLS=https://+:5000
-            - Consul:Ip=boardapi1
+            - Consul:Ip=boardservice1
             - Consul:Port=5000            
             - Consul:IsHttps=true
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
@@ -36,13 +36,13 @@ services:
      depends_on: 
             - consul
 
-  boardapi2:
+  boardservice2:
      image: boardapi
      ports: 
         - '5001:5001'
      environment: 
             - ASPNETCORE_URLS=https://+:5001
-            - Consul:Ip=boardapi2
+            - Consul:Ip=boardservice2
             - Consul:Port=5001            
             - Consul:IsHttps=true
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
@@ -52,15 +52,15 @@ services:
      networks: 
             - my-net
      depends_on: 
-            - boardapi1
+            - boardservice1
 
-  boardapi3:
+  boardservice3:
      image: boardapi
      ports: 
         - '5002:5002'
      environment: 
             - ASPNETCORE_URLS=https://+:5002
-            - Consul:Ip=boardapi3
+            - Consul:Ip=boardservice3
             - Consul:Port=5002            
             - Consul:IsHttps=true
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
@@ -70,10 +70,10 @@ services:
      networks: 
             - my-net
      depends_on: 
-            - boardapi1
+            - boardservice1
 
   # User Microservice #
-  userapi1:
+  userservice1:
      image: userapi
      build: 
        context: .
@@ -82,7 +82,7 @@ services:
         - '4000:4000'
      environment: 
             - ASPNETCORE_URLS=https://+:4000
-            - Consul:Ip=userapi1
+            - Consul:Ip=userservice1
             - Consul:Port=4000
             - Consul:IsHttps=true
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
@@ -94,8 +94,29 @@ services:
      depends_on: 
             - consul
 
+  userservice2:
+     image: userapi
+     build: 
+       context: .
+       dockerfile: ./src/Services/User/User.API/Dockerfile
+     ports: 
+        - '4001:4001'
+     environment: 
+            - ASPNETCORE_URLS=https://+:4001
+            - Consul:Ip=userservice2
+            - Consul:Port=4001
+            - Consul:IsHttps=true
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
+     networks: 
+            - my-net
+     depends_on: 
+            - consul
+
   # Identity Microservice #
-  identityapi1:
+  identityservice1:
      image: identityapi
      build: 
        context: .
@@ -104,11 +125,11 @@ services:
         - '3000:3000'
      environment: 
             - ASPNETCORE_URLS=https://+:3000
-            - Consul:Ip=identityapi1
+            - Consul:Ip=identityservice1
             - Consul:Port=3000            
             - Consul:IsHttps=true
             - UserService:Scheme=https
-            - UserService:Host=userapi1
+            - UserService:Host=userservice1
             - UserService:Port=4000
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
@@ -118,7 +139,34 @@ services:
             - my-net
      depends_on: 
             - consul
-            - userapi1
+            - userservice1
+            - userservice2
+
+  identityservice2:
+     image: identityapi
+     build: 
+       context: .
+       dockerfile: ./src/Services/Identity/Identity.API/Dockerfile
+     ports: 
+        - '3001:3001'
+     environment: 
+            - ASPNETCORE_URLS=https://+:3001
+            - Consul:Ip=identityservice2
+            - Consul:Port=3001            
+            - Consul:IsHttps=true
+            - UserService:Scheme=https
+            - UserService:Host=userservice2
+            - UserService:Port=4001
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+     volumes:
+            - ~/.aspnet/https:/https:ro
+     networks:
+            - my-net
+     depends_on: 
+            - consul
+            - userservice1
+            - userservice2
 
   # Gateway Service #
   gateway:
@@ -132,11 +180,13 @@ services:
     networks:
          - my-net
     depends_on: 
-         - boardapi1
-         - boardapi2
-         - boardapi3
-         - userapi1
-         - identityapi1
+         - boardservice1
+         - boardservice2
+         - boardservice3
+         - userservice1
+         - userservice2
+         - identityservice1
+         - identityservice2
 
   # Consul Service #
   consul:
