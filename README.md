@@ -1,6 +1,6 @@
 # Cube-System based on Microservices Architecture
 
-## A Mordern Retrosepective System
+## A Modern Retrospective System
 
 1. The Frond-end web application is an Vue SPA program.
 2. APIGateway is relay on Ocelet.
