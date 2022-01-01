@@ -25,9 +25,10 @@ module.exports = {
         //    key: fs.readFileSync(keyFilePath),
         //    cert: fs.readFileSync(certFilePath),
         //},
+        disableHostCheck: true,
         proxy: {
 
-/* Development */
+            /************************************* Development *********************************/
             /*Connect to local Microservices*/
 
             //'^/Board': {
@@ -52,8 +53,7 @@ module.exports = {
              //    target: 'http://localhost:9070'
              //}
 
-/* Production */
-
+            /************************************* Production *********************************/
             /*Connect to remote Microservices directly*/
 
             //'^/Board': {
