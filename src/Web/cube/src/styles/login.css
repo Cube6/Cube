@@ -1,17 +1,17 @@
 ﻿body {
-  /*  background-image: url(../assets/logo.png);*/
+  background-image: url(../assets/login_bg.png);
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center center;
 }
 
-* {
+/** {
   margin: 0;
   padding: 0;
-}
+}*/
 
 #wrap {
-  height: 600px;
+  height: 1000px;
   width: 100%;
   background-position: center center;
   position: relative;
@@ -26,14 +26,18 @@
 }
 
 #wrap .logGet {
-  height: 408px;
-  width: 400px;
-  position: absolute;
-  background-color: #ffffff;
-  top: 100px;
-  left: 0;
-  right: 0;
-  margin: 120px auto;
+    height: 400px;
+    width: 400px;
+    border-radius: 10px;
+    position: absolute;
+    background-color: #ffffff;
+    top: 100px;
+    left: 0;
+    right: 0;
+    margin: 120px auto;
+    /*top: 50%;*/
+    /*right: 160px;*/
+    /*transform: translateY(-60%);*/
 }
 
 .logGet .logD.logDtip .p1 {
@@ -81,15 +85,21 @@
   width: 30%;
 }
 
+.login-tip {
+    font-size: 12px;
+    text-align: center;
+    color: #c3c3c3;
+}
+
 .copyright {
-  font-family: "宋体";
-  color: #ffffff;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* 使用css3的transform来实现 */
-  height: 60px;
-  width: 40%;
-  text-align: center;
+    font-family: "宋体";
+    color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 使用css3的transform来实现 */
+    height: 60px;
+    width: 40%;
+    text-align: center;
 }
