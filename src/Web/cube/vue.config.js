@@ -78,6 +78,6 @@ module.exports = {
                target: 'http://10.63.224.86:9070'
             }
         },
-        port: 8080
+        port: 80
     }
 }
