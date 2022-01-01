@@ -1,10 +1,10 @@
 const fs = require('fs')
 const path = require('path')
 
-const baseFolder =
-    process.env.APPDATA !== undefined && process.env.APPDATA !== ''
-        ? `${process.env.APPDATA}/ASP.NET/https`
-        : `${process.env.HOME}/.aspnet/https`;
+//const baseFolder =
+//    process.env.APPDATA !== undefined && process.env.APPDATA !== ''
+//        ? `${process.env.APPDATA}/ASP.NET/https`
+//        : `${process.env.HOME}/.aspnet/https`;
 
 const certificateArg = process.argv.map(arg => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
 const certificateName = certificateArg ? certificateArg.groups.value : "cube";
@@ -13,6 +13,8 @@ if (!certificateName) {
     console.error('Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.')
     process.exit(-1);
 }
+
+const baseFolder = "certs";
 
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
@@ -40,15 +42,15 @@ module.exports = {
 
             /*Connect to local microservices via Gateway Service*/
 
-            // '^/Board': {
-            //     target: 'http://localhost:9070'
-            // },
-            // '^/User': {
-            //     target: 'http://localhost:9070'
-            // },
-            // '^/Identity': {
-            //     target: 'http://localhost:9070'
-            // }
+             //'^/Board': {
+             //   target: 'http://localhost:9070'
+             //},
+             //'^/User': {
+             //    target: 'http://localhost:9070'
+             //},
+             //'^/Identity': {
+             //    target: 'http://localhost:9070'
+             //}
 
 /* Production */
 
@@ -76,6 +78,6 @@ module.exports = {
                target: 'http://10.63.224.86:9070'
             }
         },
-        port: 5002
+        port: 8080
     }
 }
