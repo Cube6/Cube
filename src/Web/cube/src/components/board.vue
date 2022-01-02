@@ -22,19 +22,19 @@
         <Layout :style="{minHeight: '100vh'}">
             <Sider hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1">
+                    <MenuItem name="1-1" to="/boardAll">
                         <Icon type="md-book"></Icon>
                         <span>Board</span>
                     </MenuItem>
-                    <MenuItem name="1-2">
+                    <MenuItem name="1-2" to="/boardAll">
                         <Icon type="md-time"></Icon>
                         <span>In Progress</span>
                     </MenuItem>
-                    <MenuItem name="1-3">
+                    <MenuItem name="1-3" to="/boardAll">
                         <Icon type="ios-paper"></Icon>
                         <span>Completed</span>
                     </MenuItem>
-                    <MenuItem name="1-4">
+                    <MenuItem name="1-4" to="/boardAll">
                         <Icon type="md-trash"></Icon>
                         <span>Recycle Bin</span>
                     </MenuItem>

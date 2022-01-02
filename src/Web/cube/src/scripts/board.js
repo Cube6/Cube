@@ -25,6 +25,6 @@ export default {
         },
         AddBoard() {
             this.$router.push('/addboard');
-        }
+        },
     },
 }
