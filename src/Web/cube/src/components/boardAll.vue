@@ -1,13 +1,13 @@
 ﻿<template>
     <div>
-        <div style="height: 600px">
+        <div style="margin:0">
             <table>
                 <thead>
                     <tr>
-                        <th width="200px">Id</th>
-                        <th width="200px">Name</th>
-                        <th width="200px">DateCreated</th>
-                        <th width="200px">ViewDetails</th>
+                        <th width="100px">Id</th>
+                        <th width="500px">Name</th>
+                        <th width="200px">Date Created</th>
+                        <th width="400px">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -15,7 +15,11 @@
                         <td>{{ board.Id }}</td>
                         <td>{{ board.Name }}</td>
                         <td>{{ board.DateCreated }}</td>
-                        <td><Button type="primary" :boardId="board.Id" @click="ViewBoard(board.Id)">View</Button></td>
+                        <td>
+                            <Button type="primary" :boardId="board.Id" @click="ViewBoard(board.Id)">View</Button>
+                            &nbsp;
+                            <Button type="error" :boardId="board.Id" @click="DeleteBoard(board.Id)">Delete</Button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

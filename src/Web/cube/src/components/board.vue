@@ -1,41 +1,70 @@
 ﻿<template>
     <div class="layout">
+        <Header>
+            <Menu mode="horizontal" theme="dark" active-name="1">
+                <div class="layout-logo"></div>
+                <div class="layout-nav">
+                    <MenuItem name="menuUsers">
+                        <Icon type="md-person"></Icon>
+                        Users
+                    </MenuItem>
+                    <MenuItem name="menuSettings">
+                        <Icon type="md-settings"></Icon>
+                        Settings
+                    </MenuItem>
+                </div>
+                <div class="layout-loginUser">
+                    <Icon type="ios-paper"></Icon>
+                    Admin
+                </div>
+            </Menu>
+        </Header>
         <Layout :style="{minHeight: '100vh'}">
-            <Sider collapsible :collapsed-width="78" v-model="isCollapsed">
-                <Menu active-name="1-1" theme="dark" width="auto" :class="menuitemClasses">
+            <Sider hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
+                <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
                     <MenuItem name="1-1">
-                        <Icon type="ios-navigate"></Icon>
-                        <span>Discussboard</span>
+                        <Icon type="md-book"></Icon>
+                        <span>Board</span>
                     </MenuItem>
                     <MenuItem name="1-2">
-                        <Icon type="search"></Icon>
-                        <span>User</span>
+                        <Icon type="md-time"></Icon>
+                        <span>In Progress</span>
                     </MenuItem>
                     <MenuItem name="1-3">
-                        <Icon type="settings"></Icon>
-                        <span>Settings</span>
+                        <Icon type="ios-paper"></Icon>
+                        <span>Completed</span>
+                    </MenuItem>
+                    <MenuItem name="1-4">
+                        <Icon type="md-trash"></Icon>
+                        <span>Recycle Bin</span>
                     </MenuItem>
                 </Menu>
             </Sider>
-            <Layout>
-                <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
-                    <div>
-                        <Button type="primary" @click="AddBoard()">AddBoard</Button>
-                    </div>
-                </Header>
-                <Content :style="{padding: '0 16px 16px'}">
-                    <Breadcrumb :style="{margin: '16px 0'}">
-                        <BreadcrumbItem>Home</BreadcrumbItem>
-                        <BreadcrumbItem>Components</BreadcrumbItem>
-                        <BreadcrumbItem>Board</BreadcrumbItem>
-                    </Breadcrumb>
+            <Layout :style="{padding: '0 24px'}">
+                <Breadcrumb :style="{margin: '24px 0'}">
+                    <BreadcrumbItem>Home</BreadcrumbItem>
+                    <BreadcrumbItem>Components</BreadcrumbItem>
+                    <BreadcrumbItem>Board</BreadcrumbItem>
+                </Breadcrumb>
+                <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
+                    <!--<Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
+                        <div>
+                            <Button type="primary" @click="AddBoard()">AddBoard</Button>
+                        </div>
+                    </Header>-->
+
+                    <Header :style="{background: '#fff'}">
+                        <div>
+                            <Button type="primary" @click="AddBoard()">AddBoard</Button>
+                        </div>
+                    </Header>
                     <Card>
                         <router-view></router-view>
                     </Card>
-                    
                 </Content>
             </Layout>
         </Layout>
+        <Footer class="layout-footer-center">2021-2022 &copy; Cube Tech Group https://github.com/Cube6</Footer>
     </div>
 </template>
 <script>
