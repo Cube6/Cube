@@ -14,8 +14,8 @@
                     </MenuItem>
                 </div>
                 <div class="layout-loginUser">
-                    <Icon type="ios-paper"></Icon>
-                    Admin
+                    <img src="../assets/Person/Michael.jpg" style="width:25px; height:25px; border-radius:50%; " />
+                    CubeAdmin
                 </div>
             </Menu>
         </Header>

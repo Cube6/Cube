@@ -27,14 +27,20 @@
 }
 
 .layout-loginUser {
-    width: 100px;
+    /*border-radius: 3px;*/
+    color:#ccc;
+    float: right;
+    position: relative;
+    top: 10px;
+    right: 10px;
+    /*    width: 100px;
     height: 30px;
     background: #5b6270;
     border-radius: 3px;
     float: right;
     position: relative;
     top: 15px;
-    right: 10px;
+    right: 10px;*/
 }
 
 .layout-nav {
