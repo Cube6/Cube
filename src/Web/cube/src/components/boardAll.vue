@@ -4,8 +4,9 @@
                 <thead>
                     <tr>
                         <th width="100px">Id</th>
-                        <th width="500px">Name</th>
-                        <th width="200px">Date Created</th>
+                        <th width="400px">Name</th>
+                        <th width="300px">Date Created</th>
+                        <th width="100px">Created User</th>
                         <th width="400px">Action</th>
                     </tr>
                 </thead>
@@ -14,6 +15,7 @@
                         <td>{{ board.Id }}</td>
                         <td>{{ board.Name }}</td>
                         <td>{{ board.DateCreated }}</td>
+                        <td>{{ board.CreatedUser }}</td>
                         <td>
                             <Button type="primary" :boardId="board.Id" @click="ViewBoard(board.Id)">View</Button>
                             &nbsp;
