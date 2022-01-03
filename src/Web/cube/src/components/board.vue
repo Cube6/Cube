@@ -2,7 +2,12 @@
     <div class="layout">
         <Header>
             <Menu mode="horizontal" theme="dark" active-name="1">
-                <div class="layout-logo"></div>
+                <div class="layout-logo">
+                    <img src="../assets/logo.jpg" style="width:35px; height:35px; border-radius:50%; " />
+                    <span style="position: relative; top:-8px;">
+                        Cube Retrospective System
+                    </span>
+                </div>
                 <div class="layout-nav">
                     <MenuItem name="menuUsers">
                         <Icon type="md-person"></Icon>
