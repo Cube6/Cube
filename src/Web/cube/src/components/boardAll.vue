@@ -15,7 +15,9 @@
                         <td>{{ board.Id }}</td>
                         <td>{{ board.Name }}</td>
                         <td>{{ board.DateCreated }}</td>
-                        <td>{{ board.CreatedUser }}</td>
+                        <td>
+                        <img src="../assets/Person/Michael.jpg" style="width:20px; height:20px; border-radius:50%; "/>
+                        {{ board.CreatedUser }}</td>
                         <td>
                             <Button type="primary" :boardId="board.Id" @click="ViewBoard(board.Id)">View</Button>
                             &nbsp;

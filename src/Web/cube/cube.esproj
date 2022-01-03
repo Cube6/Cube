@@ -11,6 +11,9 @@
     <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <Script Remove="src\assets\NewFolder\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include=".vscode\" />
     <Folder Include="src\scripts\" />
   </ItemGroup>
