@@ -1,13 +1,13 @@
 ﻿<template>
         <div style="margin:0">
-            <table>
+            <table style="width:100%;height:100%;">
                 <thead>
                     <tr>
-                        <th width="100px">Id</th>
-                        <th width="400px">Name</th>
-                        <th width="300px">Date Created</th>
-                        <th width="100px">Created User</th>
-                        <th width="400px">Action</th>
+                        <th width="5%">Id</th>
+                        <th width="40%">Name</th>
+                        <th width="20%">Date Created</th>
+                        <th width="10%">Created User</th>
+                        <th width="25%">Action</th>
                     </tr>
                 </thead>
                 <tbody>
