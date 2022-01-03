@@ -36,5 +36,8 @@ export default {
         AddBoard() {
             this.$router.push('/addboard');
         },
+        Logout() {
+            this.$router.push('/login');
+        }
     },
 }

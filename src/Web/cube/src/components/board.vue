@@ -5,7 +5,7 @@
                 <div class="layout-logo">
                     <img src="../assets/logo.jpg" style="width:35px; height:35px; border-radius:50%; " />
                     <span style="position: relative; top:-8px;">
-                        Cube Retrospective System
+                        Cube System
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -17,10 +17,26 @@
                         <Icon type="md-settings"></Icon>
                         Settings
                     </MenuItem>
+
+                    <MenuItem name="menuAbout">
+                        <Icon type="md-water"></Icon>
+                        About
+                    </MenuItem>
                 </div>
                 <div class="layout-loginUser">
-                    <img src="../assets/Person/Michael.jpg" style="width:25px; height:25px; border-radius:50%; " />
-                    CubeAdmin
+                    <img src="../assets/Person/Michael.jpg" style="width:25px; height:25px; border-radius:50%; margin-right:5px; " />
+                        <Dropdown>
+                            <a href="javascript:void(0)" style="color:inherit">
+                                CubeAdmin
+                                <Icon type="ios-arrow-down"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>Change Password</DropdownItem>
+                                <DropdownItem>My Profile</DropdownItem>
+                                <DropdownItem>Register New</DropdownItem>
+                                <DropdownItem @click.native="Logout">Logout</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                 </div>
             </Menu>
         </Header>
@@ -71,6 +87,7 @@
             </Layout>
         </Layout>
         <Footer class="layout-footer-center">
+        Cube System 1.0 <br/>
         2021-2022 &copy; Cube Tech Group <br /> 
         <a href="https://github.com/Cube6">https://github.com/Cube6</a></Footer>
     </div>
