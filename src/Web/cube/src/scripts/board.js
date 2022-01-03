@@ -17,9 +17,19 @@ export default {
                 'menu-item',
                 this.isCollapsed ? 'collapsed-menu' : ''
             ]
-        }
+        },
+        rotateIcon() {
+            return [
+                'menu-icon',
+                this.isCollapsed ? 'rotate-icon' : ''
+            ];
+        },
     },
     methods: {
+
+        collapsedSider() {
+            this.$refs.side1.toggleCollapse();
+        },
         fetchData() {
             this.$router.push('/boardAll');
         },

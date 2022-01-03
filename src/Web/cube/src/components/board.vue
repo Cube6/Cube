@@ -20,7 +20,7 @@
             </Menu>
         </Header>
         <Layout :style="{minHeight: '100vh'}">
-            <Sider hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
+            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
                     <MenuItem name="1-1" to="/boardAll">
                         <Icon type="md-book"></Icon>
@@ -42,9 +42,10 @@
             </Sider>
             <Layout :style="{padding: '0 24px'}">
                 <Breadcrumb :style="{margin: '24px 0'}">
+                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
                     <BreadcrumbItem>Home</BreadcrumbItem>
-                    <BreadcrumbItem>Components</BreadcrumbItem>
                     <BreadcrumbItem>Board</BreadcrumbItem>
+                    <BreadcrumbItem>ViewAll</BreadcrumbItem>
                 </Breadcrumb>
                 <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
                     <!--<Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
@@ -64,7 +65,9 @@
                 </Content>
             </Layout>
         </Layout>
-        <Footer class="layout-footer-center">2021-2022 &copy; Cube Tech Group https://github.com/Cube6</Footer>
+        <Footer class="layout-footer-center">
+        2021-2022 &copy; Cube Tech Group <br /> 
+        <a href="https://github.com/Cube6">https://github.com/Cube6</a></Footer>
     </div>
 </template>
 <script>

@@ -17,6 +17,15 @@
     left: 20px;
 }
 
+.layout-header-bar {
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+}
+
+.rotate-icon {
+    transform: rotate(-90deg);
+}
+
 .layout-loginUser {
     width: 100px;
     height: 30px;
