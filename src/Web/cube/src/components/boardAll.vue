@@ -1,6 +1,6 @@
 ﻿<template>
         <div style="margin:0">
-            <table style="width:100%;height:100%;">
+            <table class="table">
                 <thead>
                     <tr>
                         <th width="5%">Id</th>
@@ -58,4 +58,11 @@
 </script>
 
 <style>
+    .table {
+        font: Helvetica;
+        font-size:12pt;
+        line-height:40px;
+        width: 100%;
+        height: 100%;
+    }
 </style>
