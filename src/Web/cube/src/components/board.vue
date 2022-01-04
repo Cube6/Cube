@@ -68,18 +68,10 @@
                     <BreadcrumbItem>Board</BreadcrumbItem>
                     <BreadcrumbItem>ViewAll</BreadcrumbItem>
                 </Breadcrumb>
-                <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-                    <!--<Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
-                        <div>
-                            <Button type="primary" @click="AddBoard()">AddBoard</Button>
-                        </div>
-                    </Header>-->
-
-                    <Header :style="{background: '#fff'}">
-                        <div>
-                            <Button type="primary" @click="AddBoard()">AddBoard</Button>
-                        </div>
-                    </Header>
+                <Content :style="{padding: '5px', minHeight: '280px', background: '#fff'}">
+                    <div style="text-align:right;margin:10px;">
+                        <Button type="primary" @click="AddBoard()">AddBoard</Button>
+                    </div>
                     <Card>
                         <router-view></router-view>
                     </Card>
