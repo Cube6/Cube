@@ -72,7 +72,10 @@ namespace RedisPractice
 				var stringKey = JsonConvert.SerializeObject(key);
 				var stringValue = JsonConvert.SerializeObject(value);
 
-				var timespan = TimeSpan.FromSeconds(expire);
+				TimeSpan? timespan = null;
+				if(expire > 0)
+					timespan = TimeSpan.FromSeconds(expire);
+
 				return await database.StringSetAsync(stringKey, stringValue, timespan);
 			}
 			catch (Exception)
