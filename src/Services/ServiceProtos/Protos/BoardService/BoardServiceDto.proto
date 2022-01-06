@@ -34,5 +34,8 @@ message DiscussionBoardItem{
 	Id Id = 2;
 	BoardItemType Type = 3;
 	string Detail = 4;
-	DiscussionBoard Board = 5;
+	string Action = 5;
+	int32 ThumbsUp = 6;
+	int32 ThumbsDown= 7;
+	DiscussionBoard Board = 8;
 }
