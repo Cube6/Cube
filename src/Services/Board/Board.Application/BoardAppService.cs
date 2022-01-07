@@ -69,6 +69,7 @@ namespace Cube.Board.Application
 				Id = boardItemDto.Id,
 				Detail = boardItemDto.Detail,
 				DateModified = DateTime.Now,
+				Type= boardItemDto.Type,
 			};
 			await _repository.UpdateBoardItemAsync(boardItem);
 		}

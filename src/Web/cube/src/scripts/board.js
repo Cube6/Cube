@@ -33,9 +33,6 @@ export default {
         fetchData() {
             this.$router.push('/boardAll');
         },
-        AddBoard() {
-            this.$router.push('/addboard');
-        },
         Logout() {
             this.$router.push('/login');
         }
