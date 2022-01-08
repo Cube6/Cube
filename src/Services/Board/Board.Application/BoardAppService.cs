@@ -58,6 +58,7 @@ namespace Cube.Board.Application
 				Action = boardItemDto.Action,
 				ThumbsUp = boardItemDto.ThumbsUp,
 				ThumbsDown = boardItemDto.ThumbsDown,
+				CreatedUser = boardItemDto.CreatedUser,
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now,
 				Type= boardItemDto.Type,
@@ -71,6 +72,7 @@ namespace Cube.Board.Application
 			{
 				Id = boardItemDto.Id,
 				Detail = boardItemDto.Detail,
+				CreatedUser = boardItemDto.CreatedUser,
 				Action = boardItemDto.Action,
 				ThumbsUp = boardItemDto.ThumbsUp,
 				ThumbsDown = boardItemDto.ThumbsDown,

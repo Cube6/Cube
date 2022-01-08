@@ -75,7 +75,8 @@
     export default {
         data() {
             return {
-                UserToken:null,
+                UserToken: null,
+                userName: null,
                 ActionContent: null,
                 WellContent: null,
                 ImporveContent: null,
@@ -92,6 +93,7 @@
         created() {
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
+            this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
         },
         methods: {
             fetchData() {
@@ -113,6 +115,7 @@
                         boardid: this.$route.params.boardId,
                         detail: boardDetail,
                         type: type,
+                        createduser: this.userName
                     },
                     headers: {
                         'Authorization': 'Bearer ' + this.UserToken
@@ -149,6 +152,7 @@
                         id: boardItem.Id,
                         detail: boardItem.Detail,
                         type: boardItem.Type,
+                        createduser: this.userName,
                         boardid: this.$route.params.boardId
                     },
                     headers: {
