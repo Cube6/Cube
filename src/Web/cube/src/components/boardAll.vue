@@ -15,8 +15,8 @@
                         <td>{{ board.Id }}</td>
                         <td>{{ board.Name }}</td>
                         <td>{{ board.DateCreated }}</td>
-                        <td>
-                        <img src="../assets/Person/Michael.jpg" style="width:20px; height:20px; border-radius:50%; "/>
+                        <td style="text-align:left">
+                        <img :src="getUserAvatar(board.CreatedUser)" style="width:22px; height:22px; border-radius:50%; "/>
                         {{ board.CreatedUser }}</td>
                         <td>
                             <Button type="primary" :boardId="board.Id" @click="ViewBoard(board.Id)">View</Button>
@@ -52,7 +52,17 @@
             },
             ViewBoard(val) {
                 this.$router.push({ name:'boardDetail', params: { boardId: val } });
-            }
+            },
+            getUserAvatar(userName) {
+                let userAvatar = ""
+                try {
+                    userAvatar = require('../assets/Person/' + userName.toLowerCase() + '.jpg')
+                    return userAvatar
+                } catch (e) {
+                    userAvatar = require('../assets/Person/cube.jpg')
+                    return userAvatar
+                }
+            },
         },
     }
 </script>

@@ -27,10 +27,11 @@ export default {
                         url: '/Authorize/' + this.formInline.user + '/' + this.formInline.password + ''
                     }).then(res => {
 
+                        localStorage.setItem('LOGINUSER', this.formInline.user);
                         localStorage.setItem('TOKEN', res.data.access_token); 
 
                         this.$Message.success('Hi ' + this.formInline.user + ', Welcome to Cube System!');
-                        this.$router.replace('/board');
+                        this.$router.replace({ path: '/board', params: { username: this.formInline.user } } );
 
                     }).catch(error => {
                         this.$Message.error('Username or Password is incorrect, please try again!');
