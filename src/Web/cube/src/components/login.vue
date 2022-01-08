@@ -6,7 +6,7 @@
             </div>
             <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
                 <FormItem prop="user" class="lgD">
-                    <Input type="text" v-model="formInline.user" placeholder="Username">
+                    <Input type="text" v-model="formInline.user" placeholder="User Name">
                     <Icon type="ios-person-outline" slot="prepend"></Icon>
                     </Input>
                 </FormItem>
@@ -19,7 +19,7 @@
                     <Button type="primary" @click="handleSubmit('formInline')">Login</Button>
                 </FormItem>
             </Form>
-            <p class="login-tip">Cube Retro System v0.1</p>
+            <p class="login-tip">Welcome to Cube System v0.1</p>
         </div>
     </div>
 

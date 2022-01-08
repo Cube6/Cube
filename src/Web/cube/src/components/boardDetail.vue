@@ -75,6 +75,7 @@
     export default {
         data() {
             return {
+                UserToken:null,
                 ActionContent: null,
                 WellContent: null,
                 ImporveContent: null,
@@ -90,6 +91,7 @@
         },
         created() {
             this.fetchData();
+            this.UserToken = localStorage.getItem('TOKEN');
         },
         methods: {
             fetchData() {
@@ -103,7 +105,7 @@
                     console.log(error);
                 })
             },
-            addBoardDetail(boardDetail,type) {
+            addBoardDetail(boardDetail, type) {
                 this.axios({
                     method: 'post',
                     url: '/BoardItem',
@@ -112,6 +114,9 @@
                         detail: boardDetail,
                         type: type,
                     },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
                 }).then(() => {
                     this.fetchData();
                 })
@@ -126,7 +131,11 @@
                 this.addBoardDetail(this.boardDetail.ActionDetail,3);
             },
             deleteBoardItem(boardItem) {
-                this.axios.delete('/BoardItem/' + boardItem.Id + '')
+                this.axios.delete('/BoardItem/' + boardItem.Id + '',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                    }})
                     .then(() => {
                         this.fetchData();
                     })
@@ -142,6 +151,9 @@
                         type: boardItem.Type,
                         boardid: this.$route.params.boardId
                     },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
                 }).then(() => {
                     this.fetchData();
                 })

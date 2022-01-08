@@ -37,8 +37,8 @@ module.exports = {
             //'^/User': {
             //    target: 'https://localhost:4000'
             //},
-            //'^/Identity': {
-            //    target: 'https://localhost:3000'
+            //'^/Authorize': {
+            //    target: 'https://localhost:3000',
             //},
 
             /*Connect to local microservices via Gateway Service*/
@@ -49,7 +49,7 @@ module.exports = {
              //'^/User': {
              //    target: 'http://localhost:9070'
              //},
-             //'^/Identity': {
+             //'^/Authorize': {
              //    target: 'http://localhost:9070'
              //}
 
@@ -62,7 +62,7 @@ module.exports = {
             //'^/User': {
             //    target: 'https://10.63.224.86:4000'
             //},
-            //'^/Identity': {
+            //'^/Authorize': {
             //    target: 'https://10.63.224.86:3000'
             //}
 
@@ -74,7 +74,7 @@ module.exports = {
             '^/User': {
                target: 'http://10.63.224.86:9070'
             },
-            '^/Identity': {
+            '^/Authorize': {
                target: 'http://10.63.224.86:9070'
             }
         },

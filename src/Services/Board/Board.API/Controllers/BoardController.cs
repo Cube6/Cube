@@ -27,12 +27,14 @@ namespace Board.API.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public async Task CreateBoard(CreateBoardDto ceateBoard)
 		{
 			await _appservice.CreateBoard(ceateBoard);
 		}
 
 		[HttpDelete("{id}")]
+		[Authorize]
 		public async Task DeleteBoardByIdAsync(long id)
 		{
 			await _appservice.DeleteBoardByIdAsync(id);
