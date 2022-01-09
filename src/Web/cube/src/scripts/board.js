@@ -48,6 +48,10 @@ export default {
             this.$router.push('/addboard');
         },
         Logout() {
+
+            localStorage.setItem('LOGINUSER', null);
+            localStorage.setItem('TOKEN', null);
+
             this.$router.push('/login');
         }
     },
