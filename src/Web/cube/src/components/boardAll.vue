@@ -1,8 +1,12 @@
 ﻿<template>
     <div style="margin:0">
+
+        <!--<div style="text-align:right;margin:10px;">
+            <Button type="primary" @click="AddBoard()">AddBoard</Button>
+        </div>-->
         <ul>
-            <li style="width:160px; float: left;">
-                <Card style="width: 150px; cursor: pointer;">
+            <li style="width:260px; float: left;">
+                <Card style="width: 250px; cursor: pointer;">
                     <div style="display: flex; padding-bottom: 36px; background: #fff;">
                         <i scripturl="../scripts/font.js" style="font-size:24px;">
                             <svg viewBox="0 0 1024 1024" style="width:1em;height:1em;fill:currentColor;overflow:hidden">
@@ -13,8 +17,8 @@
                     <span style="position:absolute;left:16px;bottom:12px;" @click="AddBoard()">Add Board</span>
                 </Card>
             </li>
-            <li v-for="board in post" :key="board.Id" style="width:160px; float: left;">
-                <Card style="width: 150px; text-align: left; cursor: pointer">
+            <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
+                <Card style="width: 250px; text-align: left; cursor: pointer">
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" style="width:22px; height:22px; border-radius:50%; " />
                     </p>
