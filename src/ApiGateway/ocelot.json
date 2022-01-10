@@ -49,7 +49,7 @@
       "DownstreamPathTemplate": "/authorize?userName={userName}&pwd={password}",
       "DownstreamScheme": "https",
       "UpstreamPathTemplate": "/authorize/{userName}/{password}",
-      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "UpstreamHttpMethod": [ "Get", "Post"],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "IdentityService",
       "LoadBalancerOptions": {

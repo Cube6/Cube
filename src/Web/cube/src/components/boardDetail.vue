@@ -135,6 +135,8 @@
     export default {
         data() {
             return {
+                UserToken: null,
+                userName: null,
                 ActionContent: null,
                 WellContent: null,
                 ImporveContent: null,
@@ -156,6 +158,8 @@
         },
         created() {
             this.fetchData();
+            this.UserToken = localStorage.getItem('TOKEN');
+            this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
         },
         methods: {
             fetchData() {
@@ -169,7 +173,7 @@
                     console.log(error);
                 })
             },
-            addBoardDetail(boardDetail,type) {
+            addBoardDetail(boardDetail, type) {
                 this.axios({
                     method: 'post',
                     url: '/BoardItem',
@@ -177,7 +181,11 @@
                         boardid: this.$route.params.boardId,
                         detail: boardDetail,
                         type: type,
+                        createduser: this.userName
                     },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
                 }).then(() => {
                     this.fetchData();
                 })
@@ -192,7 +200,11 @@
                 this.addBoardDetail(this.boardDetail.ActionDetail,3);
             },
             deleteBoardItem(boardItem) {
-                this.axios.delete('/BoardItem/' + boardItem.Id + '')
+                this.axios.delete('/BoardItem/' + boardItem.Id + '',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                    }})
                     .then(() => {
                         this.fetchData();
                     })
@@ -206,8 +218,12 @@
                         id: boardItem.Id,
                         detail: boardItem.Detail,
                         type: boardItem.Type,
+                        createduser: this.userName,
                         boardid: this.$route.params.boardId
                     },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
                 }).then(() => {
                     this.fetchData();
                 })

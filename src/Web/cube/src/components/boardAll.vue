@@ -71,7 +71,17 @@
                     .then(() => {
                         this.fetchData();
                     })
-            }
+            },
+            getUserAvatar(userName) {
+                let userAvatar = ""
+                try {
+                    userAvatar = require('../assets/Person/' + userName.toLowerCase() + '.jpg')
+                    return userAvatar
+                } catch (e) {
+                    userAvatar = require('../assets/Person/cube.jpg')
+                    return userAvatar
+                }
+            },
         },
     }
 </script>

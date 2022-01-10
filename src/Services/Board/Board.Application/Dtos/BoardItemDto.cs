@@ -12,6 +12,9 @@ namespace Cube.Board.Application.Dtos
 		public DateTime DateModified { get; set; }
 		public BoardItemType Type { set; get; }
 		public string Detail { get; set; }
+		public string Action { get; set; }
+		public int ThumbsUp { get; set; }
+		public int ThumbsDown { get; set; }
 
 		public int BoardId { get; set; }
 	}

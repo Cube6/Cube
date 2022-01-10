@@ -1,6 +1,5 @@
 ﻿using Cube.Identity.API.Application;
 using Cube.Identity.API.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -46,7 +45,7 @@ namespace Cube.Identity.API.Controllers
 				_jwtSettings.Audience,
 				claims,
 				DateTime.Now,
-				DateTime.Now.AddMinutes(1),
+				DateTime.Now.AddHours(1),
 				creds);
 
 			return Ok(new {
