@@ -24,10 +24,10 @@
                     </MenuItem>
                 </div>
                 <div class="layout-loginUser">
-                    <img src="../assets/Person/Michael.jpg" style="width:25px; height:25px; border-radius:50%; margin-right:5px; " />
+                    <img :src="getLoginUserAvatar()" style="width:25px; height:25px; border-radius:50%; margin-right:5px; " />
                         <Dropdown>
                             <a href="javascript:void(0)" style="color:inherit">
-                                CubeAdmin
+                                {{userName}}
                                 <Icon type="ios-arrow-down"></Icon>
                             </a>
                             <DropdownMenu slot="list">

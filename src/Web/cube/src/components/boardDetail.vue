@@ -95,7 +95,7 @@
                                     <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
                                     <p slot="title" style="height: 22px;">
                                         <span aria-label="" class="">
-                                            <button :id="Upaction.Id" onclick="addUp" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                            <button :id="action.Id" onclick="addUp" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
