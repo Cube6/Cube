@@ -1,4 +1,3 @@
-//import axios from 'axios';
 export default {
     name:"login",
     data() {
@@ -9,10 +8,10 @@ export default {
             },
             ruleInline: {
                 user: [
-                    { required: true, message: 'Please fill in the user name', trigger: 'blur' }
+                    { required: true, message: 'Please fill in your user name', trigger: 'blur' }
                 ],
                 password: [
-                    { required: true, message: 'Please fill in the password.', trigger: 'blur' },
+                    { required: true, message: 'Please fill in your password.', trigger: 'blur' },
                     { type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur' }
                 ]
             }
@@ -22,29 +21,26 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    //axios({
-                    //    method: 'get',
-                    //    url: '/User',
-                    //    data: this.formInline
-                    //}).then(res => {
-                    //    console.log(res.data);
-                    //    //_this.userToken = 'test ' + res.data[0].name;
-                    //    //  _this.changeLogin({ Authorization: _this.userToken });
-                    //    this.$Message.success('Success!');
-                    //    this.$router.replace('/board');
-                    //}).catch(error => {
-                    //    alert('username or password error');
-                    //    console.log(error);
-                    //})
-                    this.$Message.success('Success!');
-                    this.$router.replace('/board');
 
+                    this.axios({
+                        method: 'post',
+                        url: '/Authorize/' + this.formInline.user + '/' + this.formInline.password + ''
+                    }).then(res => {
+
+                        localStorage.setItem('LOGINUSER', this.formInline.user);
+                        localStorage.setItem('TOKEN', res.data.access_token); 
+
+                        this.$Message.success('Hi ' + this.formInline.user + ', Welcome to Cube System!');
+                        this.$router.replace({ path: '/board', params: { username: this.formInline.user } } );
+
+                    }).catch(error => {
+                        this.$Message.error('Username or Password is incorrect, please try again!');
+                        console.log(error);
+                    })
                 } else {
-                    this.$Message.error('Fail!');
+                    //this.$Message.error('Fail!');
                 }
             })
         }
     }
-
-
 }

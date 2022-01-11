@@ -1,5 +1,6 @@
 ﻿using Cube.Board.Application;
 using Cube.Board.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public async Task Create(BoardItemDto boardItemDto)
 		{
 			await _appservice.CreateBoardItem(boardItemDto);
@@ -35,12 +37,14 @@ namespace Board.API.Controllers
 		}
 
 		[HttpDelete("{id}")]
+		[Authorize]
 		public async Task DeleteBoardItemByIdAsync(long id)
 		{
 			await _appservice.DeleteBoardItemByIdAsync(id);
 		}
 
 		[HttpPut]
+		[Authorize]
 		public async Task Update(BoardItemDto boardItemDto)
 		{
 			await _appservice.UpdateBoardItem(boardItemDto);

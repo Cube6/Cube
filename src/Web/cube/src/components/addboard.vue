@@ -10,7 +10,6 @@
             </FormItem>
         </Form>
     </div>
-
 </template>
 
 <script>
@@ -18,6 +17,7 @@
     export default {
         data() {
             return {
+                UserToken:null,
                 formInline: {
                     Name: "",
                     CreatedUser:"Michael",
@@ -29,6 +29,9 @@
                 }
             };
         },
+        created() {
+            this.UserToken = localStorage.getItem('TOKEN');
+        },
         methods: {
             addDiscussionBoard(name) {
                 this.$refs[name].validate((valid) => {
@@ -37,6 +40,9 @@
                             method: 'post',
                             url: '/Board',
                             data: this.formInline,
+                            headers: {
+                                'Authorization': 'Bearer ' + this.UserToken
+                            }
                         }).then(() => {
                             this.$router.replace('/boardDetail');
                         }).catch(error => {
