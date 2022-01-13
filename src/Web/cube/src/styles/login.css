@@ -5,7 +5,7 @@
     transform: translate(-50%,-50%);
     width: 400px;
     padding: 40px;
-   /* background: rgba(0,0,0,.8);*/
+    background: rgba(0,0,0,.3);
     box-sizing: border-box;
     box-shadow: 0 15px 25px rgba(0,0,0,.5);
     border-radius: 10px;
@@ -66,6 +66,7 @@
     padding:10px 20px;
     cursor:pointer;
     border-radius:5px;
+    width:100%;
 }
 
 .title {
@@ -85,6 +86,7 @@
     font-size: 12px;
     text-align: center;
     color: #c3c3c3;
+    margin-top: 16px;
 }
 
 .copyright {
@@ -99,3 +101,12 @@
     width: 40%;
     text-align: center;
 }
+
+.login-callout {
+    padding: 15px 20px;
+    text-align: center;
+    border: 1px solid #c3c3c3;
+    border-radius:6px;
+    margin-top:16px !important;
+}
+
