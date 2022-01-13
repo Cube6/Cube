@@ -17,7 +17,6 @@ namespace Cube.Board.Domain
 
 		public int ThumbsDown { get; set; }
 
-		public long BoardId { get; set; }
 		public virtual DisscussionBoard Board { get; set; }
 
 		[Required]
