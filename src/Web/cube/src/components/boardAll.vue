@@ -20,7 +20,7 @@
             <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
                 <Card style="width: 250px; text-align: left; cursor: pointer">
                     <p slot="title">
-                        <img :src="getUserAvatar(board.CreatedUser)" style="width:22px; height:22px; border-radius:50%; " />
+                        <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
                     </p>
                     <div style="text-align:center;">
                         <a href="#" slot="extra" @click.prevent="ViewBoard(board.Id)">
