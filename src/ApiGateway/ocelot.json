@@ -19,7 +19,7 @@
         "EnableRateLimiting": true,
         "Period": "5s",
         "PeriodTimespan": 2,
-        "Limit": 1
+        "Limit": 10000
       }
 
     },
@@ -42,14 +42,14 @@
         "EnableRateLimiting": true,
         "Period": "5s",
         "PeriodTimespan": 2,
-        "Limit": 1
+        "Limit": 10000
       }
     },
     {
-      "DownstreamPathTemplate": "/authorize?userName={userName}&pwd={password}",
+      "DownstreamPathTemplate": "/authorize",
       "DownstreamScheme": "https",
-      "UpstreamPathTemplate": "/authorize/{userName}/{password}",
-      "UpstreamHttpMethod": [ "Get", "Post"],
+      "UpstreamPathTemplate": "/authorize",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "ServiceName": "IdentityService",
       "LoadBalancerOptions": {
@@ -64,7 +64,7 @@
         "EnableRateLimiting": true,
         "Period": "5s",
         "PeriodTimespan": 2,
-        "Limit": 1
+        "Limit": 10000
       }
     }
 
