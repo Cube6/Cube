@@ -95,7 +95,7 @@
                                     <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
                                     <p slot="title" style="height: 22px;">
                                         <span aria-label="" class="">
-                                            <button :id="action.Id" onclick="addUp" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                            <button :id="action.Id" @on-click="addActionUp(action)" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 10px; padding-right: 10px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
@@ -103,21 +103,21 @@
                                             </button>
                                         </span>
                                         <span aria-label="" class="">
-                                            <button class="MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButtonBase-root Mui-disabled css-b7766g" tabindex="-1" type="button" disabled="" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                            <Button @on-click="addActionDown(action)" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 10px; padding-top:0px; padding-right: 10px; min-width: 64px;">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
                                                 </svg>
                                                 &nbsp;0
-                                            </button>
+                                            </Button>
                                         </span>
                                     </p>
                                     <a href="#" slot="extra" @click.prevent="deleteBoardItem(action)" title="Delete">
                                         <span aria-label="Delete" class="">
-                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
+                                            <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-delete"></use>
                                                 </svg>
-                                            </button>
+                                            </Button>
                                         </span>
                                     </a>
                                 </Card>
@@ -153,7 +153,10 @@
                     WellDetail: "",
                     ImporveDetail: "",
                     ActionDetail: "",
-                }
+                },
+                listThrumps: [
+                    { userid: null,bid: null, upCount:0,downCount:0 }
+                ]
             };
         },
         created() {
@@ -228,14 +231,42 @@
                     this.fetchData();
                 })
             },
-            addActionUp() {
-                this.ActionUpCount++;
-                this.ActionDownCount--;
+            addActionUp(actionItem) {
+                let username = this.userName;
+                this.listThrumps.some((item) => {
+                    if (item.bid == actionItem.id && item.username == username) {
+                        if (item.upCount > 0) {
+                            this.$Message.error('You already liked it !');
+                        }
+                        else {
+                            item.upCount = 1;
+                            item.downCount = 0;
+                        }
+                    }
+                    else {
+                        var likeitem = { bid: actionItem.id, username: username, upCount: 1, downCount: 0 };
+                        this.listThrumps.push(likeitem);
+                    }
 
+                });
             },
-            addActionDown() {
-                this.ActionUpCount--;
-                this.ActionDownCount++;
+            addActionDown(actionItem) {
+                let username = this.userName;
+                this.listThrumps.some((item) => {
+                    if (item.bid == actionItem.id && item.username == username) {
+                        if (item.downCount > 0) {
+                            this.$Message.error('You already unliked it !');
+                        }
+                        else {
+                            item.upCount = 0;
+                            item.downCount = 1;
+                        }
+                    }
+                    else {
+                        var likeitem = { bid: actionItem.id, username: username, upCount: 0, downCount: 1 };
+                        this.listThrumps.push(likeitem);
+                    }
+                });
             },
             addWellUp() {
 
