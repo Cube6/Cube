@@ -24,7 +24,11 @@ export default {
 
                     this.axios({
                         method: 'post',
-                        url: '/Authorize/' + this.formInline.user + '/' + this.formInline.password + ''
+                        url: '/Authorize',
+                        data: {
+                            userName: this.formInline.user,
+                            password: this.formInline.password
+                        },
                     }).then(res => {
 
                         localStorage.setItem('LOGINUSER', this.formInline.user);
