@@ -24,16 +24,16 @@ namespace Cube.Identity.API.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Login(string userName, string pwd)
+		public IActionResult Login(AuthorizeRequest request)
 		{
-			if (!_appService.Validate(userName, pwd))
+			if (!_appService.Validate(request.UserName, request.Password))
 			{
 				return BadRequest();
 			}
 
 			var claims = new Claim[]
 			{
-				new Claim(JwtRegisteredClaimNames.UniqueName,userName),
+				new Claim(JwtRegisteredClaimNames.UniqueName,request.UserName),
 				new Claim(JwtRegisteredClaimNames.Website, "http://www.cube.com")
 			};
 

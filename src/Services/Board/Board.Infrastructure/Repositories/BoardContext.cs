@@ -26,9 +26,9 @@ namespace Cube.Board.Respository
 			modelBuilder.Entity<DisscussionBoard>().HasData(board);
 
 			modelBuilder.Entity<DisscussionBoardItem>().HasData(
-				new DisscussionBoardItem { Id = 1, Detail = "Completed All Stores", Type = BoardItemType.WentWell, Action="Action1",ThumbsUp=10,ThumbsDown=0, CreatedUser = "Michael", BoardId = board.Id },
-				new DisscussionBoardItem { Id = 2, Detail = "Quality is not good", Type = BoardItemType.NeedsImproved, Action = "Action2", ThumbsUp = 5, ThumbsDown = 1, CreatedUser = "Tony", BoardId = board.Id },
-				new DisscussionBoardItem { Id = 3, Detail = "Do monthly story discussions", Type = BoardItemType.Action, Action = "Action3", ThumbsUp = 0, ThumbsDown = 10, CreatedUser = "Lebron", BoardId = board.Id }
+				new DisscussionBoardItem { Id = 1, Detail = "Completed All Stores", Type = BoardItemType.WentWell, Action="Action1",ThumbsUp=10,ThumbsDown=0, CreatedUser = "Michael"},
+				new DisscussionBoardItem { Id = 2, Detail = "Quality is not good", Type = BoardItemType.NeedsImproved, Action = "Action2", ThumbsUp = 5, ThumbsDown = 1, CreatedUser = "Tony"},
+				new DisscussionBoardItem { Id = 3, Detail = "Do monthly story discussions", Type = BoardItemType.Action, Action = "Action3", ThumbsUp = 0, ThumbsDown = 10, CreatedUser = "Lebron"}
 			);
 
 			base.OnModelCreating(modelBuilder);
