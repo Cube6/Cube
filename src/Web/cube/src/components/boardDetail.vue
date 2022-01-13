@@ -190,6 +190,8 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
+                    this.renderFunc(boardDetail + ' is created successfully.');
+                }).then(() => {
                     this.fetchData();
                 })
             },
@@ -207,7 +209,10 @@
                     {
                         headers: {
                             'Authorization': 'Bearer ' + this.UserToken
-                    }})
+                        }
+                    }).then(() => {
+                        this.renderFunc(boardItem.Detail + ' is deleted successfully.');
+                    })
                     .then(() => {
                         this.fetchData();
                     })
@@ -228,6 +233,9 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
+                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
+                })
+                .then(() => {
                     this.fetchData();
                 })
             },
@@ -279,6 +287,25 @@
             },
             addImproveDown() {
 
+            },
+
+            renderFunc(message) {
+                this.$Notice.success({
+                    title: 'Notification',
+                    desc: 'The desc will hide when you set render.',
+                    render: h => {
+
+                        return h('span', [
+                            message
+                        ])
+
+                        //return h('span', [
+                        //    'This is created by ',
+                        //    h('a', 'render'),
+                        //    ' function'
+                        //])
+                    }
+                });
             }
         },
     }

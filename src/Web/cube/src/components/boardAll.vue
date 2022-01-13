@@ -28,7 +28,7 @@
                             {{board.Name}}
                         </a>
                     </div>
-                    <a href="#" slot="extra" @click.prevent="DeleteBoard(board.Id)" title="Delete">
+                    <a href="#" slot="extra" @click.prevent="DeleteBoard(board)" title="Delete">
                         <span aria-label="Delete" class="">
                             <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -47,6 +47,7 @@
     export default {
         data() {
             return {
+                UserToken: null,
                 post: null
             };
         },
@@ -54,6 +55,7 @@
             // fetch the data when the view is created and the data is
             // already being observed
             this.fetchData();
+            this.UserToken = localStorage.getItem('TOKEN');
         },
         methods: {
             fetchData() {
@@ -70,8 +72,15 @@
             ViewBoard(val) {
                 this.$router.push({ name:'boardDetail', params: { boardId: val } });
             },
-            DeleteBoard(val) {
-                this.axios.delete('/Board/' + val + '')
+            DeleteBoard(board) {
+                this.axios.delete('/Board/' + board.Id + '',
+                    {
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                        }
+                    }).then(() => {
+                        this.renderFunc(board.Name + ' is deleted successfully.');
+                    })
                     .then(() => {
                         this.fetchData();
                     })
@@ -86,6 +95,24 @@
                     return userAvatar
                 }
             },
+            renderFunc(message) {
+                this.$Notice.success({
+                    title: 'Notification',
+                    desc: 'The desc will hide when you set render.',
+                    render: h => {
+
+                        return h('span', [
+                            message
+                        ])
+
+                        //return h('span', [
+                        //    'This is created by ',
+                        //    h('a', 'render'),
+                        //    ' function'
+                        //])
+                    }
+                });
+            }
         },
     }
 </script>

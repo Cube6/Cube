@@ -44,6 +44,8 @@
                                 'Authorization': 'Bearer ' + this.UserToken
                             }
                         }).then(() => {
+                            this.renderFunc(this.formInline.name + ' is created successfully.');
+                        }).then(() => {
                             this.$router.replace('/boardDetail');
                         }).catch(error => {
                             console.log(error);
@@ -52,6 +54,24 @@
                         this.$Message.error('Fail!');
                     }
                 })
+            },
+            renderFunc(message) {
+                this.$Notice.success({
+                    title: 'Notification',
+                    desc: 'The desc will hide when you set render.',
+                    render: h => {
+
+                        return h('span', [
+                            message
+                        ])
+
+                        //return h('span', [
+                        //    'This is created by ',
+                        //    h('a', 'render'),
+                        //    ' function'
+                        //])
+                    }
+                });
             }
         },
     }
