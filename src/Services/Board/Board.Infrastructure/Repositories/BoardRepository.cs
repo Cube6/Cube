@@ -59,5 +59,24 @@ namespace Cube.Board.Respository
 		{
 			return _context.DisscussionBoards.ToListAsync();
 		}
+
+		public async Task<List<Comment>> GetCommentsByIdAsync(long boardItemId)
+		{
+			var result = await _context.Comments.Where(it => it.BoardItem.Id == (int)boardItemId).ToListAsync();
+			return result;
+		}
+
+		public Task CreateCommentAsync(Comment comment)
+		{
+			_context.Comments.Add(comment);
+			return _context.SaveChangesAsync();
+		}
+
+		public async Task<bool> DeleteCommentAsync(long commentId)
+		{
+			var comment = await _context.Comments.SingleAsync(it => it.Id == commentId);
+			_context.Comments.Remove(comment);
+			return _context.SaveChanges() > 0;
+		}
 	}
 }
