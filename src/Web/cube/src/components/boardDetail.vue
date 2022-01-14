@@ -20,34 +20,34 @@
                         <ul>
                             <li v-for="well in WellContent" :key="well.Id">
                                 <Card style="width: 100%; text-align: left;">
-                                    <Input v-model="well.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(well)" />
-                                    <p slot="title" style="height:22px;">
-                                        <span aria-label="" class="">
+                                    <Input v-model="well.Detail" type="textarea" style="border-style: none" :autosize="true" @on-change="updateBoardItem(well)" />
+                                    <p style="height:22px;">
+                                        <a href="#" @click.prevent="addWellUp(well)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
-                                                &nbsp;0
+                                                &nbsp;<p>{{WellUpCount}}</p>
                                             </button>
-                                        </span>
-                                        <span aria-label="" class="">
-                                            <button class="MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButtonBase-root Mui-disabled css-b7766g" tabindex="-1" type="button" disabled="" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                        </a>
+                                        <a href="#" @click.prevent="addWellDown(well)" title="Delete">
+                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
                                                 </svg>
-                                                &nbsp;0
+                                                &nbsp;<p>{{WellDownCount}}</p>
                                             </button>
-                                        </span>
+                                        </a>
+                                        <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete">
+                                            <span aria-label="Delete" class="">
+                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
+                                                    <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
+                                                        <use xlink:href="#at-delete"></use>
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        </a>
                                     </p>
-                                    <a href="#" slot="extra" @click.prevent="deleteBoardItem(well)" title="Delete">
-                                        <span aria-label="Delete" class="">
-                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-delete"></use>
-                                                </svg>
-                                            </button>
-                                        </span>                               
-                                    </a>
                                 </Card>
                             </li>
                         </ul>
@@ -55,35 +55,36 @@
                     <td style="vertical-align:top">
                         <ul>
                             <li v-for="imporve in ImporveContent" :key="imporve.Id">
-                                <Card style="width: 100%; text-align: left;" >
-                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
-                                    <p slot="title" style="height: 22px;">
-                                        <span aria-label="" class="">
+                                <Card style="width: 100%; text-align: left;">
+                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-change="updateBoardItem(imporve)" />
+                                    <p style="height:22px;">
+                                        <a href="#" @click.prevent="addImproveUp(imporve)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
-                                                &nbsp;0
+                                                &nbsp;<p>{{ImproveUpCount}}</p>
                                             </button>
-                                        </span>
-                                        <span aria-label="" class="">
-                                            <button class="MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButtonBase-root Mui-disabled css-b7766g" tabindex="-1" type="button" disabled="" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-handDown"></use>
-                                                </svg>
-                                                &nbsp;0
-                                            </button>
-                                        </span>
+                                            </a>
+                                            <a href="#" @click.prevent="addImproveDown(imporve)" title="Delete">
+                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                                    <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
+                                                        <use xlink:href="#at-handDown"></use>
+                                                    </svg>
+                                                    &nbsp;<p>{{ImproveDownCount}}</p>
+                                                </button>
+                                            </a>
+                                            <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete">
+                                                <span aria-label="Delete" class="">
+                                                    <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
+                                                        <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
+                                                            <use xlink:href="#at-delete"></use>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </a>
                                     </p>
-                                    <a href="#" slot="extra" @click.prevent="deleteBoardItem(imporve)" title="Delete">
-                                        <span aria-label="Delete" class="">
-                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-delete"></use>
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </a>
+                                    
                                 </Card>
                             </li>
                         </ul>
@@ -92,34 +93,33 @@
                         <ul>
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; ">
-                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
-                                    <p slot="title" style="height: 22px;">
-                                        <span aria-label="" class="">
-                                            <button :id="action.Id" @on-click="addActionUp(action)" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 10px; padding-right: 10px; min-width: 64px;">
+                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @on-change="updateBoardItem(action)" />
+                                    <p style="height:22px;">
+                                        <a href="#" @click.prevent="addActionUp(action)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
-                                                &nbsp;0
+                                                &nbsp;<p>{{ActionUpCount}}</p>
                                             </button>
-                                        </span>
-                                        <span aria-label="" class="">
-                                            <Button @on-click="addActionDown(action)" class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 10px; padding-top:0px; padding-right: 10px; min-width: 64px;">
+                                        </a>
+                                        <a href="#" @click.prevent="addActionDown(action)">
+                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
                                                 </svg>
-                                                &nbsp;0
-                                            </Button>
-                                        </span>
-                                    </p>
-                                    <a href="#" slot="extra" @click.prevent="deleteBoardItem(action)" title="Delete">
-                                        <span aria-label="Delete" class="">
+                                                &nbsp;<p>{{ActionDownCount}}</p>
+                                            </button>
+                                        </a>
+                                        <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-delete"></use>
                                                 </svg>
                                             </Button>
-                                        </span>
-                                    </a>
+                                        </a>
+                                    </p>
+                                    
                                 </Card>
                             </li>
                         </ul>
@@ -143,12 +143,12 @@
                 deleteActionId: null,
                 deleteWellId: null,
                 deleteImporveId: null,
-                ActionUpCount: null,
-                ActionDownCount: null,
-                WellUpCount: null,
-                WellDownCount: null,
-                ImporveUpCount: null,
-                ImporveDownCount: null,
+                ActionUpCount: 0,
+                ActionDownCount: 0,
+                WellUpCount: 0,
+                WellDownCount: 0,
+                ImproveUpCount: 0,
+                ImproveDownCount: 0,
                 boardDetail: {
                     WellDetail: "",
                     ImporveDetail: "",
@@ -241,52 +241,128 @@
             },
             addActionUp(actionItem) {
                 let username = this.userName;
-                this.listThrumps.some((item) => {
-                    if (item.bid == actionItem.id && item.username == username) {
-                        if (item.upCount > 0) {
-                            this.$Message.error('You already liked it !');
-                        }
-                        else {
-                            item.upCount = 1;
-                            item.downCount = 0;
-                        }
+                var listItem = this.listThrumps.find(item => item.bid == actionItem.Id && item.username == username);
+                if (listItem == null) {
+                    var likeitem = { bid: actionItem.Id, username: username, upCount: 1, downCount: 0 };
+                    this.listThrumps.push(likeitem);
+                    this.ActionUpCount = 1;
+                    this.ActionDownCount = 0;
+                }
+                else {
+                    if (listItem.upCount > 0) {
+                        this.$Message.error('You already liked it !');
                     }
                     else {
-                        var likeitem = { bid: actionItem.id, username: username, upCount: 1, downCount: 0 };
-                        this.listThrumps.push(likeitem);
+                        listItem.upCount = 1;
+                        listItem.downCount = 0;
+                        this.ActionUpCount = 1;
+                        this.ActionDownCount = 0;
                     }
+                }
 
-                });
             },
             addActionDown(actionItem) {
                 let username = this.userName;
-                this.listThrumps.some((item) => {
-                    if (item.bid == actionItem.id && item.username == username) {
-                        if (item.downCount > 0) {
-                            this.$Message.error('You already unliked it !');
-                        }
-                        else {
-                            item.upCount = 0;
-                            item.downCount = 1;
-                        }
+                var listItem = this.listThrumps.find(item => item.bid == actionItem.Id && item.username == username);
+                if (listItem == null) {
+                    var likeitem = { bid: actionItem.Id, username: username, upCount: 1, downCount: 0 };
+                    this.listThrumps.push(likeitem);
+                }
+                else {
+                    if (listItem.downCount > 0) {
+                        this.$Message.error('You already unliked it !');
                     }
                     else {
-                        var likeitem = { bid: actionItem.id, username: username, upCount: 0, downCount: 1 };
-                        this.listThrumps.push(likeitem);
+                        listItem.upCount = 0;
+                        listItem.downCount = 1;
+                        this.ActionUpCount = 0;
+                        this.ActionDownCount = 1;
                     }
-                });
+                }
             },
-            addWellUp() {
-
+            addWellUp(wellItem) {
+                let username = this.userName;
+                var listItem = this.listThrumps.find(item => item.bid == wellItem.Id && item.username == username);
+                if (listItem == null) {
+                    var likeitem = { bid: wellItem.Id, username: username, upCount: 1, downCount: 0 };
+                    this.listThrumps.push(likeitem);
+                    this.WellUpCount = 1;
+                    this.WellDownCount = 0;
+                }
+                else {
+                    if (listItem.upCount > 0) {
+                        this.$Message.error('You already liked it !');
+                    }
+                    else {
+                        listItem.upCount = 1;
+                        listItem.downCount = 0;
+                        this.WellUpCount = 1;
+                        this.WellDownCount = 0;
+                    }
+                }
             },
-            addWellDown() {
-
+            addWellDown(wellItem) {
+                let username = this.userName;
+                var listItem = this.listThrumps.find(item => item.bid == wellItem.Id && item.username == username);
+                if (listItem == null) {
+                    var likeitem = { bid: wellItem.Id, username: username, upCount: 1, downCount: 0 };
+                    this.listThrumps.push(likeitem);
+                    this.WellUpCount = 0;
+                    this.WellDownCount = 1;
+                }
+                else {
+                    if (listItem.downCount > 0) {
+                        this.$Message.error('You already unliked it !');
+                    }
+                    else {
+                        listItem.upCount = 0;
+                        listItem.downCount = 1;
+                        this.WellUpCount = 0;
+                        this.WellDownCount = 1;
+                    }
+                }
             },
-            addImproveUp() {
-
+            addImproveUp(improveItem) {
+                let username = this.userName;
+                var listItem = this.listThrumps.find(item => item.bid == improveItem.Id && item.username == username);
+                if (listItem == null) {
+                    var likeitem = { bid: improveItem.Id, username: username, upCount: 1, downCount: 0 };
+                    this.listThrumps.push(likeitem);
+                    this.ImproveUpCount = 1;
+                    this.ImproveDownCount = 0;
+                }
+                else {
+                    if (listItem.upCount > 0) {
+                        this.$Message.error('You already liked it !');
+                    }
+                    else {
+                        listItem.upCount = 1;
+                        listItem.downCount = 0;
+                        this.ImproveUpCount = 1;
+                        this.ImproveDownCount = 0;
+                    }
+                }
             },
-            addImproveDown() {
-
+            addImproveDown(improveItem) {
+                let username = this.userName;
+                var listItem = this.listThrumps.find(item => item.bid == improveItem.Id && item.username == username);
+                if (listItem == null) {
+                    var likeitem = { bid: improveItem.Id, username: username, upCount: 0, downCount: 1 };
+                    this.listThrumps.push(likeitem);
+                    this.ImproveUpCount = 0;
+                    this.ImproveDownCount = 1;
+                }
+                else {
+                    if (listItem.downCount > 0) {
+                        this.$Message.error('You already unliked it !');
+                    }
+                    else {
+                        listItem.upCount = 0;
+                        listItem.downCount = 1;
+                        this.ImproveUpCount = 0;
+                        this.ImproveDownCount = 1;
+                    }
+                }
             },
 
             renderFunc(message) {
@@ -315,7 +391,9 @@
     ul {
         list-style-type: none;
     }
-
+    textarea {
+        border-style: none !important;
+    }
     .css-vubbuv {
         user-select: none;
         width: 1em;

@@ -21,7 +21,6 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-
                     this.axios({
                         method: 'post',
                         url: '/Authorize',
@@ -42,7 +41,7 @@ export default {
                         console.log(error);
                     })
                 } else {
-                    //this.$Message.error('Fail!');
+                    this.$Message.error('Fail!');
                 }
             })
         }
