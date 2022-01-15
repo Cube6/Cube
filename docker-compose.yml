@@ -182,20 +182,20 @@ services:
             - userservice2
 
   # CubeWeb #
-  cubewebapp:
-     image: cubeweb
-     build: 
-       context: .
-       dockerfile: ./src/Web/cube/Dockerfile
-     ports: 
-        - '8080:80'
-     environment: 
-            - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-     volumes:
-            - ~/.aspnet/https:/https:ro
-     networks:
-            - my-net
+  #cubewebapp:
+  #   image: cubeweb
+  #   build: 
+  #     context: .
+  #     dockerfile: ./src/Web/cube/Dockerfile
+  #   ports: 
+  #      - '8080:80'
+  #   environment: 
+  #          - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
+  #          - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+  #   volumes:
+  #          - ~/.aspnet/https:/https:ro
+  #   networks:
+  #          - my-net
 
   # Gateway Service #
   gateway:
