@@ -1,5 +1,6 @@
 ﻿using Cube.Board.Application;
 using Cube.Board.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpPost]
-		//[Authorize]
+		[Authorize]
 		public async Task Create(CommentDto commentDto)
 		{
 			await _appservice.CreateComment(commentDto);
@@ -35,7 +36,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		//[Authorize]
+		[Authorize]
 		public async Task Delete(long id)
 		{
 			await _appservice.DeleteCommentByIdAsync(id);
