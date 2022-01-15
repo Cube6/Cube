@@ -111,7 +111,7 @@ namespace Board.API
 			{
 				endpoints.MapControllers();
 				endpoints.MapHub<BoardHub>("/BoardHub")
-						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81" })
+						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81", "http://cube" })
 						.AllowAnyMethod()
 						.AllowAnyHeader()
 						.AllowCredentials());
