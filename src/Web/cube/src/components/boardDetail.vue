@@ -131,6 +131,7 @@
 </template>
 
 <script>
+    const signalR = require("@microsoft/signalr");
 
     export default {
         data() {
@@ -156,13 +157,16 @@
                 },
                 listThrumps: [
                     { userid: null,bid: null, upCount:0,downCount:0 }
-                ]
+                ],
+
+                connection: "",
             };
         },
         created() {
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
+            this.init();
         },
         methods: {
             fetchData() {
@@ -190,6 +194,7 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
+                    this.sendMsg();
                     this.renderFunc(boardDetail + ' is created successfully.');
                 }).then(() => {
                     this.fetchData();
@@ -211,6 +216,7 @@
                             'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
+                        this.sendMsg();
                         this.renderFunc(boardItem.Detail + ' is deleted successfully.');
                     })
                     .then(() => {
@@ -233,6 +239,7 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
+                    this.sendMsg();
                     this.renderFunc(boardItem.Detail + ' is updated successfully.');
                 })
                 .then(() => {
@@ -306,6 +313,27 @@
                         //])
                     }
                 });
+            },
+
+            init() {
+                this.connection = new signalR.HubConnectionBuilder()
+                    .withUrl("https://10.63.224.86:5000/BoardHub", {})
+                    .configureLogging(signalR.LogLevel.Error)
+                    .build();
+                this.connection.on("ReceiveBoardItemMessage", data => {
+                    if (data == this.$route.params.boardId)
+                    {
+                        this.fetchData();
+                    }
+                });
+                this.connection.start();
+            },
+            sendMsg() {
+                //let params = {
+                //    user: this.user,
+                //    message: this.message
+                //};
+                this.connection.invoke("SendBoardItemMessage", this.$route.params.boardId);
             }
         },
     }

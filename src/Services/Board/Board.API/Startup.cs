@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cube.Board.Application;
 using Microsoft.EntityFrameworkCore;
+using Board.API.Hubs;
 
 namespace Board.API
 {
@@ -34,10 +35,28 @@ namespace Board.API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSignalR(options =>
+			{
+				options.EnableDetailedErrors = true;
+			});
+
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
+			});
+
+
+			//services.AddCors(option => option.AddPolicy("cors", policy => policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().AllowAnyOrigin()));
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy(name: "cors",
+								  builder =>
+								  {
+									  builder.WithOrigins("http://localhost:81",
+														  "http://cube");
+								  });
 			});
 
 			services.AddDbContext<BoardContext>(
@@ -82,6 +101,8 @@ namespace Board.API
 
 			app.UseRouting();
 
+			app.UseCors("cors");
+
 			app.UseAuthentication();
 
 			app.UseAuthorization();
@@ -89,6 +110,11 @@ namespace Board.API
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+				endpoints.MapHub<BoardHub>("/BoardHub")
+						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81" })
+						.AllowAnyMethod()
+						.AllowAnyHeader()
+						.AllowCredentials());
 			});
 
 #if RELEASE
