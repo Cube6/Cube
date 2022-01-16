@@ -11,6 +11,7 @@ using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using Ocelot.Cache.CacheManager;
 using Ocelot.Provider.Polly;
+using Cube.GatewayService.Hubs;
 
 namespace Cube.GatewayService
 {
@@ -26,6 +27,11 @@ namespace Cube.GatewayService
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddSignalR(options =>
+			{
+				options.EnableDetailedErrors = true;
+			});
+
 			services.AddOcelot()
 				.AddConsul()
 				.AddCacheManager(x =>
@@ -37,6 +43,17 @@ namespace Cube.GatewayService
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Web.Bff.DiscussionBoard", Version = "v1" });
+			});
+
+
+			services.AddCors(options =>
+			{
+				options.AddPolicy(name: "cors",
+								  builder =>
+								  {
+									  builder.WithOrigins("http://localhost:81",
+														  "http://cube");
+								  });
 			});
 		}
 
@@ -52,11 +69,18 @@ namespace Cube.GatewayService
 
 			app.UseRouting();
 
+			app.UseCors("cors");
+
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+				endpoints.MapHub<BoardHub>("/BoardHub")
+						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81", "http://cube" })
+						.AllowAnyMethod()
+						.AllowAnyHeader()
+						.AllowCredentials());
 			});
 
 			app.UseOcelot().Wait();

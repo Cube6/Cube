@@ -83,7 +83,7 @@
             },
             init() {
                 this.connection = new signalR.HubConnectionBuilder()
-                    .withUrl("https://10.63.224.86:5000/BoardHub", {})
+                    .withUrl("http://10.63.224.86:9070/BoardHub", {})
                     .configureLogging(signalR.LogLevel.Error)
                     .build();
                 this.connection.start();
