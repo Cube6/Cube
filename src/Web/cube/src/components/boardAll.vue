@@ -85,10 +85,11 @@
                             'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
-                        this.renderFunc(board.Name + ' is deleted successfully.');
-                    })
-                    .then(() => {
                         this.fetchData();
+                    }).then(() => {
+                        this.renderFunc(board.Name + ' is deleted successfully.');
+                    }).then(() => {
+                        this.sendMsg();
                     })
             },
             getUserAvatar(userName) {
@@ -128,6 +129,13 @@
                     this.fetchData();
                 });
                 this.connection.start();
+            },
+            sendMsg() {
+                //let params = {
+                //    user: this.user,
+                //    message: this.message
+                //};
+                this.connection.invoke("SendBoardMessage");
             }
         },
     }

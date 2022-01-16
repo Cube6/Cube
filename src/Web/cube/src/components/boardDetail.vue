@@ -199,7 +199,9 @@
                     }
                 }).then(() => {
                     this.fetchData();
+                }).then(() => {
                     this.renderFunc(boardDetail + ' is created successfully.');
+                }).then(() => {
                     this.sendMsg();
                 })
             },
@@ -220,8 +222,10 @@
                         }
                     }).then(() => {
                         this.fetchData();
-                        this.sendMsg();
+                    }).then(() => {
                         this.renderFunc(boardItem.Detail + ' is deleted successfully.');
+                    }).then(() => {
+                        this.sendMsg();
                     })
             },
             updateBoardItem(boardItem) {
@@ -241,7 +245,9 @@
                     }
                 }).then(() => {
                     this.fetchData();
+                }).then(() => {
                     this.renderFunc(boardItem.Detail + ' is updated successfully.');
+                }).then(() => {
                     this.sendMsg();
                 })
             },
@@ -328,10 +334,6 @@
                 this.connection.start();
             },
             sendMsg() {
-                //let params = {
-                //    user: this.user,
-                //    message: this.message
-                //};
                 this.connection.invoke("SendBoardItemMessage", this.boardId);
             }
         },
