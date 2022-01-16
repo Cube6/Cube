@@ -29,9 +29,6 @@
                 },
 
                 connection: "",
-                user: "",
-                message: "",
-                msgList: []
             };
         },
         created() {

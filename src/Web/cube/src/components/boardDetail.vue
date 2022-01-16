@@ -159,18 +159,22 @@
                     { userid: null,bid: null, upCount:0,downCount:0 }
                 ],
 
+                boardId: null,
                 connection: "",
             };
         },
         created() {
+            this.boardId = this.$route.params.boardId;
+
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
+
             this.init();
         },
         methods: {
             fetchData() {
-                this.axios.get('/BoardItem/' + this.$route.params.boardId + '')
+                this.axios.get('/BoardItem/' + this.boardId + '')
                     .then(all => {
                         this.WellContent = all.data.filter(item => item.Type == 1);
                         this.ImporveContent = all.data.filter(item => item.Type == 2);
@@ -185,7 +189,7 @@
                     method: 'post',
                     url: '/BoardItem',
                     data: {
-                        boardid: this.$route.params.boardId,
+                        boardid: this.boardId,
                         detail: boardDetail,
                         type: type,
                         createduser: this.userName
@@ -194,10 +198,9 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.sendMsg();
-                    this.renderFunc(boardDetail + ' is created successfully.');
-                }).then(() => {
                     this.fetchData();
+                    this.renderFunc(boardDetail + ' is created successfully.');
+                    this.sendMsg();
                 })
             },
             addWentWell() {
@@ -216,11 +219,9 @@
                             'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
+                        this.fetchData();
                         this.sendMsg();
                         this.renderFunc(boardItem.Detail + ' is deleted successfully.');
-                    })
-                    .then(() => {
-                        this.fetchData();
                     })
             },
             updateBoardItem(boardItem) {
@@ -233,17 +234,15 @@
                         detail: boardItem.Detail,
                         type: boardItem.Type,
                         createduser: this.userName,
-                        boardid: this.$route.params.boardId
+                        boardid: this.boardId
                     },
                     headers: {
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.sendMsg();
-                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
-                })
-                .then(() => {
                     this.fetchData();
+                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
+                    this.sendMsg();
                 })
             },
             addActionUp(actionItem) {
@@ -320,8 +319,8 @@
                     .withUrl("http://10.63.224.86:9070/BoardHub", {})
                     .configureLogging(signalR.LogLevel.Error)
                     .build();
-                this.connection.on("ReceiveBoardItemMessage", data => {
-                    if (data == this.$route.params.boardId)
+                this.connection.on("ReceiveBoardItemMessage", boardid => {
+                    if (boardid == this.boardId)
                     {
                         this.fetchData();
                     }
@@ -333,7 +332,7 @@
                 //    user: this.user,
                 //    message: this.message
                 //};
-                this.connection.invoke("SendBoardItemMessage", this.$route.params.boardId);
+                this.connection.invoke("SendBoardItemMessage", this.boardId);
             }
         },
     }
