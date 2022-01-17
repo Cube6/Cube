@@ -17,10 +17,10 @@
     export default {
         data() {
             return {
-                UserToken:null,
+                UserToken: null,
                 formInline: {
                     Name: "",
-                    CreatedUser:"Michael",
+                    CreatedUser: "",
                 },
                 ruleInline: {
                     name: [
@@ -33,6 +33,7 @@
         },
         created() {
             this.UserToken = localStorage.getItem('TOKEN');
+            this.formInline.CreatedUser = localStorage.getItem('LOGINUSER');
             this.init();
         },
         methods: {
