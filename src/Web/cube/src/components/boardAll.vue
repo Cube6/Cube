@@ -2,8 +2,8 @@
     <div style="margin:0">
 
         <!--<div style="text-align:right;margin:10px;">
-            <Button type="primary" @click="AddBoard()">AddBoard</Button>
-        </div>-->
+        <Button type="primary" @click="AddBoard()">AddBoard</Button>
+    </div>-->
         <ul>
             <li style="width:260px; float: left;">
                 <Card style="width: 250px; cursor: pointer;">
@@ -44,11 +44,16 @@
 </template>
 
 <script>
+    const signalR = require("@microsoft/signalr");
+
     export default {
+
         data() {
             return {
                 UserToken: null,
-                post: null
+                post: null,
+
+                connection: "",
             };
         },
         created() {
@@ -56,6 +61,7 @@
             // already being observed
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
+            this.init();
         },
         methods: {
             fetchData() {
@@ -79,10 +85,11 @@
                             'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
-                        this.renderFunc(board.Name + ' is deleted successfully.');
-                    })
-                    .then(() => {
                         this.fetchData();
+                    }).then(() => {
+                        this.renderFunc(board.Name + ' is deleted successfully.');
+                    }).then(() => {
+                        this.sendMsg();
                     })
             },
             getUserAvatar(userName) {
@@ -112,6 +119,23 @@
                         //])
                     }
                 });
+            },
+            init() {
+                this.connection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://10.63.224.86:9070/BoardHub", {})
+                    .configureLogging(signalR.LogLevel.Error)
+                    .build();
+                this.connection.on("ReceiveBoardMessage", () => {
+                    this.fetchData();
+                });
+                this.connection.start();
+            },
+            sendMsg() {
+                //let params = {
+                //    user: this.user,
+                //    message: this.message
+                //};
+                this.connection.invoke("SendBoardMessage");
             }
         },
     }

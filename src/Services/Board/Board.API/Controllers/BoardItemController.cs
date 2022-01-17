@@ -28,11 +28,11 @@ namespace Board.API.Controllers
 			await _appservice.CreateBoardItem(boardItemDto);
 		}
 
-		[HttpGet("{id}")]
-		public IEnumerable<BoardItemDto> Find(long id)
+		[HttpGet("{boardId}")]
+		public IEnumerable<BoardItemDto> Find(long boardId)
 		{
-			var ss = _appservice.FindBoardItemByIdAsync(id);
-			var result= ss.Result;
+			var boardItems = _appservice.FindBoardItemByIdAsync(boardId);
+			var result= boardItems.Result;
 			return result;
 		}
 

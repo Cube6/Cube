@@ -13,7 +13,7 @@
 </template>
 
 <script>
-   
+    const signalR = require("@microsoft/signalr");
     export default {
         data() {
             return {
@@ -26,11 +26,14 @@
                     name: [
                         { required: true, message: 'Please fill in the board name', trigger: 'blur' }
                     ]
-                }
+                },
+
+                connection: "",
             };
         },
         created() {
             this.UserToken = localStorage.getItem('TOKEN');
+            this.init();
         },
         methods: {
             addDiscussionBoard(name) {
@@ -43,6 +46,8 @@
                             headers: {
                                 'Authorization': 'Bearer ' + this.UserToken
                             }
+                        }).then(() => {
+                            this.sendMsg();
                         }).then(() => {
                             this.renderFunc(this.formInline.name + ' is created successfully.');
                         }).then(() => {
@@ -72,6 +77,20 @@
                         //])
                     }
                 });
+            },
+            init() {
+                this.connection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://10.63.224.86:9070/BoardHub", {})
+                    .configureLogging(signalR.LogLevel.Error)
+                    .build();
+                this.connection.start();
+            },
+            sendMsg() {
+                //let params = {
+                //    user: this.user,
+                //    message: this.message
+                //};
+                this.connection.invoke("SendBoardMessage");
             }
         },
     }

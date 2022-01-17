@@ -109,5 +109,42 @@ namespace Cube.Board.Application
 			}
 			return list;
 		}
+
+		public async Task CreateComment(CommentDto commentDto)
+		{
+			var comment = new Comment()
+			{
+				BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result.FirstOrDefault(),
+				Detail = commentDto.Detail,
+				CreatedUser = commentDto.CreatedUser,
+				DateCreated = DateTime.Now,
+				DateModified = DateTime.Now,
+				Type = commentDto.Type,
+			};
+			await _repository.CreateCommentAsync(comment);
+		}
+
+		public async Task DeleteCommentByIdAsync(long id)
+		{
+			await _repository.DeleteBoardItemAsync(id);
+		}
+
+		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
+		{
+			var comments = await _repository.GetCommentsByIdAsync(boardItemId);
+			if (comments == null)
+			{
+				return null;
+			}
+
+
+			var list = new List<CommentDto>();
+			foreach (var item in comments)
+			{
+				var boardItemDto = _mapper.Map<CommentDto>(item);
+				list.Add(boardItemDto);
+			}
+			return list;
+		}
 	}
 }

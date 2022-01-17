@@ -131,6 +131,7 @@
 </template>
 
 <script>
+    const signalR = require("@microsoft/signalr");
 
     export default {
         data() {
@@ -156,17 +157,24 @@
                 },
                 listThrumps: [
                     { userid: null,bid: null, upCount:0,downCount:0 }
-                ]
+                ],
+
+                boardId: null,
+                connection: "",
             };
         },
         created() {
+            this.boardId = this.$route.params.boardId;
+
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
+
+            this.init();
         },
         methods: {
             fetchData() {
-                this.axios.get('/BoardItem/' + this.$route.params.boardId + '')
+                this.axios.get('/BoardItem/' + this.boardId + '')
                     .then(all => {
                         this.WellContent = all.data.filter(item => item.Type == 1);
                         this.ImporveContent = all.data.filter(item => item.Type == 2);
@@ -181,7 +189,7 @@
                     method: 'post',
                     url: '/BoardItem',
                     data: {
-                        boardid: this.$route.params.boardId,
+                        boardid: this.boardId,
                         detail: boardDetail,
                         type: type,
                         createduser: this.userName
@@ -190,9 +198,11 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
+                    this.fetchData();
+                }).then(() => {
                     this.renderFunc(boardDetail + ' is created successfully.');
                 }).then(() => {
-                    this.fetchData();
+                    this.sendMsg();
                 })
             },
             addWentWell() {
@@ -211,10 +221,11 @@
                             'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
-                        this.renderFunc(boardItem.Detail + ' is deleted successfully.');
-                    })
-                    .then(() => {
                         this.fetchData();
+                    }).then(() => {
+                        this.renderFunc(boardItem.Detail + ' is deleted successfully.');
+                    }).then(() => {
+                        this.sendMsg();
                     })
             },
             updateBoardItem(boardItem) {
@@ -227,16 +238,17 @@
                         detail: boardItem.Detail,
                         type: boardItem.Type,
                         createduser: this.userName,
-                        boardid: this.$route.params.boardId
+                        boardid: this.boardId
                     },
                     headers: {
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
-                })
-                .then(() => {
                     this.fetchData();
+                }).then(() => {
+                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
+                }).then(() => {
+                    this.sendMsg();
                 })
             },
             addActionUp(actionItem) {
@@ -382,6 +394,23 @@
                         //])
                     }
                 });
+            },
+
+            init() {
+                this.connection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://10.63.224.86:9070/BoardHub", {})
+                    .configureLogging(signalR.LogLevel.Error)
+                    .build();
+                this.connection.on("ReceiveBoardItemMessage", boardid => {
+                    if (boardid == this.boardId)
+                    {
+                        this.fetchData();
+                    }
+                });
+                this.connection.start();
+            },
+            sendMsg() {
+                this.connection.invoke("SendBoardItemMessage", this.boardId);
             }
         },
     }

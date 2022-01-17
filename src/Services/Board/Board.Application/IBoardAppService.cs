@@ -6,15 +6,17 @@ namespace Cube.Board.Application
 {
 	public interface IBoardAppService
 	{
-		Task CreateBoard(CreateBoardDto disscussionBoard);
-		Task CreateBoardItem(BoardItemDto boardItemDto);
-
-		Task DeleteBoardByIdAsync(long id);
-		Task DeleteBoardItemByIdAsync(long id);
-
-		Task UpdateBoardItem(BoardItemDto boardItemDto);
-
 		IEnumerable<BoardDto> GetAll();
+		Task CreateBoard(CreateBoardDto disscussionBoard);
+		Task DeleteBoardByIdAsync(long id);
+
+		Task CreateBoardItem(BoardItemDto boardItemDto);
+		Task DeleteBoardItemByIdAsync(long id);
+		Task UpdateBoardItem(BoardItemDto boardItemDto);
 		Task<List<BoardItemDto>> FindBoardItemByIdAsync(long id);
+
+		Task CreateComment(CommentDto commentDto);
+		Task DeleteCommentByIdAsync(long id);
+		Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId);
 	}
 }
