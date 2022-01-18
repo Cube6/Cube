@@ -23,7 +23,7 @@ namespace Board.API.Controllers
 		[HttpGet("")]
 		public IEnumerable<BoardDto> GetAll()
 		{
-			return _appservice.GetAll();
+			return _appservice.GetBoards();
 		}
 
 		[HttpPost]
@@ -38,14 +38,6 @@ namespace Board.API.Controllers
 		public async Task DeleteBoardByIdAsync(long id)
 		{
 			await _appservice.DeleteBoardByIdAsync(id);
-		}
-
-		[Authorize]
-		[HttpGet]
-		[Route("SecureAction")]
-		public IActionResult SecureAction()
-		{
-			return Ok("SecureAction");
 		}
 	}
 }

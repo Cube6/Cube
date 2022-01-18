@@ -29,6 +29,12 @@ namespace Cube.Board.Respository
 			return _context.SaveChangesAsync();
 		}
 
+		public Task UpdateBoardAsync(DisscussionBoard disscussionBoard)
+		{
+			_context.DisscussionBoards.Update(disscussionBoard);
+			return _context.SaveChangesAsync();
+		}
+
 		public Task UpdateBoardItemAsync(DisscussionBoardItem disscussionBoardItem)
 		{
 			_context.DisscussionBoardItems.Update(disscussionBoardItem);
@@ -39,6 +45,14 @@ namespace Cube.Board.Respository
 		{
 			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == boardId);
 			_context.DisscussionBoards.Remove(board);
+			return _context.SaveChanges() > 0;
+		}
+
+		public async Task<bool> SoftDeleteBoardAsync(long boardId)
+		{
+			var board = await _context.DisscussionBoards.SingleAsync(it => it.Id == boardId);
+			board.IsDeleted = true;
+			_context.DisscussionBoards.Update(board);
 			return _context.SaveChanges() > 0;
 		}
 

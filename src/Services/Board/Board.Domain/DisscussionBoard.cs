@@ -14,5 +14,10 @@ namespace Cube.Board.Domain
 		public string CreatedUser { get; set; }
 
 		public List<DisscussionBoardItem> BoardItems { get; set; }
+
+		[Required]
+		public BoardState State { set; get; }
+
+		public bool IsDeleted { get; set; }
 	}
 }

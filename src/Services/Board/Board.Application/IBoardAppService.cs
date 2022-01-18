@@ -6,8 +6,10 @@ namespace Cube.Board.Application
 {
 	public interface IBoardAppService
 	{
-		IEnumerable<BoardDto> GetAll();
+		IEnumerable<BoardDto> GetBoards();
+		IEnumerable<BoardDto> GetRemovedBoards();
 		Task CreateBoard(CreateBoardDto disscussionBoard);
+		Task UpdateBoard(BoardDto disscussionBoard);
 		Task DeleteBoardByIdAsync(long id);
 
 		Task CreateBoardItem(BoardItemDto boardItemDto);

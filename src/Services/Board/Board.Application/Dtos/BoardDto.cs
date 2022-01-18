@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cube.Board.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,8 @@ namespace Cube.Board.Application.Dtos
 		public string CreatedUser { get; set; }
 		public DateTime DateCreated { get; set; }
 		public DateTime DateModified { get; set; }
-
+		public bool IsDeleted { get; set; }
+		public BoardState State { get; set; }
 		public List<BoardItemDto> BoardItems { get; set; }
 	}
 }
