@@ -20,10 +20,21 @@ namespace Cube.Board.Application
 			_repository = repository;
 		}
 
-		public IEnumerable<BoardDto> GetAll()
+		public IEnumerable<BoardDto> GetBoards()
 		{
 			var list = new List<BoardDto>();
-			foreach (var item in _repository.ListAsync().Result)
+			foreach (var item in _repository.ListAsync().Result.Where(t=>!t.IsDeleted))
+			{
+				var boardDto = _mapper.Map<BoardDto>(item);
+				list.Add(boardDto);
+			}
+			return list;
+		}
+
+		public IEnumerable<BoardDto> GetRemovedBoards()
+		{
+			var list = new List<BoardDto>();
+			foreach (var item in _repository.ListAsync().Result.Where(t => t.IsDeleted))
 			{
 				var boardDto = _mapper.Map<BoardDto>(item);
 				list.Add(boardDto);
@@ -43,10 +54,25 @@ namespace Cube.Board.Application
 			{
 				Name = createBoardDto.Name,
 				CreatedUser = createBoardDto.CreatedUser,
+				State = BoardState.InProgress,
+				IsDeleted = false,
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now
 			};
 			return _repository.CreateBoardAsync(board);
+		}
+
+		public async Task UpdateBoard(BoardDto boardDto)
+		{
+			var board = new DisscussionBoard()
+			{
+				Id = boardDto.Id,
+				Name = boardDto.Name,
+				CreatedUser = boardDto.CreatedUser,
+				State = boardDto.State,
+				DateModified = DateTime.Now
+			};
+			await _repository.UpdateBoardAsync(board);
 		}
 
 		public async Task CreateBoardItem(BoardItemDto boardItemDto)
@@ -84,7 +110,7 @@ namespace Cube.Board.Application
 
 		public async Task DeleteBoardByIdAsync(long id)
 		{
-			await _repository.DeleteBoardAsync(id);
+			await _repository.SoftDeleteBoardAsync(id);
 		}
 
 		public async Task DeleteBoardItemByIdAsync(long id)
