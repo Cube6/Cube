@@ -20,6 +20,8 @@
                         <ul>
                             <li v-for="well in WellContent" :key="well.Id">
                                 <Card style="width: 100%; text-align: left;">
+                                    <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
+
                                     <Input v-model="well.Detail" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" title="Delete">
@@ -56,6 +58,8 @@
                         <ul>
                             <li v-for="imporve in ImporveContent" :key="imporve.Id">
                                 <Card style="width: 100%; text-align: left;">
+                                    <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
+
                                     <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(imporve)" title="Delete">
@@ -65,26 +69,26 @@
                                                 </svg>
                                                 &nbsp;<p>{{ImproveUpCount}}</p>
                                             </button>
-                                            </a>
-                                            <a href="#" @click.prevent="addImproveDown(imporve)" title="Delete">
-                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                    <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
-                                                        <use xlink:href="#at-handDown"></use>
+                                        </a>
+                                        <a href="#" @click.prevent="addImproveDown(imporve)" title="Delete">
+                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
+                                                    <use xlink:href="#at-handDown"></use>
+                                                </svg>
+                                                &nbsp;<p>{{ImproveDownCount}}</p>
+                                            </button>
+                                        </a>
+                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete">
+                                            <span aria-label="Delete" class="">
+                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
+                                                    <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
+                                                        <use xlink:href="#at-delete"></use>
                                                     </svg>
-                                                    &nbsp;<p>{{ImproveDownCount}}</p>
                                                 </button>
-                                            </a>
-                                            <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete">
-                                                <span aria-label="Delete" class="">
-                                                    <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                        <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                            <use xlink:href="#at-delete"></use>
-                                                        </svg>
-                                                    </button>
-                                                </span>
-                                            </a>
+                                            </span>
+                                        </a>
                                     </p>
-                                    
+
                                 </Card>
                             </li>
                         </ul>
@@ -93,6 +97,8 @@
                         <ul>
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; ">
+                                    <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
+
                                     <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addActionUp(action)">
@@ -111,6 +117,7 @@
                                                 &nbsp;<p>{{ActionDownCount}}</p>
                                             </button>
                                         </a>
+
                                         <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -119,7 +126,7 @@
                                             </Button>
                                         </a>
                                     </p>
-                                    
+
                                 </Card>
                             </li>
                         </ul>
@@ -374,6 +381,17 @@
                         this.ImproveUpCount = 0;
                         this.ImproveDownCount = 1;
                     }
+                }
+            },
+
+            getUserAvatar(userName) {
+                let userAvatar = ""
+                try {
+                    userAvatar = require('../assets/Person/' + userName.toLowerCase() + '.jpg')
+                    return userAvatar
+                } catch (e) {
+                    userAvatar = require('../assets/Person/cube.jpg')
+                    return userAvatar
                 }
             },
 
