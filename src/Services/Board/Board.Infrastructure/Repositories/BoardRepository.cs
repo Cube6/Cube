@@ -17,10 +17,11 @@ namespace Cube.Board.Respository
 			_context.Database.EnsureCreated();
 		}
 
-		public Task CreateBoardAsync(DisscussionBoard disscussionBoard)
+		public async Task<int> CreateBoardAsync(DisscussionBoard disscussionBoard)
 		{
 			_context.DisscussionBoards.Add(disscussionBoard);
-			return _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
+			return disscussionBoard.Id;
 		}
 
 		public Task CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem)

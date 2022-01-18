@@ -37,7 +37,7 @@ namespace Cube.Board.Application
 			return _mapper.Map<BoardDto>(DisscussionBoard);
 		}
 
-		public async Task CreateBoard(CreateBoardDto createBoardDto)
+		public Task<int> CreateBoard(CreateBoardDto createBoardDto)
 		{
 			var board = new DisscussionBoard()
 			{
@@ -46,7 +46,7 @@ namespace Cube.Board.Application
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now
 			};
-			await _repository.CreateBoardAsync(board);
+			return _repository.CreateBoardAsync(board);
 		}
 
 		public async Task CreateBoardItem(BoardItemDto boardItemDto)

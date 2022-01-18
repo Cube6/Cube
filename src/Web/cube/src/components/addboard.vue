@@ -51,8 +51,9 @@
                             this.sendMsg();
                         }).then(() => {
                             this.renderFunc(this.formInline.name + ' is created successfully.');
-                        }).then(() => {
-                            this.$router.replace('/boardDetail');
+                        }).then((bid) => {
+                            this.$router.push({ name: 'boardDetail', params: { boardId: bid } });
+                            /*this.$router.replace('/boardDetail');*/
                         }).catch(error => {
                             console.log(error);
                         })
