@@ -33,18 +33,17 @@ namespace Cube.GatewayService
 			});
 
 			services.AddOcelot()
-				.AddConsul()
-				.AddCacheManager(x =>
-				{
-					x.WithDictionaryHandle();
-				})
-				.AddPolly();
+					.AddConsul()
+					.AddCacheManager(x =>
+					{
+						x.WithDictionaryHandle();
+					})
+					.AddPolly();
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Web.Bff.DiscussionBoard", Version = "v1" });
 			});
-
 
 			services.AddCors(options =>
 			{

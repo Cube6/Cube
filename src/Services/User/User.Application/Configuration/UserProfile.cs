@@ -8,7 +8,7 @@ namespace Cube.User.Application.Configuration
 		public UserProfile()
 		{
 			CreateMap<Domain.User, UserDto>();
-			CreateMap<CreateUserDto,Domain.User>();
+			CreateMap<CreateUserDto, Domain.User>();
 		}
 	}
 }

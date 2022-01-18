@@ -30,8 +30,8 @@ namespace Board.API.Controllers
 		[HttpGet("{boardItemId}")]
 		public IEnumerable<CommentDto> FindComments(long boardItemId)
 		{
-			var ss = _appservice.FindCommentsByIdAsync(boardItemId);
-			var result = ss.Result;
+			var list = _appservice.FindCommentsByIdAsync(boardItemId);
+			var result = list.Result;
 			return result;
 		}
 

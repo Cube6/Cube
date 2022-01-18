@@ -1,9 +1,8 @@
-﻿using System;
-
-namespace Cube.Board.Domain
+﻿namespace Cube.Board.Domain
 {
 	public enum BoardState
 	{
+		None,
 		InProgress,
 		Completed,
 	}

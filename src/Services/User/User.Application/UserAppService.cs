@@ -33,7 +33,7 @@ namespace Cube.User.Application
 			return await Task.FromResult(new ResultDto() { Success = result });
 		}
 
-		public async Task<List<UserDto>> GetAllAsync()
+		public async Task<List<UserDto>> GetUsersAsync()
 		{
 			var users = await _repository.ListAsync();
 

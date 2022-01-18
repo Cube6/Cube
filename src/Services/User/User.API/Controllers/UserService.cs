@@ -2,7 +2,6 @@
 using Cube.User.API.Protos;
 using Cube.User.Application;
 using Cube.User.Application.Dtos;
-using Cube.User.Respository;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +41,7 @@ namespace Cube.User.API.Controllers
 
 		public override async Task<AllUsers> GetAllAsync(Empty request, ServerCallContext context)
 		{
-			var users = await _appService.GetAllAsync();
+			var users = await _appService.GetUsersAsync();
 
 			var allUsers = new AllUsers();
 			foreach (var user in users)

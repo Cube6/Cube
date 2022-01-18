@@ -126,7 +126,6 @@ namespace Cube.Board.Application
 				return null;
 			}
 
-
 			var list = new List<BoardItemDto>();
 			foreach (var item in ListBoardItemDto)
 			{
@@ -162,7 +161,6 @@ namespace Cube.Board.Application
 			{
 				return null;
 			}
-
 
 			var list = new List<CommentDto>();
 			foreach (var item in comments)

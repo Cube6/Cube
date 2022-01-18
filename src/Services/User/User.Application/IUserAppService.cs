@@ -8,7 +8,7 @@ namespace Cube.User.Application
 	{
 		Task<ResultDto> Register(CreateUserDto request);
 		Task<ResultDto> Validate(ValidateUserDto request);
-		Task<List<UserDto>> GetAllAsync();
+		Task<List<UserDto>> GetUsersAsync();
 		Task<UserDto> FindUserByIdAsync(long id);
 		Task<ResultDto> DeleteUserByIdAsync(long id);
 	}
