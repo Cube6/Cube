@@ -2,8 +2,7 @@
     <div>
         <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
             <FormItem prop="name" class="lgD">
-                <Input v-model="formInline.name" placeholder="Boardname">
-                </Input>
+                <Input v-model="formInline.name" placeholder="Boardname"/>
             </FormItem>
             <FormItem>
                 <Button  @click="addDiscussionBoard('formInline')">Add</Button>
@@ -47,13 +46,12 @@
                             headers: {
                                 'Authorization': 'Bearer ' + this.UserToken
                             }
+                        }).then(res => {
+                            this.$router.push({ name: 'boardDetail', params: { boardId: res.data } });
                         }).then(() => {
                             this.sendMsg();
                         }).then(() => {
                             this.renderFunc(this.formInline.name + ' is created successfully.');
-                        }).then((bid) => {
-                            this.$router.push({ name: 'boardDetail', params: { boardId: bid } });
-                            /*this.$router.replace('/boardDetail');*/
                         }).catch(error => {
                             console.log(error);
                         })

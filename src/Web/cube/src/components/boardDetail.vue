@@ -20,7 +20,7 @@
                         <ul>
                             <li v-for="well in WellContent" :key="well.Id">
                                 <Card style="width: 100%; text-align: left;">
-                                    <Input v-model="well.Detail" type="textarea" style="border-style: none" :autosize="true" @on-change="updateBoardItem(well)" />
+                                    <Input v-model="well.Detail" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -56,7 +56,7 @@
                         <ul>
                             <li v-for="imporve in ImporveContent" :key="imporve.Id">
                                 <Card style="width: 100%; text-align: left;">
-                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-change="updateBoardItem(imporve)" />
+                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(imporve)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -93,7 +93,7 @@
                         <ul>
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; ">
-                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @on-change="updateBoardItem(action)" />
+                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addActionUp(action)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">

@@ -6,7 +6,7 @@
     </div>-->
         <ul>
             <li style="width:260px; float: left;">
-                <Card style="width: 250px; cursor: pointer;">
+                <Card style="width: 250px; cursor: pointer;" v-on:click.native="AddBoard()">
                     <div style="display: flex; padding-bottom: 36px; background: #fff;">
                         <i scripturl="../scripts/font.js" style="font-size:24px;">
                             <svg viewBox="0 0 1024 1024" style="width:1em;height:1em;fill:currentColor;overflow:hidden">
@@ -14,7 +14,7 @@
                             </svg>
                         </i>
                     </div>
-                    <span style="position:absolute;left:16px;bottom:12px;" @click="AddBoard()">Add Board</span>
+                    <span style="position:absolute;left:16px;bottom:12px;">Add Board</span>
                 </Card>
             </li>
             <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
