@@ -1,5 +1,23 @@
 ﻿<template>
     <div>
+        <h1 style="width:100%;text-align:center; font-size:larger">
+            <span>
+                {{boardName}}
+
+                <span v-if="state == 2">Completed</span>
+                <Dropdown v-if="state != 2" style="float: right;position: relative;">
+                    <a href="javascript:void(0)" style="color: #999 ">
+                        Actions
+                        <Icon type="ios-arrow-down"></Icon>
+                    </a>
+                    <DropdownMenu slot="list">
+                        <DropdownItem v-on:click.native="markCompleted()">Mark as Completed</DropdownItem>
+                        <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+            </span>
+        </h1>
+        <br />
         <table width="100%">
             <thead>
                 <tr>
@@ -98,7 +116,7 @@
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; ">
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
-
+                                    
                                     <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addActionUp(action)">
@@ -165,14 +183,16 @@
                 listThrumps: [
                     { userid: null,bid: null, upCount:0,downCount:0 }
                 ],
-
+                boardName:null,
                 boardId: null,
                 connection: "",
             };
         },
         created() {
             this.boardId = this.$route.params.boardId;
-
+            this.boardName = this.$route.params.boardName;
+            this.state = this.$route.params.state;
+            console.log(this.state);
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
@@ -210,30 +230,49 @@
                     this.renderFunc(boardDetail + ' is created successfully.');
                 }).then(() => {
                     this.sendMsg();
+                    this.boardDetail.WellDetail = "";
+                    this.boardDetail.ImporveDetail = "";
+                    this.boardDetail.ActionDetail = "";
                 })
             },
             addWentWell() {
-                this.addBoardDetail(this.boardDetail.WellDetail,1);
+                this.addBoardDetail(this.boardDetail.WellDetail, 1);
+               
             },
             addImporved() {
-                this.addBoardDetail(this.boardDetail.ImporveDetail,2);
+                this.addBoardDetail(this.boardDetail.ImporveDetail, 2);
+               
             },
             addAction() {
-                this.addBoardDetail(this.boardDetail.ActionDetail,3);
+                this.addBoardDetail(this.boardDetail.ActionDetail, 3);
+                
             },
             deleteBoardItem(boardItem) {
-                this.axios.delete('/BoardItem/' + boardItem.Id + '',
+                this.$confirm(
                     {
-                        headers: {
-                            'Authorization': 'Bearer ' + this.UserToken
+                        message: 'Are you sure delete [' + boardItem.Detail + '] ?',
+                        button: {
+                            no: 'No',
+                            yes: 'Yes'
+                        },
+                        callback: confirm => {
+                            if (confirm) {
+                                this.axios.delete('/BoardItem/' + boardItem.Id + '',
+                                    {
+                                        headers: {
+                                            'Authorization': 'Bearer ' + this.UserToken
+                                        }
+                                    }).then(() => {
+                                        this.fetchData();
+                                    }).then(() => {
+                                        this.renderFunc(boardItem.Detail + ' is deleted successfully.');
+                                    }).then(() => {
+                                        this.sendMsg();
+                                    })
+                            }
                         }
-                    }).then(() => {
-                        this.fetchData();
-                    }).then(() => {
-                        this.renderFunc(boardItem.Detail + ' is deleted successfully.');
-                    }).then(() => {
-                        this.sendMsg();
-                    })
+                    }
+                )
             },
             updateBoardItem(boardItem) {
                 console.log(boardItem.Id);
@@ -429,6 +468,65 @@
             },
             sendMsg() {
                 this.connection.invoke("SendBoardItemMessage", this.boardId);
+            },
+            markCompleted() {
+                this.$confirm(
+                    {
+                        message: 'Are you sure mark board [' + this.boardName +"] as Completed ? after that, you can't edit this board again",
+                        button: {
+                            no: 'No',
+                            yes: 'Yes'
+                        },
+                        callback: confirm => {
+                            if (confirm) {
+                                this.axios({
+                                    method: 'put',
+                                    url: '/Board',
+                                    data: {
+                                        id: this.boardId,
+                                        name: this.boardName,
+                                        state: 2,
+                                        createduser: this.userName
+                                    },
+                                    headers: {
+                                        'Authorization': 'Bearer ' + this.UserToken
+                                    }
+                                }).then(() => {
+                                    this.renderFunc(this.boardName + ' is marked as completed successfully.');
+                                }).then(() => {
+                                    this.sendMsg();
+                                })
+                            }
+                        }
+                    }
+                )
+            },
+            deleteBoard() {
+                this.$confirm(
+                    {
+                        message: 'Are you sure delete board [' + this.boardName +'] ?',
+                        button: {
+                            no: 'No',
+                            yes: 'Yes'
+                        },
+                        callback: confirm => {
+                            if (confirm) {
+                                this.axios.delete('/Board/' + this.boardId + '',
+                                    {
+                                        headers: {
+                                            'Authorization': 'Bearer ' + this.UserToken
+                                        }
+                                    }).then(() => {
+                                        this.$router.push('/boardAll');
+                                    }).then(() => {
+                                        this.renderFunc(this.boardName + ' is deleted successfully.');
+                                    }).then(() => {
+                                        this.sendMsg();
+                                    })
+                            }
+                        }
+                    }
+                )
             }
         },
     }

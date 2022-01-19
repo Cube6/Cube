@@ -33,6 +33,13 @@ namespace Board.API.Controllers
 			return _appservice.CreateBoard(ceateBoard);
 		}
 
+		[HttpPut]
+		[Authorize]
+		public Task UpdateBoard(BoardDto Board)
+		{
+			return _appservice.UpdateBoard(Board);
+		}
+
 		[HttpDelete("{id}")]
 		[Authorize]
 		public async Task DeleteBoardByIdAsync(long id)

@@ -20,6 +20,7 @@
     "three": "^0.134.0",
     "view-design": "^4.7.0-beta.11",
     "vue": "^2.6.11",
+    "vue-confirm-dialog": "^1.0.2",
     "vue-particles": "^1.0.9",
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2",

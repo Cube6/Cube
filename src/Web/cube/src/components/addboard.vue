@@ -48,7 +48,7 @@
                                 'Authorization': 'Bearer ' + this.UserToken
                             }
                         }).then(res => {
-                            this.$router.push({ name: 'boardDetail', params: { boardId: res.data } });
+                            this.$router.push({ name: 'boardDetail', params: { boardId: res.data, boardName: this.formInline.name, state:1 } });
                         }).then(() => {
                             this.sendMsg();
                         }).then(() => {
