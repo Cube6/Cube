@@ -30,7 +30,11 @@
                     <label>Password</label>
                     <a>Forgot Password?</a>
                 </div>
-                <input type="submit" value="Sign in" @click="handleSubmit('formInline')">
+
+                <Button type="primary" size="large" long :loading="loading" @click="handleSubmit('formInline')">
+                    <span v-if="!loading">Sign in</span>
+                    <span v-else>Sign in...</span>
+                </Button>
             </Form>
 
             <p class="login-callout mt-3">

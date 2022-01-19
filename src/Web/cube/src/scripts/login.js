@@ -2,6 +2,7 @@ export default {
     name:"login",
     data() {
         return {
+            loading: false,
             formInline: {
                 user: '',
                 password: ''
@@ -21,6 +22,9 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
+
+                    this.loading = true;
+
                     this.axios({
                         method: 'post',
                         url: '/Authorize',
@@ -39,6 +43,7 @@ export default {
                     }).catch(error => {
                         this.$Message.error('Username or Password is incorrect, please try again!');
                         console.log(error);
+                        this.loading = false;
                     })
                 } else {
                     this.$Message.error('Fail!');
