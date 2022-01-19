@@ -82,8 +82,6 @@ namespace Cube.Board.Application
 				Board = _repository.ListAsync().Result.Where(b => b.Id == boardItemDto.BoardId).FirstOrDefault(),
 				Detail = boardItemDto.Detail,
 				Action = boardItemDto.Action,
-				ThumbsUp = boardItemDto.ThumbsUp,
-				ThumbsDown = boardItemDto.ThumbsDown,
 				CreatedUser = boardItemDto.CreatedUser,
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now,
@@ -100,8 +98,6 @@ namespace Cube.Board.Application
 				Detail = boardItemDto.Detail,
 				CreatedUser = boardItemDto.CreatedUser,
 				Action = boardItemDto.Action,
-				ThumbsUp = boardItemDto.ThumbsUp,
-				ThumbsDown = boardItemDto.ThumbsDown,
 				DateModified = DateTime.Now,
 				Type= boardItemDto.Type,
 			};
@@ -130,6 +126,10 @@ namespace Cube.Board.Application
 			foreach (var item in ListBoardItemDto)
 			{
 				var boardItemDto = _mapper.Map<BoardItemDto>(item);
+				var comments = await FindCommentsByIdAsync(boardItemDto.Id);
+
+				boardItemDto.ThumbsUp = comments.Where(t => t.Type == CommentType.ThumbsUp);
+				boardItemDto.ThumbsDown = comments.Where(t => t.Type == CommentType.ThumbsDown);
 				list.Add(boardItemDto);
 			}
 			return list;
