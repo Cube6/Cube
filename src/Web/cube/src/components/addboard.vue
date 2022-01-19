@@ -5,7 +5,8 @@
                 <Input v-model="formInline.name" placeholder="Boardname"/>
             </FormItem>
             <FormItem>
-                <Button  @click="addDiscussionBoard('formInline')">Add</Button>
+                <Button @click="addDiscussionBoard('formInline')" type="primary" >Add</Button>
+                <Button @click="cancel()" style="margin-left: 8px" >Cancel</Button>
             </FormItem>
         </Form>
     </div>
@@ -59,6 +60,9 @@
                         this.$Message.error('Fail!');
                     }
                 })
+            },
+            cancel() {
+                this.$router.push('/boardAll');
             },
             renderFunc(message) {
                 this.$Notice.success({
