@@ -33,8 +33,6 @@ namespace Cube.Board.Respository
 				Detail = "Completed All Stores", 
 				Type = BoardItemType.WentWell, 
 				Action = "Action1", 
-				ThumbsUp = 10, 
-				ThumbsDown = 0, 
 				CreatedUser = "Michael" 
 			};
 			var boardItem2 = new DisscussionBoardItem 
@@ -43,8 +41,6 @@ namespace Cube.Board.Respository
 				Detail = "Quality is not good", 
 				Type = BoardItemType.NeedsImproved, 
 				Action = "Action2", 
-				ThumbsUp = 5, 
-				ThumbsDown = 1, 
 				CreatedUser = "Tony" 
 			};
 			var boardItem3 = new DisscussionBoardItem 
@@ -53,8 +49,6 @@ namespace Cube.Board.Respository
 				Detail = "Do monthly story discussions", 
 				Type = BoardItemType.Action, 
 				Action = "Action3", 
-				ThumbsUp = 0, 
-				ThumbsDown = 10, 
 				CreatedUser = "Lebron" 
 			};
 			modelBuilder.Entity<DisscussionBoardItem>().HasData(

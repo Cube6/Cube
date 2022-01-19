@@ -29,7 +29,7 @@
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
-                                                &nbsp;<p>{{WellUpCount}}</p>
+                                                &nbsp;<p>{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="addWellDown(well)" title="Delete">
@@ -37,7 +37,7 @@
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
                                                 </svg>
-                                                &nbsp;<p>{{WellDownCount}}</p>
+                                                &nbsp;<p>{{well.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete">
@@ -67,7 +67,7 @@
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
-                                                &nbsp;<p>{{ImproveUpCount}}</p>
+                                                &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="addImproveDown(imporve)" title="Delete">
@@ -75,7 +75,7 @@
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
                                                 </svg>
-                                                &nbsp;<p>{{ImproveDownCount}}</p>
+                                                &nbsp;<p>{{imporve.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete">
@@ -106,7 +106,7 @@
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
-                                                &nbsp;<p>{{ActionUpCount}}</p>
+                                                &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="addActionDown(action)">
@@ -114,7 +114,7 @@
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
                                                 </svg>
-                                                &nbsp;<p>{{ActionDownCount}}</p>
+                                                &nbsp;<p>{{action.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
 
@@ -179,6 +179,7 @@
 
             this.init();
         },
+ 
         methods: {
             fetchData() {
                 this.axios.get('/BoardItem/' + this.boardId + '')

@@ -1,5 +1,6 @@
 ﻿using Cube.Board.Domain;
 using System;
+using System.Collections.Generic;
 
 namespace Cube.Board.Application.Dtos
 {
@@ -13,8 +14,8 @@ namespace Cube.Board.Application.Dtos
 		public BoardItemType Type { set; get; }
 		public string Detail { get; set; }
 		public string Action { get; set; }
-		public int ThumbsUp { get; set; }
-		public int ThumbsDown { get; set; }
+		public IEnumerable<CommentDto> ThumbsUp { get; set; }
+		public IEnumerable<CommentDto> ThumbsDown { get; set; }
 
 		public int BoardId { get; set; }
 	}
