@@ -40,7 +40,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
+                                    <Input v-model="well.Detail" class="boardItemContent"  type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -78,7 +78,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="imporve.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
+                                    <Input v-model="imporve.Detail" class="boardItemContent"  type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(imporve)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -116,9 +116,10 @@
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; ">
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
-                                    
-                                    <Input v-model="action.Detail" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
-                                    <p style="height:22px;">
+
+                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
+
+                                    <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
@@ -249,6 +250,7 @@
                 
             },
             deleteBoardItem(boardItem) {
+
                 this.$confirm(
                     {
                         message: 'Are you sure delete [' + boardItem.Detail + '] ?',
@@ -540,6 +542,12 @@
     textarea {
         border-style: none !important;
     }
+
+    .boardItemContent {
+        margin-bottom: 15px;
+        
+    }
+
     .css-vubbuv {
         user-select: none;
         width: 1em;
