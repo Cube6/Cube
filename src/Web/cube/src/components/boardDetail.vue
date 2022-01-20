@@ -2,14 +2,12 @@
     <div>
         <h1 style="width:100%;text-align:center; font-size:larger">
             <span>
+
                 {{boardName}}
 
                 <span v-if="state == 2">Completed</span>
-                <Dropdown v-if="state != 2" style="float: right;position: relative;">
-                    <a href="javascript:void(0)" style="color: #999 ">
-                        Actions
-                        <Icon type="ios-arrow-down"></Icon>
-                    </a>
+                <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
+                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
                         <DropdownItem v-on:click.native="markCompleted()">Mark as Completed</DropdownItem>
                         <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
@@ -22,13 +20,13 @@
             <thead>
                 <tr>
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Send" @on-search="addWentWell" />
+                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Add" @on-search="addWentWell" />
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Send" @on-search="addImporved" />
+                        <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImporved" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="A brilliant idea to share ?" search enter-button="Send" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" placeholder="A brilliant idea to share ?" search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
