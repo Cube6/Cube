@@ -7,7 +7,7 @@
 
                 <span v-if="state == 2">Completed</span>
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
-                     <Icon type="ios-more" size="28"></Icon>
+                    <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
                         <DropdownItem v-on:click.native="markCompleted()">Mark as Completed</DropdownItem>
                         <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
@@ -38,7 +38,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" class="boardItemContent"  type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
+                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -76,7 +76,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="imporve.Detail" class="boardItemContent"  type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
+                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(imporve)" title="Delete">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -151,7 +151,11 @@
                 </tr>
             </tbody>
         </table>
-   </div>
+
+        <BackTop :height="100" :bottom="120" :right="50">
+            <div class="top">Back to Top</div>
+        </BackTop>
+    </div>
 </template>
 
 <script>
@@ -537,13 +541,13 @@
     ul {
         list-style-type: none;
     }
+
     textarea {
         border-style: none !important;
     }
 
     .boardItemContent {
         margin-bottom: 15px;
-        
     }
 
     .css-vubbuv {
@@ -585,6 +589,14 @@
         border-radius: 4px;
         transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
         color: inherit;
+    }
+
+    .top {
+        padding: 10px;
+        background: rgba(0, 153, 229, .7);
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
     }
 
 </style>
