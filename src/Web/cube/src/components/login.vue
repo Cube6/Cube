@@ -19,7 +19,7 @@
                        clickMode="push">
         </vue-particles>
         <div id="loginArea">
-            <h2>Sign in to Cube</h2>
+            <h2>Welcome to Cube</h2>
             <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
                 <div prop="user" class="inputBox">
                     <input type="text" v-model="formInline.user" required="">
@@ -41,7 +41,9 @@
                 New to Cube?
                 <a>Create an account.</a>
             </p>
-            <p class="login-tip">Welcome to Cube System v0.1</p>
+            <p class="login-tip">
+                &copy; 2022 Cube6
+            </p>
         </div>
     </div>
 </template>

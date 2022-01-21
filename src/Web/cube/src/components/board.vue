@@ -5,7 +5,7 @@
                 <div class="layout-logo">
                     <img src="../assets/logo.jpg" style="width:35px; height:35px; border-radius:50%; " />
                     <span style="position: relative; top:-8px;">
-                        Cube System
+                        Cube
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -30,7 +30,8 @@
                                 <DropdownItem>Change Password</DropdownItem>
                                 <DropdownItem>My Profile</DropdownItem>
                                 <DropdownItem>Register New</DropdownItem>
-                                <DropdownItem @click.native="Logout">Logout</DropdownItem>
+                                <DropdownItem><hr style="border:1px solid #CCC"/></DropdownItem>
+                                <DropdownItem @click.native="Logout">Log Out</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </MenuItem>
@@ -73,9 +74,7 @@
             </Layout>
         </Layout>
         <Footer class="layout-footer-center">
-            Cube System 1.0 <br />
-            2021-2022 &copy; Cube Tech Group <br />
-            <a href="https://github.com/Cube6">https://github.com/Cube6</a>
+            &copy; 2022 <a href="https://github.com/Cube6">Cube6</a>, All Rights Reserved
         </Footer>
 
         <symbol id="at-plus" viewBox="0 0 1024 1024"><path d="M476.16 476.16V191.0272c0-20.6848 16.0256-37.4272 35.84-37.4272 19.8144 0 35.84 16.7424 35.84 37.4272V476.16h285.1328c20.6848 0 37.4272 16.0256 37.4272 35.84 0 19.8144-16.7424 35.84-37.4272 35.84H547.84v285.1328c0 20.6848-16.0256 37.4272-35.84 37.4272-19.8144 0-35.84-16.7424-35.84-37.4272V547.84H191.0272C170.3424 547.84 153.6 531.8144 153.6 512c0-19.8144 16.7424-35.84 37.4272-35.84H476.16z"></path></symbol>
