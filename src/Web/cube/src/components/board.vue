@@ -23,7 +23,7 @@
                         About
                     </MenuItem>
 
-                    <MenuItem name="menuUser" style="float:right">
+                    <MenuItem name="menuProfile" style="float:right">
                         <Dropdown>
                             <img :src="getLoginUserAvatar()" style="width: 25px; height: 25px; border-radius: 50%; margin-top: 16px " />
                             <DropdownMenu slot="list">
@@ -34,23 +34,7 @@
                             </DropdownMenu>
                         </Dropdown>
                     </MenuItem>
-
                 </div>
-                <!--<span class="layout-loginUser">
-                    <Dropdown>
-                        <img :src="getLoginUserAvatar()" style="width:25px; height:25px; border-radius:50%; margin-right:5px; " />-->
-                        <!--<a href="javascript:void(0)" style="color:inherit">
-                            {{userName}}
-                            <Icon type="ios-arrow-down"></Icon>
-                        </a>-->
-                        <!--<DropdownMenu slot="list">
-                            <DropdownItem>Change Password</DropdownItem>
-                            <DropdownItem>My Profile</DropdownItem>
-                            <DropdownItem>Register New</DropdownItem>
-                            <DropdownItem @click.native="Logout">Logout</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                </span>-->
             </Menu>
         </Header>
         <Layout :style="{minHeight: '100vh'}">

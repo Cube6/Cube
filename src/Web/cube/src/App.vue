@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <router-view></router-view>
-        <vue-confirm-dialog></vue-confirm-dialog>
+        <vue-confirm-dialog style="word-break:break-word"></vue-confirm-dialog>
     </div>
 </template>
 

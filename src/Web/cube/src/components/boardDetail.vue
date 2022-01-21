@@ -5,7 +5,7 @@
 
                 {{boardName}}
 
-                <span v-if="state == 2">Completed</span>
+                <span style="color:forestgreen" v-if="state == 2">Completed</span>
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
@@ -40,7 +40,7 @@
 
                                     <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addWellUp(well)" title="Delete">
+                                        <a href="#" @click.prevent="addWellUp(well)"  >
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
@@ -48,7 +48,7 @@
                                                 &nbsp;<p>{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" @click.prevent="addWellDown(well)" title="Delete">
+                                        <a href="#" @click.prevent="addWellDown(well)" >
                                             <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
@@ -56,7 +56,7 @@
                                                 &nbsp;<p>{{well.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete">
+                                        <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                     <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -78,7 +78,7 @@
 
                                     <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addImproveUp(imporve)" title="Delete">
+                                        <a href="#" @click.prevent="addImproveUp(imporve)" >
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
                                                     <use xlink:href="#at-handUp"></use>
@@ -86,7 +86,7 @@
                                                 &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" @click.prevent="addImproveDown(imporve)" title="Delete">
+                                        <a href="#" @click.prevent="addImproveDown(imporve)" >
                                             <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-handDown"></use>
@@ -94,7 +94,7 @@
                                                 &nbsp;<p>{{imporve.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete">
+                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                     <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -135,7 +135,7 @@
                                             </button>
                                         </a>
 
-                                        <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right">
+                                        <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
                                                     <use xlink:href="#at-delete"></use>
@@ -186,9 +186,13 @@
                 listThrumps: [
                     { userid: null,bid: null, upCount:0,downCount:0 }
                 ],
+                listBoardContent: [
+                    { Id: 0, Detail: null,Type:0 }
+                ],
                 boardName:null,
                 boardId: null,
                 connection: "",
+                state:0,
             };
         },
         created() {
@@ -209,12 +213,27 @@
                     .then(all => {
                         this.WellContent = all.data.filter(item => item.Type == 1);
                         this.ImporveContent = all.data.filter(item => item.Type == 2);
-                        this.ActionContent = all.data.filter(item=>item.Type==3);
+                        this.ActionContent = all.data.filter(item => item.Type == 3);
+
+                        this.cacheBoardItemData(all.data);
+
                     return;
                 }).catch(error => {
                     console.log(error);
                 })
             },
+
+            cacheBoardItemData(allBoardData) {
+                this.listBoardContent = [
+                    { Id: 0, Detail: null, Type: 0 }
+                ];
+
+                for (var i = 0; i < allBoardData.length; i++) {
+                    var item = this.allBoardData[i];
+                    this.listBoardContent.push({ Id: item.Id, Detail: item.Detail, Type:item.Type })
+                }
+            },
+
             addBoardDetail(boardDetail, type) {
                 this.axios({
                     method: 'post',
@@ -280,7 +299,18 @@
                 )
             },
             updateBoardItem(boardItem) {
-                console.log(boardItem.Id);
+                var detailChanged = false;
+                console.log(this.listBoardContent);
+                var oldDetailValue = this.listBoardContent.find(s => s.Id == boardItem.Id).Detail;
+
+                if (oldDetailValue != boardItem.Detail) {
+                    detailChanged = true;
+                }
+
+                if (!detailChanged) {
+                    return;
+                }
+
                 this.axios({
                     method: 'put',
                     url: '/BoardItem',
