@@ -9,6 +9,7 @@
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
+                        <DropdownItem v-on:click.native="fetchData()">Refresh</DropdownItem>
                         <DropdownItem v-on:click.native="markCompleted()">Mark as Completed</DropdownItem>
                         <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
                     </DropdownMenu>
