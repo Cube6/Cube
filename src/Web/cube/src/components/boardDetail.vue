@@ -38,7 +38,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" />
+                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)"  >
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -76,7 +76,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" />
+                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)"  @on-change="boardItemChanged"/>
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(imporve)" >
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -115,7 +115,7 @@
                                 <Card style="width: 100%; text-align: left; ">
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" />
+                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)">
@@ -189,6 +189,7 @@
                 listBoardContent: [
                     { Id: 0, Detail: null,Type:0 }
                 ],
+                boardItemTextChanged: false,
                 boardName:null,
                 boardId: null,
                 connection: "",
@@ -215,7 +216,7 @@
                         this.ImporveContent = all.data.filter(item => item.Type == 2);
                         this.ActionContent = all.data.filter(item => item.Type == 3);
 
-                        this.cacheBoardItemData(all.data);
+                        //this.cacheBoardItemData(all.data);
 
                     return;
                 }).catch(error => {
@@ -298,16 +299,19 @@
                     }
                 )
             },
+            boardItemChanged() {
+                this.boardItemTextChanged = true;
+            },
             updateBoardItem(boardItem) {
-                var detailChanged = false;
+               /* var detailChanged = false;*/
                 console.log(this.listBoardContent);
-                var oldDetailValue = this.listBoardContent.find(s => s.Id == boardItem.Id).Detail;
+                //var oldDetailValue = this.listBoardContent.find(s => s.Id == boardItem.Id).Detail;
 
-                if (oldDetailValue != boardItem.Detail) {
-                    detailChanged = true;
-                }
+                //if (oldDetailValue != boardItem.Detail) {
+                //    detailChanged = true;
+                //}
 
-                if (!detailChanged) {
+                if (!this.boardItemTextChanged) {
                     return;
                 }
 
@@ -325,6 +329,7 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
+                    this.boardItemTextChanged = false;
                     this.fetchData();
                 }).then(() => {
                     this.renderFunc(boardItem.Detail + ' is updated successfully.');
