@@ -6,6 +6,7 @@
                 {{boardName}}
 
                 <span style="color:forestgreen" v-if="state == 2">Completed</span>
+
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
@@ -14,6 +15,7 @@
                         <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
+                <Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData()" title="Refresh"></Icon>
             </span>
         </h1>
         <br />
@@ -211,6 +213,12 @@
  
         methods: {
             fetchData() {
+                const msg = this.$Message.loading({
+                    content: 'Loading...',
+                    duration: 0
+                });
+                setTimeout(msg, 60*1000);
+
                 this.axios.get('/BoardItem/' + this.boardId + '')
                     .then(all => {
                         this.WellContent = all.data.filter(item => item.Type == 1);
@@ -218,11 +226,13 @@
                         this.ActionContent = all.data.filter(item => item.Type == 3);
 
                         //this.cacheBoardItemData(all.data);
-
-                    return;
+                        setTimeout(msg);
+                        return;
                 }).catch(error => {
                     console.log(error);
                 })
+
+                //setTimeout(msg);
             },
 
             cacheBoardItemData(allBoardData) {
