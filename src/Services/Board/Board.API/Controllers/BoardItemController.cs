@@ -23,9 +23,9 @@ namespace Board.API.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task Create(BoardItemDto boardItemDto)
+		public async Task<BoardItemDto> Create(BoardItemDto boardItemDto)
 		{
-			await _appservice.CreateBoardItem(boardItemDto);
+			return await _appservice.CreateBoardItem(boardItemDto);
 		}
 
 		[HttpGet("{boardId}")]

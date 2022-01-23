@@ -13,7 +13,7 @@ namespace Cube.Board.Respository
 		Task<bool> SoftDeleteBoardAsync(long id);
 
 		Task<List<DisscussionBoardItem>> GetBoardItemByIdAsync(long boardId);
-		Task CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
+		Task<int> CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
 		Task<bool> DeleteBoardItemAsync(long id);
 		Task UpdateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
 

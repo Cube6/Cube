@@ -1,8 +1,15 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Cube.Board.Application.Dtos;
+using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace Board.API.Hubs
 {
+	public class BoardItemEvent
+	{
+		public string Operation { get; set; }
+		public BoardItemDto BoardItem { get; set; }
+	}
+
 	public class BoardHub : Hub
 	{
 		public async Task SendBoardMessage()
@@ -10,9 +17,9 @@ namespace Board.API.Hubs
 			await Clients.All.SendAsync("ReceiveBoardMessage");
 		}
 
-		public async Task SendBoardItemMessage(int boardItemId)
+		public async Task SendBoardItemMessage(BoardItemEvent boardItemEvent)
 		{
-			await Clients.All.SendAsync("ReceiveBoardItemMessage", boardItemId);
+			await Clients.All.SendAsync("ReceiveBoardItemMessage", boardItemEvent);
 		}
 
 		//// 常用方法

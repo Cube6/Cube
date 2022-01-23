@@ -24,10 +24,11 @@ namespace Cube.Board.Respository
 			return disscussionBoard.Id;
 		}
 
-		public Task CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem)
+		public async Task<int> CreateBoardItemAsync(DisscussionBoardItem disscussionBoardItem)
 		{
 			_context.DisscussionBoardItems.Add(disscussionBoardItem);
-			return _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
+			return disscussionBoardItem.Id;
 		}
 
 		public Task UpdateBoardAsync(DisscussionBoard disscussionBoard)
@@ -66,7 +67,7 @@ namespace Cube.Board.Respository
 
 		public async Task<List<DisscussionBoardItem>> GetBoardItemByIdAsync(long boardId)
 		{
-			var result = await _context.DisscussionBoardItems.Where(it => it.Board.Id == (int)boardId).ToListAsync();
+			var result = await _context.DisscussionBoardItems.Include(t=>t.Board).Where(it => it.Board.Id == (int)boardId).ToListAsync();
 			return result;
 		}
 

@@ -12,7 +12,7 @@ namespace Cube.Board.Application
 		Task<int> CreateBoard(CreateBoardDto disscussionBoard);
 		Task DeleteBoardByIdAsync(long id);
 
-		Task CreateBoardItem(BoardItemDto boardItemDto);
+		Task<BoardItemDto> CreateBoardItem(BoardItemDto boardItemDto);
 		Task DeleteBoardItemByIdAsync(long id);
 		Task UpdateBoardItem(BoardItemDto boardItemDto);
 		Task<List<BoardItemDto>> FindBoardItemByIdAsync(long id);

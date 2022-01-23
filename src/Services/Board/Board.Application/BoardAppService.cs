@@ -75,7 +75,7 @@ namespace Cube.Board.Application
 			await _repository.UpdateBoardAsync(board);
 		}
 
-		public async Task CreateBoardItem(BoardItemDto boardItemDto)
+		public async Task<BoardItemDto> CreateBoardItem(BoardItemDto boardItemDto)
 		{
 			var boardItem = new DisscussionBoardItem()
 			{
@@ -87,7 +87,10 @@ namespace Cube.Board.Application
 				DateModified = DateTime.Now,
 				Type= boardItemDto.Type,
 			};
-			await _repository.CreateBoardItemAsync(boardItem);
+			var id = await _repository.CreateBoardItemAsync(boardItem);
+			boardItem.Id = id;
+
+			return _mapper.Map<BoardItemDto>(boardItem);
 		}
 
 		public async Task UpdateBoardItem(BoardItemDto boardItemDto)

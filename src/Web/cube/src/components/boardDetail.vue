@@ -10,12 +10,12 @@
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
-                        <DropdownItem v-on:click.native="fetchData()">Refresh</DropdownItem>
+                        <DropdownItem v-on:click.native="fetchData(true)">Refresh</DropdownItem>
                         <DropdownItem v-on:click.native="markCompleted()">Mark as Completed</DropdownItem>
                         <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData()" title="Refresh"></Icon>
+                <Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData(true)" title="Refresh"></Icon>
             </span>
         </h1>
         <br />
@@ -163,6 +163,9 @@
 
 <script>
     const signalR = require("@microsoft/signalr");
+    const WentWellType = 1;
+    const NeedsImproveType = 2;
+    const ActionType = 3;
 
     export default {
         data() {
@@ -189,9 +192,9 @@
                 listThrumps: [
                     { userid: null,bid: null, upCount:0,downCount:0 }
                 ],
-                listBoardContent: [
-                    { Id: 0, Detail: null,Type:0 }
-                ],
+                //listBoardContent: [
+                //    { Id: 0, Detail: null,Type:0 }
+                //],
                 boardItemTextChanged: false,
                 boardName:null,
                 boardId: null,
@@ -204,7 +207,7 @@
             this.boardName = this.$route.params.boardName;
             this.state = this.$route.params.state;
             console.log(this.state);
-            this.fetchData();
+            this.fetchData(true);
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
 
@@ -212,12 +215,15 @@
         },
  
         methods: {
-            fetchData() {
-                const msg = this.$Message.loading({
-                    content: 'Loading...',
-                    duration: 0
-                });
-                setTimeout(msg, 60*1000);
+            fetchData(forceRefresh) {
+
+                var msg;
+                if (forceRefresh) {
+                    msg = this.$Message.loading({
+                        content: 'Loading...',
+                        duration: 0
+                    });
+                }
 
                 this.axios.get('/BoardItem/' + this.boardId + '')
                     .then(all => {
@@ -225,26 +231,34 @@
                         this.ImporveContent = all.data.filter(item => item.Type == 2);
                         this.ActionContent = all.data.filter(item => item.Type == 3);
 
-                        //this.cacheBoardItemData(all.data);
-                        setTimeout(msg);
+                        console.log('Well' + JSON.stringify(this.WellContent));
+                        console.log('Improve' + JSON.stringify(this.ImporveContent));
+                        console.log('Action' + JSON.stringify(this.ActionContent));
+
+                        if (forceRefresh) {
+                            setTimeout(msg);
+                        }
                         return;
-                }).catch(error => {
-                    console.log(error);
-                })
 
-                //setTimeout(msg);
+                    }).catch(error => {
+
+                        if (forceRefresh) {
+                            setTimeout(msg);
+                        }
+                        console.log(error);
+                    })
             },
 
-            cacheBoardItemData(allBoardData) {
-                this.listBoardContent = [
-                    { Id: 0, Detail: null, Type: 0 }
-                ];
+            //cacheBoardItemData(allBoardData) {
+            //    this.listBoardContent = [
+            //        { Id: 0, Detail: null, Type: 0 }
+            //    ];
 
-                for (var i = 0; i < allBoardData.length; i++) {
-                    var item = this.allBoardData[i];
-                    this.listBoardContent.push({ Id: item.Id, Detail: item.Detail, Type:item.Type })
-                }
-            },
+            //    for (var i = 0; i < allBoardData.length; i++) {
+            //        var item = this.allBoardData[i];
+            //        this.listBoardContent.push({ Id: item.Id, Detail: item.Detail, Type:item.Type })
+            //    }
+            //},
 
             addBoardDetail(boardDetail, type) {
                 this.axios({
@@ -259,29 +273,44 @@
                     headers: {
                         'Authorization': 'Bearer ' + this.UserToken
                     }
-                }).then(() => {
-                    this.fetchData();
-                }).then(() => {
+                }).then((res) => {
+
+                    var listOfItems;
+                    if (type == WentWellType) {
+                        listOfItems = this.WellContent;
+                    } else if (type == NeedsImproveType) {
+                        listOfItems = this.ImporveContent;
+                    } else if (type == ActionType) {
+                        listOfItems = this.ActionContent;
+                    }
+                    listOfItems.push(res.data);
+
                     this.renderFunc(boardDetail + ' is created successfully.');
-                }).then(() => {
-                    this.sendMsg();
+
+                    var context = {
+                        Operation: 'add',
+                        BoardItem: res.data
+                    };
+                    this.sendMsg(context);
+
                     this.boardDetail.WellDetail = "";
                     this.boardDetail.ImporveDetail = "";
                     this.boardDetail.ActionDetail = "";
                 })
             },
+
             addWentWell() {
-                this.addBoardDetail(this.boardDetail.WellDetail, 1);
-               
+                this.addBoardDetail(this.boardDetail.WellDetail, WentWellType);          
             },
+
             addImporved() {
-                this.addBoardDetail(this.boardDetail.ImporveDetail, 2);
-               
+                this.addBoardDetail(this.boardDetail.ImporveDetail, NeedsImproveType);      
             },
+
             addAction() {
-                this.addBoardDetail(this.boardDetail.ActionDetail, 3);
-                
+                this.addBoardDetail(this.boardDetail.ActionDetail, ActionType);
             },
+
             deleteBoardItem(boardItem) {
 
                 this.$confirm(
@@ -293,29 +322,63 @@
                         },
                         callback: confirm => {
                             if (confirm) {
+
+                                var listOfItems;
+                                if (boardItem.Type == WentWellType) {
+                                    listOfItems = this.WellContent;
+                                } else if (boardItem.Type == NeedsImproveType) {
+                                    listOfItems = this.ImporveContent;
+                                } else if (boardItem.Type == ActionType) {
+                                    listOfItems = this.ActionContent;
+                                }
+
+                                this.removeBoardItemById(listOfItems, boardItem.Id);
+
                                 this.axios.delete('/BoardItem/' + boardItem.Id + '',
                                     {
                                         headers: {
                                             'Authorization': 'Bearer ' + this.UserToken
                                         }
                                     }).then(() => {
-                                        this.fetchData();
-                                    }).then(() => {
+                                        console.log(boardItem.Detail + 'is deleted');
                                         this.renderFunc(boardItem.Detail + ' is deleted successfully.');
                                     }).then(() => {
-                                        this.sendMsg();
+                                        var context = {
+                                            Operation:'delete',
+                                            BoardItem: boardItem
+                                        };
+
+                                        this.sendMsg(context);
                                     })
                             }
                         }
                     }
                 )
             },
+
+            removeBoardItemById(arr, id) {
+                var index = -1;
+
+                arr.find(function (item, i) {
+                    if (item.Id === id) {
+                        index = i;
+                        return i;
+                    }
+                });
+
+                if (index === -1) {
+                    return false;
+                }
+                return !!arr.splice(index, 1);
+            },
+
             boardItemChanged() {
                 this.boardItemTextChanged = true;
             },
+
             updateBoardItem(boardItem) {
-               /* var detailChanged = false;*/
-                console.log(this.listBoardContent);
+                /* var detailChanged = false;*/
+                //console.log(this.listBoardContent);
                 //var oldDetailValue = this.listBoardContent.find(s => s.Id == boardItem.Id).Detail;
 
                 //if (oldDetailValue != boardItem.Detail) {
@@ -326,28 +389,35 @@
                     return;
                 }
 
-                this.axios({
-                    method: 'put',
-                    url: '/BoardItem',
-                    data: {
-                        id: boardItem.Id,
-                        detail: boardItem.Detail,
-                        type: boardItem.Type,
-                        createduser: this.userName,
-                        boardid: this.boardId
-                    },
-                    headers: {
-                        'Authorization': 'Bearer ' + this.UserToken
-                    }
-                }).then(() => {
-                    this.boardItemTextChanged = false;
-                    this.fetchData();
-                }).then(() => {
-                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
-                }).then(() => {
-                    this.sendMsg();
-                })
+                this.axios(
+                    {
+                        method: 'put',
+                        url: '/BoardItem',
+                        data: {
+                            id: boardItem.Id,
+                            detail: boardItem.Detail,
+                            type: boardItem.Type,
+                            createduser: this.userName,
+                            boardid: this.boardId
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                        }
+                    }).then(() => {
+                        this.boardItemTextChanged = false;
+                    }).then(() => {
+                        this.renderFunc(boardItem.Detail + ' is updated successfully.');
+                    }).then(() => {
+
+                        var context = {
+                            Operation: 'update',
+                            BoardItem: boardItem
+                        };
+
+                        this.sendMsg(context);
+                    })
             },
+
             addActionUp(actionItem) {
                 let username = this.userName;
                 var listItem = this.listThrumps.find(item => item.bid == actionItem.Id && item.username == username);
@@ -370,6 +440,7 @@
                 }
 
             },
+
             addActionDown(actionItem) {
                 let username = this.userName;
                 var listItem = this.listThrumps.find(item => item.bid == actionItem.Id && item.username == username);
@@ -389,6 +460,7 @@
                     }
                 }
             },
+
             addWellUp(wellItem) {
                 let username = this.userName;
                 var listItem = this.listThrumps.find(item => item.bid == wellItem.Id && item.username == username);
@@ -410,6 +482,7 @@
                     }
                 }
             },
+
             addWellDown(wellItem) {
                 let username = this.userName;
                 var listItem = this.listThrumps.find(item => item.bid == wellItem.Id && item.username == username);
@@ -431,6 +504,7 @@
                     }
                 }
             },
+
             addImproveUp(improveItem) {
                 let username = this.userName;
                 var listItem = this.listThrumps.find(item => item.bid == improveItem.Id && item.username == username);
@@ -452,6 +526,7 @@
                     }
                 }
             },
+
             addImproveDown(improveItem) {
                 let username = this.userName;
                 var listItem = this.listThrumps.find(item => item.bid == improveItem.Id && item.username == username);
@@ -509,17 +584,23 @@
                     .withUrl("http://10.63.224.86:9070/BoardHub", {})
                     .configureLogging(signalR.LogLevel.Error)
                     .build();
-                this.connection.on("ReceiveBoardItemMessage", boardid => {
-                    if (boardid == this.boardId)
+                this.connection.on("ReceiveBoardItemMessage", boardItemEvent => {
+                    if (boardItemEvent.boardItem.boardId == this.boardId)
                     {
-                        this.fetchData();
+                        this.fetchData(false);
                     }
                 });
                 this.connection.start();
             },
-            sendMsg() {
-                this.connection.invoke("SendBoardItemMessage", this.boardId);
+
+            sendMsg(context) {
+                this.connection.invoke("SendBoardItemMessage", context);
             },
+
+            sendBoardMsg() {
+                this.connection.invoke("SendBoardMessage");
+            },
+
             markCompleted() {
                 this.$confirm(
                     {
@@ -552,6 +633,7 @@
                     }
                 )
             },
+
             deleteBoard() {
                 this.$confirm(
                     {
@@ -572,7 +654,7 @@
                                     }).then(() => {
                                         this.renderFunc(this.boardName + ' is deleted successfully.');
                                     }).then(() => {
-                                        this.sendMsg();
+                                        this.sendBoardMsg();
                                     })
                             }
                         }

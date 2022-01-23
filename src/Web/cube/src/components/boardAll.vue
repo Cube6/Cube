@@ -143,10 +143,6 @@
                 this.connection.start();
             },
             sendMsg() {
-                //let params = {
-                //    user: this.user,
-                //    message: this.message
-                //};
                 this.connection.invoke("SendBoardMessage");
             }
         },
