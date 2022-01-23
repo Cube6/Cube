@@ -167,6 +167,10 @@
     const NeedsImproveType = 2;
     const ActionType = 3;
 
+    const AddOperation = 'add';
+    const UpdateOperation = 'update';
+    const DeleteOperation = 'delete';
+
     export default {
         data() {
             return {
@@ -275,20 +279,13 @@
                     }
                 }).then((res) => {
 
-                    var listOfItems;
-                    if (type == WentWellType) {
-                        listOfItems = this.WellContent;
-                    } else if (type == NeedsImproveType) {
-                        listOfItems = this.ImporveContent;
-                    } else if (type == ActionType) {
-                        listOfItems = this.ActionContent;
-                    }
+                    var listOfItems = this.getListOfItems(type);
                     listOfItems.push(res.data);
 
                     this.renderFunc(boardDetail + ' is created successfully.');
 
                     var context = {
-                        Operation: 'add',
+                        Operation: AddOperation,
                         BoardItem: res.data
                     };
                     this.sendMsg(context);
@@ -323,15 +320,7 @@
                         callback: confirm => {
                             if (confirm) {
 
-                                var listOfItems;
-                                if (boardItem.Type == WentWellType) {
-                                    listOfItems = this.WellContent;
-                                } else if (boardItem.Type == NeedsImproveType) {
-                                    listOfItems = this.ImporveContent;
-                                } else if (boardItem.Type == ActionType) {
-                                    listOfItems = this.ActionContent;
-                                }
-
+                                var listOfItems = this.getListOfItems(boardItem.Type);
                                 this.removeBoardItemById(listOfItems, boardItem.Id);
 
                                 this.axios.delete('/BoardItem/' + boardItem.Id + '',
@@ -344,7 +333,7 @@
                                         this.renderFunc(boardItem.Detail + ' is deleted successfully.');
                                     }).then(() => {
                                         var context = {
-                                            Operation:'delete',
+                                            Operation: DeleteOperation,
                                             BoardItem: boardItem
                                         };
 
@@ -356,7 +345,20 @@
                 )
             },
 
-            removeBoardItemById(arr, id) {
+            getListOfItems(type) {
+                var listOfItems;
+                if (type == WentWellType) {
+                    listOfItems = this.WellContent;
+                } else if (type == NeedsImproveType) {
+                    listOfItems = this.ImporveContent;
+                } else if (type == ActionType) {
+                    listOfItems = this.ActionContent;
+                }
+
+                return listOfItems;
+            },
+
+            findIndexOfBoardItems(arr, id) {
                 var index = -1;
 
                 arr.find(function (item, i) {
@@ -366,6 +368,11 @@
                     }
                 });
 
+                return index;
+            },
+
+            removeBoardItemById(arr, id) {
+                var index = this.findIndexOfBoardItems(arr, id);
                 if (index === -1) {
                     return false;
                 }
@@ -410,7 +417,7 @@
                     }).then(() => {
 
                         var context = {
-                            Operation: 'update',
+                            Operation: UpdateOperation,
                             BoardItem: boardItem
                         };
 
@@ -585,9 +592,21 @@
                     .configureLogging(signalR.LogLevel.Error)
                     .build();
                 this.connection.on("ReceiveBoardItemMessage", boardItemEvent => {
-                    if (boardItemEvent.boardItem.boardId == this.boardId)
-                    {
-                        this.fetchData(false);
+                    if (boardItemEvent.BoardItem.BoardId == this.boardId) {
+                        var listOfItems = this.getListOfItems(boardItemEvent.BoardItem.Type);
+
+                        if (boardItemEvent.Operation == DeleteOperation) {
+                            this.removeBoardItemById(listOfItems, boardItemEvent.BoardItem.Id);
+                        }
+                        else if (boardItemEvent.Operation == AddOperation) {
+                            var index = this.findIndexOfBoardItems(listOfItems, boardItemEvent.BoardItem.Id);
+                            if (index == -1) {
+                                listOfItems.push(boardItemEvent.BoardItem);
+                            }
+                        }
+                        else {
+                            this.fetchData(false);
+                        }
                     }
                 });
                 this.connection.start();

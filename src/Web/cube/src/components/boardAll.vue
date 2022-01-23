@@ -63,11 +63,20 @@
         },
         methods: {
             fetchData() {
+
+                var msg = this.$Message.loading({
+                        content: 'Loading...',
+                        duration: 0
+                    });
+
                 fetch('Board')
                     .then(r => r.json())
                     .then(json => {
                         console.log(json);
                         this.post = json;
+
+                        setTimeout(msg);
+
                         return;
                     });
             },

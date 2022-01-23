@@ -38,6 +38,11 @@ namespace Board.API
 			services.AddSignalR(options =>
 			{
 				options.EnableDetailedErrors = true;
+			}).AddJsonProtocol(options =>
+			{
+				//Prevent SignalR from converting the first letters of property to lower case
+				//when it serializes the object and sends it to clients
+				options.PayloadSerializerOptions.PropertyNamingPolicy = null;
 			});
 
 			services.AddControllers();
