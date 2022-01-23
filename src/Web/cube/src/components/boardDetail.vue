@@ -604,6 +604,12 @@
                                 listOfItems.push(boardItemEvent.BoardItem);
                             }
                         }
+                        else if (boardItemEvent.Operation == UpdateOperation) {
+                            var indexOfEltToBeUpdated = this.findIndexOfBoardItems(listOfItems, boardItemEvent.BoardItem.Id);
+                            if (indexOfEltToBeUpdated != -1) {
+                                listOfItems.splice(indexOfEltToBeUpdated, 1, boardItemEvent.BoardItem)
+                            }
+                        }
                         else {
                             this.fetchData(false);
                         }
