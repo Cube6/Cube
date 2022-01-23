@@ -10,12 +10,12 @@
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
-                        <DropdownItem v-on:click.native="fetchData(true)">Refresh</DropdownItem>
-                        <DropdownItem v-on:click.native="markCompleted()">Mark as Completed</DropdownItem>
-                        <DropdownItem v-on:click.native="deleteBoard()">Delete</DropdownItem>
+                        <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem>
+                        <DropdownItem v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
+                        <DropdownItem v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData(true)" title="Refresh"></Icon>
+                <!--<Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData(true)" title="Refresh"></Icon>-->
             </span>
         </h1>
         <br />
@@ -196,9 +196,6 @@
                 listThrumps: [
                     { userid: null,bid: null, upCount:0,downCount:0 }
                 ],
-                //listBoardContent: [
-                //    { Id: 0, Detail: null,Type:0 }
-                //],
                 boardItemTextChanged: false,
                 boardName:null,
                 boardId: null,
@@ -235,10 +232,6 @@
                         this.ImporveContent = all.data.filter(item => item.Type == 2);
                         this.ActionContent = all.data.filter(item => item.Type == 3);
 
-                        console.log('Well' + JSON.stringify(this.WellContent));
-                        console.log('Improve' + JSON.stringify(this.ImporveContent));
-                        console.log('Action' + JSON.stringify(this.ActionContent));
-
                         if (forceRefresh) {
                             setTimeout(msg);
                         }
@@ -253,18 +246,11 @@
                     })
             },
 
-            //cacheBoardItemData(allBoardData) {
-            //    this.listBoardContent = [
-            //        { Id: 0, Detail: null, Type: 0 }
-            //    ];
-
-            //    for (var i = 0; i < allBoardData.length; i++) {
-            //        var item = this.allBoardData[i];
-            //        this.listBoardContent.push({ Id: item.Id, Detail: item.Detail, Type:item.Type })
-            //    }
-            //},
-
             addBoardDetail(boardDetail, type) {
+                if (!boardDetail || !boardDetail.trim()) {
+                    return;
+                }
+
                 this.axios({
                     method: 'post',
                     url: '/BoardItem',
@@ -384,13 +370,6 @@
             },
 
             updateBoardItem(boardItem) {
-                /* var detailChanged = false;*/
-                //console.log(this.listBoardContent);
-                //var oldDetailValue = this.listBoardContent.find(s => s.Id == boardItem.Id).Detail;
-
-                //if (oldDetailValue != boardItem.Detail) {
-                //    detailChanged = true;
-                //}
 
                 if (!this.boardItemTextChanged) {
                     return;
