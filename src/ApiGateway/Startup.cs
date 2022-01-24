@@ -11,7 +11,6 @@ using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using Ocelot.Cache.CacheManager;
 using Ocelot.Provider.Polly;
-using Cube.GatewayService.Hubs;
 
 namespace Cube.GatewayService
 {
@@ -27,15 +26,15 @@ namespace Cube.GatewayService
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSignalR(options =>
-			{
-				options.EnableDetailedErrors = true;
-			}).AddJsonProtocol(options =>
-			{
-				//Prevent SignalR from converting the first letters of property to lower case
-				//when it serializes the object and sends it to clients
-				options.PayloadSerializerOptions.PropertyNamingPolicy = null;
-			});
+			//services.AddSignalR(options =>
+			//{
+			//	options.EnableDetailedErrors = true;
+			//}).AddJsonProtocol(options =>
+			//{
+			//	//Prevent SignalR from converting the first letters of property to lower case
+			//	//when it serializes the object and sends it to clients
+			//	options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+			//});
 
 			services.AddOcelot()
 					.AddConsul()
@@ -50,15 +49,15 @@ namespace Cube.GatewayService
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Web.Bff.DiscussionBoard", Version = "v1" });
 			});
 
-			services.AddCors(options =>
-			{
-				options.AddPolicy(name: "cors",
-								  builder =>
-								  {
-									  builder.WithOrigins("http://localhost:81",
-														  "http://cube");
-								  });
-			});
+			//services.AddCors(options =>
+			//{
+			//	options.AddPolicy(name: "cors",
+			//					  builder =>
+			//					  {
+			//						  builder.WithOrigins("http://localhost:81",
+			//											  "http://cube");
+			//					  });
+			//});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,18 +72,18 @@ namespace Cube.GatewayService
 
 			app.UseRouting();
 
-			app.UseCors("cors");
+			//app.UseCors("cors");
 
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
-				endpoints.MapHub<BoardHub>("/BoardHub")
-						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81", "http://cube" })
-						.AllowAnyMethod()
-						.AllowAnyHeader()
-						.AllowCredentials());
+				//endpoints.MapHub<BoardHub>("/BoardHub")
+				//		.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81", "http://cube" })
+				//		.AllowAnyMethod()
+				//		.AllowAnyHeader()
+				//		.AllowCredentials());
 			});
 
 			app.UseOcelot().Wait();
