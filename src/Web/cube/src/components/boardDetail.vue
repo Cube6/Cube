@@ -274,7 +274,7 @@
                         Operation: AddOperation,
                         BoardItem: res.data
                     };
-                    this.sendMsg(context);
+                    this.sendBoardItemMsg(context);
 
                     this.boardDetail.WellDetail = "";
                     this.boardDetail.ImporveDetail = "";
@@ -323,7 +323,7 @@
                                             BoardItem: boardItem
                                         };
 
-                                        this.sendMsg(context);
+                                        this.sendBoardItemMsg(context);
                                     })
                             }
                         }
@@ -400,7 +400,7 @@
                             BoardItem: boardItem
                         };
 
-                        this.sendMsg(context);
+                        this.sendBoardItemMsg(context);
                     })
             },
 
@@ -594,15 +594,33 @@
                         }
                     }
                 });
-                this.connection.start();
-            },
 
-            sendMsg(context) {
-                this.connection.invoke("SendBoardItemMessage", context);
+                //this.connection.on("ReceiveCommentMessage", commentEvent => {
+                //    if (commentEvent.BoardId == this.boardId) {
+
+                //        var listOfItems = this.getListOfItems(commentEvent.Type);
+                //        if (commentEvent.Operation == DeleteOperation) {
+                            
+                //        }
+                //        else if (commentEvent.Operation == AddOperation) {
+
+                //        }
+                //    }
+                //});
+
+                this.connection.start();
             },
 
             sendBoardMsg() {
                 this.connection.invoke("SendBoardMessage");
+            },
+
+            sendBoardItemMsg(context) {
+                this.connection.invoke("SendBoardItemMessage", context);
+            },
+
+            sendCommentMsg(context) {
+                this.connection.invoke("SendCommentMessage", context);
             },
 
             markCompleted() {
@@ -630,7 +648,7 @@
                                 }).then(() => {
                                     this.renderFunc(this.boardName + ' is marked as completed successfully.');
                                 }).then(() => {
-                                    this.sendMsg();
+                                    this.sendBoardItemMsg();
                                 })
                             }
                         }
