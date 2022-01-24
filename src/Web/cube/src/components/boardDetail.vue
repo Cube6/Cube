@@ -608,6 +608,17 @@
                 //    }
                 //});
 
+                //this.connection.on("ReceiveUserMessage", userEvent => {
+                //    if (userEvent.BoardId == this.boardId) {
+                //        if (userEvent.Operation == DeleteOperation) {
+
+                //        }
+                //        else if (userEvent.Operation == AddOperation) {
+
+                //        }
+                //    }
+                //});
+
                 this.connection.start();
             },
 
