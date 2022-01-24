@@ -4,12 +4,6 @@ using System.Threading.Tasks;
 
 namespace Board.API.Hubs
 {
-	public class BoardItemEvent
-	{
-		public string Operation { get; set; }
-		public BoardItemDto BoardItem { get; set; }
-	}
-
 	public class BoardHub : Hub
 	{
 		public async Task SendBoardMessage()
@@ -20,6 +14,11 @@ namespace Board.API.Hubs
 		public async Task SendBoardItemMessage(BoardItemEvent boardItemEvent)
 		{
 			await Clients.All.SendAsync("ReceiveBoardItemMessage", boardItemEvent);
+		}
+
+		public async Task SendCommentMessage(CommentEvent commentEvent)
+		{
+			await Clients.All.SendAsync("ReceiveCommentMessage", commentEvent);
 		}
 
 		//// 常用方法
