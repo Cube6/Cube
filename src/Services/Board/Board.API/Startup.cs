@@ -59,7 +59,8 @@ namespace Board.API
 				options.AddPolicy(name: "cors",
 								  builder =>
 								  {
-									  builder.WithOrigins("http://localhost:81",
+									  builder.WithOrigins("http://localhost:5050",
+														  "http://localhost:81",
 														  "http://cube");
 								  });
 			});
@@ -102,7 +103,7 @@ namespace Board.API
 			app.UseSwagger();
 			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Board.API v1"));
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseRouting();
 
@@ -116,7 +117,7 @@ namespace Board.API
 			{
 				endpoints.MapControllers();
 				endpoints.MapHub<BoardHub>("/BoardHub")
-						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:81", "http://cube" })
+						.RequireCors(t => t.WithOrigins(new string[] { "http://localhost:5050", "http://localhost:81", "http://cube" })
 						.AllowAnyMethod()
 						.AllowAnyHeader()
 						.AllowCredentials());

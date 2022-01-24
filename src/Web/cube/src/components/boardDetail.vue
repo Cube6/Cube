@@ -567,7 +567,7 @@
 
             init() {
                 this.connection = new signalR.HubConnectionBuilder()
-                    .withUrl("http://10.63.224.86:9070/BoardHub", {})
+                    .withUrl("http://10.63.224.86:5050/BoardHub", {})
                     .configureLogging(signalR.LogLevel.Error)
                     .build();
                 this.connection.on("ReceiveBoardItemMessage", boardItemEvent => {
