@@ -21,6 +21,11 @@ namespace Board.API.Hubs
 			await Clients.All.SendAsync("ReceiveCommentMessage", commentEvent);
 		}
 
+		public async Task SendUserMessage(UserEvent commentEvent)
+		{
+			await Clients.All.SendAsync("ReceiveUserMessage", commentEvent);
+		}
+
 		//// 常用方法
 		//// 给所有人发送消息
 		//await Clients.All.SendAsync("ReceiveMessage", data);

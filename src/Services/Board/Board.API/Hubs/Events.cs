@@ -16,4 +16,11 @@ namespace Board.API.Hubs
 		public BoardItemType Type { set; get; }
 		public CommentDto Comment { get; set; }
 	}
+
+	public class UserEvent
+	{
+		public string UserName { get; set; }
+		public string Opeation { get; set; }
+		public int BoardId { get; set; }
+	}
 }
