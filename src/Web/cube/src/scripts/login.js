@@ -49,6 +49,9 @@ export default {
                     this.$Message.error('Fail!');
                 }
             })
+        },
+        directToRegister() {
+            this.$router.replace('/register');
         }
     }
 }
