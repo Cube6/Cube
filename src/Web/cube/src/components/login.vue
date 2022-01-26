@@ -19,7 +19,7 @@
                        clickMode="push">
         </vue-particles>
         <div id="loginArea">
-            <h2>Welcome to Cube</h2>
+            <h2>Welcome to Cube !</h2>
             <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
                 <div prop="user" class="inputBox">
                     <input type="text" v-model="formInline.user" required="">
@@ -37,7 +37,7 @@
 
             <p class="login-callout mt-3">
                 New to Cube?
-                <a @click="directToRegister()" href="#">Create an account.</a>
+                <a @click="directToRegister()" href="#">Create an account</a>
             </p>
             <p class="login-tip">
                 &copy; 2022 Cube6

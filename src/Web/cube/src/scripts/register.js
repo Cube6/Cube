@@ -14,6 +14,7 @@
             }
         };
         return {
+            loading: false,
             formInline: {
                 user: '',
                 password: '',
@@ -39,6 +40,9 @@
         register(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
+
+                    this.loading = true;
+
                     this.axios({
                         method: 'post',
                         url: '/User/Register',
@@ -46,11 +50,19 @@
                             Name: this.formInline.user,
                             Password: this.formInline.password
                         },
-                    }).then(() => {
-                        this.$Message.success(this.formInline.user + 'register success!');
-                        this.$router.replace('/login');
+                    }).then((res) => {
+                        if (res.data.Success) {
+                            this.$Message.success('Created the account \'' + this.formInline.user + '\' successfully!');
+                            this.$router.replace('/login');
+                        }
+                        else {
+                            this.$Message.error('Failed to create your account!');
+                            this.loading = false;
+                        }   
                     }).catch(() => {
-                        this.$Message.error('register failed!');
+                        this.$Message.error('Failed to create your account!');
+
+                        this.loading = false;
                     })
                 } else {
                     this.$Message.error('Fail!');
@@ -58,8 +70,8 @@
             })
 
         },
-        
+        redirectToLogin() {
+            this.$router.replace('/login');
+        }
     }
-
-
 }
