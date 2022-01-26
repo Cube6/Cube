@@ -43,10 +43,6 @@ namespace RedisPractice
 
 			transaction.Value = null;
 		}
-		public virtual async Task<V> GetAsync<V>(string key)
-		{
-			return await GetAsync<string, V>(key);
-		}
 		public virtual async Task<V> GetAsync<K, V>(K key)
 		{
 			try
@@ -59,11 +55,6 @@ namespace RedisPractice
 			{
 				return default;
 			}
-		}
-
-		public virtual async Task<bool> SetAsync<V>(string key, string value, int expire)
-		{
-			return await SetAsync<string, string>(key, value, expire);
 		}
 		public virtual async Task<bool> SetAsync<K,V>(K key, V value, int expire)
 		{
