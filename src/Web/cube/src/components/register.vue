@@ -32,7 +32,7 @@
                     <input type="password" v-model="formInline.confirmPassword" password required="">
                     <label>Confirm Password</label>
                 </div>
-                <Button type="primary" size="large" long :loading="loading" @click="register('formInline')">
+                <Button type="success" size="large" long :loading="loading" @click="register('formInline')">
                     <span v-if="!loading">Sign up</span>
                     <span v-else>Sign up...</span>
                 </Button>
