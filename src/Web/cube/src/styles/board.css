@@ -93,15 +93,15 @@
     font-size: 22px;
 }
 
-.demo-drawer-profile {
+.my-drawer-profile {
     font-size: 14px;
 }
 
-.demo-drawer-profile .ivu-col {
+.my-drawer-profile .ivu-col {
     margin-bottom: 12px;
 }
 
-.demo-drawer-footer {
+.my-drawer-footer {
     width: 100%;
     position: absolute;
     bottom: 0;

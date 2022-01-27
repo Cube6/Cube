@@ -10,7 +10,6 @@
                 </div>
                 <div class="layout-nav">
                     <MenuItem name="menuUsers">
-
                         <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
                             <Icon type="md-person"></Icon>
                             Users
@@ -34,7 +33,7 @@
                             <img :src="getLoginUserAvatar()" style="width: 25px; height: 25px; border-radius: 50%; margin-top: 16px " />
                             <DropdownMenu slot="list">
                                 <DropdownItem>Change Password</DropdownItem>
-                                <DropdownItem @click.native="value4 = true">My Profile</DropdownItem>
+                                <DropdownItem @click.native="showMyProfile = true">My Profile</DropdownItem>
                                 <DropdownItem @click.native="createAccount">Register New</DropdownItem>
                                 <DropdownItem><hr style="border:1px solid #CCC" /></DropdownItem>
                                 <DropdownItem @click.native="logout">Log Out</DropdownItem>
@@ -94,10 +93,10 @@
             <path d="M14.12 10.47 12 12.59l-2.13-2.12-1.41 1.41L10.59 14l-2.12 2.12 1.41 1.41L12 15.41l2.12 2.12 1.41-1.41L13.41 14l2.12-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9z"></path>
         </symbol>
 
-        <Drawer :closable="false" width="640" v-model="value4">
+        <Drawer :closable="false" width="640" v-model="showMyProfile">
             <p :style="pStyle">My Profile</p>
             <p :style="pStyle">Personal</p>
-            <div class="demo-drawer-profile">
+            <div class="my-drawer-profile">
                 <img :src="getLoginUserAvatar()" style="width: 80px; height: 80px; border-radius: 50%; margin-top: 16px " />
                 <Row>
                     <Col span="12">
@@ -118,7 +117,7 @@
             </div>
             <Divider />
             <p :style="pStyle">Statistics</p>
-            <div class="demo-drawer-profile">
+            <div class="my-drawer-profile">
                 <Row>
                     <Col span="12">
                     Board: created X boards
@@ -130,7 +129,7 @@
             </div>
             <Divider />
             <!--<p :style="pStyle">Contacts</p>
-            <div class="demo-drawer-profile">
+            <div class="my-drawer-profile">
                 <Row>
                     <Col span="12">
                     Email: admin@aresn.com
@@ -145,8 +144,8 @@
                     </Col>
                 </Row>
             </div>-->
-            <div class="demo-drawer-footer">
-                <Button type="primary" @click="value4 = false">Close</Button>
+            <div class="my-drawer-footer">
+                <Button type="primary" @click="showMyProfile = false">Close</Button>
             </div>
         </Drawer>
     </div>

@@ -6,7 +6,7 @@ export default {
             isCollapsed: false,
             userName: null,
 
-            value4: false,
+            showMyProfile: false,
             pStyle: {
                 fontSize: '16px',
                 color: 'rgba(0,0,0,0.85)',
