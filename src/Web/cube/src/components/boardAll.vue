@@ -36,6 +36,9 @@
                 </Card>
             </li>
         </ul>
+        <div class="page-footer">
+            <Page :total="pageSetting.total" :page-size="pageSetting.pageSize" :current="pageSetting.currentPage" @on-change="pageChanged" />
+        </div>
     </div>
 </template>
 
@@ -50,6 +53,10 @@
                 post: null,
                 UserName:null,
                 connection: "",
+                pageSetting: {
+                    currentPage: 1,
+                    pageSize: 50,
+                }
             };
         },
         created() {
@@ -72,8 +79,12 @@
                 fetch('Board')
                     .then(r => r.json())
                     .then(json => {
-                        console.log(json);
+                        
                         this.post = json;
+                        this.pageSetting.total = this.post.length;
+
+                        console.log(json);
+                        console.log(this.pageSetting);
 
                         setTimeout(msg);
 
@@ -153,12 +164,21 @@
             },
             sendMsg() {
                 this.connection.invoke("SendBoardMessage");
+            },
+            pageChanged(page) {
+                console.log(page);
             }
         },
     }
 </script>
 
 <style>
-    
+    .page-footer {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: '#fff'
+    }
 
 </style>
