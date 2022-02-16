@@ -10,12 +10,17 @@
                 </div>
                 <div class="layout-nav">
                     <MenuItem name="menuUsers">
-                        <Icon type="md-person"></Icon>
-                        Users
+                        <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
+                            <Icon type="md-person"></Icon>
+                            Users
+                        </Tooltip>
                     </MenuItem>
+
                     <MenuItem name="menuSettings">
-                        <Icon type="md-settings"></Icon>
-                        Settings
+                        <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
+                            <Icon type="md-settings"></Icon>
+                            Settings
+                        </Tooltip>
                     </MenuItem>
 
                     <MenuItem name="menuAbout">
@@ -28,10 +33,10 @@
                             <img :src="getLoginUserAvatar()" style="width: 25px; height: 25px; border-radius: 50%; margin-top: 16px " />
                             <DropdownMenu slot="list">
                                 <DropdownItem>Change Password</DropdownItem>
-                                <DropdownItem>My Profile</DropdownItem>
-                                <DropdownItem>Register New</DropdownItem>
-                                <DropdownItem><hr style="border:1px solid #CCC"/></DropdownItem>
-                                <DropdownItem @click.native="Logout">Log Out</DropdownItem>
+                                <DropdownItem @click.native="showMyProfile = true">My Profile</DropdownItem>
+                                <DropdownItem @click.native="createAccount">Register New</DropdownItem>
+                                <DropdownItem><hr style="border:1px solid #CCC" /></DropdownItem>
+                                <DropdownItem @click.native="logout">Log Out</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </MenuItem>
@@ -62,9 +67,9 @@
             <Layout :style="{padding: '0 24px'}">
                 <Breadcrumb :style="{margin: '24px 0'}">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
-                    <BreadcrumbItem>Home</BreadcrumbItem>
-                    <BreadcrumbItem>Board</BreadcrumbItem>
-                    <BreadcrumbItem>ViewAll</BreadcrumbItem>
+                    <!--<BreadcrumbItem>Home</BreadcrumbItem>
+                <BreadcrumbItem>Board</BreadcrumbItem>
+                <BreadcrumbItem>ViewAll</BreadcrumbItem>-->
                 </Breadcrumb>
                 <Content :style="{padding: '5px', minHeight: '280px', background: '#fff'}">
                     <Card style="height:100%">
@@ -81,12 +86,68 @@
         <symbol id="at-handUp">
             <path d="M9 21h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2zM9 9l4.34-4.34L12 10h9v2l-3 7H9V9zM1 9h4v12H1z"></path>
         </symbol>
-        <symbol id="at-handDown" >
+        <symbol id="at-handDown">
             <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm0 12-4.34 4.34L12 14H3v-2l3-7h9v10zm4-12h4v12h-4z"></path>
         </symbol>
         <symbol id="at-delete">
             <path d="M14.12 10.47 12 12.59l-2.13-2.12-1.41 1.41L10.59 14l-2.12 2.12 1.41 1.41L12 15.41l2.12 2.12 1.41-1.41L13.41 14l2.12-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4zM6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9z"></path>
         </symbol>
+
+        <Drawer :closable="false" width="640" v-model="showMyProfile">
+            <p :style="pStyle">My Profile</p>
+            <p :style="pStyle">Personal</p>
+            <div class="my-drawer-profile">
+                <img :src="getLoginUserAvatar()" style="width: 80px; height: 80px; border-radius: 50%; margin-top: 16px " />
+                <Row>
+                    <Col span="12">
+                    Name: {{ userName }}
+                    </Col>
+                    <Col span="12">
+                    Dept: ECS-Data Exchange
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="12">
+                    City: Shanghai
+                    </Col>
+                    <Col span="12">
+                    Country: China
+                    </Col>
+                </Row>
+            </div>
+            <Divider />
+            <p :style="pStyle">Statistics</p>
+            <div class="my-drawer-profile">
+                <Row>
+                    <Col span="12">
+                    Board: created X boards
+                    </Col>
+                    <Col span="12">
+                    Items: submitted X items
+                    </Col>
+                </Row>
+            </div>
+            <Divider />
+            <!--<p :style="pStyle">Contacts</p>
+            <div class="my-drawer-profile">
+                <Row>
+                    <Col span="12">
+                    Email: admin@aresn.com
+                    </Col>
+                    <Col span="12">
+                    Phone Number: +86 18888888888
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="12">
+                    GitHub: <a href="https://github.com/view-design/ViewUI" target="_blank">https://github.com/view-design/ViewUI</a>
+                    </Col>
+                </Row>
+            </div>-->
+            <div class="my-drawer-footer">
+                <Button type="primary" @click="showMyProfile = false">Close</Button>
+            </div>
+        </Drawer>
     </div>
 </template>
 <script>

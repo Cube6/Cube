@@ -92,3 +92,22 @@
     vertical-align: middle;
     font-size: 22px;
 }
+
+.my-drawer-profile {
+    font-size: 14px;
+}
+
+.my-drawer-profile .ivu-col {
+    margin-bottom: 12px;
+}
+
+.my-drawer-footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 16px;
+    text-align: right;
+    background: #fff;
+}

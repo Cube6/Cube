@@ -5,6 +5,15 @@ export default {
         return {
             isCollapsed: false,
             userName: null,
+
+            showMyProfile: false,
+            pStyle: {
+                fontSize: '16px',
+                color: 'rgba(0,0,0,0.85)',
+                lineHeight: '24px',
+                display: 'block',
+                marginBottom: '16px'
+            }
         };
     },
     created() {
@@ -44,12 +53,15 @@ export default {
         fetchData() {
             this.$router.push('/boardAll');
         },
-        Logout() {
+        logout() {
 
             localStorage.setItem('LOGINUSER', null);
             localStorage.setItem('TOKEN', null);
 
             this.$router.push('/login');
+        },
+        createAccount() {
+            this.$router.push('/register');
         }
     },
 }

@@ -19,11 +19,15 @@ namespace Cube.User.Application
 
 		public async Task<ResultDto> Register(CreateUserDto request)
 		{
-			var user = _mapper.Map<Domain.User>(request); 
+			var user = _mapper.Map<Domain.User>(request);
 
-			await _repository.Save(user);
+			var result = user.Validate();
+			if (result)
+			{
+				await _repository.Save(user);
+			}
 
-			return await Task.FromResult(new ResultDto() { Success = true });
+			return await Task.FromResult(new ResultDto() { Success = result });
 		}
 
 		public async Task<ResultDto> Validate(ValidateUserDto request)

@@ -13,5 +13,10 @@ namespace Cube.User.Domain
 
 		public string NickName { get; set; }
 		public string AvatarUrl { get; set; }
+
+		public bool Validate()
+		{
+			return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Password);
+		}
 	}
 }
