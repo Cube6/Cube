@@ -29,7 +29,7 @@
                         <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImporved" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="A brilliant idea to share ?" search enter-button="Add" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" placeholder="Action" search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
@@ -49,14 +49,6 @@
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
                                                 &nbsp;<p>{{well.ThumbsUp.length}}</p>
-                                            </button>
-                                        </a>
-                                        <a href="#" @click.prevent="addWellDown(well)" >
-                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-handDown"></use>
-                                                </svg>
-                                                &nbsp;<p>{{well.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
@@ -87,14 +79,6 @@
                                                     <use xlink:href="#at-handUp"></use>
                                                 </svg>
                                                 &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
-                                            </button>
-                                        </a>
-                                        <a href="#" @click.prevent="addImproveDown(imporve)" >
-                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-handDown"></use>
-                                                </svg>
-                                                &nbsp;<p>{{imporve.ThumbsDown.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName">
@@ -129,15 +113,6 @@
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" @click.prevent="addActionDown(action)">
-                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Dislike" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" data-testid="ThumbDownOutlinedIcon" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-handDown"></use>
-                                                </svg>
-                                                &nbsp;<p>{{action.ThumbsDown.length}}</p>
-                                            </button>
-                                        </a>
-
                                         <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -146,7 +121,6 @@
                                             </Button>
                                         </a>
                                     </p>
-
                                 </Card>
                             </li>
                         </ul>
@@ -193,9 +167,6 @@
                     ImporveDetail: "",
                     ActionDetail: "",
                 },
-                listThrumps: [
-                    { userid: null,bid: null, upCount:0,downCount:0 }
-                ],
                 boardItemTextChanged: false,
                 boardName:null,
                 boardId: null,
@@ -406,132 +377,68 @@
 
             addActionUp(actionItem) {
                 let username = this.userName;
-                var listItem = this.listThrumps.find(item => item.bid == actionItem.Id && item.username == username);
+                var actionItemCache = this.WellContent.find(item => item.Id = actionItem.Id);
+                var listThrumps = actionItemCache.ThumbsUp;
+
+                var listItem = listThrumps.find(th => th.username == username);
                 if (listItem == null) {
-                    var likeitem = { bid: actionItem.Id, username: username, upCount: 1, downCount: 0 };
-                    this.listThrumps.push(likeitem);
-                    this.ActionUpCount = 1;
-                    this.ActionDownCount = 0;
+                    var likeitem = { BoardItemId: actionItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
+                    listThrumps.push(likeitem);
+                    this.addThumps(actionItem.Id, 0);
                 }
                 else {
-                    if (listItem.upCount > 0) {
-                        this.$Message.error('You already liked it !');
-                    }
-                    else {
-                        listItem.upCount = 1;
-                        listItem.downCount = 0;
-                        this.ActionUpCount = 1;
-                        this.ActionDownCount = 0;
-                    }
+                    var index = listThrumps.findIndex(item => {
+                        if (item.bid == actionItem.Id && item.username == username) {
+                            return true;
+                        }
+                    })
+                    listThrumps.splice(index, 1);
+                    this.deleteThumps(actionItem.Id);
                 }
 
-            },
-
-            addActionDown(actionItem) {
-                let username = this.userName;
-                var listItem = this.listThrumps.find(item => item.bid == actionItem.Id && item.username == username);
-                if (listItem == null) {
-                    var likeitem = { bid: actionItem.Id, username: username, upCount: 1, downCount: 0 };
-                    this.listThrumps.push(likeitem);
-                }
-                else {
-                    if (listItem.downCount > 0) {
-                        this.$Message.error('You already unliked it !');
-                    }
-                    else {
-                        listItem.upCount = 0;
-                        listItem.downCount = 1;
-                        this.ActionUpCount = 0;
-                        this.ActionDownCount = 1;
-                    }
-                }
             },
 
             addWellUp(wellItem) {
                 let username = this.userName;
-                var listItem = this.listThrumps.find(item => item.bid == wellItem.Id && item.username == username);
-                if (listItem == null) {
-                    var likeitem = { bid: wellItem.Id, username: username, upCount: 1, downCount: 0 };
-                    this.listThrumps.push(likeitem);
-                    this.WellUpCount = 1;
-                    this.WellDownCount = 0;
-                }
-                else {
-                    if (listItem.upCount > 0) {
-                        this.$Message.error('You already liked it !');
-                    }
-                    else {
-                        listItem.upCount = 1;
-                        listItem.downCount = 0;
-                        this.WellUpCount = 1;
-                        this.WellDownCount = 0;
-                    }
-                }
-            },
+                var wellItemCache = this.WellContent.find(item => item.Id = wellItem.Id);
+                var listThrumps = wellItemCache.ThumbsUp;
 
-            addWellDown(wellItem) {
-                let username = this.userName;
-                var listItem = this.listThrumps.find(item => item.bid == wellItem.Id && item.username == username);
+                var listItem = listThrumps.find(th => th.username == username);
                 if (listItem == null) {
-                    var likeitem = { bid: wellItem.Id, username: username, upCount: 1, downCount: 0 };
-                    this.listThrumps.push(likeitem);
-                    this.WellUpCount = 0;
-                    this.WellDownCount = 1;
+                    var likeitem = { BoardItemId: wellItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
+                    listThrumps.push(likeitem);
+                    this.addThumps(wellItem.Id, 0);
                 }
                 else {
-                    if (listItem.downCount > 0) {
-                        this.$Message.error('You already unliked it !');
-                    }
-                    else {
-                        listItem.upCount = 0;
-                        listItem.downCount = 1;
-                        this.WellUpCount = 0;
-                        this.WellDownCount = 1;
-                    }
+                    var index = listThrumps.findIndex(item => {
+                        if (item.bid == wellItem.Id && item.username == username) {
+                            return true;
+                        }
+                    })
+                    listThrumps.splice(index, 1);
+                    this.deleteThumps(wellItem.Id);
                 }
             },
 
             addImproveUp(improveItem) {
                 let username = this.userName;
-                var listItem = this.listThrumps.find(item => item.bid == improveItem.Id && item.username == username);
-                if (listItem == null) {
-                    var likeitem = { bid: improveItem.Id, username: username, upCount: 1, downCount: 0 };
-                    this.listThrumps.push(likeitem);
-                    this.ImproveUpCount = 1;
-                    this.ImproveDownCount = 0;
-                }
-                else {
-                    if (listItem.upCount > 0) {
-                        this.$Message.error('You already liked it !');
-                    }
-                    else {
-                        listItem.upCount = 1;
-                        listItem.downCount = 0;
-                        this.ImproveUpCount = 1;
-                        this.ImproveDownCount = 0;
-                    }
-                }
-            },
+                var improveItemCache = this.ImporveContent.find(item => item.Id = improveItem.Id);
+                var listThrumps = improveItemCache.ThumbsUp;
 
-            addImproveDown(improveItem) {
-                let username = this.userName;
-                var listItem = this.listThrumps.find(item => item.bid == improveItem.Id && item.username == username);
+                var listItem = listThrumps.find(th => th.username == username);
                 if (listItem == null) {
-                    var likeitem = { bid: improveItem.Id, username: username, upCount: 0, downCount: 1 };
-                    this.listThrumps.push(likeitem);
-                    this.ImproveUpCount = 0;
-                    this.ImproveDownCount = 1;
+                    var likeitem = { BoardItemId: improveItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type:0 };
+                    listThrumps.push(likeitem);
+                    this.addThumps(improveItem.Id, 0);
                 }
                 else {
-                    if (listItem.downCount > 0) {
-                        this.$Message.error('You already unliked it !');
-                    }
-                    else {
-                        listItem.upCount = 0;
-                        listItem.downCount = 1;
-                        this.ImproveUpCount = 0;
-                        this.ImproveDownCount = 1;
-                    }
+                    var index = listThrumps.findIndex(item => {
+                        if (item.bid == improveItem.Id && item.username == username) {
+                            return true;
+                        }
+                    })
+                    listThrumps.splice(index, 1);
+                    this.deleteThumps(improveItem.Id);
                 }
             },
 
@@ -633,7 +540,37 @@
             sendCommentMsg(context) {
                 this.connection.invoke("SendCommentMessage", context);
             },
-
+            addThumps(boardItemId,thumpType) {
+                this.axios({
+                    method: 'post',
+                    url: '/Comment',
+                    data: {
+                        BoardItemId: boardItemId,
+                        Type: thumpType,
+                        CreatedUser: this.userName
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
+                }).then(() => {
+                    this.sendBoardItemMsg();
+                })
+            },
+            deleteThumps(boardItemId) {
+                this.axios({
+                    method: 'delete',
+                    url: '/Comment',
+                    data: {
+                        BoardItemId: boardItemId,
+                        CreatedUser: this.userName
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
+                }).then(() => {
+                    this.sendBoardItemMsg();
+                })
+            },
             markCompleted() {
                 this.$confirm(
                     {
