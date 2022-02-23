@@ -17,8 +17,6 @@ namespace RedisPractice
 		public void BeginTransaction();
 		public Task CommitAsync();
 		public Task<V> GetAsync<K, V>(K key);
-		public Task<V> GetAsync<V>(string key);
-		public Task<bool> SetAsync<V>(string key, string value, int expire = 0);
 		public Task<bool> SetAsync<K, V>(K key, V value, int expire = 0);
 	}
 }
