@@ -74,6 +74,54 @@ namespace RedisPractice
 				return false;
 			}
 		}
+
+		public virtual async Task<bool> HashAddAsync<K,F,V>(K key, F field, V value)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringField = JsonConvert.SerializeObject(field);
+				var stringValue = JsonConvert.SerializeObject(value);
+
+				return await database.HashSetAsync(stringKey, stringField, stringValue);
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
+		public virtual async Task<bool> HashRemoveAsync<K,F>(K key, F field)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringField = JsonConvert.SerializeObject(field);
+
+				return await database.HashDeleteAsync(stringKey, stringField);
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
+		public virtual async Task<V> HashGetAsync<K,F,V>(K key, F field)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringField = JsonConvert.SerializeObject(field);
+
+				var result = await database.HashGetAsync(stringKey, stringField);
+
+				return JsonConvert.DeserializeObject<V>(result);
+			}
+			catch (Exception)
+			{
+				return default;
+			}
+		}
 		#endregion
 
 		#region Dynamic Proxy
@@ -139,7 +187,6 @@ namespace RedisPractice
 					await readLockReleaser.ReleaseAsync();
 			}
 		}
-
 		#endregion
 	}
 }

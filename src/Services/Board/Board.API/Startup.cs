@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Cube.Board.Application;
 using Microsoft.EntityFrameworkCore;
 using Board.API.Hubs;
+using RedisPractice;
 
 namespace Board.API
 {
@@ -70,6 +71,7 @@ namespace Board.API
 
 			services.AddScoped<IBoardRepository, BoardRepository>();
 			services.AddScoped<IBoardAppService, BoardAppService>();
+			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();
