@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using RedisPractice;
 
 namespace Cube.Board.Application
 {
@@ -14,10 +15,12 @@ namespace Cube.Board.Application
 	{
 		private IBoardRepository _repository;
 		private IMapper _mapper = MapperFactory.GetMapper();
+		private IRedisInstance _redis;
 
-		public BoardAppService(IBoardRepository repository)
+		public BoardAppService(IBoardRepository repository, IRedisInstance redis)
 		{
 			_repository = repository;
+			_redis = redis;
 		}
 
 		public IEnumerable<BoardDto> GetBoards()
@@ -132,7 +135,6 @@ namespace Cube.Board.Application
 				var comments = await FindCommentsByIdAsync(boardItemDto.Id);
 
 				boardItemDto.ThumbsUp = comments.Where(t => t.Type == CommentType.ThumbsUp);
-				boardItemDto.ThumbsDown = comments.Where(t => t.Type == CommentType.ThumbsDown);
 				list.Add(boardItemDto);
 			}
 			return list;
@@ -150,6 +152,7 @@ namespace Cube.Board.Application
 				Type = commentDto.Type,
 			};
 			await _repository.CreateCommentAsync(comment);
+			await _redis.HashAddAsync(commentDto.BoardItemId, commentDto.Id, commentDto);
 		}
 
 		public async Task DeleteCommentByIdAsync(long id)
