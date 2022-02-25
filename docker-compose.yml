@@ -14,18 +14,18 @@ version: '3.4'
 
 services:
   
-  redis:
-     image: redis:alpine
-     ports:
-       - '6379:6379'
+  #redis:
+  #   image: redis:alpine
+  #   ports:
+  #     - '6379:6379'
      
-     command:
-       redis-server --requirepass password
-     volumes:
-       - $PWD/src/Infrastructure/RedisUtil/redis-data:/var/lib/redis
-       - $PWD/src/Infrastructure/RedisUtil/redis.conf:/usr/local/etc/redis/redis.conf
-     networks:
-       - my-net
+  #   command:
+  #     redis-server --requirepass password
+  #   volumes:
+  #     - $PWD/src/Infrastructure/RedisUtil/redis-data:/var/lib/redis
+  #     - $PWD/src/Infrastructure/RedisUtil/redis.conf:/usr/local/etc/redis/redis.conf
+  #   networks:
+  #     - my-net
 
   # Board Microservice #
   boardservice1: #定义"boardservice1"服务 对应的Board服务项目

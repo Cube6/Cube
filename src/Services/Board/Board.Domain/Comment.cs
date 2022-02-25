@@ -10,7 +10,7 @@ namespace Cube.Board.Domain
 
 		[Required]
 		public string CreatedUser { get; set; }
-
+		
 		public string Detail { get; set; }
 
 		public virtual DisscussionBoardItem BoardItem { get; set; }

@@ -10,7 +10,7 @@ namespace Cube.Board.Application.Dtos
 		public DateTime DateCreated { get; set; }
 		public DateTime DateModified { get; set; }
 		public CommentType Type { set; get; }
-		public string Detail { get; set; }
+		public string Detail { get; set; } = String.Empty;
 
 		public int BoardItemId { get; set; }
 	}

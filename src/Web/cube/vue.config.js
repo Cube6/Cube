@@ -34,6 +34,9 @@ module.exports = {
             //'^/Board': {
             //    target: 'https://localhost:5000'
             //},
+            //'^/Comment': {
+            //    target: 'https://localhost:5000'
+            //},
             //'^/User': {
             //    target: 'https://localhost:4000'
             //},
@@ -43,20 +46,26 @@ module.exports = {
 
             /*Connect to local microservices via Gateway Service*/
 
-             //'^/Board': {
-             //   target: 'http://localhost:9070'
-             //},
-             //'^/User': {
-             //    target: 'http://localhost:9070'
-             //},
-             //'^/Authorize': {
-             //    target: 'http://localhost:9070'
-             //}
+            // '^/Board': {
+            //     target: 'http://localhost:9070'
+            // },
+            // '^/Comment': {
+            //     target: 'http://localhost:9070'
+            // },
+            // '^/User': {
+            //     target: 'http://localhost:9070'
+            // },
+            // '^/Authorize': {
+            //     target: 'http://localhost:9070'
+            // }
 
             /************************************* Production *********************************/
             /*Connect to remote Microservices directly*/
 
             //'^/Board': {
+            //    target: 'https://10.63.224.86:5000'
+            //},
+            //'^/Comment': {
             //    target: 'https://10.63.224.86:5000'
             //},
             //'^/User': {
@@ -69,13 +78,16 @@ module.exports = {
             /*Connect to remote microservices via Gateway Service*/
 
             '^/Board': {
-               target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.224.86:9070'
+            },
+            '^/Comment': {
+              target: 'http://10.63.224.86:9070'
             },
             '^/User': {
-               target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.224.86:9070'
             },
             '^/Authorize': {
-               target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.224.86:9070'
             }
         },
         port: 80

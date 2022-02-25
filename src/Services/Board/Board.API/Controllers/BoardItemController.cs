@@ -31,7 +31,7 @@ namespace Board.API.Controllers
 		[HttpGet("{boardId}")]
 		public IEnumerable<BoardItemDto> Find(long boardId)
 		{
-			var boardItems = _appservice.FindBoardItemByIdAsync(boardId);
+			var boardItems = _appservice.FindBoardItemByBoardIdAsync(boardId);
 			var result= boardItems.Result;
 			return result;
 		}

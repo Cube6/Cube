@@ -15,7 +15,7 @@ namespace Cube.Board.Application
 		Task<BoardItemDto> CreateBoardItem(BoardItemDto boardItemDto);
 		Task DeleteBoardItemByIdAsync(long id);
 		Task UpdateBoardItem(BoardItemDto boardItemDto);
-		Task<List<BoardItemDto>> FindBoardItemByIdAsync(long id);
+		Task<List<BoardItemDto>> FindBoardItemByBoardIdAsync(long id);
 
 		Task CreateComment(CommentDto commentDto);
 		Task DeleteCommentByIdAsync(long id);

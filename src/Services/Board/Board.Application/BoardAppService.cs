@@ -120,9 +120,9 @@ namespace Cube.Board.Application
 			await _repository.DeleteBoardItemAsync(id);
 		}
 
-		public async Task<List<BoardItemDto>> FindBoardItemByIdAsync(long boardId)
+		public async Task<List<BoardItemDto>> FindBoardItemByBoardIdAsync(long boardId)
 		{
-			var ListBoardItemDto = await _repository.GetBoardItemByIdAsync(boardId);
+			var ListBoardItemDto = await _repository.GetBoardItemsByBoardIdAsync(boardId);
 			if (ListBoardItemDto == null)
 			{
 				return null;
@@ -144,7 +144,7 @@ namespace Cube.Board.Application
 		{
 			var comment = new Comment()
 			{
-				BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result.FirstOrDefault(),
+				BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
 				Detail = commentDto.Detail,
 				CreatedUser = commentDto.CreatedUser,
 				DateCreated = DateTime.Now,
