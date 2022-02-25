@@ -50,7 +50,7 @@
                         <Icon type="md-book"></Icon>
                         <span>Board</span>
                     </MenuItem>
-                    <MenuItem name="1-2" to="/boardAll">
+                    <!--<MenuItem name="1-2" to="/boardAll">
                         <Icon type="md-time"></Icon>
                         <span>In Progress</span>
                     </MenuItem>
@@ -61,7 +61,7 @@
                     <MenuItem name="1-4" to="/boardAll">
                         <Icon type="md-trash"></Icon>
                         <span>Recycle Bin</span>
-                    </MenuItem>
+                    </MenuItem>-->
                 </Menu>
             </Sider>
             <Layout :style="{padding: '0 24px'}">
