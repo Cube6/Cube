@@ -74,7 +74,7 @@ namespace Cube.Board.Respository
 			var comment3 = new Comment()
 			{
 				Id = 3,
-				Type = CommentType.ThumbsDown,
+				Type = CommentType.ThumbsUp,
 				CreatedUser = "Michael"
 			};
 			modelBuilder.Entity<Comment>().HasData(

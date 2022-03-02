@@ -41,5 +41,12 @@ namespace Board.API.Controllers
 		{
 			await _appservice.DeleteCommentByIdAsync(id);
 		}
+
+		[HttpDelete]
+		[Authorize]
+		public async Task DeleteByBorderItem(long borderItemid, string username)
+		{
+			await _appservice.DeleteCommentAsync(borderItemid, username);
+		}
 	}
 }

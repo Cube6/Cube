@@ -163,7 +163,7 @@ namespace Cube.Board.Application
 
 		public async Task DeleteCommentAsync(long borderItemId, string username)
 		{
-			await _repository.DeleteCommentAsync(borderItemId, username);
+			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
 			await _redis.ListRemoveAsync(borderItemId, username);
 		}
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)

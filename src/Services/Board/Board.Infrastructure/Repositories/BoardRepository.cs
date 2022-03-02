@@ -101,7 +101,7 @@ namespace Cube.Board.Respository
 			return _context.SaveChanges() > 0;
 		}
 
-		public async Task<bool> DeleteCommentAsync(long borderItemId, string username)
+		public async Task<bool> DeleteCommentByUserNameAsync(long borderItemId, string username)
 		{
 			var comment = await _context.Comments.SingleAsync(c => c.BoardItem.Id == borderItemId && c.CreatedUser == username);
 			_context.Comments.Remove(comment);
