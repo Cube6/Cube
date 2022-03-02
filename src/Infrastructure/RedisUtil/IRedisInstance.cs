@@ -21,5 +21,8 @@ namespace RedisPractice
 		public Task<bool> HashAddAsync<K, F, V>(K key, F field, V value);
 		public Task<bool> HashRemoveAsync<K, F>(K key, F field);
 		public Task<V> HashGetAsync<K, F, V>(K key, F field);
+		public Task<long> ListAddAsync<K, M>(K key, M member);
+		public Task<long> ListRemoveAsync<K, M>(K key, M member);
+		public Task<long> ListLengthAsync<K>(K key);
 	}
 }

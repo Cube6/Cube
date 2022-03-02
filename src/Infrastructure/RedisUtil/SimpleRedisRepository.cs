@@ -122,6 +122,57 @@ namespace RedisPractice
 				return default;
 			}
 		}
+
+		public virtual async Task<long> ListAddAsync<K,M>(K key, M member)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringMember = JsonConvert.SerializeObject(member);
+
+				var result = await database.ListRightPushAsync(stringKey, stringMember);
+
+				return result;
+			}
+			catch (Exception)
+			{
+				return -1;
+			}
+		}
+
+		public virtual async Task<long> ListRemoveAsync<K,M>(K key, M member)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringMember = JsonConvert.SerializeObject(member);
+
+				var result = await database.ListRemoveAsync(stringKey, stringMember);
+
+				return result;
+			}
+			catch (Exception)
+			{
+				return -1;
+			}
+		}
+
+		public virtual async Task<long> ListLengthAsync<K>(K key)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+
+				var result = await database.ListLengthAsync(stringKey);
+
+				return result;
+			}
+			catch (Exception)
+			{
+				return -1;
+			}
+		}
+
 		#endregion
 
 		#region Dynamic Proxy

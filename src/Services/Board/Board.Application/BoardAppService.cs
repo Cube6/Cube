@@ -152,7 +152,8 @@ namespace Cube.Board.Application
 				Type = commentDto.Type,
 			};
 			await _repository.CreateCommentAsync(comment);
-			await _redis.HashAddAsync(commentDto.BoardItemId, commentDto.Id, commentDto);
+			await _redis.ListAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+			
 		}
 
 		public async Task DeleteCommentByIdAsync(long id)
@@ -160,6 +161,11 @@ namespace Cube.Board.Application
 			await _repository.DeleteBoardItemAsync(id);
 		}
 
+		public async Task DeleteCommentAsync(long borderItemId, string username)
+		{
+			await _repository.DeleteCommentAsync(borderItemId, username);
+			await _redis.ListRemoveAsync(borderItemId, username);
+		}
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
 		{
 			var comments = await _repository.GetCommentsByIdAsync(boardItemId);
