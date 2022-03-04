@@ -20,6 +20,9 @@ const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
 module.exports = {
+    configureWebpack: {
+        devtool: 'souce-map'
+    },
     devServer: {
         //https: {
         //    key: fs.readFileSync(keyFilePath),

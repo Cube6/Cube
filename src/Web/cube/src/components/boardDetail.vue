@@ -45,18 +45,14 @@
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)"  >
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
-                                                    <use xlink:href="#at-handUp"></use>
-                                                </svg>
+                                                <i class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                    <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                        <use xlink:href="#at-delete"></use>
-                                                    </svg>
+                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </a>
@@ -73,20 +69,16 @@
 
                                     <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)"  @on-change="boardItemChanged"/>
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addImproveUp(imporve)" >
+                                        <a href="#"  @click.prevent="addImproveUp(imporve)" >
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
-                                                    <use xlink:href="#at-handUp"></use>
-                                                </svg>
+                                                <i :ref="'item'+imporve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                    <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                        <use xlink:href="#at-delete"></use>
-                                                    </svg>
+                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </a>
@@ -107,17 +99,13 @@
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
-                                                    <use xlink:href="#at-handUp"></use>
-                                                </svg>
+                                            <i itemref="action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-delete"></use>
-                                                </svg>
+                                                 <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                             </Button>
                                         </a>
                                     </p>
@@ -380,7 +368,7 @@
                 var actionItemCache = this.WellContent.find(item => item.Id = actionItem.Id);
                 var listThrumps = actionItemCache.ThumbsUp;
 
-                var listItem = listThrumps.find(th => th.username == username);
+                var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
                     var likeitem = { BoardItemId: actionItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
                     listThrumps.push(likeitem);
@@ -403,7 +391,7 @@
                 var wellItemCache = this.WellContent.find(item => item.Id = wellItem.Id);
                 var listThrumps = wellItemCache.ThumbsUp;
 
-                var listItem = listThrumps.find(th => th.username == username);
+                var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
                     var likeitem = { BoardItemId: wellItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
                     listThrumps.push(likeitem);
@@ -424,12 +412,12 @@
                 let username = this.userName;
                 var improveItemCache = this.ImporveContent.find(item => item.Id = improveItem.Id);
                 var listThrumps = improveItemCache.ThumbsUp;
+                var isAdd = true;
 
-                var listItem = listThrumps.find(th => th.username == username);
+                var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
                     var likeitem = { BoardItemId: improveItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type:0 };
                     listThrumps.push(likeitem);
-                    this.addThumps(improveItem.Id, 0);
                 }
                 else {
                     var index = listThrumps.findIndex(item => {
@@ -438,8 +426,18 @@
                         }
                     })
                     listThrumps.splice(index, 1);
+                    isAdd = false;
+                }
+                let improveId = 'item'+ improveItem.Id;
+                if (isAdd) {
+                    this.$refs[improveId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
+                    this.addThumps(improveItem.Id, 0);
+                }
+                else {
+                    this.$refs[improveId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
                     this.deleteThumps(improveItem.Id);
                 }
+
             },
 
             getUserAvatar(userName) {
@@ -553,22 +551,22 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.sendBoardItemMsg();
+                    //this.sendBoardItemMsg();
                 })
             },
             deleteThumps(boardItemId) {
                 this.axios({
                     method: 'delete',
                     url: '/Comment',
-                    data: {
-                        BoardItemId: boardItemId,
-                        CreatedUser: this.userName
+                    params: {
+                        borderItemId: boardItemId,
+                        username: this.userName
                     },
                     headers: {
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.sendBoardItemMsg();
+                    //this.sendBoardItemMsg();
                 })
             },
             markCompleted() {
@@ -636,6 +634,8 @@
 </script>
 
 <style>
+    @import "../styles/css/font-awesome.css";
+
     ul {
         list-style-type: none;
     }
