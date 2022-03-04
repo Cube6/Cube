@@ -173,6 +173,27 @@ namespace RedisPractice
 			}
 		}
 
+		public virtual async Task<List<V>> ListRangeAsync<K,V>(K key, int start, int end)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var response = await database.ListRangeAsync(stringKey, start, end);
+
+				var result = new List<V>();
+				foreach(var item in response)
+				{
+					var temp = JsonConvert.DeserializeObject<V>(item);
+					result.Add(temp);
+				}
+				return result;
+			}
+			catch (Exception)
+			{
+				return null;
+			}
+		}
+
 		#endregion
 
 		#region Dynamic Proxy

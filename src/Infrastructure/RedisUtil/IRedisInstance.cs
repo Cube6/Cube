@@ -24,5 +24,6 @@ namespace RedisPractice
 		public Task<long> ListAddAsync<K, M>(K key, M member);
 		public Task<long> ListRemoveAsync<K, M>(K key, M member);
 		public Task<long> ListLengthAsync<K>(K key);
+		public Task<List<V>> ListRangeAsync<K, V>(K key, int start, int end);
 	}
 }
