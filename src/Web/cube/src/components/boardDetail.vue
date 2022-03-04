@@ -365,7 +365,7 @@
 
             addActionUp(actionItem) {
                 let username = this.userName;
-                var actionItemCache = this.WellContent.find(item => item.Id = actionItem.Id);
+                var actionItemCache = this.ActionContent.find(item => item.Id = actionItem.Id);
                 var listThrumps = actionItemCache.ThumbsUp;
 
                 var listItem = listThrumps.find(th => th.CreatedUser == username);
