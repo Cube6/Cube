@@ -367,9 +367,8 @@
 
             addActionUp(actionItem) {
                 let username = this.userName;
-                var actionItemCache = this.ActionContent.find(item => item.Id = actionItem.Id);
+                var actionItemCache = this.ActionContent.find(item => item.Id == actionItem.Id);
                 var listThrumps = actionItemCache.ThumbsUp;
-
                 var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
                     var likeitem = { BoardItemId: actionItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
@@ -390,7 +389,7 @@
 
             addWellUp(wellItem) {
                 let username = this.userName;
-                var wellItemCache = this.WellContent.find(item => item.Id = wellItem.Id);
+                var wellItemCache = this.WellContent.find(item => item.Id == wellItem.Id);
                 var listThrumps = wellItemCache.ThumbsUp;
 
                 var listItem = listThrumps.find(th => th.CreatedUser == username);
@@ -412,7 +411,7 @@
 
             addImproveUp(improveItem) {
                 let username = this.userName;
-                var improveItemCache = this.ImporveContent.find(item => item.Id = improveItem.Id);
+                var improveItemCache = this.ImporveContent.find(item => item.Id == improveItem.Id);
                 var listThrumps = improveItemCache.ThumbsUp;
                 var isAdd = true;
 
