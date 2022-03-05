@@ -45,7 +45,7 @@
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;" >
-                                                <i class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                <i :ref="'item'+well.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p >{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
@@ -99,7 +99,7 @@
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                            <i itemref="action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                            <i :ref="'item'+action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
@@ -366,79 +366,46 @@
             },
 
             addActionUp(actionItem) {
-                let username = this.userName;
-                var actionItemCache = this.ActionContent.find(item => item.Id == actionItem.Id);
-                var listThrumps = actionItemCache.ThumbsUp;
-                var listItem = listThrumps.find(th => th.CreatedUser == username);
-                if (listItem == null) {
-                    var likeitem = { BoardItemId: actionItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
-                    listThrumps.push(likeitem);
-                    this.addThumps(actionItem.Id, 0);
-                }
-                else {
-                    var index = listThrumps.findIndex(item => {
-                        if (item.bid == actionItem.Id && item.username == username) {
-                            return true;
-                        }
-                    })
-                    listThrumps.splice(index, 1);
-                    this.deleteThumps(actionItem.Id);
-                }
-
+                this.thumbsUpAction(this.ActionContent, actionItem);
             },
 
             addWellUp(wellItem) {
-                let username = this.userName;
-                var wellItemCache = this.WellContent.find(item => item.Id == wellItem.Id);
-                var listThrumps = wellItemCache.ThumbsUp;
-
-                var listItem = listThrumps.find(th => th.CreatedUser == username);
-                if (listItem == null) {
-                    var likeitem = { BoardItemId: wellItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
-                    listThrumps.push(likeitem);
-                    this.addThumps(wellItem.Id, 0);
-                }
-                else {
-                    var index = listThrumps.findIndex(item => {
-                        if (item.bid == wellItem.Id && item.username == username) {
-                            return true;
-                        }
-                    })
-                    listThrumps.splice(index, 1);
-                    this.deleteThumps(wellItem.Id);
-                }
+                this.thumbsUpAction(this.WellContent, wellItem);
             },
 
             addImproveUp(improveItem) {
+                this.thumbsUpAction(this.ImporveContent, improveItem);
+            },
+
+            thumbsUpAction(listOfItems, item) {
                 let username = this.userName;
-                var improveItemCache = this.ImporveContent.find(item => item.Id == improveItem.Id);
+                var improveItemCache = listOfItems.find(c => c.Id == item.Id);
                 var listThrumps = improveItemCache.ThumbsUp;
                 var isAdd = true;
 
                 var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
-                    var likeitem = { BoardItemId: improveItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type:0 };
+                    var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
                     listThrumps.push(likeitem);
                 }
                 else {
                     var index = listThrumps.findIndex(item => {
-                        if (item.bid == improveItem.Id && item.username == username) {
+                        if (item.bid == item.Id && item.username == username) {
                             return true;
                         }
                     })
                     listThrumps.splice(index, 1);
                     isAdd = false;
                 }
-                let improveId = 'item'+ improveItem.Id;
+                let itemId = 'item' + item.Id;
                 if (isAdd) {
-                    this.$refs[improveId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
-                    this.addThumps(improveItem.Id, 0);
+                    this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
+                    this.addThumps(item.Id, 0);
                 }
                 else {
-                    this.$refs[improveId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
-                    this.deleteThumps(improveItem.Id);
+                    this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
+                    this.deleteThumps(item.Id);
                 }
-
             },
 
             getUserAvatar(userName) {
