@@ -43,10 +43,10 @@
 
                                     <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addWellUp(well)"  >
-                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                        <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;" >
                                                 <i class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
-                                                &nbsp;<p>{{well.ThumbsUp.length}}</p>
+                                                &nbsp;<p >{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
@@ -69,7 +69,7 @@
 
                                     <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)"  @on-change="boardItemChanged"/>
                                     <p style="height:22px;">
-                                        <a href="#"  @click.prevent="addImproveUp(imporve)" >
+                                        <a href="#"  @click.prevent="addImproveUp(imporve)"  :title="thumbsUpUserNames(imporve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <i :ref="'item'+imporve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
@@ -97,7 +97,7 @@
                                     <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
-                                        <a href="#" @click.prevent="addActionUp(action)">
+                                        <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                             <i itemref="action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
@@ -173,7 +173,9 @@
 
             this.init();
         },
- 
+        computed: {
+
+        },
         methods: {
             fetchData(forceRefresh) {
 
@@ -538,6 +540,15 @@
             sendCommentMsg(context) {
                 this.connection.invoke("SendCommentMessage", context);
             },
+
+            thumbsUpUserNames(thumbsUp) {
+                var names = ''
+                for (var i = 0; i < thumbsUp.length; i++) {
+                    names = names + thumbsUp[i].CreatedUser +'\n';
+                }
+                return names;
+            },
+
             addThumps(boardItemId,thumpType) {
                 this.axios({
                     method: 'post',
