@@ -172,9 +172,10 @@ namespace Cube.Board.Application
 			var userNames = await _redis.ListRangeAsync<long, string>(boardItemId, 0, -1);
 			if (userNames.Any())
 			{
+				var boardItem =await _repository.GetBoardItemByIdAsync(boardItemId);
 				foreach(var userName in userNames)
 				{
-					comments.Add(new Comment() { CreatedUser = userName });
+					comments.Add(new Comment() { CreatedUser = userName, BoardItem = boardItem });
 				}
 			}
 			else

@@ -366,18 +366,18 @@
             },
 
             addActionUp(actionItem) {
-                this.thumbsUpAction(this.ActionContent, actionItem);
+                this.thumbsUpAction(ActionType, this.ActionContent, actionItem);
             },
 
             addWellUp(wellItem) {
-                this.thumbsUpAction(this.WellContent, wellItem);
+                this.thumbsUpAction(WentWellType, this.WellContent, wellItem);
             },
 
             addImproveUp(improveItem) {
-                this.thumbsUpAction(this.ImporveContent, improveItem);
+                this.thumbsUpAction(NeedsImproveType, this.ImporveContent, improveItem);
             },
 
-            thumbsUpAction(listOfItems, item) {
+            thumbsUpAction(type, listOfItems, item) {
                 let username = this.userName;
                 var improveItemCache = listOfItems.find(c => c.Id == item.Id);
                 var listThrumps = improveItemCache.ThumbsUp;
@@ -390,7 +390,7 @@
                 }
                 else {
                     var index = listThrumps.findIndex(item => {
-                        if (item.bid == item.Id && item.username == username) {
+                        if (item.CreatedUser == username) {
                             return true;
                         }
                     })
@@ -400,11 +400,11 @@
                 let itemId = 'item' + item.Id;
                 if (isAdd) {
                     this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
-                    this.addThumps(item.Id, 0);
+                    this.addThumps(type, item.Id, 0);
                 }
                 else {
                     this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
-                    this.deleteThumps(item.Id);
+                    this.deleteThumps(type, item.Id);
                 }
             },
 
@@ -468,18 +468,34 @@
                     }
                 });
 
-                //this.connection.on("ReceiveCommentMessage", commentEvent => {
-                //    if (commentEvent.BoardId == this.boardId) {
+                this.connection.on("ReceiveCommentMessage", commentEvent => {
+                    if (commentEvent.BoardId == this.boardId) {
+                        var listOfItems = this.getListOfItems(commentEvent.Type);
 
-                //        var listOfItems = this.getListOfItems(commentEvent.Type);
-                //        if (commentEvent.Operation == DeleteOperation) {
-                            
-                //        }
-                //        else if (commentEvent.Operation == AddOperation) {
+                        if (commentEvent.Operation == AddOperation) {
+                            var improveItemCache1 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            var listThrumps1 = improveItemCache1.ThumbsUp;
 
-                //        }
-                //    }
-                //});
+                            var listItem = listThrumps1.find(th => th.CreatedUser == commentEvent.Comment.CreatedUser);
+                            if (listItem == null) {
+                                listThrumps1.push(commentEvent.Comment);
+                            }
+                        }
+                        else if (commentEvent.Operation == DeleteOperation) {
+                            var improveItemCache2 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            var listThrumps2 = improveItemCache2.ThumbsUp;
+                            var index = listThrumps2.findIndex(item => {
+                                if (item.CreatedUser == commentEvent.Comment.CreatedUser) {
+                                    return true;
+                                }
+                            });
+                            if (index == -1) {
+                                return;
+                            }
+                            listThrumps2.splice(index, 1);
+                        }
+                    }
+                });
 
                 //this.connection.on("ReceiveUserMessage", userEvent => {
                 //    if (userEvent.BoardId == this.boardId) {
@@ -515,7 +531,7 @@
                 return names;
             },
 
-            addThumps(boardItemId,thumpType) {
+            addThumps(type,boardItemId,thumpType) {
                 this.axios({
                     method: 'post',
                     url: '/Comment',
@@ -528,10 +544,21 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    //this.sendBoardItemMsg();
+                    var comment = {
+                        CreatedUser: this.userName,
+                        Type: thumpType,
+                        BoardItemId: boardItemId
+                    };
+                    var context = {
+                        Operation: AddOperation,
+                        BoardId: this.boardId,
+                        Type:type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
                 })
             },
-            deleteThumps(boardItemId) {
+            deleteThumps(type, boardItemId) {
                 this.axios({
                     method: 'delete',
                     url: '/Comment',
@@ -543,7 +570,18 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    //this.sendBoardItemMsg();
+                    var comment = {
+                        CreatedUser: this.userName,
+                        Type: 0,
+                        BoardItemId: boardItemId
+                    };
+                    var context = {
+                        Operation: DeleteOperation,
+                        BoardId: this.boardId,
+                        Type: type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
                 })
             },
             markCompleted() {
