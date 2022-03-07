@@ -28,16 +28,16 @@ namespace Board.API.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public Task<int> CreateBoard(string operation, CreateBoardDto ceateBoard)
+		public Task<int> CreateBoard(CreateBoardDto ceateBoard)
 		{
 			return _appservice.CreateBoard(ceateBoard);
 		}
 
 		[HttpPut]
 		[Authorize]
-		public Task UpdateBoard(BoardDto Board)
+		public Task UpdateBoard(BoardDto board)
 		{
-			return _appservice.UpdateBoard(Board);
+			return _appservice.UpdateBoard(board);
 		}
 
 		[HttpDelete("{id}")]
