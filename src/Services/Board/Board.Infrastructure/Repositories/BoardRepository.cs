@@ -88,6 +88,18 @@ namespace Cube.Board.Respository
 			return result;
 		}
 
+		public async Task<Comment> GetCommentByIdAsync(long id)
+		{
+			var result = await _context.Comments.Include(t => t.BoardItem).SingleAsync(it => it.Id == (int)id);
+			return result;
+		}
+
+		public async Task<Comment> GetCommentByUserNameAsync(long borderItemId, string username)
+		{
+			var result = await _context.Comments.Include(t => t.BoardItem).SingleOrDefaultAsync(c => c.BoardItem.Id == borderItemId && c.CreatedUser == username);
+			return result;
+		}
+
 		public Task CreateCommentAsync(Comment comment)
 		{
 			_context.Comments.Add(comment);
@@ -103,9 +115,14 @@ namespace Cube.Board.Respository
 
 		public async Task<bool> DeleteCommentByUserNameAsync(long borderItemId, string username)
 		{
-			var comment = await _context.Comments.SingleAsync(c => c.BoardItem.Id == borderItemId && c.CreatedUser == username);
-			_context.Comments.Remove(comment);
-			return _context.SaveChanges() > 0;
+			var comment = await _context.Comments.SingleOrDefaultAsync(c => c.BoardItem.Id == borderItemId && c.CreatedUser == username);
+			if (comment != null)
+			{
+				_context.Comments.Remove(comment);
+				return _context.SaveChanges() > 0;
+			}
+
+			return true;
 		}
 	}
 }

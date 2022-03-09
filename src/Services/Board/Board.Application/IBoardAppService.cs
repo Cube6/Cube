@@ -19,7 +19,7 @@ namespace Cube.Board.Application
 
 		Task CreateComment(CommentDto commentDto);
 		Task DeleteCommentByIdAsync(long id);
+		Task DeleteCommentAsync(long borderItemId, string userName);
 		Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId);
-		Task DeleteCommentAsync(long borderItemId, string username);
 	}
 }

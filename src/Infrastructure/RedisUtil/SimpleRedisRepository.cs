@@ -127,8 +127,12 @@ namespace RedisPractice
 		{
 			try
 			{
+				var setting = new JsonSerializerSettings();
+				setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+				setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+
 				var stringKey = JsonConvert.SerializeObject(key);
-				var stringMember = JsonConvert.SerializeObject(member);
+				var stringMember = JsonConvert.SerializeObject(member, setting);
 
 				var result = await database.ListRightPushAsync(stringKey, stringMember);
 

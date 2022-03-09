@@ -23,6 +23,20 @@ Vue.use(ViewUI, {
     size: 'default',
 });
 
+axios.interceptors.response.use(
+    response => {
+        return response
+    },
+    error => {
+        if (error.response) {
+            if (error.response.status == 401) {
+                router.replace('/login');
+            }
+            return Promise.reject(error)
+        }
+    }
+);
+
 new Vue({
     router,
     store,

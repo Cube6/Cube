@@ -43,20 +43,16 @@
 
                                     <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addWellUp(well)"  >
-                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
-                                                    <use xlink:href="#at-handUp"></use>
-                                                </svg>
-                                                &nbsp;<p>{{well.ThumbsUp.length}}</p>
+                                        <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;" >
+                                                <i :ref="'item'+well.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                &nbsp;<p >{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                    <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                        <use xlink:href="#at-delete"></use>
-                                                    </svg>
+                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </a>
@@ -73,20 +69,16 @@
 
                                     <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)"  @on-change="boardItemChanged"/>
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addImproveUp(imporve)" >
+                                        <a href="#"  @click.prevent="addImproveUp(imporve)"  :title="thumbsUpUserNames(imporve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
-                                                    <use xlink:href="#at-handUp"></use>
-                                                </svg>
+                                                <i :ref="'item'+imporve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                    <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                        <use xlink:href="#at-delete"></use>
-                                                    </svg>
+                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </a>
@@ -105,19 +97,15 @@
                                     <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
-                                        <a href="#" @click.prevent="addActionUp(action)">
+                                        <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(46, 125, 50);">
-                                                    <use xlink:href="#at-handUp"></use>
-                                                </svg>
+                                            <i :ref="'item'+action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
-                                                    <use xlink:href="#at-delete"></use>
-                                                </svg>
+                                                 <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                             </Button>
                                         </a>
                                     </p>
@@ -185,7 +173,9 @@
 
             this.init();
         },
- 
+        computed: {
+
+        },
         methods: {
             fetchData(forceRefresh) {
 
@@ -376,69 +366,45 @@
             },
 
             addActionUp(actionItem) {
-                let username = this.userName;
-                var actionItemCache = this.WellContent.find(item => item.Id = actionItem.Id);
-                var listThrumps = actionItemCache.ThumbsUp;
-
-                var listItem = listThrumps.find(th => th.username == username);
-                if (listItem == null) {
-                    var likeitem = { BoardItemId: actionItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
-                    listThrumps.push(likeitem);
-                    this.addThumps(actionItem.Id, 0);
-                }
-                else {
-                    var index = listThrumps.findIndex(item => {
-                        if (item.bid == actionItem.Id && item.username == username) {
-                            return true;
-                        }
-                    })
-                    listThrumps.splice(index, 1);
-                    this.deleteThumps(actionItem.Id);
-                }
-
+                this.thumbsUpAction(ActionType, this.ActionContent, actionItem);
             },
 
             addWellUp(wellItem) {
-                let username = this.userName;
-                var wellItemCache = this.WellContent.find(item => item.Id = wellItem.Id);
-                var listThrumps = wellItemCache.ThumbsUp;
-
-                var listItem = listThrumps.find(th => th.username == username);
-                if (listItem == null) {
-                    var likeitem = { BoardItemId: wellItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
-                    listThrumps.push(likeitem);
-                    this.addThumps(wellItem.Id, 0);
-                }
-                else {
-                    var index = listThrumps.findIndex(item => {
-                        if (item.bid == wellItem.Id && item.username == username) {
-                            return true;
-                        }
-                    })
-                    listThrumps.splice(index, 1);
-                    this.deleteThumps(wellItem.Id);
-                }
+                this.thumbsUpAction(WentWellType, this.WellContent, wellItem);
             },
 
             addImproveUp(improveItem) {
-                let username = this.userName;
-                var improveItemCache = this.ImporveContent.find(item => item.Id = improveItem.Id);
-                var listThrumps = improveItemCache.ThumbsUp;
+                this.thumbsUpAction(NeedsImproveType, this.ImporveContent, improveItem);
+            },
 
-                var listItem = listThrumps.find(th => th.username == username);
+            thumbsUpAction(type, listOfItems, item) {
+                let username = this.userName;
+                var improveItemCache = listOfItems.find(c => c.Id == item.Id);
+                var listThrumps = improveItemCache.ThumbsUp;
+                var isAdd = true;
+
+                var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
-                    var likeitem = { BoardItemId: improveItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type:0 };
+                    var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
                     listThrumps.push(likeitem);
-                    this.addThumps(improveItem.Id, 0);
                 }
                 else {
                     var index = listThrumps.findIndex(item => {
-                        if (item.bid == improveItem.Id && item.username == username) {
+                        if (item.CreatedUser == username) {
                             return true;
                         }
                     })
                     listThrumps.splice(index, 1);
-                    this.deleteThumps(improveItem.Id);
+                    isAdd = false;
+                }
+                let itemId = 'item' + item.Id;
+                if (isAdd) {
+                    this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
+                    this.addThumps(type, item.Id, 0);
+                }
+                else {
+                    this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
+                    this.deleteThumps(type, item.Id);
                 }
             },
 
@@ -502,18 +468,34 @@
                     }
                 });
 
-                //this.connection.on("ReceiveCommentMessage", commentEvent => {
-                //    if (commentEvent.BoardId == this.boardId) {
+                this.connection.on("ReceiveCommentMessage", commentEvent => {
+                    if (commentEvent.BoardId == this.boardId) {
+                        var listOfItems = this.getListOfItems(commentEvent.Type);
 
-                //        var listOfItems = this.getListOfItems(commentEvent.Type);
-                //        if (commentEvent.Operation == DeleteOperation) {
-                            
-                //        }
-                //        else if (commentEvent.Operation == AddOperation) {
+                        if (commentEvent.Operation == AddOperation) {
+                            var improveItemCache1 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            var listThrumps1 = improveItemCache1.ThumbsUp;
 
-                //        }
-                //    }
-                //});
+                            var listItem = listThrumps1.find(th => th.CreatedUser == commentEvent.Comment.CreatedUser);
+                            if (listItem == null) {
+                                listThrumps1.push(commentEvent.Comment);
+                            }
+                        }
+                        else if (commentEvent.Operation == DeleteOperation) {
+                            var improveItemCache2 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            var listThrumps2 = improveItemCache2.ThumbsUp;
+                            var index = listThrumps2.findIndex(item => {
+                                if (item.CreatedUser == commentEvent.Comment.CreatedUser) {
+                                    return true;
+                                }
+                            });
+                            if (index == -1) {
+                                return;
+                            }
+                            listThrumps2.splice(index, 1);
+                        }
+                    }
+                });
 
                 //this.connection.on("ReceiveUserMessage", userEvent => {
                 //    if (userEvent.BoardId == this.boardId) {
@@ -540,7 +522,16 @@
             sendCommentMsg(context) {
                 this.connection.invoke("SendCommentMessage", context);
             },
-            addThumps(boardItemId,thumpType) {
+
+            thumbsUpUserNames(thumbsUp) {
+                var names = ''
+                for (var i = 0; i < thumbsUp.length; i++) {
+                    names = names + thumbsUp[i].CreatedUser +'\n';
+                }
+                return names;
+            },
+
+            addThumps(type,boardItemId,thumpType) {
                 this.axios({
                     method: 'post',
                     url: '/Comment',
@@ -553,22 +544,44 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.sendBoardItemMsg();
+                    var comment = {
+                        CreatedUser: this.userName,
+                        Type: thumpType,
+                        BoardItemId: boardItemId
+                    };
+                    var context = {
+                        Operation: AddOperation,
+                        BoardId: this.boardId,
+                        Type:type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
                 })
             },
-            deleteThumps(boardItemId) {
+            deleteThumps(type, boardItemId) {
                 this.axios({
                     method: 'delete',
                     url: '/Comment',
-                    data: {
-                        BoardItemId: boardItemId,
-                        CreatedUser: this.userName
+                    params: {
+                        borderItemId: boardItemId,
+                        username: this.userName
                     },
                     headers: {
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    this.sendBoardItemMsg();
+                    var comment = {
+                        CreatedUser: this.userName,
+                        Type: 0,
+                        BoardItemId: boardItemId
+                    };
+                    var context = {
+                        Operation: DeleteOperation,
+                        BoardId: this.boardId,
+                        Type: type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
                 })
             },
             markCompleted() {
@@ -636,6 +649,8 @@
 </script>
 
 <style>
+    @import "../styles/css/font-awesome.css";
+
     ul {
         list-style-type: none;
     }

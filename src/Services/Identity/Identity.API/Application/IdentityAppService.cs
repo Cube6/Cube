@@ -17,17 +17,15 @@ namespace Cube.Identity.API.Application
 
 		public bool Validate(string user, string password)
 		{
-			var address = $"{Configuration["UserService:Scheme"]}://{Configuration["UserService:Host"]}:{Configuration["UserService:Port"]}" ;
+			var address = $"{Configuration["UserService:Scheme"]}://{Configuration["UserService:Host"]}:{Configuration["UserService:Port"]}";
 
 			Console.WriteLine($"Try to connect to the user service: {address}");
 
 			var httpHandler = new HttpClientHandler();
 			// Return `true` to allow certificates that are untrusted/invalid
-			httpHandler.ServerCertificateCustomValidationCallback =
-				HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+			httpHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
-			var channel = GrpcChannel.ForAddress(address,
-				new GrpcChannelOptions { HttpHandler = httpHandler });
+			var channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions { HttpHandler = httpHandler });
 			var client = new UserService.UserServiceClient(channel);
 
 			var result = client.Validate(new ValidateUserRequest()

@@ -61,6 +61,7 @@ namespace Cube.User.API.Controllers
 			return userDto;
 		}
 
+		[Authorize]
 		public override async Task<Result> DeleteUserByIdAsync(Id request, ServerCallContext context)
 		{
 			var result = await _appService.DeleteUserByIdAsync(request.Id_);

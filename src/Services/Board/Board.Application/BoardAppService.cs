@@ -170,15 +170,19 @@ namespace Cube.Board.Application
 		}
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
 		{
-			List<Comment> comments = null;
-			comments = await _redis.ListRangeAsync<long, Comment>(boardItemId, 0, -1);
-			if (comments == null)
+			List<Comment> comments = new List<Comment>();
+			var userNames = await _redis.ListRangeAsync<long, string>(boardItemId, 0, -1);
+			if (userNames.Any())
+			{
+				var boardItem =await _repository.GetBoardItemByIdAsync(boardItemId);
+				foreach(var userName in userNames)
+				{
+					comments.Add(new Comment() { CreatedUser = userName, BoardItem = boardItem });
+				}
+			}
+			else
 			{
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
-			}
-			if (comments == null)
-			{
-				return null;
 			}
 
 			var list = new List<CommentDto>();
