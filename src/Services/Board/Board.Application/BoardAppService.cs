@@ -151,9 +151,11 @@ namespace Cube.Board.Application
 				DateModified = DateTime.Now,
 				Type = commentDto.Type,
 			};
-			await _repository.CreateCommentAsync(comment);
-			await _redis.ListAddAsync(comment.BoardItem.Id, comment.CreatedUser);
-			
+			if(!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+			{
+				await _repository.CreateCommentAsync(comment);
+				await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+			}
 		}
 
 		public async Task DeleteCommentByIdAsync(long id)
@@ -164,7 +166,7 @@ namespace Cube.Board.Application
 		public async Task DeleteCommentAsync(long borderItemId, string username)
 		{
 			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
-			await _redis.ListRemoveAsync(borderItemId, username);
+			await _redis.SetRemoveAsync(borderItemId, username);
 		}
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
 		{
