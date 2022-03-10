@@ -20,7 +20,7 @@ namespace Board.API.Hubs
 	public class UserEvent
 	{
 		public string UserName { get; set; }
-		public string Opeation { get; set; }
+		public string Operation { get; set; }
 		public int BoardId { get; set; }
 	}
 }
