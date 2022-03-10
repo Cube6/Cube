@@ -172,6 +172,11 @@
 
             this.init();
         },
+        destroyed(){
+            if(this.connection!=null){
+                console.log("Hub " + this.connection.connectionId + "is stopped");
+            }
+        },
         computed: {
 
         },
@@ -499,7 +504,7 @@
                 this.connection.on("ReceiveUserMessage", userEvent => {
                     if (userEvent.BoardId == this.boardId) {
                         if (userEvent.UserName != this.userName) {
-                            
+                            console.log(this.connection.connectionId);
                             console.log("render" + (new Date()).toTimeString());
                             this.renderFunc(userEvent.UserName + ' is joined the board.');
                         }
