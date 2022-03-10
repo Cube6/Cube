@@ -175,6 +175,7 @@
         destroyed(){
             if(this.connection!=null){
                 console.log("Hub " + this.connection.connectionId + "is stopped");
+                this.connection.stop();
             }
         },
         computed: {
