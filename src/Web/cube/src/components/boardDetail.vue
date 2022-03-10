@@ -166,7 +166,6 @@
             this.boardId = this.$route.params.boardId;
             this.boardName = this.$route.params.boardName;
             this.state = this.$route.params.state;
-            console.log(this.state);
             this.fetchData(true);
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
@@ -421,7 +420,7 @@
 
             renderFunc(message) {
                 this.$Notice.success({
-                    title: 'Notification',
+                    //title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
 
@@ -497,18 +496,26 @@
                     }
                 });
 
-                //this.connection.on("ReceiveUserMessage", userEvent => {
-                //    if (userEvent.BoardId == this.boardId) {
-                //        if (userEvent.Operation == DeleteOperation) {
+                this.connection.on("ReceiveUserMessage", userEvent => {
+                    if (userEvent.BoardId == this.boardId) {
+                        if (userEvent.UserName != this.userName) {
+                            
+                            console.log("render" + (new Date()).toTimeString());
+                            this.renderFunc(userEvent.UserName + ' is joined the board.');
+                        }
+                    }
+                });
 
-                //        }
-                //        else if (userEvent.Operation == AddOperation) {
+                this.connection.start().then(() => {
 
-                //        }
-                //    }
-                //});
-
-                this.connection.start();
+                    console.log("sendUserMsg");
+                    var context = {
+                        Operation: AddOperation,
+                        UserName: this.userName,
+                        BoardId: this.boardId
+                    };
+                    this.sendUserMsg(context);
+                });
             },
 
             sendBoardMsg() {
@@ -521,6 +528,10 @@
 
             sendCommentMsg(context) {
                 this.connection.invoke("SendCommentMessage", context);
+            },
+
+            sendUserMsg(context) {
+                this.connection.invoke("SendUserMessage", context);
             },
 
             thumbsUpUserNames(thumbsUp) {
