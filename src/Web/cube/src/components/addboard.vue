@@ -50,7 +50,7 @@
                         }).then(res => {
                             this.$router.push({ name: 'boardDetail', params: { boardId: res.data, boardName: this.formInline.name, state:1 } });
                         }).then(() => {
-                            this.sendMsg();
+                            this.sendBoardMessage();
                         }).then(() => {
                             this.renderFunc(this.formInline.name + ' is created successfully.');
                         }).catch(error => {
@@ -66,19 +66,11 @@
             },
             renderFunc(message) {
                 this.$Notice.success({
-                    // title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
-
                         return h('span', [
                             message
                         ])
-
-                        //return h('span', [
-                        //    'This is created by ',
-                        //    h('a', 'render'),
-                        //    ' function'
-                        //])
                     }
                 });
             },
@@ -89,11 +81,7 @@
                     .build();
                 this.connection.start();
             },
-            sendMsg() {
-                //let params = {
-                //    user: this.user,
-                //    message: this.message
-                //};
+            sendBoardMessage() {
                 this.connection.invoke("SendBoardMessage");
             }
         },
