@@ -5,14 +5,20 @@
 
                 {{boardName}}
 
-                <span style="color:forestgreen" v-if="state == 2">Completed</span>
+                <span style="color:forestgreen" v-if="state == 2">
+                    [
+                        <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
+                        Completed
+                    ]
+                </span>
 
-                <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
+                <Dropdown style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
                         <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem>
-                        <DropdownItem v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
-                        <DropdownItem v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
+                        <DropdownItem v-if="state != 2"  v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
+                        <DropdownItem v-if="state != 2"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
+                        <DropdownItem v-on:click.native="exportData()"><Icon type="ios-code-download" size="28" />Export</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
                 <!--<Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData(true)" title="Refresh"></Icon>-->
@@ -21,7 +27,18 @@
         <br />
         <table width="100%">
             <thead>
-                <tr>
+                <tr v-if="state == 2">
+                    <th width="33%">
+                        What went well ?
+                    </th>
+                    <th width="33%">
+                        What could be improved ?
+                    </th>
+                    <th width="34%">
+                        Action Items
+                    </th>
+                </tr>
+                <tr v-if="state != 2">
                     <th width="33%">
                         <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Add" @on-search="addWentWell" />
                     </th>
@@ -29,7 +46,7 @@
                         <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImporved" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="Action" search enter-button="Add" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
@@ -44,15 +61,15 @@
                                     <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
-                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;" >
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <i :ref="'item'+well.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
-                                                &nbsp;<p >{{well.ThumbsUp.length}}</p>
+                                                &nbsp;<p>{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </a>
@@ -67,9 +84,9 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)"  @on-change="boardItemChanged"/>
+                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
-                                        <a href="#"  @click.prevent="addImproveUp(imporve)"  :title="thumbsUpUserNames(imporve.ThumbsUp)">
+                                        <a href="#" @click.prevent="addImproveUp(imporve)" :title="thumbsUpUserNames(imporve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <i :ref="'item'+imporve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
@@ -78,7 +95,7 @@
                                         <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
                                         </a>
@@ -99,13 +116,13 @@
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                            <i :ref="'item'+action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                <i :ref="'item'+action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                 <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                             </Button>
                                         </a>
                                     </p>
@@ -116,7 +133,7 @@
                 </tr>
             </tbody>
         </table>
-
+        <Table :columns="csvColumns" :data="csvData" ref="tableForExport" v-show="false"></Table>
         <BackTop :height="100" :bottom="120" :right="50">
             <div class="top">Back to Top</div>
         </BackTop>
@@ -159,7 +176,9 @@
                 boardName:null,
                 boardId: null,
                 connection: "",
-                state:0,
+                state: 0,
+                csvData:[],
+                csvColumns: []
             };
         },
         created() {
@@ -660,8 +679,42 @@
                         }
                     }
                 )
+            },
+            exportData() {
+                this.csvColumns = [{
+                    "title": "",
+                    "key": "content",
+                    "width": 500,
+                },
+                {
+                    "title": "",
+                    "key": "vote",
+                }];
+
+                this.csvData.push({ "content": "Went Well", "vote": "Votes" });
+                this.WellContent.forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.Detail.replace(',','-'), "vote": value.ThumbsUp.length });
+                });
+
+                this.csvData.push({ "content": "", "vote": "" });
+                this.csvData.push({ "content": "To Improve", "vote": "Votes" });
+                this.ImporveContent.forEach((value, index) => {
+                    this.csvData.push({ "content": index+1 + '.' + value.Detail.replace(',', '-'), "vote": value.ThumbsUp.length });
+                });
+
+                this.csvData.push({ "content": "", "vote": "" });
+                this.csvData.push({ "content": "Action Items", "vote": "Votes" });
+                this.ActionContent.forEach((value, index) => {
+                    this.csvData.push({ "content": index+1 + '.' + value.Detail.replace(',', '-'), "vote": value.ThumbsUp.length });
+                });
+
+                this.$refs.tableForExport.exportCsv({
+                    filename: this.boardName,
+                    columns: this.csvColumns,
+                    data: this.csvData
+                })
             }
-        },
+        }
     }
 </script>
 

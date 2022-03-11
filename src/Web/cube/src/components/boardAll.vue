@@ -17,6 +17,8 @@
                 <Card style="width: 250px; text-align: left; cursor: pointer">
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
+                        <img src="../assets/Icons/completed.jpg" v-if="board.State == 2" title="Completed" style="width:20px; height:20px; border-radius:50%; float:right" >
+                        <img src="../assets/Icons/inprogress.jpg" v-if="board.State != 2" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
                     </p>
                     <div style="text-align:center;">
                         <a href="#" slot="extra" @click.prevent="ViewBoard(board)">
@@ -24,7 +26,7 @@
                             {{board.Name}}
                         </a>
                     </div>
-                    <a href="#" slot="extra" @click.prevent="DeleteBoard(board)" title="Delete" v-if="board.CreatedUser==UserName">
+                    <!-- <a href="#" slot="extra" @click.prevent="DeleteBoard(board)" title="Delete" v-if="board.CreatedUser==UserName">
                         <span aria-label="Delete" class="">
                             <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -32,7 +34,7 @@
                                 </svg>
                             </button>
                         </span>
-                    </a>
+                    </a> -->
                 </Card>
             </li>
         </ul>
@@ -186,5 +188,4 @@
         transform: translate(-50%, -50%);
         background: '#fff'
     }
-
 </style>
