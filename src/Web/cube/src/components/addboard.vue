@@ -66,7 +66,7 @@
             },
             renderFunc(message) {
                 this.$Notice.success({
-                    title: 'Notification',
+                    // title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
 

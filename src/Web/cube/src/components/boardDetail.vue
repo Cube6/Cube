@@ -187,7 +187,7 @@
                 var msg;
                 if (forceRefresh) {
                     msg = this.$Message.loading({
-                        content: 'Loading...',
+                        content: 'Loading Board Items...',
                         duration: 0
                     });
                 }
@@ -650,11 +650,11 @@
                                             'Authorization': 'Bearer ' + this.UserToken
                                         }
                                     }).then(() => {
-                                        this.$router.push('/boardAll');
-                                    }).then(() => {
                                         this.renderFunc(this.boardName + ' is deleted successfully.');
                                     }).then(() => {
                                         this.sendBoardMsg();
+                                    }).then(() => {
+                                        this.$router.push('/boardAll');
                                     })
                             }
                         }

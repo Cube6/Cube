@@ -68,11 +68,17 @@
             
             this.init();
         },
+        destroyed(){
+            if(this.connection!=null){
+                console.log("Hub " + this.connection.connectionId + "is stopped");
+                this.connection.stop();
+            }
+        },
         methods: {
             fetchData() {
 
                 var msg = this.$Message.loading({
-                        content: 'Loading...',
+                        content: 'Loading Boards...',
                         duration: 0
                     });
 
@@ -117,7 +123,7 @@
                                     }).then(() => {
                                         this.renderFunc(board.Name + ' is deleted successfully.');
                                     }).then(() => {
-                                        this.sendMsg();
+                                        this.sendBoardMessage();
                                     })
                             }
                         }
@@ -136,7 +142,7 @@
             },
             renderFunc(message) {
                 this.$Notice.success({
-                    title: 'Notification',
+                    // title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
 
@@ -162,7 +168,7 @@
                 });
                 this.connection.start();
             },
-            sendMsg() {
+            sendBoardMessage() {
                 this.connection.invoke("SendBoardMessage");
             },
             pageChanged(page) {
