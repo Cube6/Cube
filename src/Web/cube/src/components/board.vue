@@ -50,18 +50,18 @@
                         <Icon type="md-book"></Icon>
                         <span>Board</span>
                     </MenuItem>
-                    <!--<MenuItem name="1-2" to="/boardAll">
+                    <MenuItem name="1-2" to="/boardAll/1">
                         <Icon type="md-time"></Icon>
                         <span>In Progress</span>
                     </MenuItem>
-                    <MenuItem name="1-3" to="/boardAll">
+                    <MenuItem name="1-3" to="/boardAll/2">
                         <Icon type="ios-paper"></Icon>
                         <span>Completed</span>
                     </MenuItem>
-                    <MenuItem name="1-4" to="/boardAll">
+                    <MenuItem name="1-4" to="/boardAll/3">
                         <Icon type="md-trash"></Icon>
                         <span>Recycle Bin</span>
-                    </MenuItem>-->
+                    </MenuItem>
                 </Menu>
             </Sider>
             <Layout :style="{padding: '0 24px'}">
@@ -73,7 +73,7 @@
                 </Breadcrumb>
                 <Content :style="{padding: '5px', minHeight: '280px', background: '#fff'}">
                     <Card style="height:100%">
-                        <router-view></router-view>
+                        <router-view :key="$route.path"></router-view>
                     </Card>
                 </Content>
             </Layout>

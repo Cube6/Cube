@@ -23,10 +23,28 @@ namespace Cube.Board.Application
 			_redis = redis;
 		}
 
-		public IEnumerable<BoardDto> GetBoards()
+		public IEnumerable<BoardDto> GetBoards(BoardType type)
 		{
 			var list = new List<BoardDto>();
-			foreach (var item in _repository.ListAsync().Result.Where(t=>!t.IsDeleted))
+			IEnumerable<DisscussionBoard> boards = new List<DisscussionBoard>();
+			if(type == BoardType.All)
+			{
+				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+			}
+			else if(type == BoardType.InProgress)
+			{
+				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.InProgress);
+			}
+			else if(type == BoardType.Completed)
+			{
+				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.Completed);
+			}
+			else if(type == BoardType.Deleted)
+			{
+				boards = _repository.ListAsync().Result.Where(t => t.IsDeleted);
+			}
+
+			foreach (var item in boards)
 			{
 				var boardDto = _mapper.Map<BoardDto>(item);
 				list.Add(boardDto);

@@ -18,7 +18,8 @@
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
                         <img src="../assets/Icons/completed.jpg" v-if="board.State == 2" title="Completed" style="width:20px; height:20px; border-radius:50%; float:right" >
-                        <img src="../assets/Icons/inprogress.jpg" v-if="board.State != 2" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
+                        <img src="../assets/Icons/inprogress.jpg" v-if="board.IsDeleted==false &&board.State == 1" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
+                        <img src="../assets/Icons/deleted.png" v-if="board.IsDeleted" title="Deleted" style="width:20px; height:20px; border-radius:50%; float:right" >
                     </p>
                     <div style="text-align:center;">
                         <a href="#" slot="extra">
@@ -64,6 +65,7 @@
         created() {
             // fetch the data when the view is created and the data is
             // already being observed
+            
             this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.UserName = localStorage.getItem('LOGINUSER');
@@ -83,8 +85,22 @@
                         content: 'Loading Boards...',
                         duration: 0
                     });
+                
+                var type = this.$route.params.type;
+                console.log(type);
 
-                fetch('Board')
+                var url = '/Board';
+                if(type!=null && type != 'undefined')
+                {
+                    url = url + '/' + type + '';
+                }else{
+                    url = url + '/0';
+                }
+
+                fetch(url)
+
+                //this.axios.get('/BoardItem/' + this.boardId + '')
+                //this.axios.get('Board')
                     .then(r => r.json())
                     .then(json => {
                         

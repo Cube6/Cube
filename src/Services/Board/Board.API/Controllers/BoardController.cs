@@ -20,10 +20,10 @@ namespace Board.API.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet("")]
-		public IEnumerable<BoardDto> GetAll()
+		[HttpGet("{type}")]
+		public IEnumerable<BoardDto> GetAll(int type)
 		{
-			return _appservice.GetBoards();
+			return _appservice.GetBoards((BoardType)type);
 		}
 
 		[HttpPost]
