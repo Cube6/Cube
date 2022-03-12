@@ -43,7 +43,7 @@
                         <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Add" @on-search="addWentWell" />
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImporved" />
+                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImproved" />
                     </th>
                     <th width="34%">
                         <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" search enter-button="Add" @on-search="addAction" />
@@ -80,19 +80,19 @@
                     </td>
                     <td style="vertical-align:top">
                         <ul>
-                            <li v-for="imporve in ImporveContent" :key="imporve.Id">
+                            <li v-for="improve in ImproveContent" :key="improve.Id">
                                 <Card style="width: 100%; text-align: left;">
-                                    <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
+                                    <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)" @on-change="boardItemChanged" />
+                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addImproveUp(imporve)" :title="thumbsUpUserNames(imporve.ThumbsUp)">
+                                        <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :ref="'item'+imporve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
-                                                &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
+                                                <i :ref="'item'+improve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                &nbsp;<p>{{improve.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName && state != 2">
+                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(improve)" title="Delete" v-if="improve.CreatedUser==userName && state != 2">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
@@ -157,19 +157,19 @@
                 userName: null,
                 ActionContent: null,
                 WellContent: null,
-                ImporveContent: null,
-                deleteActionId: null,
-                deleteWellId: null,
-                deleteImporveId: null,
-                ActionUpCount: 0,
-                ActionDownCount: 0,
-                WellUpCount: 0,
-                WellDownCount: 0,
-                ImproveUpCount: 0,
-                ImproveDownCount: 0,
+                ImproveContent: null,
+                //deleteActionId: null,
+                //deleteWellId: null,
+                //deleteImporveId: null,
+                //ActionUpCount: 0,
+                //ActionDownCount: 0,
+                //WellUpCount: 0,
+                //WellDownCount: 0,
+                //ImproveUpCount: 0,
+                //ImproveDownCount: 0,
                 boardDetail: {
                     WellDetail: "",
-                    ImporveDetail: "",
+                    ImproveDetail: "",
                     ActionDetail: "",
                 },
                 boardItemTextChanged: false,
@@ -213,9 +213,9 @@
 
                 this.axios.get('/BoardItem/' + this.boardId + '')
                     .then(all => {
-                        this.WellContent = all.data.filter(item => item.Type == 1);
-                        this.ImporveContent = all.data.filter(item => item.Type == 2);
-                        this.ActionContent = all.data.filter(item => item.Type == 3);
+                        this.WellContent = all.data.filter(item => item.Type == WentWellType);
+                        this.ImproveContent = all.data.filter(item => item.Type == NeedsImproveType);
+                        this.ActionContent = all.data.filter(item => item.Type == ActionType);
 
                         if (forceRefresh) {
                             setTimeout(msg);
@@ -262,7 +262,7 @@
                     this.sendBoardItemMsg(context);
 
                     this.boardDetail.WellDetail = "";
-                    this.boardDetail.ImporveDetail = "";
+                    this.boardDetail.ImproveDetail = "";
                     this.boardDetail.ActionDetail = "";
                 })
             },
@@ -271,8 +271,8 @@
                 this.addBoardDetail(this.boardDetail.WellDetail, WentWellType);          
             },
 
-            addImporved() {
-                this.addBoardDetail(this.boardDetail.ImporveDetail, NeedsImproveType);      
+            addImproved() {
+                this.addBoardDetail(this.boardDetail.ImproveDetail, NeedsImproveType);      
             },
 
             addAction() {
@@ -321,7 +321,7 @@
                 if (type == WentWellType) {
                     listOfItems = this.WellContent;
                 } else if (type == NeedsImproveType) {
-                    listOfItems = this.ImporveContent;
+                    listOfItems = this.ImproveContent;
                 } else if (type == ActionType) {
                     listOfItems = this.ActionContent;
                 }
@@ -398,7 +398,7 @@
             },
 
             addImproveUp(improveItem) {
-                this.thumbsUpAction(NeedsImproveType, this.ImporveContent, improveItem);
+                this.thumbsUpAction(NeedsImproveType, this.ImproveContent, improveItem);
             },
 
             thumbsUpAction(type, listOfItems, item) {
@@ -704,7 +704,7 @@
 
                 this.csvData.push({ "content": "", "createdUser":"","vote": "" });
                 this.csvData.push({ "content": "To Improve", "createdUser":"Submitter", "vote": "Votes" });
-                this.getSortedItems(this.ImporveContent).forEach((value,index) => {
+                this.getSortedItems(this.ImproveContent).forEach((value,index) => {
                     this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
                 });
 
