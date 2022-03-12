@@ -194,7 +194,7 @@ namespace RedisPractice
 			}
 			catch (Exception)
 			{
-				return null;
+				return new List<V>();
 			}
 		}
 
@@ -246,7 +246,7 @@ namespace RedisPractice
 			}
 			catch (Exception)
 			{
-				return null;
+				return new List<V>();
 			}
 		}
 

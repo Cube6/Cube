@@ -681,31 +681,37 @@
                 )
             },
             exportData() {
-                this.csvColumns = [{
+                this.csvColumns = [
+                {
                     "title": "",
                     "key": "content",
-                    "width": 500,
+                },
+                {
+                    "title": "",
+                    "key": "createdUser",
                 },
                 {
                     "title": "",
                     "key": "vote",
                 }];
 
-                this.csvData.push({ "content": "Went Well", "vote": "Votes" });
-                this.WellContent.forEach((value,index) => {
-                    this.csvData.push({ "content": index+1 +'.'+ value.Detail.replace(',','-'), "vote": value.ThumbsUp.length });
+                this.csvData.push({ "content": this.boardName, "createdUser":"", "vote": "" });
+                this.csvData.push({ "content": "", "createdUser":"",  "vote": "" });
+                this.csvData.push({ "content": "Went Well", "createdUser":"Submitter",  "vote": "Votes" });
+                this.getSortedItems(this.WellContent).forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
                 });
 
-                this.csvData.push({ "content": "", "vote": "" });
-                this.csvData.push({ "content": "To Improve", "vote": "Votes" });
-                this.ImporveContent.forEach((value, index) => {
-                    this.csvData.push({ "content": index+1 + '.' + value.Detail.replace(',', '-'), "vote": value.ThumbsUp.length });
+                this.csvData.push({ "content": "", "createdUser":"","vote": "" });
+                this.csvData.push({ "content": "To Improve", "createdUser":"Submitter", "vote": "Votes" });
+                this.getSortedItems(this.ImporveContent).forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
                 });
 
-                this.csvData.push({ "content": "", "vote": "" });
-                this.csvData.push({ "content": "Action Items", "vote": "Votes" });
-                this.ActionContent.forEach((value, index) => {
-                    this.csvData.push({ "content": index+1 + '.' + value.Detail.replace(',', '-'), "vote": value.ThumbsUp.length });
+                this.csvData.push({ "content": "", "createdUser":"", "vote": "" });
+                this.csvData.push({ "content": "Action Items", "createdUser":"Submitter", "vote": "Votes" });
+                this.getSortedItems(this.ActionContent).forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
                 });
 
                 this.$refs.tableForExport.exportCsv({
@@ -713,6 +719,23 @@
                     columns: this.csvColumns,
                     data: this.csvData
                 })
+            },
+            getSortedItems(content)
+            {
+                let sortedItems = [];
+                content.forEach((value) => {
+                    sortedItems.push({ 
+                        "content": value.Detail.replace(',','-'), 
+                        "createdUser": value.CreatedUser, 
+                        "vote": value.ThumbsUp.length 
+                        });
+                });
+
+                sortedItems.sort(function(a, b) {
+                    return b.vote-a.vote
+                });
+
+                return sortedItems;
             }
         }
     }

@@ -186,10 +186,11 @@ namespace Cube.Board.Application
 			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
 			await _redis.SetRemoveAsync(borderItemId, username);
 		}
+
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
 		{
 			List<Comment> comments = new List<Comment>();
-			var userNames = await _redis.ListRangeAsync<long, string>(boardItemId, 0, -1);
+			var userNames = await _redis.SetAllAsync<long, string>(boardItemId);
 			if (userNames.Any())
 			{
 				var boardItem =await _repository.GetBoardItemByIdAsync(boardItemId);
@@ -201,6 +202,10 @@ namespace Cube.Board.Application
 			else
 			{
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
+				foreach (var comment in comments)
+				{
+					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+				}
 			}
 
 			var list = new List<CommentDto>();
