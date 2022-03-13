@@ -63,7 +63,7 @@
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <i :class="thumbsUpClass(well.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
-                                                &nbsp;<p>{{well.ThumbsUp.length}}</p>
+                                                &nbsp;<p>{{thumbsUpCount(well.ThumbsUp)}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
@@ -89,7 +89,7 @@
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <i :class="thumbsUpClass(improve.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
-                                                &nbsp;<p>{{improve.ThumbsUp.length}}</p>
+                                                &nbsp;<p>{{thumbsUpCount(improve.ThumbsUp)}}</p>
                                             </button>
                                         </a>
                                         <a href="#" style="float:right" @click.prevent="deleteBoardItem(improve)" title="Delete" v-if="improve.CreatedUser==userName && state != 2">
@@ -117,7 +117,7 @@
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                 <i :class="thumbsUpClass(action.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
-                                                &nbsp;<p>{{action.ThumbsUp.length}}</p>
+                                                &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
                                             </button>
                                         </a>
                                         <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
@@ -568,7 +568,18 @@
                 return names;
             },
 
-            thumbsUpClass:function(thumbsUp){
+            thumbsUpCount(thumbsUp) {
+
+                var len = thumbsUp.length;
+                if(len>0)
+                {
+                    return len;
+                }
+                
+                return '';
+            },
+
+            thumbsUpClass(thumbsUp){
                 var index = thumbsUp.find(item=> item.CreatedUser == this.userName);
                 if(index!=null)
                 {
