@@ -110,7 +110,7 @@
                 this.$router.push('/addboard');
             },
             ViewBoard(board) {
-                this.$router.push({ name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, state:board.State } });
+                this.$router.push({ name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, createdUser:board.CreatedUser, state:board.State } });
             },
             DeleteBoard(board) {
                 this.$confirm(

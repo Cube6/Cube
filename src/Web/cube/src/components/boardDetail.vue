@@ -17,7 +17,7 @@
                     <DropdownMenu slot="list">
                         <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem>
                         <DropdownItem v-if="state != 2"  v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
-                        <DropdownItem v-if="state != 2"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
+                        <DropdownItem v-if="state != 2 && boardCreatedUser==userName"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
                         <DropdownItem v-on:click.native="exportData()"><Icon type="ios-code-download" size="28" />Export</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
@@ -184,11 +184,13 @@
         created() {
             this.boardId = this.$route.params.boardId;
             this.boardName = this.$route.params.boardName;
+            this.boardCreatedUser = this.$route.params.createdUser.toUpperCase();
             this.state = this.$route.params.state;
-            this.fetchData(true);
+            
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
-
+            
+            this.fetchData(true);
             this.init();
         },
         destroyed(){
@@ -522,7 +524,12 @@
                 this.connection.on("ReceiveUserMessage", userEvent => {
                     if (userEvent.BoardId == this.boardId) {
                         if (userEvent.UserName != this.userName) {
-                            this.renderFunc(userEvent.UserName + ' is joined the board.');
+                            this.$Notice.info({
+                                render: h => {
+                                        return h('span', [
+                                            userEvent.UserName + ' is joined the board.'
+                                        ])}
+                            });
                         }
                     }
                 });

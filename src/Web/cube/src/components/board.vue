@@ -30,8 +30,8 @@
 
                     <MenuItem name="menuProfile" style="float:right">
                         <Dropdown>
-                            <img :src="getLoginUserAvatar()" style="width: 25px; height: 25px; border-radius: 50%; margin-top: 16px " />
-                            <DropdownMenu slot="list">
+                            <img :src="getLoginUserAvatar()" style="width: 25px; height: 25px; border-radius: 50%; margin-top: 16px " :title="userName" />
+                            <DropdownMenu slot="list">            
                                 <DropdownItem>Change Password</DropdownItem>
                                 <DropdownItem @click.native="showMyProfile = true">My Profile</DropdownItem>
                                 <DropdownItem @click.native="createAccount">Register New</DropdownItem>
