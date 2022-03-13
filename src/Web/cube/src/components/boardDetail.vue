@@ -62,7 +62,7 @@
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :ref="'item'+well.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                <i :class="thumbsUpClass(well.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
                                                 &nbsp;<p>{{well.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
@@ -88,7 +88,7 @@
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :ref="'item'+improve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                <i :class="thumbsUpClass(improve.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
                                                 &nbsp;<p>{{improve.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
@@ -116,7 +116,7 @@
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :ref="'item'+action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
+                                                <i :class="thumbsUpClass(action.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
                                                 &nbsp;<p>{{action.ThumbsUp.length}}</p>
                                             </button>
                                         </a>
@@ -421,13 +421,11 @@
                     listThrumps.splice(index, 1);
                     isAdd = false;
                 }
-                let itemId = 'item' + item.Id;
+
                 if (isAdd) {
-                    this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
                     this.addThumps(type, item.Id, 0);
                 }
                 else {
-                    this.$refs[itemId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
                     this.deleteThumps(type, item.Id);
                 }
             },
@@ -561,6 +559,18 @@
                     names = names + thumbsUp[i].CreatedUser +'\n';
                 }
                 return names;
+            },
+
+            thumbsUpClass:function(thumbsUp){
+                var index = thumbsUp.find(item=> item.CreatedUser == this.userName);
+                if(index!=null)
+                {
+                    return 'fa fa-thumbs-up fa-2x';
+                }
+                else
+                {
+                    return 'fa fa-thumbs-o-up fa-2x';
+                }
             },
 
             addThumps(type,boardItemId,thumpType) {
