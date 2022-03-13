@@ -193,7 +193,7 @@
         },
         destroyed(){
             if(this.connection!=null){
-                console.log("Hub " + this.connection.connectionId + "is stopped");
+                console.log("Hub for Board Detail with " + this.connection.connectionId + "is stopped");
                 this.connection.stop();
             }
         },
@@ -227,7 +227,7 @@
                         if (forceRefresh) {
                             setTimeout(msg);
                         }
-                        console.log(error);
+                        console.log('Failed to get board Items. Error:' + error);
                     })
             },
 
@@ -524,16 +524,12 @@
                 this.connection.on("ReceiveUserMessage", userEvent => {
                     if (userEvent.BoardId == this.boardId) {
                         if (userEvent.UserName != this.userName) {
-                            console.log(this.connection.connectionId);
-                            console.log("render" + (new Date()).toTimeString());
                             this.renderFunc(userEvent.UserName + ' is joined the board.');
                         }
                     }
                 });
 
                 this.connection.start().then(() => {
-
-                    console.log("sendUserMsg");
                     var context = {
                         Operation: AddOperation,
                         UserName: this.userName,

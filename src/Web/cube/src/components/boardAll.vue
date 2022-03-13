@@ -74,7 +74,7 @@
         },
         destroyed(){
             if(this.connection!=null){
-                console.log("Hub " + this.connection.connectionId + "is stopped");
+                console.log("Hub for BoardAll with " + this.connection.connectionId + "is stopped");
                 this.connection.stop();
             }
         },
@@ -87,8 +87,6 @@
                     });
                 
                 var type = this.$route.params.type;
-                console.log(type);
-
                 var url = '/Board';
                 if(type!=null && type != 'undefined')
                 {
@@ -98,20 +96,13 @@
                 }
 
                 fetch(url)
-
-                //this.axios.get('/BoardItem/' + this.boardId + '')
-                //this.axios.get('Board')
                     .then(r => r.json())
                     .then(json => {
                         
                         this.post = json;
                         this.pageSetting.total = this.post.length;
 
-                        console.log(json);
-                        console.log(this.pageSetting);
-
                         setTimeout(msg);
-
                         return;
                     });
             },

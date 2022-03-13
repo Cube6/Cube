@@ -54,7 +54,7 @@
                         }).then(() => {
                             this.renderFunc(this.formInline.name + ' is created successfully.');
                         }).catch(error => {
-                            console.log(error);
+                            console.log('Failed to addDiscussionBoard, Error :' + error);
                         })
                     } else {
                         this.$Message.error('Fail!');

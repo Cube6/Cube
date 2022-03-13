@@ -55,8 +55,8 @@ export default {
         },
         logout() {
 
-            localStorage.setItem('LOGINUSER', null);
-            localStorage.setItem('TOKEN', null);
+            localStorage.setItem('LOGINUSER', '');
+            localStorage.setItem('TOKEN', '');
 
             this.$router.push('/login');
         },

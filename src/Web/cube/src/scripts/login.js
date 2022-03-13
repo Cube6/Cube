@@ -19,13 +19,7 @@ export default {
         }
     },
     created(){
-        var userToken = localStorage.getItem('TOKEN');
-        var userName = localStorage.getItem('LOGINUSER');
-        if(userToken != null && userName !=null)
-        {
-            console.log("Redirect to board view since the user is already logged in");
-            this.$router.replace({ path: '/board', params: { username: userName } } );
-        }
+        this.redirectToBoardIfAlreadyLoggedIn();
     },
     methods: {
         handleSubmit(name) {
@@ -51,7 +45,7 @@ export default {
 
                     }).catch(error => {
                         this.$Message.error('Username or Password is incorrect, please try again!');
-                        console.log(error);
+                        console.log('Failed to login in. Error:' + error);
                         this.loading = false;
                     })
                 } else {
@@ -61,6 +55,21 @@ export default {
         },
         directToRegister() {
             this.$router.replace('/register');
+        },
+        redirectToBoardIfAlreadyLoggedIn()
+        {
+            var userToken = localStorage.getItem('TOKEN');
+            var userName = localStorage.getItem('LOGINUSER');
+    
+            if(!userToken|| !userName)
+            {
+                return;
+            }
+            else
+            {
+                console.log("Redirect to board view since the user " + userName +" is already logged in");
+                this.$router.replace({ path: '/board', params: { username: userName } } );
+            }
         }
     }
 }
