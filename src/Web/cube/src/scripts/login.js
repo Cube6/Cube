@@ -18,6 +18,15 @@ export default {
             }
         }
     },
+    created(){
+        var userToken = localStorage.getItem('TOKEN');
+        var userName = localStorage.getItem('LOGINUSER');
+        if(userToken != null && userName !=null)
+        {
+            console.log("Redirect to board view since the user is already logged in");
+            this.$router.replace({ path: '/board', params: { username: userName } } );
+        }
+    },
     methods: {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {

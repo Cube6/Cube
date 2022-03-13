@@ -30,6 +30,11 @@ axios.interceptors.response.use(
     error => {
         if (error.response) {
             if (error.response.status == 401) {
+
+                console.log("Redirect to Login, Error Detail:" + error.response);
+                localStorage.setItem('LOGINUSER', null);
+                localStorage.setItem('TOKEN', null);
+
                 router.replace('/login');
             }
             return Promise.reject(error)
