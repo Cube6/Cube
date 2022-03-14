@@ -79,7 +79,7 @@
             </Layout>
         </Layout>
         <Footer class="layout-footer-center">
-            Cube(Version 0.1) &copy; 2022 <a href="https://github.com/Cube6">Cube6</a>, All Rights Reserved
+            &copy; 2022 <a href="https://github.com/Cube6">Cube6</a>, All Rights Reserved
         </Footer>
 
         <symbol id="at-plus" viewBox="0 0 1024 1024"><path d="M476.16 476.16V191.0272c0-20.6848 16.0256-37.4272 35.84-37.4272 19.8144 0 35.84 16.7424 35.84 37.4272V476.16h285.1328c20.6848 0 37.4272 16.0256 37.4272 35.84 0 19.8144-16.7424 35.84-37.4272 35.84H547.84v285.1328c0 20.6848-16.0256 37.4272-35.84 37.4272-19.8144 0-35.84-16.7424-35.84-37.4272V547.84H191.0272C170.3424 547.84 153.6 531.8144 153.6 512c0-19.8144 16.7424-35.84 37.4272-35.84H476.16z"></path></symbol>
