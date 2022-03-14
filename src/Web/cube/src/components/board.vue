@@ -23,7 +23,7 @@
                         </Tooltip>
                     </MenuItem>
 
-                    <MenuItem name="menuAbout">
+                    <MenuItem name="menuAbout"  @click.native="showAboutView = true">
                         <Icon type="md-water"></Icon>
                         About
                     </MenuItem>
@@ -137,6 +137,48 @@
             </div>-->
             <div class="my-drawer-footer">
                 <Button type="primary" @click="showMyProfile = false">Close</Button>
+            </div>
+        </Drawer>
+        <Drawer :closable="false" width="640" v-model="showAboutView">
+            <p :style="pStyle">About Cube</p>
+            <p :style="pStyle">Cube v0.2</p>
+            <div class="my-drawer-profile">
+                <img :src="getLogo()" style="width: 80px; height: 80px; border-radius: 50%; margin-top: 16px " />
+                <Row>
+                    <Col span="24">
+                    &copy; 2022 <a href="https://github.com/Cube6">Cube6</a>, All Rights Reserved
+                    </Col>
+                </Row>
+            </div>
+            <Divider />
+            <p :style="pStyle">History</p>
+            <div class="my-drawer-profile">
+                <Row>
+                    <Col span="4">
+                    2022-03-13
+                    </Col>
+                    <Col span="4">
+                    Version 0.2
+                    </Col>
+                    <Col span="16">
+                    -Export to CSV, Filter Boards by status,Fix bugs
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="4">
+                    2022-03-01
+                    </Col>
+                    <Col span="4">
+                    Version 0.1
+                    </Col>
+                    <Col span="16">
+                    -Release the first version of Cube.
+                    </Col>
+                </Row>
+            </div>
+            <Divider />
+            <div class="my-drawer-footer">
+                <Button type="primary" @click="showAboutView = false">Close</Button>
             </div>
         </Drawer>
     </div>

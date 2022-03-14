@@ -7,6 +7,7 @@ export default {
             userName: null,
 
             showMyProfile: false,
+            showAboutView: false,
             pStyle: {
                 fontSize: '16px',
                 color: 'rgba(0,0,0,0.85)',
@@ -46,6 +47,9 @@ export default {
                 userAvatar = require('../assets/Person/cube.jpg')
                 return userAvatar
             }
+        },
+        getLogo() {
+            return require('../assets/logo.jpg');
         },
         collapsedSider() {
             this.$refs.side1.toggleCollapse();
