@@ -6,7 +6,7 @@ namespace Cube.Board.Domain
 {
 	public class DisscussionBoard: Entity
 	{
-		[MaxLength(30)]
+		[MaxLength(100)]
 		[Required]
 		public string Name { get; set; }
 
