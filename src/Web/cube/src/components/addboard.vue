@@ -24,7 +24,8 @@
                 },
                 ruleInline: {
                     name: [
-                        { required: true, message: 'Please fill in the board name', trigger: 'blur' }
+                        { required: true, message: 'Board Name is required', trigger: 'blur'},
+                        { max: 100, message: 'The length of Board Name should be less than 100', trigger: 'blur'}
                     ]
                 },
 
