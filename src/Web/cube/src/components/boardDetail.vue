@@ -21,7 +21,9 @@
                         <DropdownItem v-on:click.native="exportData()"><Icon type="ios-code-download" size="28" />Export</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <!--<Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData(true)" title="Refresh"></Icon>-->
+
+                <!--Online Users-->
+                <!-- <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " /> -->
             </span>
         </h1>
         <br />
@@ -158,15 +160,6 @@
                 ActionContent: null,
                 WellContent: null,
                 ImproveContent: null,
-                //deleteActionId: null,
-                //deleteWellId: null,
-                //deleteImporveId: null,
-                //ActionUpCount: 0,
-                //ActionDownCount: 0,
-                //WellUpCount: 0,
-                //WellDownCount: 0,
-                //ImproveUpCount: 0,
-                //ImproveDownCount: 0,
                 boardDetail: {
                     WellDetail: "",
                     ImproveDetail: "",
@@ -178,7 +171,8 @@
                 connection: "",
                 state: 0,
                 csvData:[],
-                csvColumns: []
+                csvColumns: [],
+                participants:[]
             };
         },
         created() {
@@ -192,9 +186,19 @@
             
             this.fetchData(true);
             this.init();
+
+            this.participants.push(this.userName);
         },
         destroyed(){
             if(this.connection!=null){
+
+                var context = {
+                    Operation: DeleteOperation,
+                    UserName: this.userName,
+                    BoardId: this.boardId
+                };
+                this.sendUserMsg(context);
+
                 console.log("Hub for Board Detail with " + this.connection.connectionId + "is stopped");
                 this.connection.stop();
             }
@@ -523,13 +527,40 @@
 
                 this.connection.on("ReceiveUserMessage", userEvent => {
                     if (userEvent.BoardId == this.boardId) {
-                        if (userEvent.UserName != this.userName) {
-                            this.$Notice.info({
-                                render: h => {
-                                        return h('span', [
-                                            userEvent.UserName + ' is joined the board.'
-                                        ])}
-                            });
+                        if(userEvent.UserName != this.userName)
+                        {
+                            if (userEvent.Operation == AddOperation) {
+                                this.$Notice.info({
+                                    render: h => {
+                                            return h('span', [
+                                                userEvent.UserName + ' is joined the board.'
+                                            ])}
+                                });
+
+                                var index = this.participants.indexOf(userEvent.UserName);
+                                if(index == -1)
+                                {
+                                    this.participants.push(userEvent.UserName);
+                                }
+                            }
+                            else if(userEvent.Operation == DeleteOperation){
+                                this.$Notice.info({
+                                    render: h => {
+                                            return h('span', [
+                                                userEvent.UserName + ' is left the board.'
+                                            ])}
+                                });
+
+                                var index2 = this.participants.findIndex(item => {
+                                                if (item == userEvent.UserName) {
+                                                    return true;
+                                                }
+                                            });
+                                if (index2 == -1) {
+                                    return;
+                                }
+                                this.participants.splice(index2, 1);
+                            }
                         }
                     }
                 });
