@@ -780,7 +780,7 @@
                 let sortedItems = [];
                 content.forEach((value) => {
                     sortedItems.push({ 
-                        "content": value.Detail.replace(',','-'), 
+                        "content": value.Detail.replaceAll(',','_'), 
                         "createdUser": value.CreatedUser, 
                         "vote": value.ThumbsUp.length 
                         });
