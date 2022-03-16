@@ -42,13 +42,13 @@
                 </tr>
                 <tr v-if="state != 2">
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Add" @on-search="addWentWell" />
+                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck="true" search enter-button="Add" @on-search="addWentWell" />
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImproved" />
+                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" spellcheck="true" search enter-button="Add" @on-search="addImproved" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" search enter-button="Add" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" spellcheck="true" search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
@@ -60,7 +60,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
+                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" spellcheck="true" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -86,7 +86,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
+                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" spellcheck="true" :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -113,7 +113,7 @@
                                 <Card style="width: 100%; text-align: left; ">
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" spellcheck="true" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">

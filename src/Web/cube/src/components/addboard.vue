@@ -2,7 +2,7 @@
     <div>
         <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
             <FormItem prop="name" class="lgD">
-                <Input v-model="formInline.name" placeholder="Enter a board name. Ex: DE8.0 Runtime/DDW SprintX Retro"/>
+                <Input v-model="formInline.name" spellcheck="true" placeholder="Enter a board name. Ex: DE8.0 Runtime/DDW SprintX Retro"/>
             </FormItem>
             <FormItem>
                 <Button @click="addDiscussionBoard('formInline')" type="primary" >Add</Button>
