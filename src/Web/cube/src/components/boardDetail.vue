@@ -533,7 +533,7 @@
                                 this.$Notice.info({
                                     render: h => {
                                             return h('span', [
-                                                userEvent.UserName + ' is joined the board.'
+                                                userEvent.UserName + ' joined the board.'
                                             ])}
                                 });
 
@@ -547,7 +547,7 @@
                                 this.$Notice.info({
                                     render: h => {
                                             return h('span', [
-                                                userEvent.UserName + ' is left the board.'
+                                                userEvent.UserName + ' left the board.'
                                             ])}
                                 });
 
