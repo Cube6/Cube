@@ -45,7 +45,7 @@ namespace Cube.Identity.API.Controllers
 				_jwtSettings.Audience,
 				claims,
 				DateTime.Now,
-				DateTime.Now.AddHours(1),
+				DateTime.Now.AddHours(6),
 				creds);
 
 			return Ok(new {
