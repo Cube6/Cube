@@ -374,7 +374,7 @@
                             id: boardItem.Id,
                             detail: boardItem.Detail,
                             type: boardItem.Type,
-                            createduser: this.userName,
+                            createduser: boardItem.CreatedUser,
                             boardid: this.boardId
                         },
                         headers: {
