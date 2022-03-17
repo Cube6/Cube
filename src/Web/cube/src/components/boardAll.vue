@@ -65,11 +65,10 @@
         created() {
             // fetch the data when the view is created and the data is
             // already being observed
-            
-            this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.UserName = localStorage.getItem('LOGINUSER');
-            
+
+            this.fetchData();
             this.init();
         },
         destroyed(){
@@ -94,17 +93,24 @@
                 }else{
                     url = url + '/0';
                 }
-
-                fetch(url)
-                    .then(r => r.json())
+                
+                this.axios(
+                    {
+                        method: 'get',
+                        url: url,
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                    }})
                     .then(json => {
-                        
-                        this.post = json;
+                        this.post = json.data;
                         this.pageSetting.total = this.post.length;
 
                         setTimeout(msg);
                         return;
-                    });
+                    }).catch(error => {
+                        setTimeout(msg);
+                        console.log('Failed to get board. Error:' + error);
+                    })
             },
             AddBoard() {
                 this.$router.push('/addboard');

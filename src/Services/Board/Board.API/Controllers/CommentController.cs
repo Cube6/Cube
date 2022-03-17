@@ -28,6 +28,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{boardItemId}")]
+		[Authorize]
 		public IEnumerable<CommentDto> FindComments(long boardItemId)
 		{
 			var list = _appservice.FindCommentsByIdAsync(boardItemId);

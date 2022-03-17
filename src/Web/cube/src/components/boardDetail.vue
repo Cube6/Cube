@@ -217,7 +217,13 @@
                     });
                 }
 
-                this.axios.get('/BoardItem/' + this.boardId + '')
+                this.axios(
+                    {
+                        method: 'get',
+                        url: '/BoardItem/' + this.boardId + '',
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                    }})
                     .then(all => {
                         this.WellContent = all.data.filter(item => item.Type == WentWellType);
                         this.ImproveContent = all.data.filter(item => item.Type == NeedsImproveType);

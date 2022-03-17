@@ -45,7 +45,7 @@ namespace Cube.Identity.API.Controllers
 				_jwtSettings.Audience,
 				claims,
 				DateTime.Now,
-				DateTime.Now.AddDays(30),
+				DateTime.Now.AddDays(1),
 				creds);
 
 			return Ok(new {

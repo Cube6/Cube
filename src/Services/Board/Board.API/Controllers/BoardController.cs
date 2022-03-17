@@ -21,6 +21,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{type}")]
+		[Authorize]
 		public IEnumerable<BoardDto> GetAll(int type)
 		{
 			return _appservice.GetBoards((BoardType)type);

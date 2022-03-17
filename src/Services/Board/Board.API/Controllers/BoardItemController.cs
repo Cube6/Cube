@@ -28,6 +28,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{boardId}")]
+		[Authorize]
 		public IEnumerable<BoardItemDto> Find(long boardId)
 		{
 			var boardItems = _appservice.FindBoardItemByBoardIdAsync(boardId);
