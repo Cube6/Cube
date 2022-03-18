@@ -155,6 +155,17 @@
             <div class="my-drawer-profile">
                 <Row>
                     <Col span="4">
+                    2022-03-18
+                    </Col>
+                    <Col span="4">
+                    Version 0.3
+                    </Col>
+                    <Col span="16">
+                    -Support Spellcheck, Sort Items by Votes
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="4">
                     2022-03-13
                     </Col>
                     <Col span="4">
