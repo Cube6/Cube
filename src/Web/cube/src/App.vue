@@ -13,7 +13,7 @@ export default {
 
 <style>
     body {
-        background-image: url(./assets/login_bg.png);
+        background-image: url(./assets/login_bg.jpg);
         background-size: cover;
         height: calc(100% - 10px);
         font-family: sans-serif;
