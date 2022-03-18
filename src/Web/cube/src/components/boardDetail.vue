@@ -22,6 +22,8 @@
                     </DropdownMenu>
                 </Dropdown>
 
+                <Icon type="ios-swap" @click.native="sortItems()" title="Sort" size="24" style="float: right; margin-right:15px;-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg); "/>
+
                 <!--Online Users-->
                 <!-- <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " /> -->
             </span>
@@ -42,7 +44,7 @@
                 </tr>
                 <tr v-if="state != 2">
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck="true" search enter-button="Add" @on-search="addWentWell" />
+                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck="true" :loading="loading" search enter-button="Add" @on-search="addWentWell" />
                     </th>
                     <th width="33%">
                         <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" spellcheck="true" search enter-button="Add" @on-search="addImproved" />
@@ -151,10 +153,14 @@
     const AddOperation = 'add';
     const UpdateOperation = 'update';
     const DeleteOperation = 'delete';
+    const SortUpOption='asc';
+    const SortDownOption='desc';
+    const SortCreatedOption='createdTime';
 
     export default {
         data() {
             return {
+                loading: false,
                 UserToken: null,
                 userName: null,
                 ActionContent: null,
@@ -170,6 +176,7 @@
                 boardId: null,
                 connection: "",
                 state: 0,
+                sortOption:SortUpOption,
                 csvData:[],
                 csvColumns: [],
                 participants:[]
@@ -248,6 +255,8 @@
                     return;
                 }
 
+                this.loading = true;
+
                 this.axios({
                     method: 'post',
                     url: '/BoardItem',
@@ -276,7 +285,12 @@
                     this.boardDetail.WellDetail = "";
                     this.boardDetail.ImproveDetail = "";
                     this.boardDetail.ActionDetail = "";
-                })
+
+                    this.loading = false;
+                }).catch(error => {
+                    this.$Message.error('Failed to add board item. Error:' + error);
+                    this.loading = false;
+                });
             },
 
             addWentWell() {
@@ -797,6 +811,51 @@
                 });
 
                 return sortedItems;
+            },
+            sortItems()
+            {
+                if(this.sortOption == SortUpOption)
+                {
+                    this.sortItemsAsc(this.WellContent);
+                    this.sortItemsAsc(this.ImproveContent);
+                    this.sortItemsAsc(this.ActionContent);
+
+                    this.sortOption = SortDownOption;
+                }
+                else if(this.sortOption == SortDownOption)
+                {
+                    this.sortItemsDesc(this.WellContent);
+                    this.sortItemsDesc(this.ImproveContent);
+                    this.sortItemsDesc(this.ActionContent);
+
+                     this.sortOption = SortCreatedOption;
+                }
+                else if(this.sortOption == SortCreatedOption)
+                {
+                    this.resetSortItems(this.WellContent);
+                    this.resetSortItems(this.ImproveContent);
+                    this.resetSortItems(this.ActionContent);
+
+                     this.sortOption = SortUpOption;
+                }
+            },
+            sortItemsAsc(content)
+            {
+                content.sort(function(a, b){
+                    return b.ThumbsUp.length - a.ThumbsUp.length;
+                });
+            },
+            sortItemsDesc(content)
+            {
+                content.sort(function(a, b){
+                    return a.ThumbsUp.length - b.ThumbsUp.length;
+                });
+            },
+            resetSortItems(content)
+            {
+                content.sort(function(a, b){
+                    return a.Id - b.Id;
+                });
             }
         }
     }
