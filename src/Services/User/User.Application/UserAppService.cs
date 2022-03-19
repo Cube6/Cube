@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Cube.User.Application.Cache;
 using Cube.User.Application.Configuration;
 using Cube.User.Application.Dtos;
 using Cube.User.Respository;
+using RedisPractice;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,10 +13,12 @@ namespace Cube.User.Application
 	{
 		private IUserRepository _repository;
 		private IMapper _mapper = MapperFactory.GetMapper();
+		private IRedisInstance _redis;
 
-		public UserAppService(IUserRepository repository)
+		public UserAppService(IUserRepository repository, IRedisInstance redis)
 		{
 			_repository = repository;
+			_redis = redis;
 		}
 
 		public async Task<ResultDto> Register(CreateUserDto request)
@@ -61,6 +65,37 @@ namespace Cube.User.Application
 
 		public async Task<ResultDto> DeleteUserByIdAsync(long id)
 		{
+			return await Task.FromResult(new ResultDto() { Success = true });
+		}
+
+		public async Task<List<OnlineUserNameDto>> GetOnlineUsersAsync(long boardId)
+		{
+			var setKey = KeyBuilder.GetOnlineUserKey(boardId);
+			var userNames = await _redis.SetAllAsync<string, string>(setKey);
+			var allUsers = new List<OnlineUserNameDto>();
+			foreach (var user in userNames)
+			{
+				allUsers.Add(new OnlineUserNameDto() { Name = user});
+			}
+
+			return await Task.FromResult(allUsers);
+		}
+
+		public async Task<ResultDto> UpdateOnlineUser(UpdateOnlineUserDto request)
+		{
+			var setKey = KeyBuilder.GetOnlineUserKey(request.BoardId);
+			if (request.Operation == 1)
+			{
+				if (!await _redis.SetContainsValueAsync(setKey, request.Name))
+				{
+					await _redis.SetAddAsync(setKey, request.Name);
+				}
+			}
+			else
+			{
+				await _redis.SetRemoveAsync(setKey, request.Name);
+			}
+
 			return await Task.FromResult(new ResultDto() { Success = true });
 		}
 	}

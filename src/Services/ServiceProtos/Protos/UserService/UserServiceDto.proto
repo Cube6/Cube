@@ -33,3 +33,17 @@ message AllUsers{
 message Result{
 	bool Success = 1;
 }
+
+message UpdateOnlineUserRequest{
+	int32 Operation = 1;
+	int64 BoardId = 2;
+	string Name = 3;
+}
+
+message OnlineUserName{
+	string Name = 1;
+}
+
+message OnlineUserNames{
+	repeated OnlineUserName Users = 1;
+}

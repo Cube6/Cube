@@ -6,11 +6,22 @@
                 {{boardName}}
 
                 <span style="color:forestgreen" v-if="state == 2">
-                    [
                         <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
                         Completed
-                    ]
                 </span>
+
+                <Dropdown  v-if="state != 2">
+                    <!-- <Icon type="md-people" size="24"></Icon> -->
+                    <div style="color:#00ad00" >
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <span>{{participants.length}}</span>
+                    </div>
+                    <DropdownMenu slot="list">
+                        <div style="margin:10px;">
+                            <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="width: 30px; height: 30px; border-radius: 50%; " />
+                        </div>
+                    </DropdownMenu>
+                </Dropdown>
 
                 <Dropdown style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
@@ -48,13 +59,13 @@
                 </tr>
                 <tr v-if="state != 2">
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck="true" :loading="loading" search enter-button="Add" @on-search="addWentWell" />
+                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck=true :loading="loading" search enter-button="Add" @on-search="addWentWell" />
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" spellcheck="true" search enter-button="Add" @on-search="addImproved" />
+                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" spellcheck=true search enter-button="Add" @on-search="addImproved" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" spellcheck="true" search enter-button="Add" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" spellcheck=true search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
@@ -66,7 +77,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck="true" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
+                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck=true style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -100,7 +111,7 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck="true" :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
+                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck=true :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -135,7 +146,7 @@
                                 <Card style="width: 100%; text-align: left; ">
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck="true" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck=true :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
@@ -224,18 +235,11 @@
             
             this.fetchData(true);
             this.init();
-
-            this.participants.push(this.userName);
         },
         destroyed(){
             if(this.connection!=null){
 
-                var context = {
-                    Operation: DeleteOperation,
-                    UserName: this.userName,
-                    BoardId: this.boardId
-                };
-                this.sendUserMsg(context);
+                this.updateParticipant(DeleteOperation);
 
                 console.log("Hub for Board Detail with " + this.connection.connectionId + "is stopped");
                 this.connection.stop();
@@ -246,6 +250,11 @@
         },
         methods: {
             fetchData(forceRefresh) {
+                this.fetchBoardItems(forceRefresh);
+                this.fetchParticipants();
+            },
+
+            fetchBoardItems(forceRefresh) {
 
                 var msg;
                 if (forceRefresh) {
@@ -279,6 +288,51 @@
                         }
                         console.log('Failed to get board Items. Error:' + error);
                     })
+            },
+            
+            fetchParticipants(){
+                this.axios({
+                        method: 'get',
+                        url: '/User/Online/'+this.boardId,
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                        }
+                    }).then((res) => {
+                        res.data.Users.forEach((item) =>{
+                            this.participants.push(item.Name);
+                        });  
+                    }).catch(error=>{
+                        this.$Message.error('Failed to load online users. Error:' + error);
+                    });
+            },
+            updateParticipant(action){
+                
+                var context = {
+                    Operation: action,
+                    UserName: this.userName,
+                    BoardId: this.boardId
+                };
+
+                console.log(context);
+                this.sendUserMsg(context);
+
+                var opFlag = action == AddOperation ? 1 : 2;
+                this.axios({
+                        method: 'post',
+                        url: '/User/Online',
+                        data: {
+                            Operation: opFlag,
+                            BoardId:this.boardId,
+                            Name: this.userName,
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                        }
+                    }).then(() => {
+
+                    }).catch(error=>{
+                        console.log('Error:' + error);
+                    });
             },
 
             addBoardDetail(boardDetail, type) {
@@ -633,12 +687,13 @@
                 });
 
                 this.connection.start().then(() => {
-                    var context = {
-                        Operation: AddOperation,
-                        UserName: this.userName,
-                        BoardId: this.boardId
-                    };
-                    this.sendUserMsg(context);
+                     var index = this.participants.indexOf(this.userName);
+                    if(index == -1)
+                    {
+                        this.participants.push(this.userName);
+                    }
+
+                    this.updateParticipant(AddOperation);
                 });
             },
 

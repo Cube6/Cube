@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RedisPractice;
 using System.Text;
 
 namespace Cube.User.API
@@ -44,6 +45,7 @@ namespace Cube.User.API
 
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserAppService, UserAppService>();
+			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
 
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();

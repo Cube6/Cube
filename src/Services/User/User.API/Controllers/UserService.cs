@@ -69,9 +69,27 @@ namespace Cube.User.API.Controllers
 		}
 
 		[Authorize]
-		public override async Task<Result> SecureActionAsync(Empty request, ServerCallContext context)
+		public override async Task<OnlineUserNames> GetAllOnelineUsersAsync(Id request, ServerCallContext context)
 		{
-			return await Task.FromResult(new Protos.Result() { Success = true });
+			var users = await _appService.GetOnlineUsersAsync(request.Id_);
+
+			var allUsers = new OnlineUserNames();
+			foreach (var user in users)
+			{
+				allUsers.Users.Add(_mapper.Map<Protos.OnlineUserName>(user));
+			}
+
+			return await Task.FromResult(allUsers);
+		}
+
+		[Authorize]
+		public override async Task<Result> UpdateOnlineUser(UpdateOnlineUserRequest request, ServerCallContext context)
+		{
+			var dto = _mapper.Map<UpdateOnlineUserDto>(request);
+
+			var result = await _appService.UpdateOnlineUser(dto);
+
+			return await Task.FromResult(_mapper.Map<Result>(result));
 		}
 	}
 }
