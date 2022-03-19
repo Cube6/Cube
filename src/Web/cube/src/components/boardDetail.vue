@@ -22,7 +22,11 @@
                     </DropdownMenu>
                 </Dropdown>
 
-                <Icon type="ios-swap" @click.native="sortItems()" title="Sort" size="24" style="float: right; margin-right:15px;-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg); "/>
+                <a href="#" @click.prevent="sortItems()" title="Sort Items">
+                    <button class="css-b7766g" tabindex="-1" style="float: right; margin-top:10px;">
+                        <i :class="sortButtonClass" style="color:#666666" aria-hidden="true"></i>
+                    </button>
+                </a>
 
                 <!--Online Users-->
                 <!-- <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " /> -->
@@ -181,6 +185,8 @@
     const SortDownOption='desc';
     const SortCreatedOption='createdTime';
 
+    const DefaultSortButtonClass = 'fa fa-sort fa-1x';
+
     export default {
         data() {
             return {
@@ -201,6 +207,7 @@
                 connection: "",
                 state: 0,
                 sortOption:SortUpOption,
+                sortButtonClass: DefaultSortButtonClass,
                 csvData:[],
                 csvColumns: [],
                 participants:[]
@@ -328,7 +335,6 @@
             addAction() {
                 this.addBoardDetail(this.boardDetail.ActionDetail, ActionType);
             },
-
             canDeleteBoardItem(boardItem){
 
                 if(this.state != 2 && boardItem.CreatedUser== this.userName)
@@ -854,6 +860,7 @@
                     this.sortItemsAsc(this.ActionContent);
 
                     this.sortOption = SortDownOption;
+                    this.sortButtonClass = "fa fa-sort-amount-desc fa-1x";
                 }
                 else if(this.sortOption == SortDownOption)
                 {
@@ -862,6 +869,7 @@
                     this.sortItemsDesc(this.ActionContent);
 
                      this.sortOption = SortCreatedOption;
+                     this.sortButtonClass = "fa fa-sort-amount-asc fa-1x";
                 }
                 else if(this.sortOption == SortCreatedOption)
                 {
@@ -870,6 +878,7 @@
                     this.resetSortItems(this.ActionContent);
 
                      this.sortOption = SortUpOption;
+                     this.sortButtonClass = DefaultSortButtonClass;
                 }
             },
             sortItemsAsc(content)
