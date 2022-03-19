@@ -70,13 +70,21 @@
                                                 &nbsp;<p>{{thumbsUpCount(well.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
+                                        <!-- <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
-                                        </a>
+                                        </a> -->
+
+                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                            <Icon type="ios-more" size="28"></Icon>
+                                            <DropdownMenu slot="list">
+                                              <DropdownItem :disabled="!canDeleteBoardItem(well)"  v-on:click.native="canDeleteBoardItem(well)?deleteBoardItem(well):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </p>
                                 </Card>
                             </li>
@@ -96,15 +104,23 @@
                                                 &nbsp;<p>{{thumbsUpCount(improve.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(improve)" title="Delete" v-if="improve.CreatedUser==userName && state != 2">
+
+                                        <!-- <a href="#" style="float:right" @click.prevent="deleteBoardItem(improve)" title="Delete" v-if="improve.CreatedUser==userName && state != 2">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
-                                        </a>
-                                    </p>
+                                        </a> -->
 
+                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                            <Icon type="ios-more" size="28"></Icon>
+                                            <DropdownMenu slot="list">
+                                              <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </p>
                                 </Card>
                             </li>
                         </ul>
@@ -124,11 +140,19 @@
                                                 &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName && state != 2">
+                                        <!-- <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName && state != 2">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                                 <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                             </Button>
-                                        </a>
+                                        </a> -->
+
+                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                            <Icon type="ios-more" size="28"></Icon>
+                                            <DropdownMenu slot="list">
+                                              <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </p>
                                 </Card>
                             </li>
@@ -305,6 +329,15 @@
                 this.addBoardDetail(this.boardDetail.ActionDetail, ActionType);
             },
 
+            canDeleteBoardItem(boardItem){
+
+                if(this.state != 2 && boardItem.CreatedUser== this.userName)
+                {
+                    return true;
+                }
+
+                return false;
+            },
             deleteBoardItem(boardItem) {
 
                 this.$confirm(
