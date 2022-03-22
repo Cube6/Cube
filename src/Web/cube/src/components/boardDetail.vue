@@ -107,6 +107,11 @@
                     </td>
                     <td style="vertical-align:top">
                         <ul>
+                            <div v-if="ImproveContent.length == 0 && WellContent.length == 0 && ActionContent.length == 0"
+                                class="noItemsStyle">
+                                Speak with the soul and achieve your goal. Speak
+                                <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
+                            </div>
                             <li v-for="improve in ImproveContent" :key="improve.Id">
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
@@ -298,6 +303,7 @@
                             'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then((res) => {
+                        this.participants = [];
                         res.data.Users.forEach((item) =>{
                             this.participants.push(item.Name);
                         });  
@@ -1028,6 +1034,14 @@
         color: #fff;
         text-align: center;
         border-radius: 5px;
+    }
+
+    .noItemsStyle{
+        width: 100%; 
+        text-align: center; 
+        font-size: 12pt;
+        color:#D1D0CE;
+        margin-top: 250px;
     }
 
 </style>
