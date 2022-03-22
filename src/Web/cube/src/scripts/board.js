@@ -24,6 +24,12 @@ export default {
         // already being observed
         this.fetchData();
         this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
+
+        var isMenuCollapsed = localStorage.getItem('IsMenuCollapsed');
+        if(isMenuCollapsed !=null)
+        {
+            this.isCollapsed = localStorage.getItem('IsMenuCollapsed') == "true";
+        }
     },
     computed: {
         menuitemClasses: function () {
@@ -55,6 +61,7 @@ export default {
         },
         collapsedSider() {
             this.$refs.side1.toggleCollapse();
+            localStorage.setItem('IsMenuCollapsed', this.isCollapsed );
         },
         fetchData(id) {
             if(id == null)
