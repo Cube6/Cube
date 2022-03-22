@@ -153,37 +153,24 @@
             <p :style="pStyle">History</p>
             <div class="my-drawer-profile">
                 <Row>
-                    <Col span="4">
-                    2022-03-18
-                    </Col>
-                    <Col span="4">
-                    Version 0.3
-                    </Col>
-                    <Col span="16">
-                    -Support Spellcheck, Sort Items by Votes
-                    </Col>
+                    <Col span="4">2022-03-22</Col>
+                    <Col span="4">Version 0.4</Col>
+                    <Col span="16">Show online users, add navigation bar</Col>
                 </Row>
                 <Row>
-                    <Col span="4">
-                    2022-03-13
-                    </Col>
-                    <Col span="4">
-                    Version 0.2
-                    </Col>
-                    <Col span="16">
-                    -Export to CSV, Filter Boards by status,Fix bugs
-                    </Col>
+                    <Col span="4">2022-03-18</Col>
+                    <Col span="4">Version 0.3</Col>
+                    <Col span="16">Support Spellcheck, Sort Items by Votes</Col>
                 </Row>
                 <Row>
-                    <Col span="4">
-                    2022-03-01
-                    </Col>
-                    <Col span="4">
-                    Version 0.1
-                    </Col>
-                    <Col span="16">
-                    -Release the first version of Cube.
-                    </Col>
+                    <Col span="4">2022-03-13</Col>
+                    <Col span="4">Version 0.2</Col>
+                    <Col span="16">Export to CSV, Filter Boards by status,Fix bugs</Col>
+                </Row>
+                <Row>
+                    <Col span="4">2022-03-01</Col>
+                    <Col span="4">Version 0.1</Col>
+                    <Col span="16">Release the first version of Cube</Col>
                 </Row>
             </div>
             <Divider />
