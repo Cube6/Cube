@@ -70,7 +70,7 @@
                     <BreadcrumbItem  @click.native="fetchData(null)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
                     <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>
-                <Content :style="{padding: '5px', minHeight: '280px', background: '#fff'}">
+                <Content :style="{minHeight: '280px'}">
                     <Card style="height:100%">
                         <router-view :key="$route.path"></router-view>
                     </Card>
@@ -140,7 +140,7 @@
         </Drawer>
         <Drawer :closable="false" width="640" v-model="showAboutView">
             <p :style="pStyle">About Cube</p>
-            <p :style="pStyle">Cube v0.2</p>
+            <p :style="pStyle">Cube v0.4</p>
             <div class="my-drawer-profile">
                 <img :src="getLogo()" style="width: 80px; height: 80px; border-radius: 50%; margin-top: 16px " />
                 <Row>
