@@ -46,30 +46,29 @@
         <Layout :style="{minHeight: '100vh'}">
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1" to="/boardAll">
+                    <MenuItem name="1-1" @click.native="fetchData(null)">
                         <Icon type="md-book"></Icon>
                         <span>Board</span>
                     </MenuItem>
-                    <MenuItem name="1-2" to="/boardAll/1">
+                    <MenuItem name="1-2" @click.native="fetchData(1)">
                         <Icon type="md-time"></Icon>
                         <span>In Progress</span>
                     </MenuItem>
-                    <MenuItem name="1-3" to="/boardAll/2">
+                    <MenuItem name="1-3" @click.native="fetchData(2)">
                         <Icon type="ios-paper"></Icon>
                         <span>Completed</span>
                     </MenuItem>
-                    <MenuItem name="1-4" to="/boardAll/3">
+                    <MenuItem name="1-4" @click.native="fetchData(3)">
                         <Icon type="md-trash"></Icon>
                         <span>Recycle Bin</span>
                     </MenuItem>
                 </Menu>
             </Sider>
-            <Layout :style="{padding: '0 24px'}">
-                <Breadcrumb :style="{margin: '24px 0'}">
+            <Layout :style="{padding: '0 12px'}">
+                <Breadcrumb :style="{margin: '12px 0'}">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
-                    <!--<BreadcrumbItem>Home</BreadcrumbItem>
-                <BreadcrumbItem>Board</BreadcrumbItem>
-                <BreadcrumbItem>ViewAll</BreadcrumbItem>-->
+                    <BreadcrumbItem  @click.native="fetchData(null)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
+                    <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>
                 <Content :style="{padding: '5px', minHeight: '280px', background: '#fff'}">
                     <Card style="height:100%">

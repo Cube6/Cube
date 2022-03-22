@@ -5,6 +5,8 @@ export default {
         return {
             isCollapsed: false,
             userName: null,
+            navURL:null,
+            navName:null,
 
             showMyProfile: false,
             showAboutView: false,
@@ -54,8 +56,31 @@ export default {
         collapsedSider() {
             this.$refs.side1.toggleCollapse();
         },
-        fetchData() {
-            this.$router.push('/boardAll');
+        fetchData(id) {
+            if(id == null)
+            {
+                this.navURL = '/boardAll';
+                this.navName = null;
+            }
+            else
+            {
+                this.navURL = '/boardAll/'+id;
+               
+                if(id==1)
+                {
+                    this.navName = "In Progress";
+                }
+                else if(id == 2)
+                {
+                    this.navName = "Completed";
+                }
+                else if(id == 3)
+                {
+                    this.navName = "Recycle Bin";
+                }
+            }
+
+            this.$router.push(this.navURL);
         },
         logout() {
 
