@@ -12,7 +12,7 @@
 
                 <Dropdown  v-if="state != 2">
                     <!-- <Icon type="md-people" size="24"></Icon> -->
-                    <div style="color:#00ad00" >
+                    <div style="padding-left:10px;color:#00ad00" >
                         <i class="fa fa-users" aria-hidden="true"></i>
                         <span>{{participants.length}}</span>
                     </div>
