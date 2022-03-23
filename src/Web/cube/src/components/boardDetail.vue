@@ -2,9 +2,7 @@
     <div>
         <h1 style="width:100%;text-align:center; font-size:larger">
             <span>
-
-                {{boardName}}
-
+                <span :ref="'editBoardName'" @blur="updateBoardName()" contenteditable="true">{{boardName}}</span>
                 <span style="color:forestgreen" v-if="state == 2">Completed</span>
 
                 <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
@@ -203,6 +201,23 @@
                         }
                         console.log(error);
                     })
+            },
+
+            updateBoardName() {
+                if (this.$refs.editBoardName.innerText == this.boardName) {
+                    return;
+                }
+                this.axios({
+                    method: 'put',
+                    url: '/Board',
+                    data: {
+                        Id: this.boardId,
+                        Name: this.$refs.editBoardName.innerText
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + this.UserToken
+                    }
+                })
             },
 
             addBoardDetail(boardDetail, type) {
@@ -695,6 +710,10 @@
         color: #fff;
         text-align: center;
         border-radius: 5px;
+    }
+
+    [contenteditable]:focus {
+        outline: none;
     }
 
 </style>

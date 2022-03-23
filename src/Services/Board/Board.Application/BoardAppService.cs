@@ -67,14 +67,10 @@ namespace Cube.Board.Application
 
 		public async Task UpdateBoard(BoardDto boardDto)
 		{
-			var board = new DisscussionBoard()
-			{
-				Id = boardDto.Id,
-				Name = boardDto.Name,
-				CreatedUser = boardDto.CreatedUser,
-				State = boardDto.State,
-				DateModified = DateTime.Now
-			};
+			var board = _repository.ListAsync().Result.Where(b => b.Id == boardDto.Id).FirstOrDefault();
+			board.Name= boardDto.Name;
+			board.DateModified=DateTime.Now;
+
 			await _repository.UpdateBoardAsync(board);
 		}
 
