@@ -75,15 +75,21 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> HashAddAsync<K,F,V>(K key, F field, V value)
+		public virtual async Task<bool> HashAddAsync<K,F,V>(K key, F field, V value, int expire = 0)
 		{
 			try
 			{
 				var stringKey = JsonConvert.SerializeObject(key);
 				var stringField = JsonConvert.SerializeObject(field);
 				var stringValue = JsonConvert.SerializeObject(value);
+				var result = await database.HashSetAsync(stringKey, stringField, stringValue);
 
-				return await database.HashSetAsync(stringKey, stringField, stringValue);
+				if (expire > 0)
+				{
+					await database.KeyExpireAsync(stringKey, TimeSpan.FromSeconds(expire));
+				}
+
+				return result;
 			}
 			catch (Exception)
 			{
@@ -123,7 +129,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<long> ListAddAsync<K,M>(K key, M member)
+		public virtual async Task<long> ListAddAsync<K,M>(K key, M member, int expire = 0)
 		{
 			try
 			{
@@ -135,6 +141,11 @@ namespace RedisPractice
 				var stringMember = JsonConvert.SerializeObject(member, setting);
 
 				var result = await database.ListRightPushAsync(stringKey, stringMember);
+
+				if (expire > 0)
+				{
+					await database.KeyExpireAsync(stringKey, TimeSpan.FromSeconds(expire));
+				}
 
 				return result;
 			}
@@ -198,7 +209,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> SetAddAsync<K,V>(K key, V value)
+		public virtual async Task<bool> SetAddAsync<K,V>(K key, V value, int expire = 0)
 		{
 			try
 			{
@@ -206,6 +217,12 @@ namespace RedisPractice
 				var stringValue = JsonConvert.SerializeObject(value);
 
 				var result = await database.SetAddAsync(stringKey, stringValue);
+
+				if (expire > 0)
+				{
+					await database.KeyExpireAsync(stringKey, TimeSpan.FromSeconds(expire));
+				}
+
 				return result;
 			}
 			catch (Exception)

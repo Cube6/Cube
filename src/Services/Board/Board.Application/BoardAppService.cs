@@ -204,7 +204,7 @@ namespace Cube.Board.Application
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
 				foreach (var comment in comments)
 				{
-					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, 60);
 				}
 			}
 
