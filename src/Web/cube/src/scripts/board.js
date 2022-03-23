@@ -5,8 +5,11 @@ export default {
         return {
             isCollapsed: false,
             userName: null,
+            navURL:null,
+            navName:null,
 
             showMyProfile: false,
+            showAboutView: false,
             pStyle: {
                 fontSize: '16px',
                 color: 'rgba(0,0,0,0.85)',
@@ -21,6 +24,12 @@ export default {
         // already being observed
         this.fetchData();
         this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
+
+        var isMenuCollapsed = localStorage.getItem('IsMenuCollapsed');
+        if(isMenuCollapsed !=null)
+        {
+            this.isCollapsed = localStorage.getItem('IsMenuCollapsed') == "true";
+        }
     },
     computed: {
         menuitemClasses: function () {
@@ -47,16 +56,43 @@ export default {
                 return userAvatar
             }
         },
+        getLogo() {
+            return require('../assets/logo.jpg');
+        },
         collapsedSider() {
             this.$refs.side1.toggleCollapse();
+            localStorage.setItem('IsMenuCollapsed', this.isCollapsed );
         },
-        fetchData() {
-            this.$router.push('/boardAll');
+        fetchData(id) {
+            if(id == null)
+            {
+                this.navURL = '/boardAll';
+                this.navName = null;
+            }
+            else
+            {
+                this.navURL = '/boardAll/'+id;
+               
+                if(id==1)
+                {
+                    this.navName = "In Progress";
+                }
+                else if(id == 2)
+                {
+                    this.navName = "Completed";
+                }
+                else if(id == 3)
+                {
+                    this.navName = "Recycle Bin";
+                }
+            }
+
+            this.$router.push(this.navURL);
         },
         logout() {
 
-            localStorage.setItem('LOGINUSER', null);
-            localStorage.setItem('TOKEN', null);
+            localStorage.setItem('LOGINUSER', '');
+            localStorage.setItem('TOKEN', '');
 
             this.$router.push('/login');
         },

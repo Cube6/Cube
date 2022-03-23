@@ -13,10 +13,6 @@ namespace Cube.Board.Domain
 
 		public string Action { get; set; }
 
-		//public int ThumbsUp { get; set; }
-
-		//public int ThumbsDown { get; set; }
-
 		public virtual DisscussionBoard Board { get; set; }
 
 		[Required]

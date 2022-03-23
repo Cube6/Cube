@@ -20,24 +20,25 @@ namespace Board.API.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet("")]
-		public IEnumerable<BoardDto> GetAll()
+		[HttpGet("{type}")]
+		[Authorize]
+		public IEnumerable<BoardDto> GetAll(int type)
 		{
-			return _appservice.GetBoards();
+			return _appservice.GetBoards((BoardType)type);
 		}
 
 		[HttpPost]
 		[Authorize]
-		public Task<int> CreateBoard(string operation, CreateBoardDto ceateBoard)
+		public Task<int> CreateBoard(CreateBoardDto ceateBoard)
 		{
 			return _appservice.CreateBoard(ceateBoard);
 		}
 
 		[HttpPut]
 		[Authorize]
-		public Task UpdateBoard(BoardDto Board)
+		public Task UpdateBoard(BoardDto board)
 		{
-			return _appservice.UpdateBoard(Board);
+			return _appservice.UpdateBoard(board);
 		}
 
 		[HttpDelete("{id}")]

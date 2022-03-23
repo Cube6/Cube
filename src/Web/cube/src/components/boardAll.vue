@@ -14,17 +14,20 @@
                 </Card>
             </li>
             <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
-                <Card style="width: 250px; text-align: left; cursor: pointer">
+                <Card style="width: 250px; text-align: left; cursor: pointer" v-on:click.native="ViewBoard(board)">
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
+                        <img src="../assets/Icons/completed.jpg" v-if="board.State == 2" title="Completed" style="width:20px; height:20px; border-radius:50%; float:right" >
+                        <img src="../assets/Icons/inprogress.jpg" v-if="board.IsDeleted==false &&board.State == 1" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
+                        <img src="../assets/Icons/deleted.png" v-if="board.IsDeleted" title="Deleted" style="width:20px; height:20px; border-radius:50%; float:right" >
                     </p>
                     <div style="text-align:center;">
-                        <a href="#" slot="extra" @click.prevent="ViewBoard(board)">
+                        <a href="#" slot="extra">
                             <Icon type="ios-loop-strong"></Icon>
                             {{board.Name}}
                         </a>
                     </div>
-                    <a href="#" slot="extra" @click.prevent="DeleteBoard(board)" title="Delete" v-if="board.CreatedUser==UserName">
+                    <!-- <a href="#" slot="extra" @click.prevent="DeleteBoard(board)" title="Delete" v-if="board.CreatedUser==UserName">
                         <span aria-label="Delete" class="">
                             <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
                                 <svg class="css-vubbuv" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: rgb(239, 83, 80);">
@@ -32,7 +35,7 @@
                                 </svg>
                             </button>
                         </span>
-                    </a>
+                    </a> -->
                 </Card>
             </li>
         </ul>
@@ -62,40 +65,58 @@
         created() {
             // fetch the data when the view is created and the data is
             // already being observed
-            this.fetchData();
             this.UserToken = localStorage.getItem('TOKEN');
             this.UserName = localStorage.getItem('LOGINUSER');
-            
+
+            this.fetchData();
             this.init();
+        },
+        destroyed(){
+            if(this.connection!=null){
+                console.log("Hub for BoardAll with " + this.connection.connectionId + "is stopped");
+                this.connection.stop();
+            }
         },
         methods: {
             fetchData() {
 
                 var msg = this.$Message.loading({
-                        content: 'Loading...',
+                        content: 'Loading Boards...',
                         duration: 0
                     });
-
-                fetch('Board')
-                    .then(r => r.json())
+                
+                var type = this.$route.params.type;
+                var url = '/Board';
+                if(type!=null && type != 'undefined')
+                {
+                    url = url + '/' + type + '';
+                }else{
+                    url = url + '/0';
+                }
+                
+                this.axios(
+                    {
+                        method: 'get',
+                        url: url,
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                    }})
                     .then(json => {
-                        
-                        this.post = json;
+                        this.post = json.data;
                         this.pageSetting.total = this.post.length;
 
-                        console.log(json);
-                        console.log(this.pageSetting);
-
                         setTimeout(msg);
-
                         return;
-                    });
+                    }).catch(error => {
+                        setTimeout(msg);
+                        console.log('Failed to get board. Error:' + error);
+                    })
             },
             AddBoard() {
                 this.$router.push('/addboard');
             },
             ViewBoard(board) {
-                this.$router.push({ name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, state:board.State } });
+                this.$router.push({ name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, createdUser:board.CreatedUser, state:board.State } });
             },
             DeleteBoard(board) {
                 this.$confirm(
@@ -117,7 +138,7 @@
                                     }).then(() => {
                                         this.renderFunc(board.Name + ' is deleted successfully.');
                                     }).then(() => {
-                                        this.sendMsg();
+                                        this.sendBoardMessage();
                                     })
                             }
                         }
@@ -136,7 +157,7 @@
             },
             renderFunc(message) {
                 this.$Notice.success({
-                    title: 'Notification',
+                    // title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
 
@@ -162,7 +183,7 @@
                 });
                 this.connection.start();
             },
-            sendMsg() {
+            sendBoardMessage() {
                 this.connection.invoke("SendBoardMessage");
             },
             pageChanged(page) {
@@ -180,5 +201,4 @@
         transform: translate(-50%, -50%);
         background: '#fff'
     }
-
 </style>

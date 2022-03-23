@@ -23,6 +23,25 @@ Vue.use(ViewUI, {
     size: 'default',
 });
 
+axios.interceptors.response.use(
+    response => {
+        return response
+    },
+    error => {
+        if (error.response) {
+            if (error.response.status == 401) {
+
+                console.log("Redirect to Login, Error Detail:" + error.response);
+                localStorage.setItem('LOGINUSER', '');
+                localStorage.setItem('TOKEN', '');
+
+                router.replace('/login');
+            }
+            return Promise.reject(error)
+        }
+    }
+);
+
 new Vue({
     router,
     store,

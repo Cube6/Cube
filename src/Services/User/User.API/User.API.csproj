@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\RedisUtil\RedisRepository.csproj" />
     <ProjectReference Include="..\..\..\ServiceCenter\ConsulManager\ConsulManager.csproj" />
     <ProjectReference Include="..\User.Application\User.Application.csproj" />
     <ProjectReference Include="..\User.Domain\User.Domain.csproj" />

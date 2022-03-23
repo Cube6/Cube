@@ -43,7 +43,7 @@ const router = new Router({
                     component: addboard
                 },
                 {
-                    path: '/boardAll',
+                    path: '/boardAll/:type?',
                     name: 'boardAll',
                     component: boardAll
                 },

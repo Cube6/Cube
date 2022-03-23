@@ -28,6 +28,7 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{boardItemId}")]
+		[Authorize]
 		public IEnumerable<CommentDto> FindComments(long boardItemId)
 		{
 			var list = _appservice.FindCommentsByIdAsync(boardItemId);
@@ -44,9 +45,9 @@ namespace Board.API.Controllers
 
 		[HttpDelete]
 		[Authorize]
-		public async Task DeleteByBorderItem(long borderItemid, string username)
+		public async Task DeleteByBoardItemIdAndUserName(long borderItemId, string userName)
 		{
-			await _appservice.DeleteCommentAsync(borderItemid, username);
+			await _appservice.DeleteCommentAsync(borderItemId, userName);
 		}
 	}
 }

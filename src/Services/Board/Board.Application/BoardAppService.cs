@@ -23,10 +23,28 @@ namespace Cube.Board.Application
 			_redis = redis;
 		}
 
-		public IEnumerable<BoardDto> GetBoards()
+		public IEnumerable<BoardDto> GetBoards(BoardType type)
 		{
 			var list = new List<BoardDto>();
-			foreach (var item in _repository.ListAsync().Result.Where(t=>!t.IsDeleted))
+			IEnumerable<DisscussionBoard> boards = new List<DisscussionBoard>();
+			if(type == BoardType.All)
+			{
+				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+			}
+			else if(type == BoardType.InProgress)
+			{
+				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.InProgress);
+			}
+			else if(type == BoardType.Completed)
+			{
+				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.Completed);
+			}
+			else if(type == BoardType.Deleted)
+			{
+				boards = _repository.ListAsync().Result.Where(t => t.IsDeleted);
+			}
+
+			foreach (var item in boards)
 			{
 				var boardDto = _mapper.Map<BoardDto>(item);
 				list.Add(boardDto);
@@ -147,9 +165,11 @@ namespace Cube.Board.Application
 				DateModified = DateTime.Now,
 				Type = commentDto.Type,
 			};
-			await _repository.CreateCommentAsync(comment);
-			await _redis.ListAddAsync(comment.BoardItem.Id, comment.CreatedUser);
-			
+			if(!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+			{
+				await _repository.CreateCommentAsync(comment);
+				await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+			}
 		}
 
 		public async Task DeleteCommentByIdAsync(long id)
@@ -160,19 +180,28 @@ namespace Cube.Board.Application
 		public async Task DeleteCommentAsync(long borderItemId, string username)
 		{
 			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
-			await _redis.ListRemoveAsync(borderItemId, username);
+			await _redis.SetRemoveAsync(borderItemId, username);
 		}
+
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
 		{
-			List<Comment> comments = null;
-			comments = await _redis.ListRangeAsync<long, Comment>(boardItemId, 0, -1);
-			if (comments == null)
+			List<Comment> comments = new List<Comment>();
+			var userNames = await _redis.SetAllAsync<long, string>(boardItemId);
+			if (userNames.Any())
+			{
+				var boardItem =await _repository.GetBoardItemByIdAsync(boardItemId);
+				foreach(var userName in userNames)
+				{
+					comments.Add(new Comment() { CreatedUser = userName, BoardItem = boardItem });
+				}
+			}
+			else
 			{
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
-			}
-			if (comments == null)
-			{
-				return null;
+				foreach (var comment in comments)
+				{
+					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+				}
 			}
 
 			var list = new List<CommentDto>();

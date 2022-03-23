@@ -2,7 +2,7 @@
     <div>
         <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
             <FormItem prop="name" class="lgD">
-                <Input v-model="formInline.name" placeholder="Boardname"/>
+                <Input v-model="formInline.name" spellcheck="true" placeholder="Enter a board name. Ex: DE8.0 Runtime/DDW SprintX Retro"/>
             </FormItem>
             <FormItem>
                 <Button @click="addDiscussionBoard('formInline')" type="primary" >Add</Button>
@@ -24,7 +24,8 @@
                 },
                 ruleInline: {
                     name: [
-                        { required: true, message: 'Please fill in the board name', trigger: 'blur' }
+                        { required: true, message: 'Board Name is required', trigger: 'blur'},
+                        { max: 100, message: 'The length of Board Name should be less than 100', trigger: 'blur'}
                     ]
                 },
 
@@ -50,11 +51,11 @@
                         }).then(res => {
                             this.$router.push({ name: 'boardDetail', params: { boardId: res.data, boardName: this.formInline.name, state:1 } });
                         }).then(() => {
-                            this.sendMsg();
+                            this.sendBoardMessage();
                         }).then(() => {
                             this.renderFunc(this.formInline.name + ' is created successfully.');
                         }).catch(error => {
-                            console.log(error);
+                            console.log('Failed to addDiscussionBoard, Error :' + error);
                         })
                     } else {
                         this.$Message.error('Fail!');
@@ -66,19 +67,11 @@
             },
             renderFunc(message) {
                 this.$Notice.success({
-                    title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
-
                         return h('span', [
                             message
                         ])
-
-                        //return h('span', [
-                        //    'This is created by ',
-                        //    h('a', 'render'),
-                        //    ' function'
-                        //])
                     }
                 });
             },
@@ -89,11 +82,7 @@
                     .build();
                 this.connection.start();
             },
-            sendMsg() {
-                //let params = {
-                //    user: this.user,
-                //    message: this.message
-                //};
+            sendBoardMessage() {
                 this.connection.invoke("SendBoardMessage");
             }
         },

@@ -2,32 +2,70 @@
     <div>
         <h1 style="width:100%;text-align:center; font-size:larger">
             <span>
-                <span :ref="'editBoardName'" @blur="updateBoardName()" contenteditable="true">{{boardName}}</span>
-                <span style="color:forestgreen" v-if="state == 2">Completed</span>
 
-                <Dropdown v-if="state != 2" style="float: right;position: relative; font-size:12pt; ">
+               <span :ref="'editBoardName'" @blur="updateBoardName()" contenteditable="true">{{boardName}}</span>
+
+                <span style="color:forestgreen" v-if="state == 2">
+                        <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
+                        Completed
+                </span>
+
+                <Dropdown  v-if="state != 2">
+                    <!-- <Icon type="md-people" size="24"></Icon> -->
+                    <div style="color:#00ad00" >
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        <span>{{participants.length}}</span>
+                    </div>
+                    <DropdownMenu slot="list">
+                        <div style="margin:10px;">
+                            <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="width: 30px; height: 30px; border-radius: 50%; " />
+                        </div>
+                    </DropdownMenu>
+                </Dropdown>
+
+                <Dropdown style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
                         <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem>
-                        <DropdownItem v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
-                        <DropdownItem v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
+                        <DropdownItem v-if="state != 2"  v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
+                        <DropdownItem v-if="state != 2 && boardCreatedUser==userName"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
+                        <DropdownItem v-on:click.native="exportData()"><Icon type="ios-code-download" size="28" />Export</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                <!--<Icon type="ios-refresh" size="28" style="float: right;position: relative;" v-on:click.native="fetchData(true)" title="Refresh"></Icon>-->
+
+                <a href="#" @click.prevent="sortItems()" title="Sort Items">
+                    <button class="css-b7766g" tabindex="-1" style="float: right; margin-top:10px;">
+                        <i :class="sortButtonClass" style="color:#666666" aria-hidden="true"></i>
+                    </button>
+                </a>
+
+                <!--Online Users-->
+                <!-- <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " /> -->
             </span>
         </h1>
         <br />
         <table width="100%">
             <thead>
-                <tr>
+                <tr v-if="state == 2">
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" search enter-button="Add" @on-search="addWentWell" />
+                        What went well ?
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImporveDetail" placeholder="What could be improved ?" search enter-button="Add" @on-search="addImporved" />
+                        What could be improved ?
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="Action" search enter-button="Add" @on-search="addAction" />
+                        Action Items
+                    </th>
+                </tr>
+                <tr v-if="state != 2">
+                    <th width="33%">
+                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck=true :loading="loading" search enter-button="Add" @on-search="addWentWell" />
+                    </th>
+                    <th width="33%">
+                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" spellcheck=true search enter-button="Add" @on-search="addImproved" />
+                    </th>
+                    <th width="34%">
+                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" spellcheck=true search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
@@ -39,21 +77,29 @@
                                 <Card style="width: 100%; text-align: left;">
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
+                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck=true style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
-                                        <a href="#" @click.prevent="addWellUp(well)"  >
+                                        <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
-                                                &nbsp;<p>{{well.ThumbsUp.length}}</p>
+                                                <i :class="thumbsUpClass(well.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
+                                                &nbsp;<p>{{thumbsUpCount(well.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
+                                        <!-- <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
-                                        </a>
+                                        </a> -->
+
+                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                            <Icon type="ios-more" size="28"></Icon>
+                                            <DropdownMenu slot="list">
+                                              <DropdownItem :disabled="!canDeleteBoardItem(well)"  v-on:click.native="canDeleteBoardItem(well)?deleteBoardItem(well):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </p>
                                 </Card>
                             </li>
@@ -61,27 +107,40 @@
                     </td>
                     <td style="vertical-align:top">
                         <ul>
-                            <li v-for="imporve in ImporveContent" :key="imporve.Id">
+                            <div v-if="ImproveContent.length == 0 && WellContent.length == 0 && ActionContent.length == 0"
+                                class="noItemsStyle">
+                                Speak with the soul and achieve your goal. Speak
+                                <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
+                            </div>
+                            <li v-for="improve in ImproveContent" :key="improve.Id">
                                 <Card style="width: 100%; text-align: left;">
-                                    <img :src="getUserAvatar(imporve.CreatedUser)" :title="imporve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
+                                    <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="imporve.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(imporve)"  @on-change="boardItemChanged"/>
+                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck=true :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
-                                        <a href="#"  @click.prevent="addImproveUp(imporve)" >
+                                        <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :ref="'item'+imporve.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
-                                                &nbsp;<p>{{imporve.ThumbsUp.length}}</p>
+                                                <i :class="thumbsUpClass(improve.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
+                                                &nbsp;<p>{{thumbsUpCount(improve.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" style="float:right" @click.prevent="deleteBoardItem(imporve)" title="Delete" v-if="imporve.CreatedUser==userName">
+
+                                        <!-- <a href="#" style="float:right" @click.prevent="deleteBoardItem(improve)" title="Delete" v-if="improve.CreatedUser==userName && state != 2">
                                             <span aria-label="Delete" class="">
                                                 <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                     <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                                 </button>
                                             </span>
-                                        </a>
-                                    </p>
+                                        </a> -->
 
+                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                            <Icon type="ios-more" size="28"></Icon>
+                                            <DropdownMenu slot="list">
+                                              <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </p>
                                 </Card>
                             </li>
                         </ul>
@@ -92,20 +151,28 @@
                                 <Card style="width: 100%; text-align: left; ">
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck=true :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
-                                        <a href="#" @click.prevent="addActionUp(action)">
+                                        <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                            <i itemref="action.Id" class="fa fa-thumbs-o-up fa-2x" style="color:green" aria-hidden="true"></i>
-                                                &nbsp;<p>{{action.ThumbsUp.length}}</p>
+                                                <i :class="thumbsUpClass(action.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
+                                                &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName">
+                                        <!-- <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName && state != 2">
                                             <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                 <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
                                             </Button>
-                                        </a>
+                                        </a> -->
+
+                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                            <Icon type="ios-more" size="28"></Icon>
+                                            <DropdownMenu slot="list">
+                                              <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                            </DropdownMenu>
+                                        </Dropdown>
                                     </p>
                                 </Card>
                             </li>
@@ -114,7 +181,7 @@
                 </tr>
             </tbody>
         </table>
-
+        <Table :columns="csvColumns" :data="csvData" ref="tableForExport" v-show="false"></Table>
         <BackTop :height="100" :bottom="120" :right="50">
             <div class="top">Back to Top</div>
         </BackTop>
@@ -130,64 +197,89 @@
     const AddOperation = 'add';
     const UpdateOperation = 'update';
     const DeleteOperation = 'delete';
+    const SortUpOption='asc';
+    const SortDownOption='desc';
+    const SortCreatedOption='createdTime';
+
+    const DefaultSortButtonClass = 'fa fa-sort fa-1x';
 
     export default {
         data() {
             return {
+                loading: false,
                 UserToken: null,
                 userName: null,
                 ActionContent: null,
                 WellContent: null,
-                ImporveContent: null,
-                deleteActionId: null,
-                deleteWellId: null,
-                deleteImporveId: null,
-                ActionUpCount: 0,
-                ActionDownCount: 0,
-                WellUpCount: 0,
-                WellDownCount: 0,
-                ImproveUpCount: 0,
-                ImproveDownCount: 0,
+                ImproveContent: null,
                 boardDetail: {
                     WellDetail: "",
-                    ImporveDetail: "",
+                    ImproveDetail: "",
                     ActionDetail: "",
                 },
                 boardItemTextChanged: false,
                 boardName:null,
                 boardId: null,
                 connection: "",
-                state:0,
+                state: 0,
+                sortOption:SortUpOption,
+                sortButtonClass: DefaultSortButtonClass,
+                csvData:[],
+                csvColumns: [],
+                participants:[]
             };
         },
         created() {
             this.boardId = this.$route.params.boardId;
             this.boardName = this.$route.params.boardName;
+            this.boardCreatedUser = this.$route.params.createdUser.toUpperCase();
             this.state = this.$route.params.state;
-            console.log(this.state);
-            this.fetchData(true);
+            
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
-
+            
+            this.fetchData(true);
             this.init();
         },
- 
+        destroyed(){
+            if(this.connection!=null){
+
+                this.updateParticipant(DeleteOperation);
+
+                console.log("Hub for Board Detail with " + this.connection.connectionId + "is stopped");
+                this.connection.stop();
+            }
+        },
+        computed: {
+
+        },
         methods: {
             fetchData(forceRefresh) {
+                this.fetchBoardItems(forceRefresh);
+                this.fetchParticipants();
+            },
+
+            fetchBoardItems(forceRefresh) {
 
                 var msg;
                 if (forceRefresh) {
                     msg = this.$Message.loading({
-                        content: 'Loading...',
+                        content: 'Loading Board Items...',
                         duration: 0
                     });
                 }
 
-                this.axios.get('/BoardItem/' + this.boardId + '')
+                this.axios(
+                    {
+                        method: 'get',
+                        url: '/BoardItem/' + this.boardId + '',
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                    }})
                     .then(all => {
-                        this.WellContent = all.data.filter(item => item.Type == 1);
-                        this.ImporveContent = all.data.filter(item => item.Type == 2);
-                        this.ActionContent = all.data.filter(item => item.Type == 3);
+                        this.WellContent = all.data.filter(item => item.Type == WentWellType);
+                        this.ImproveContent = all.data.filter(item => item.Type == NeedsImproveType);
+                        this.ActionContent = all.data.filter(item => item.Type == ActionType);
 
                         if (forceRefresh) {
                             setTimeout(msg);
@@ -199,9 +291,56 @@
                         if (forceRefresh) {
                             setTimeout(msg);
                         }
-                        console.log(error);
+                        console.log('Failed to get board Items. Error:' + error);
                     })
             },
+            
+            fetchParticipants(){
+                this.axios({
+                        method: 'get',
+                        url: '/User/Online/'+this.boardId,
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                        }
+                    }).then((res) => {
+                        this.participants = [];
+                        res.data.Users.forEach((item) =>{
+                            this.participants.push(item.Name);
+                        });  
+                    }).catch(error=>{
+                        this.$Message.error('Failed to load online users. Error:' + error);
+                    });
+            },
+            updateParticipant(action){
+                
+                var context = {
+                    Operation: action,
+                    UserName: this.userName,
+                    BoardId: this.boardId
+                };
+
+                console.log(context);
+                this.sendUserMsg(context);
+
+                var opFlag = action == AddOperation ? 1 : 2;
+                this.axios({
+                        method: 'post',
+                        url: '/User/Online',
+                        data: {
+                            Operation: opFlag,
+                            BoardId:this.boardId,
+                            Name: this.userName,
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + this.UserToken
+                        }
+                    }).then(() => {
+
+                    }).catch(error=>{
+                        console.log('Error:' + error);
+                    });
+            },
+
 
             updateBoardName() {
                 if (this.$refs.editBoardName.innerText == this.boardName) {
@@ -224,6 +363,8 @@
                 if (!boardDetail || !boardDetail.trim()) {
                     return;
                 }
+
+                this.loading = true;
 
                 this.axios({
                     method: 'post',
@@ -251,23 +392,44 @@
                     this.sendBoardItemMsg(context);
 
                     this.boardDetail.WellDetail = "";
-                    this.boardDetail.ImporveDetail = "";
+                    this.boardDetail.ImproveDetail = "";
                     this.boardDetail.ActionDetail = "";
-                })
+
+                    this.loading = false;
+                }).catch(error => {
+                    this.$Message.error('Failed to add board item. Error:' + error);
+                    this.loading = false;
+                });
             },
 
             addWentWell() {
                 this.addBoardDetail(this.boardDetail.WellDetail, WentWellType);          
             },
 
-            addImporved() {
-                this.addBoardDetail(this.boardDetail.ImporveDetail, NeedsImproveType);      
+            addImproved() {
+                this.addBoardDetail(this.boardDetail.ImproveDetail, NeedsImproveType);      
             },
 
             addAction() {
                 this.addBoardDetail(this.boardDetail.ActionDetail, ActionType);
             },
+            canEditBoardItem(){
+                if(this.state == 2)
+                {
+                    return false;
+                }
 
+                return true;
+            },
+            canDeleteBoardItem(boardItem){
+
+                if(this.state != 2 && boardItem.CreatedUser== this.userName)
+                {
+                    return true;
+                }
+
+                return false;
+            },
             deleteBoardItem(boardItem) {
 
                 this.$confirm(
@@ -310,7 +472,7 @@
                 if (type == WentWellType) {
                     listOfItems = this.WellContent;
                 } else if (type == NeedsImproveType) {
-                    listOfItems = this.ImporveContent;
+                    listOfItems = this.ImproveContent;
                 } else if (type == ActionType) {
                     listOfItems = this.ActionContent;
                 }
@@ -357,7 +519,7 @@
                             id: boardItem.Id,
                             detail: boardItem.Detail,
                             type: boardItem.Type,
-                            createduser: this.userName,
+                            createduser: boardItem.CreatedUser,
                             boardid: this.boardId
                         },
                         headers: {
@@ -379,80 +541,44 @@
             },
 
             addActionUp(actionItem) {
-                let username = this.userName;
-                var actionItemCache = this.WellContent.find(item => item.Id = actionItem.Id);
-                var listThrumps = actionItemCache.ThumbsUp;
-
-                var listItem = listThrumps.find(th => th.CreatedUser == username);
-                if (listItem == null) {
-                    var likeitem = { BoardItemId: actionItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
-                    listThrumps.push(likeitem);
-                    this.addThumps(actionItem.Id, 0);
-                }
-                else {
-                    var index = listThrumps.findIndex(item => {
-                        if (item.bid == actionItem.Id && item.username == username) {
-                            return true;
-                        }
-                    })
-                    listThrumps.splice(index, 1);
-                    this.deleteThumps(actionItem.Id);
-                }
-
+                this.thumbsUpAction(ActionType, this.ActionContent, actionItem);
             },
 
             addWellUp(wellItem) {
-                let username = this.userName;
-                var wellItemCache = this.WellContent.find(item => item.Id = wellItem.Id);
-                var listThrumps = wellItemCache.ThumbsUp;
-
-                var listItem = listThrumps.find(th => th.CreatedUser == username);
-                if (listItem == null) {
-                    var likeitem = { BoardItemId: wellItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
-                    listThrumps.push(likeitem);
-                    this.addThumps(wellItem.Id, 0);
-                }
-                else {
-                    var index = listThrumps.findIndex(item => {
-                        if (item.bid == wellItem.Id && item.username == username) {
-                            return true;
-                        }
-                    })
-                    listThrumps.splice(index, 1);
-                    this.deleteThumps(wellItem.Id);
-                }
+                this.thumbsUpAction(WentWellType, this.WellContent, wellItem);
             },
 
             addImproveUp(improveItem) {
+                this.thumbsUpAction(NeedsImproveType, this.ImproveContent, improveItem);
+            },
+
+            thumbsUpAction(type, listOfItems, item) {
                 let username = this.userName;
-                var improveItemCache = this.ImporveContent.find(item => item.Id = improveItem.Id);
+                var improveItemCache = listOfItems.find(c => c.Id == item.Id);
                 var listThrumps = improveItemCache.ThumbsUp;
                 var isAdd = true;
 
                 var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
-                    var likeitem = { BoardItemId: improveItem.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type:0 };
+                    var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
                     listThrumps.push(likeitem);
                 }
                 else {
                     var index = listThrumps.findIndex(item => {
-                        if (item.bid == improveItem.Id && item.username == username) {
+                        if (item.CreatedUser == username) {
                             return true;
                         }
                     })
                     listThrumps.splice(index, 1);
                     isAdd = false;
                 }
-                let improveId = 'item'+ improveItem.Id;
+
                 if (isAdd) {
-                    this.$refs[improveId][0].attributes.class.value = "fa fa-thumbs-up fa-2x";
-                    this.addThumps(improveItem.Id, 0);
+                    this.addThumps(type, item.Id, 0);
                 }
                 else {
-                    this.$refs[improveId][0].attributes.class.value = "fa fa-thumbs-o-up fa-2x";
-                    this.deleteThumps(improveItem.Id);
+                    this.deleteThumps(type, item.Id);
                 }
-
             },
 
             getUserAvatar(userName) {
@@ -468,7 +594,7 @@
 
             renderFunc(message) {
                 this.$Notice.success({
-                    title: 'Notification',
+                    //title: 'Notification',
                     desc: 'The desc will hide when you set render.',
                     render: h => {
 
@@ -515,31 +641,84 @@
                     }
                 });
 
-                //this.connection.on("ReceiveCommentMessage", commentEvent => {
-                //    if (commentEvent.BoardId == this.boardId) {
+                this.connection.on("ReceiveCommentMessage", commentEvent => {
+                    if (commentEvent.BoardId == this.boardId) {
+                        var listOfItems = this.getListOfItems(commentEvent.Type);
 
-                //        var listOfItems = this.getListOfItems(commentEvent.Type);
-                //        if (commentEvent.Operation == DeleteOperation) {
-                            
-                //        }
-                //        else if (commentEvent.Operation == AddOperation) {
+                        if (commentEvent.Operation == AddOperation) {
+                            var improveItemCache1 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            var listThrumps1 = improveItemCache1.ThumbsUp;
 
-                //        }
-                //    }
-                //});
+                            var listItem = listThrumps1.find(th => th.CreatedUser == commentEvent.Comment.CreatedUser);
+                            if (listItem == null) {
+                                listThrumps1.push(commentEvent.Comment);
+                            }
+                        }
+                        else if (commentEvent.Operation == DeleteOperation) {
+                            var improveItemCache2 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            var listThrumps2 = improveItemCache2.ThumbsUp;
+                            var index = listThrumps2.findIndex(item => {
+                                if (item.CreatedUser == commentEvent.Comment.CreatedUser) {
+                                    return true;
+                                }
+                            });
+                            if (index == -1) {
+                                return;
+                            }
+                            listThrumps2.splice(index, 1);
+                        }
+                    }
+                });
 
-                //this.connection.on("ReceiveUserMessage", userEvent => {
-                //    if (userEvent.BoardId == this.boardId) {
-                //        if (userEvent.Operation == DeleteOperation) {
+                this.connection.on("ReceiveUserMessage", userEvent => {
+                    if (userEvent.BoardId == this.boardId) {
+                        if(userEvent.UserName != this.userName)
+                        {
+                            if (userEvent.Operation == AddOperation) {
+                                this.$Notice.info({
+                                    render: h => {
+                                            return h('span', [
+                                                userEvent.UserName + ' joined the board.'
+                                            ])}
+                                });
 
-                //        }
-                //        else if (userEvent.Operation == AddOperation) {
+                                var index = this.participants.indexOf(userEvent.UserName);
+                                if(index == -1)
+                                {
+                                    this.participants.push(userEvent.UserName);
+                                }
+                            }
+                            else if(userEvent.Operation == DeleteOperation){
+                                this.$Notice.info({
+                                    render: h => {
+                                            return h('span', [
+                                                userEvent.UserName + ' left the board.'
+                                            ])}
+                                });
 
-                //        }
-                //    }
-                //});
+                                var index2 = this.participants.findIndex(item => {
+                                                if (item == userEvent.UserName) {
+                                                    return true;
+                                                }
+                                            });
+                                if (index2 == -1) {
+                                    return;
+                                }
+                                this.participants.splice(index2, 1);
+                            }
+                        }
+                    }
+                });
 
-                this.connection.start();
+                this.connection.start().then(() => {
+                     var index = this.participants.indexOf(this.userName);
+                    if(index == -1)
+                    {
+                        this.participants.push(this.userName);
+                    }
+
+                    this.updateParticipant(AddOperation);
+                });
             },
 
             sendBoardMsg() {
@@ -553,7 +732,43 @@
             sendCommentMsg(context) {
                 this.connection.invoke("SendCommentMessage", context);
             },
-            addThumps(boardItemId,thumpType) {
+
+            sendUserMsg(context) {
+                this.connection.invoke("SendUserMessage", context);
+            },
+
+            thumbsUpUserNames(thumbsUp) {
+                var names = ''
+                for (var i = 0; i < thumbsUp.length; i++) {
+                    names = names + thumbsUp[i].CreatedUser +'\n';
+                }
+                return names;
+            },
+
+            thumbsUpCount(thumbsUp) {
+
+                var len = thumbsUp.length;
+                if(len>0)
+                {
+                    return len;
+                }
+                
+                return '';
+            },
+
+            thumbsUpClass(thumbsUp){
+                var index = thumbsUp.find(item=> item.CreatedUser == this.userName);
+                if(index!=null)
+                {
+                    return 'fa fa-thumbs-up fa-2x';
+                }
+                else
+                {
+                    return 'fa fa-thumbs-o-up fa-2x';
+                }
+            },
+
+            addThumps(type,boardItemId,thumpType) {
                 this.axios({
                     method: 'post',
                     url: '/Comment',
@@ -566,10 +781,21 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    //this.sendBoardItemMsg();
+                    var comment = {
+                        CreatedUser: this.userName,
+                        Type: thumpType,
+                        BoardItemId: boardItemId
+                    };
+                    var context = {
+                        Operation: AddOperation,
+                        BoardId: this.boardId,
+                        Type:type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
                 })
             },
-            deleteThumps(boardItemId) {
+            deleteThumps(type, boardItemId) {
                 this.axios({
                     method: 'delete',
                     url: '/Comment',
@@ -581,7 +807,18 @@
                         'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
-                    //this.sendBoardItemMsg();
+                    var comment = {
+                        CreatedUser: this.userName,
+                        Type: 0,
+                        BoardItemId: boardItemId
+                    };
+                    var context = {
+                        Operation: DeleteOperation,
+                        BoardId: this.boardId,
+                        Type: type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
                 })
             },
             markCompleted() {
@@ -633,18 +870,123 @@
                                             'Authorization': 'Bearer ' + this.UserToken
                                         }
                                     }).then(() => {
-                                        this.$router.push('/boardAll');
-                                    }).then(() => {
                                         this.renderFunc(this.boardName + ' is deleted successfully.');
                                     }).then(() => {
                                         this.sendBoardMsg();
+                                    }).then(() => {
+                                        this.$router.push('/boardAll');
                                     })
                             }
                         }
                     }
                 )
+            },
+            exportData() {
+                this.csvColumns = [
+                {
+                    "title": "",
+                    "key": "content",
+                },
+                {
+                    "title": "",
+                    "key": "createdUser",
+                },
+                {
+                    "title": "",
+                    "key": "vote",
+                }];
+
+                this.csvData.push({ "content": this.boardName, "createdUser":"", "vote": "" });
+                this.csvData.push({ "content": "", "createdUser":"",  "vote": "" });
+                this.csvData.push({ "content": "Went Well", "createdUser":"Submitter",  "vote": "Votes" });
+                this.getSortedItems(this.WellContent).forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
+                });
+
+                this.csvData.push({ "content": "", "createdUser":"","vote": "" });
+                this.csvData.push({ "content": "To Improve", "createdUser":"Submitter", "vote": "Votes" });
+                this.getSortedItems(this.ImproveContent).forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
+                });
+
+                this.csvData.push({ "content": "", "createdUser":"", "vote": "" });
+                this.csvData.push({ "content": "Action Items", "createdUser":"Submitter", "vote": "Votes" });
+                this.getSortedItems(this.ActionContent).forEach((value,index) => {
+                    this.csvData.push({ "content": index+1 +'.'+ value.content, "createdUser":value.createdUser, "vote": value.vote });
+                });
+
+                this.$refs.tableForExport.exportCsv({
+                    filename: this.boardName,
+                    columns: this.csvColumns,
+                    data: this.csvData
+                })
+            },
+            getSortedItems(content)
+            {
+                let sortedItems = [];
+                content.forEach((value) => {
+                    sortedItems.push({ 
+                        "content": value.Detail.replaceAll(',','_'), 
+                        "createdUser": value.CreatedUser, 
+                        "vote": value.ThumbsUp.length 
+                        });
+                });
+
+                sortedItems.sort(function(a, b) {
+                    return b.vote-a.vote
+                });
+
+                return sortedItems;
+            },
+            sortItems()
+            {
+                if(this.sortOption == SortUpOption)
+                {
+                    this.sortItemsAsc(this.WellContent);
+                    this.sortItemsAsc(this.ImproveContent);
+                    this.sortItemsAsc(this.ActionContent);
+
+                    this.sortOption = SortDownOption;
+                    this.sortButtonClass = "fa fa-sort-amount-desc fa-1x";
+                }
+                else if(this.sortOption == SortDownOption)
+                {
+                    this.sortItemsDesc(this.WellContent);
+                    this.sortItemsDesc(this.ImproveContent);
+                    this.sortItemsDesc(this.ActionContent);
+
+                     this.sortOption = SortCreatedOption;
+                     this.sortButtonClass = "fa fa-sort-amount-asc fa-1x";
+                }
+                else if(this.sortOption == SortCreatedOption)
+                {
+                    this.resetSortItems(this.WellContent);
+                    this.resetSortItems(this.ImproveContent);
+                    this.resetSortItems(this.ActionContent);
+
+                     this.sortOption = SortUpOption;
+                     this.sortButtonClass = DefaultSortButtonClass;
+                }
+            },
+            sortItemsAsc(content)
+            {
+                content.sort(function(a, b){
+                    return b.ThumbsUp.length - a.ThumbsUp.length;
+                });
+            },
+            sortItemsDesc(content)
+            {
+                content.sort(function(a, b){
+                    return a.ThumbsUp.length - b.ThumbsUp.length;
+                });
+            },
+            resetSortItems(content)
+            {
+                content.sort(function(a, b){
+                    return a.Id - b.Id;
+                });
             }
-        },
+        }
     }
 </script>
 
@@ -710,6 +1052,14 @@
         color: #fff;
         text-align: center;
         border-radius: 5px;
+    }
+
+    .noItemsStyle{
+        width: 100%; 
+        text-align: center; 
+        font-size: 12pt;
+        color:#D1D0CE;
+        margin-top: 250px;
     }
 
     [contenteditable]:focus {

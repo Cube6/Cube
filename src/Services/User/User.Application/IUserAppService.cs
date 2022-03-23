@@ -11,5 +11,8 @@ namespace Cube.User.Application
 		Task<List<UserDto>> GetUsersAsync();
 		Task<UserDto> FindUserByIdAsync(long id);
 		Task<ResultDto> DeleteUserByIdAsync(long id);
+
+		Task<List<OnlineUserNameDto>> GetOnlineUsersAsync(long boardId);
+		Task<ResultDto> UpdateOnlineUser(UpdateOnlineUserDto request);
 	}
 }

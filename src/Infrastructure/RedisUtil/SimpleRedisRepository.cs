@@ -127,8 +127,12 @@ namespace RedisPractice
 		{
 			try
 			{
+				var setting = new JsonSerializerSettings();
+				setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+				setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+
 				var stringKey = JsonConvert.SerializeObject(key);
-				var stringMember = JsonConvert.SerializeObject(member);
+				var stringMember = JsonConvert.SerializeObject(member, setting);
 
 				var result = await database.ListRightPushAsync(stringKey, stringMember);
 
@@ -190,10 +194,92 @@ namespace RedisPractice
 			}
 			catch (Exception)
 			{
-				return null;
+				return new List<V>();
 			}
 		}
 
+		public virtual async Task<bool> SetAddAsync<K,V>(K key, V value)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringValue = JsonConvert.SerializeObject(value);
+
+				var result = await database.SetAddAsync(stringKey, stringValue);
+				return result;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
+		public virtual async Task<bool> SetRemoveAsync<K,V>(K key, V value)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringValue = JsonConvert.SerializeObject(value);
+
+				var result = await database.SetRemoveAsync(stringKey, stringValue);
+				return result;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
+		public virtual async Task<List<V>> SetAllAsync<K,V>(K key)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var list = new List<V>();
+				var result = await database.SetMembersAsync(stringKey);
+				foreach(var item in result)
+				{
+					var temp = JsonConvert.DeserializeObject<V>(item);
+					list.Add(temp);
+				}
+				return list;
+			}
+			catch (Exception)
+			{
+				return new List<V>();
+			}
+		}
+
+		public virtual async Task<long> SetLengthAsync<K>(K key)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var result = await database.SetLengthAsync(stringKey);
+
+				return result;
+			}
+			catch (Exception)
+			{
+				return -1;
+			}
+		}
+
+		public virtual async Task<bool> SetContainsValueAsync<K,V>(K key, V value)
+		{
+			try
+			{
+				var stringKey = JsonConvert.SerializeObject(key);
+				var stringValue = JsonConvert.SerializeObject(value);
+
+				var result = await database.SetContainsAsync(stringKey, stringValue);
+				return result;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
 		#endregion
 
 		#region Dynamic Proxy

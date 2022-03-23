@@ -42,9 +42,15 @@ service UserService{
 		};
 	};
 
-	rpc SecureActionAsync(google.protobuf.Empty) returns (UserServiceDto.Result){
+	rpc GetAllOnelineUsersAsync(UserServiceDto.Id) returns(UserServiceDto.OnlineUserNames){
 		option (google.api.http) = {
-			get: "/User/SecureAction"
+			get: "/User/Online/{Id}"
+		};
+	};
+	rpc UpdateOnlineUser(UserServiceDto.UpdateOnlineUserRequest) returns (UserServiceDto.Result){
+		option (google.api.http) = {
+			post: "/User/Online"
+			body: "*"
 		};
 	};
 }

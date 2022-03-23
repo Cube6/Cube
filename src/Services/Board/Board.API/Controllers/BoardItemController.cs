@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Board.API.Controllers
@@ -29,10 +28,11 @@ namespace Board.API.Controllers
 		}
 
 		[HttpGet("{boardId}")]
+		[Authorize]
 		public IEnumerable<BoardItemDto> Find(long boardId)
 		{
 			var boardItems = _appservice.FindBoardItemByBoardIdAsync(boardId);
-			var result= boardItems.Result;
+			var result = boardItems.Result;
 			return result;
 		}
 
