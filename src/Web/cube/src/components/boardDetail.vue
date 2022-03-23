@@ -1064,6 +1064,9 @@
 
     [contenteditable]:focus {
         outline: none;
+        border: 2px solid rgba(0, 153, 229, .7);
+        border-radius: 4px;
+        transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
     }
 
 </style>
