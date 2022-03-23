@@ -14,15 +14,15 @@
                 </Card>
             </li>
             <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
-                <Card style="width: 250px; text-align: left; cursor: pointer" v-on:click.native="ViewBoard(board)">
+                <Card style="width: 250px; text-align: left; cursor: pointer;" v-on:click.native="ViewBoard(board)">
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
                         <img src="../assets/Icons/completed.jpg" v-if="board.State == 2" title="Completed" style="width:20px; height:20px; border-radius:50%; float:right" >
                         <img src="../assets/Icons/inprogress.jpg" v-if="board.IsDeleted==false &&board.State == 1" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
                         <img src="../assets/Icons/deleted.png" v-if="board.IsDeleted" title="Deleted" style="width:20px; height:20px; border-radius:50%; float:right" >
                     </p>
-                    <div style="text-align:center;">
-                        <a href="#" slot="extra">
+                    <div style="text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        <a href="#" slot="extra" :title="board.Name">
                             <Icon type="ios-loop-strong"></Icon>
                             {{board.Name}}
                         </a>
@@ -199,6 +199,6 @@
         bottom: 0;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: '#fff'
+        background: #fff
     }
 </style>
