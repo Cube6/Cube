@@ -1,31 +1,34 @@
 ﻿<template>
     <div class="layout">
-        <Header style="height:70px;">
-            <Menu mode="horizontal" theme="dark" active-name="1">
+        <Header style="height:70px; background-color:#0747A6;">
+            <Menu mode="horizontal" theme="transparent" active-name="1">
                 <div class="layout-logo">
                     <img src="../assets/logo.jpg" style="width:35px; height:35px; border-radius:50%; " />
                     <span style="position: relative; top:-8px;">
-                        Cube
+                        Cube System
+                    </span>
+                      <span style="position:relative;top:-16px;font-size:8pt;color:#ccc">
+                        v0.4
                     </span>
                 </div>
                 <div class="layout-nav">
 
                     <MenuItem name="menuUsers">
-                        <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
+                        <Tooltip content="Not implemented yet" placement="bottom-start">
                             <Icon type="md-analytics"></Icon>
                             Activities
                         </Tooltip>
                     </MenuItem>
 
                     <MenuItem name="menuUsers">
-                        <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
+                        <Tooltip content="Not implemented yet" placement="bottom-start">
                             <Icon type="md-person"></Icon>
                             Users
                         </Tooltip>
                     </MenuItem>
 
                     <MenuItem name="menuSettings">
-                        <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
+                        <Tooltip content="Not implemented yet" placement="bottom-start">
                             <Icon type="md-settings"></Icon>
                             Settings
                         </Tooltip>
@@ -38,7 +41,7 @@
 
                     <MenuItem name="menuProfile" style="float:right">
                         <Dropdown>
-                            <img :src="getLoginUserAvatar()" style="width: 25px; height: 25px; border-radius: 50%; margin-top: 16px " :title="userName" />
+                            <img :src="getLoginUserAvatar()" style="width: 28px; height: 28px; border-radius: 50%; margin-top: 16px " :title="userName" />
                             <DropdownMenu slot="list">            
                                 <DropdownItem>Change Password</DropdownItem>
                                 <DropdownItem @click.native="showMyProfile = true">My Profile</DropdownItem>
