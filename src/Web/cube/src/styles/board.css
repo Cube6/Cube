@@ -8,10 +8,10 @@
 
 .layout-logo {
   color: #ffffff;
-  float: left;
-  position: relative;
-  top: 10px;
-  right: 10px;
+  /* float: left; */
+  position: absolute;
+  top: 5px;
+  left: -10px;
   font-size: 15pt;
 }
 
@@ -42,14 +42,20 @@
 }
 
 .layout-nav {
+  position: absolute;
+  top: -5px;
+  right: -45px;
+
   width: 500px;
-  margin: 0 auto;
-  margin-right: 0px;
+  /* margin: 0 auto; */
+  /* margin-right: 0px; */
   color: #deebff;
 }
 
 .layout-footer-center {
   text-align: center;
+  height: 10px;
+  margin-top: -15px;
 }
 
 .layout-con {

@@ -1,9 +1,9 @@
 ﻿<template>
     <div class="layout">
-        <Header style="height:70px; background-color:#0747A6;">
+        <Header style="height:50px; background-color:#0747A6;">
             <Menu mode="horizontal" theme="transparent" active-name="1">
                 <div class="layout-logo">
-                    <img src="../assets/logo.jpg" style="width:35px; height:35px; border-radius:50%; " />
+                    <img src="../assets/logo.jpg" style="width:30px; height:30px; border-radius:50%; " />
                     <span style="position: relative; top:-8px;">
                         Cube System
                     </span>
@@ -12,7 +12,6 @@
                     </span>
                 </div>
                 <div class="layout-nav">
-
                     <MenuItem name="menuUsers">
                         <Tooltip content="Not implemented yet" placement="bottom-start">
                             <Icon type="md-analytics"></Icon>
