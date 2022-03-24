@@ -7,7 +7,7 @@
                     <span style="position: relative; top:-8px;">
                         Cube System
                     </span>
-                      <span style="position:relative;top:-16px;font-size:8pt;color:#ccc">
+                      <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
                         v0.4
                     </span>
                 </div>
