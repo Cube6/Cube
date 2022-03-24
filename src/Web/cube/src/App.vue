@@ -16,7 +16,7 @@ export default {
         background-image: url(./assets/login_bg.jpg);
         background-size: cover;
         height: calc(100% - 10px);
-        font-family: sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         margin: 0;
         padding: 0;
     }

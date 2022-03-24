@@ -9,6 +9,14 @@
                     </span>
                 </div>
                 <div class="layout-nav">
+
+                    <MenuItem name="menuUsers">
+                        <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
+                            <Icon type="md-analytics"></Icon>
+                            Activities
+                        </Tooltip>
+                    </MenuItem>
+
                     <MenuItem name="menuUsers">
                         <Tooltip content="Not implemented yet" placement="bottom-start" theme="light">
                             <Icon type="md-person"></Icon>
@@ -46,19 +54,19 @@
         <Layout :style="{minHeight: '100vh'}">
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1" @click.native="fetchData(null)">
+                    <MenuItem name="1-1" @click.native="fetchData(null)" :title="isCollapsed?'Board':''">
                         <Icon type="md-book"></Icon>
                         <span>Board</span>
                     </MenuItem>
-                    <MenuItem name="1-2" @click.native="fetchData(1)">
+                    <MenuItem name="1-2" @click.native="fetchData(1)" :title="isCollapsed?'In Progress':''">
                         <Icon type="md-time"></Icon>
                         <span>In Progress</span>
                     </MenuItem>
-                    <MenuItem name="1-3" @click.native="fetchData(2)">
+                    <MenuItem name="1-3" @click.native="fetchData(2)" :title="isCollapsed?'Completed':''">
                         <Icon type="ios-paper"></Icon>
                         <span>Completed</span>
                     </MenuItem>
-                    <MenuItem name="1-4" @click.native="fetchData(3)">
+                    <MenuItem name="1-4" @click.native="fetchData(3)" :title="isCollapsed?'Recycle Bin':''">
                         <Icon type="md-trash"></Icon>
                         <span>Recycle Bin</span>
                     </MenuItem>
