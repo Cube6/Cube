@@ -3,7 +3,7 @@
         <h1 style="width:100%;text-align:center; font-size:larger">
             <span>
 
-               <span :ref="'editBoardName'" @keydown="updateBoardNameKeydown($event)" @blur="updateBoardName()" contenteditable="true">{{boardName}}</span>
+               <span :ref="'editBoardName'" @keydown="updateBoardNameKeydown($event)" @blur="updateBoardName()" :contenteditable="state == 1">{{boardName}}</span>
 
                 <span style="color:forestgreen" v-if="state == 2">
                         <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
