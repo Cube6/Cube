@@ -10,8 +10,8 @@
   color: #ffffff;
   /* float: left; */
   position: absolute;
-  top: 3px;
-  left: -10px;
+  top: 5px;
+  left: -30px;
   font-size: 15pt;
 }
 
@@ -43,7 +43,7 @@
 
 .layout-nav {
   position: absolute;
-  top: -5px;
+  top: -3px;
   right: -45px;
 
   width: 500px;
