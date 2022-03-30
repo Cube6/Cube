@@ -64,16 +64,20 @@ export default {
             localStorage.setItem('IsMenuCollapsed', this.isCollapsed );
         },
         fetchData(id) {
-            if(id == null)
-            {
-                this.navURL = '/boardAll';
-                this.navName = null;
+            if (id == undefined || id == null) {
+                    this.navURL = '/boardAll';
+                    this.navName = null;
+                    this.$router.replace(this.navURL);
             }
             else
             {
                 this.navURL = '/boardAll/'+id;
-               
-                if(id==1)
+
+                if (id == 0) {
+                    this.navURL = '/boardAll';
+                    this.navName = null;
+                }
+                else if(id == 1)
                 {
                     this.navName = "In Progress";
                 }
@@ -85,9 +89,9 @@ export default {
                 {
                     this.navName = "Recycle Bin";
                 }
+                sessionStorage.setItem('boardDetailPath', '')
+                this.$router.replace(this.navURL);
             }
-
-            this.$router.push(this.navURL);
         },
         logout() {
 

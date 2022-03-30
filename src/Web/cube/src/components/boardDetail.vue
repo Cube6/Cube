@@ -218,8 +218,9 @@
                     ActionDetail: "",
                 },
                 boardItemTextChanged: false,
-                boardName:null,
+                boardName: null,
                 boardId: null,
+                boardCreatedUser: null,
                 connection: "",
                 state: 0,
                 sortOption:SortUpOption,
@@ -230,14 +231,15 @@
             };
         },
         created() {
+            console.log(this.$route.params);
             this.boardId = this.$route.params.boardId;
             this.boardName = this.$route.params.boardName;
-            this.boardCreatedUser = this.$route.params.createdUser.toUpperCase();
+            this.boardCreatedUser = this.$route.params.createdUser;
             this.state = this.$route.params.state;
             
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
-            
+            sessionStorage.setItem('boardDetailPath', JSON.stringify(this.$route.params));
             this.fetchData(true);
             this.init();
         },

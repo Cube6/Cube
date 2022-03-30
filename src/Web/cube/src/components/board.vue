@@ -56,7 +56,7 @@
         <Layout :style="{minHeight: '100vh'}">
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1" @click.native="fetchData(null)" :title="isCollapsed?'Board':''">
+                    <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'Board':''">
                         <Icon type="md-book"></Icon>
                         <span>Board</span>
                     </MenuItem>
@@ -77,7 +77,7 @@
             <Layout :style="{padding: '0 12px'}">
                 <Breadcrumb :style="{margin: '12px 0'}">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
-                    <BreadcrumbItem  @click.native="fetchData(null)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
+                    <BreadcrumbItem  @click.native="fetchData(0)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
                     <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>
                 <Content :style="{minHeight: '280px'}">

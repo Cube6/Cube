@@ -68,8 +68,18 @@
             this.UserToken = localStorage.getItem('TOKEN');
             this.UserName = localStorage.getItem('LOGINUSER');
 
-            this.fetchData();
-            this.init();
+
+            let boardDetailPath = sessionStorage.getItem("boardDetailPath");
+
+            if (boardDetailPath != '' && boardDetailPath != null) {
+                let board = JSON.parse(boardDetailPath);
+                this.$router.push({ name: 'boardDetail', params: { boardId: board.boardId, boardName: board.boardName, createdUser: board.createdUser, state: board.state } });
+            }
+            else {
+                this.fetchData();
+                this.init();
+            }
+        
         },
         destroyed(){
             if(this.connection!=null){
@@ -116,7 +126,7 @@
                 this.$router.push('/addboard');
             },
             ViewBoard(board) {
-                this.$router.push({ name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, createdUser:board.CreatedUser, state:board.State } });
+                this.$router.replace({name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, createdUser:board.CreatedUser, state:board.State } });
             },
             DeleteBoard(board) {
                 this.$confirm(
