@@ -43,5 +43,5 @@ spec:
     - protocol: TCP
       port: 80 #clusterIP开放的端口
       targetPort: 80 #container开放的端口，与containerPort一致
-      nodePort: 30002 # 所有的节点都会开放此端口，此端口供外部调用。
+      nodePort: 5000 # 所有的节点都会开放此端口，此端口供外部调用。
   type: NodePort
