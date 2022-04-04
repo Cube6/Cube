@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RedisPractice;
+using System;
 using System.Text;
 
 namespace Cube.User.API
@@ -41,7 +42,12 @@ namespace Cube.User.API
 			});
 
 			services.AddDbContext<UserContext>(
-				options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options =>
+				{
+					string connectionString = Configuration.GetConnectionString("DefaultConnection");
+					Console.WriteLine(connectionString);
+					options.UseSqlServer(connectionString);
+				});
 
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserAppService, UserAppService>();

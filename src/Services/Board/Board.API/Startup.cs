@@ -67,7 +67,12 @@ namespace Board.API
 			});
 
 			services.AddDbContext<BoardContext>(
-						options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+						options =>
+						{
+							string connectionString = Configuration.GetConnectionString("DefaultConnection");
+							Console.WriteLine(connectionString);
+							options.UseSqlServer(connectionString);
+						});
 
 			services.AddScoped<IBoardRepository, BoardRepository>();
 			services.AddScoped<IBoardAppService, BoardAppService>();

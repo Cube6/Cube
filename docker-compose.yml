@@ -39,8 +39,10 @@ services:
      environment: 
             - ASPNETCORE_URLS=https://+:5000;http://+:5050
             - Consul:Ip=boardservice1
-            - Consul:Port=5000            
+            - Consul:Port=5000
             - Consul:IsHttps=true
+            - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
+            - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
      volumes:
@@ -57,8 +59,10 @@ services:
      environment: 
             - ASPNETCORE_URLS=https://+:5001
             - Consul:Ip=boardservice2
-            - Consul:Port=5001            
+            - Consul:Port=5001
             - Consul:IsHttps=true
+            - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
+            - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
      volumes:
@@ -75,8 +79,10 @@ services:
      environment: 
             - ASPNETCORE_URLS=https://+:5002
             - Consul:Ip=boardservice3
-            - Consul:Port=5002            
+            - Consul:Port=5002
             - Consul:IsHttps=true
+            - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
+            - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
      volumes:
@@ -99,6 +105,8 @@ services:
             - Consul:Ip=userservice1
             - Consul:Port=4000
             - Consul:IsHttps=true
+            - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_user;User ID=sa;Password=Welcome1*;
+            - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
      volumes:
@@ -120,6 +128,8 @@ services:
             - Consul:Ip=userservice2
             - Consul:Port=4001
             - Consul:IsHttps=true
+            - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_user;User ID=sa;Password=Welcome1*;
+            - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
      volumes:
@@ -140,7 +150,7 @@ services:
      environment: 
             - ASPNETCORE_URLS=https://+:3000
             - Consul:Ip=identityservice1
-            - Consul:Port=3000            
+            - Consul:Port=3000
             - Consul:IsHttps=true
             - UserService:Scheme=https
             - UserService:Host=userservice1
@@ -166,7 +176,7 @@ services:
      environment: 
             - ASPNETCORE_URLS=https://+:3001
             - Consul:Ip=identityservice2
-            - Consul:Port=3001            
+            - Consul:Port=3001
             - Consul:IsHttps=true
             - UserService:Scheme=https
             - UserService:Host=userservice2
