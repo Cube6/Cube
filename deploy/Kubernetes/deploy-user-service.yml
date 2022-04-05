@@ -28,7 +28,18 @@ spec:
           image: docker.io/yuanzhitang/cubeuserservice
           imagePullPolicy: Always # Always每次拉去新镜像
           ports:
-            - containerPort: 80
+            - containerPort: 4000
+          env:
+            - name: ASPNETCORE_URLS
+              value: https://+:4000
+            - name: ConnectionStrings__DefaultConnection
+              value: Server=tcp:10.122.1.17,1433;Initial Catalog=cube_user;User ID=sa;Password=Welcome1*;
+            - name: ConnectionStrings__RedisConnection
+              value: 10.122.2.23:6379
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+              value: Welcome1
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: ./aspnetapp.pfx
 ---
 apiVersion: v1
 kind: Service
@@ -41,7 +52,7 @@ spec:
     app: cubeuserservice #与template-labels参数pod标签一致
   ports:
     - protocol: TCP
-      port: 80 #clusterIP开放的端口
-      targetPort: 80 #container开放的端口，与containerPort一致
+      port: 4000 #clusterIP开放的端口
+      targetPort: 4000 #container开放的端口，与containerPort一致
       nodePort: 30400 # 所有的节点都会开放此端口，此端口供外部调用。
   type: NodePort

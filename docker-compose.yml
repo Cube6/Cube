@@ -44,7 +44,7 @@ services:
             - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
             - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks: 
@@ -64,7 +64,7 @@ services:
             - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
             - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks: 
@@ -84,7 +84,7 @@ services:
             - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
             - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks: 
@@ -108,7 +108,7 @@ services:
             - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_user;User ID=sa;Password=Welcome1*;
             - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks: 
@@ -131,7 +131,7 @@ services:
             - ConnectionStrings__DefaultConnection=Server=tcp:10.63.223.58,1433;Initial Catalog=cube_user;User ID=sa;Password=Welcome1*;
             - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks: 
@@ -156,7 +156,7 @@ services:
             - UserService:Host=userservice1
             - UserService:Port=4000
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks:
@@ -182,7 +182,7 @@ services:
             - UserService:Host=userservice2
             - UserService:Port=4001
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-            - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
      volumes:
             - ~/.aspnet/https:/https:ro
      networks:
@@ -202,7 +202,7 @@ services:
   #      - '8080:80'
   #   environment: 
   #          - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
-  #          - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+  #          - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
   #   volumes:
   #          - ~/.aspnet/https:/https:ro
   #   networks:
