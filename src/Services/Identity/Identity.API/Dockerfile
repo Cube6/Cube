@@ -33,5 +33,7 @@ FROM base AS final
 WORKDIR /app
 #Copy /app/publish to the current directory
 COPY --from=publish /app/publish .
+#Copy common certificate to the current directory
+COPY "src/BuildingBlocks/Certificates/aspnetapp.pfx" .
 #Set container's Entrypoint, run dotnet Identity.API.dll when start a container
 ENTRYPOINT ["dotnet", "Identity.API.dll"]
