@@ -92,6 +92,21 @@ module.exports = {
             '^/Authorize': {
               target: 'http://10.63.224.86:9070'
             }
+
+            /*Connect to remote microservices on K8S*/
+            
+            // '^/Board': {
+            //    target: 'https://10.63.207.97:30500'
+            // },
+            // '^/Comment': {
+            //    target: 'https://10.63.207.97:30500'
+            // },
+            // '^/User': {
+            //    target: 'https://10.63.207.97:30400'
+            // },
+            // '^/Authorize': {
+            //    target: 'https://10.63.207.97:30300'
+            // }
         },
         port: 80
     }

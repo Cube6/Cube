@@ -13,6 +13,9 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 #Copy src/Services/User/User.API/User.API.csproj to container's src/Services/User/User.API/
 COPY ["src/Services/User/User.API/User.API.csproj", "src/Services/User/User.API/"]
+
+#COPY ["src/BuildingBlocks/Certificates/aspnetapp.pfx", "src/Services/User/User.API/"]
+
 #Execute dotnet restore to install all dependencies
 RUN dotnet restore "src/Services/User/User.API/User.API.csproj"
 #Copy all files in current directory to container's /src
@@ -33,5 +36,7 @@ FROM base AS final
 WORKDIR /app
 #Copy /app/publish to the current directory
 COPY --from=publish /app/publish .
+#Copy common certificate to the current directory
+COPY "src/BuildingBlocks/Certificates/aspnetapp.pfx" .
 #Set container's Entrypoint, run dotnet User.API.dll when start a container
 ENTRYPOINT ["dotnet", "User.API.dll"]

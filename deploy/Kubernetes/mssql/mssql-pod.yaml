@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k8s-mssql
+  labels:
+    name: lbl-k8s-mssql
+spec:
+  containers:
+  - name: mssql
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    env:
+    - name: SA_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mssql-pass
+          key: password
+    - name: ACCEPT_EULA
+      value: "Y"
+    ports:
+    - name: mssql
+      containerPort: 1433
+      protocol: TCP
+    volumeMounts:
+    - name: k8s-mssql-storage
+      mountPath: /var/lib/mssql
+  volumes:
+  - name: k8s-mssql-storage
+    emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mssql-service
+  labels:
+    name: lbl-k8s-mssql
+spec:
+  ports:
+  - port: 1433
+    targetPort: 1433 #container开放的端口，与containerPort一致
+    nodePort: 31433 # 所有的节点都会开放此端口，此端口供外部调用。
+  selector:
+    name: lbl-k8s-mssql
+  type: NodePort

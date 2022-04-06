@@ -65,7 +65,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Application", "src\Services\User\User.Application\User.Application.csproj", "{80B6B35B-5F77-4039-8E31-3745D12011D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisRepository", "src\Infrastructure\RedisUtil\RedisRepository.csproj", "{990AC818-92C6-4658-A03B-207CA47FCABD}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.Infrastructure", "src\Services\User\User.Infrastructure\User.Infrastructure.csproj", "{F99CA5FC-329B-444C-874A-AA0C52782B51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificates", "{D0C845BF-FEF9-4CB2-B01E-4AC00037DA10}"
+	ProjectSection(SolutionItems) = preProject
+		src\BuildingBlocks\Certificates\aspnetapp.pfx = src\BuildingBlocks\Certificates\aspnetapp.pfx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,6 +176,7 @@ Global
 		{80B6B35B-5F77-4039-8E31-3745D12011D4} = {71EEA16E-EE79-4BCF-8F3F-621218C4F411}
 		{990AC818-92C6-4658-A03B-207CA47FCABD} = {65A88BC6-15AC-4F22-A78B-16B5F2BFE8CF}
 		{F99CA5FC-329B-444C-874A-AA0C52782B51} = {71EEA16E-EE79-4BCF-8F3F-621218C4F411}
+		{D0C845BF-FEF9-4CB2-B01E-4AC00037DA10} = {4D29AFA5-D59A-4227-925C-3B934ECCE673}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45DA94DF-2FDD-4B55-9EDC-E05AC0BBC81C}
