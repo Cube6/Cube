@@ -274,10 +274,8 @@
                 this.axios(
                     {
                         method: 'get',
-                        url: '/BoardItem/' + this.boardId + '',
-                        headers: {
-                            'Authorization': 'Bearer ' + this.UserToken
-                    }})
+                        url: '/BoardItem/' + this.boardId + ''
+                       })
                     .then(all => {
                         this.WellContent = all.data.filter(item => item.Type == WentWellType);
                         this.ImproveContent = all.data.filter(item => item.Type == NeedsImproveType);
@@ -300,10 +298,7 @@
             fetchParticipants(){
                 this.axios({
                         method: 'get',
-                        url: '/User/Online/'+this.boardId,
-                        headers: {
-                            'Authorization': 'Bearer ' + this.UserToken
-                        }
+                        url: '/User/Online/'+this.boardId
                     }).then((res) => {
                         this.participants = [];
                         res.data.Users.forEach((item) =>{
@@ -331,9 +326,6 @@
                             Operation: opFlag,
                             BoardId:this.boardId,
                             Name: this.userName,
-                        },
-                        headers: {
-                            'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
 
@@ -359,9 +351,6 @@
                     data: {
                         Id: this.boardId,
                         Name: this.$refs.editBoardName.innerText
-                    },
-                    headers: {
-                        'Authorization': 'Bearer ' + this.UserToken
                     }
                 })
             },
@@ -381,9 +370,6 @@
                         detail: boardDetail,
                         type: type,
                         createduser: this.userName
-                    },
-                    headers: {
-                        'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then((res) => {
 
@@ -452,12 +438,7 @@
                                 var listOfItems = this.getListOfItems(boardItem.Type);
                                 this.removeBoardItemById(listOfItems, boardItem.Id);
 
-                                this.axios.delete('/BoardItem/' + boardItem.Id + '',
-                                    {
-                                        headers: {
-                                            'Authorization': 'Bearer ' + this.UserToken
-                                        }
-                                    }).then(() => {
+                                this.axios.delete('/BoardItem/' + boardItem.Id + '').then(() => {
                                         console.log(boardItem.Detail + 'is deleted');
                                         this.renderFunc(boardItem.Detail + ' is deleted successfully.');
                                     }).then(() => {
@@ -533,9 +514,6 @@
                             type: boardItem.Type,
                             createduser: boardItem.CreatedUser,
                             boardid: this.boardId
-                        },
-                        headers: {
-                            'Authorization': 'Bearer ' + this.UserToken
                         }
                     }).then(() => {
                         this.boardItemTextChanged = false;
@@ -788,9 +766,6 @@
                         BoardItemId: boardItemId,
                         Type: thumpType,
                         CreatedUser: this.userName
-                    },
-                    headers: {
-                        'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
                     var comment = {
@@ -814,9 +789,6 @@
                     params: {
                         borderItemId: boardItemId,
                         username: this.userName
-                    },
-                    headers: {
-                        'Authorization': 'Bearer ' + this.UserToken
                     }
                 }).then(() => {
                     var comment = {
@@ -851,9 +823,6 @@
                                         name: this.boardName,
                                         state: 2,
                                         createduser: this.userName
-                                    },
-                                    headers: {
-                                        'Authorization': 'Bearer ' + this.UserToken
                                     }
                                 }).then(() => {
                                     this.renderFunc(this.boardName + ' is marked as completed successfully.');
@@ -876,12 +845,7 @@
                         },
                         callback: confirm => {
                             if (confirm) {
-                                this.axios.delete('/Board/' + this.boardId + '',
-                                    {
-                                        headers: {
-                                            'Authorization': 'Bearer ' + this.UserToken
-                                        }
-                                    }).then(() => {
+                                this.axios.delete('/Board/' + this.boardId + '').then(() => {
                                         this.renderFunc(this.boardName + ' is deleted successfully.');
                                     }).then(() => {
                                         this.sendBoardMsg();

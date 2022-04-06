@@ -107,10 +107,8 @@
                 this.axios(
                     {
                         method: 'get',
-                        url: url,
-                        headers: {
-                            'Authorization': 'Bearer ' + this.UserToken
-                    }})
+                        url: url
+                    })
                     .then(json => {
                         this.post = json.data;
                         this.pageSetting.total = this.post.length;
@@ -138,12 +136,7 @@
                         },
                         callback: confirm => {
                             if (confirm) {
-                                this.axios.delete('/Board/' + board.Id + '',
-                                    {
-                                        headers: {
-                                            'Authorization': 'Bearer ' + this.UserToken
-                                        }
-                                    }).then(() => {
+                                this.axios.delete('/Board/' + board.Id + '').then(() => {
                                         this.fetchData();
                                     }).then(() => {
                                         this.renderFunc(board.Name + ' is deleted successfully.');

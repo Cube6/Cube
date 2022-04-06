@@ -42,6 +42,21 @@ axios.interceptors.response.use(
     }
 );
 
+
+axios.interceptors.request.use(function (config) {
+    let token = 'Bearer ' + localStorage.getItem('TOKEN');
+    if (token) {
+        config.headers.Authorization = token;
+        return config;
+    }
+},
+    error => {
+        return Promise.reject(error);
+    }
+);
+
+
+
 new Vue({
     router,
     store,

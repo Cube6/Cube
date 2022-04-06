@@ -44,10 +44,7 @@
                         this.axios({
                             method: 'post',
                             url: '/Board',
-                            data: this.formInline,
-                            headers: {
-                                'Authorization': 'Bearer ' + this.UserToken
-                            }
+                            data: this.formInline
                         }).then(res => {
                             this.$router.push({ name: 'boardDetail', params: { boardId: res.data, boardName: this.formInline.name, createdUser:this.formInline.CreatedUser, state:1 } });
                         }).then(() => {
