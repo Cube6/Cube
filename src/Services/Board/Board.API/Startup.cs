@@ -1,6 +1,7 @@
 ﻿using Board.API.Models;
 using Cube.Board.Respository;
 using Cube.ConsulService;
+using Cube.Infrastructure.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -20,7 +21,6 @@ using System.Threading.Tasks;
 using Cube.Board.Application;
 using Microsoft.EntityFrameworkCore;
 using Board.API.Hubs;
-using RedisPractice;
 
 namespace Board.API
 {

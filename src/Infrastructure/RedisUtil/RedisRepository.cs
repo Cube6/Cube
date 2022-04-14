@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using StackExchange.Redis;
 using Microsoft.VisualStudio.Threading;
 
-namespace RedisPractice
+namespace Cube.Infrastructure.Redis
 {
 	internal abstract class RedisRepository : IDisposable
 	{
 		#region Events
+
 		public event EventHandler<InternalErrorEventArgs> InternalErrorHandler;
 		public event EventHandler<RedisErrorEventArgs> ErrorEventHandler;
 		public event EventHandler<ConnectionFailedEventArgs> ConnectionFailedHandler;
@@ -19,14 +20,17 @@ namespace RedisPractice
 		{
 			InternalErrorHandler?.Invoke(sender, args);
 		}
+
 		public void OnErrorEvent(object sender, RedisErrorEventArgs args)
 		{
 			ErrorEventHandler?.Invoke(sender, args);
 		}
+
 		public void OnConnectionFailed(object sender, ConnectionFailedEventArgs args)
 		{
 			ConnectionFailedHandler?.Invoke(sender, args);
 		}
+
 		public void OnConnectionRestore(object sender, ConnectionFailedEventArgs args)
 		{
 			ConnectionRestoredHandler?.Invoke(sender, args);
@@ -35,6 +39,7 @@ namespace RedisPractice
 		#endregion
 
 		#region Properties and Fields
+
 		public bool Disposed => disposed;
 		private bool disposed = true;
 

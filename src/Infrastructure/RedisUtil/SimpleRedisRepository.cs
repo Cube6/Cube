@@ -1,15 +1,13 @@
 ﻿using Castle.DynamicProxy;
+using Microsoft.VisualStudio.Threading;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Threading;
-using StackExchange.Redis;
-using Microsoft.VisualStudio.Threading;
+using System.Threading.Tasks;
 
-namespace RedisPractice
+namespace Cube.Infrastructure.Redis
 {
 	internal class SimpleRedisRepository : RedisRepository, IAsyncInterceptor, IRedisInstance
 	{
@@ -17,7 +15,7 @@ namespace RedisPractice
 
 		public SimpleRedisRepository()
 		{
-			
+
 		}
 
 		public SimpleRedisRepository(string connectionString) : this()
@@ -43,6 +41,7 @@ namespace RedisPractice
 
 			transaction.Value = null;
 		}
+
 		public virtual async Task<V> GetAsync<K, V>(K key)
 		{
 			try
@@ -51,12 +50,14 @@ namespace RedisPractice
 				var value = await database.StringGetAsync(stringKey);
 				var objValue = JsonConvert.DeserializeObject<V>(value);
 				return objValue;
-			}catch(Exception)
+			}
+			catch (Exception)
 			{
 				return default;
 			}
 		}
-		public virtual async Task<bool> SetAsync<K,V>(K key, V value, int expire)
+
+		public virtual async Task<bool> SetAsync<K, V>(K key, V value, int expire)
 		{
 			try
 			{
@@ -64,8 +65,10 @@ namespace RedisPractice
 				var stringValue = JsonConvert.SerializeObject(value);
 
 				TimeSpan? timespan = null;
-				if(expire > 0)
+				if (expire > 0)
+				{
 					timespan = TimeSpan.FromSeconds(expire);
+				}
 
 				return await database.StringSetAsync(stringKey, stringValue, timespan);
 			}
@@ -75,7 +78,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> HashAddAsync<K,F,V>(K key, F field, V value, int expire = 0)
+		public virtual async Task<bool> HashAddAsync<K, F, V>(K key, F field, V value, int expire = 0)
 		{
 			try
 			{
@@ -97,7 +100,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> HashRemoveAsync<K,F>(K key, F field)
+		public virtual async Task<bool> HashRemoveAsync<K, F>(K key, F field)
 		{
 			try
 			{
@@ -112,7 +115,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<V> HashGetAsync<K,F,V>(K key, F field)
+		public virtual async Task<V> HashGetAsync<K, F, V>(K key, F field)
 		{
 			try
 			{
@@ -129,13 +132,15 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<long> ListAddAsync<K,M>(K key, M member, int expire = 0)
+		public virtual async Task<long> ListAddAsync<K, M>(K key, M member, int expire = 0)
 		{
 			try
 			{
-				var setting = new JsonSerializerSettings();
-				setting.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
-				setting.ReferenceLoopHandling = ReferenceLoopHandling.Serialize;
+				var setting = new JsonSerializerSettings()
+				{
+					PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+					ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+				};
 
 				var stringKey = JsonConvert.SerializeObject(key);
 				var stringMember = JsonConvert.SerializeObject(member, setting);
@@ -155,7 +160,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<long> ListRemoveAsync<K,M>(K key, M member)
+		public virtual async Task<long> ListRemoveAsync<K, M>(K key, M member)
 		{
 			try
 			{
@@ -188,7 +193,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<List<V>> ListRangeAsync<K,V>(K key, int start, int end)
+		public virtual async Task<List<V>> ListRangeAsync<K, V>(K key, int start, int end)
 		{
 			try
 			{
@@ -196,7 +201,7 @@ namespace RedisPractice
 				var response = await database.ListRangeAsync(stringKey, start, end);
 
 				var result = new List<V>();
-				foreach(var item in response)
+				foreach (var item in response)
 				{
 					var temp = JsonConvert.DeserializeObject<V>(item);
 					result.Add(temp);
@@ -209,7 +214,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> SetAddAsync<K,V>(K key, V value, int expire = 0)
+		public virtual async Task<bool> SetAddAsync<K, V>(K key, V value, int expire = 0)
 		{
 			try
 			{
@@ -231,7 +236,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> SetRemoveAsync<K,V>(K key, V value)
+		public virtual async Task<bool> SetRemoveAsync<K, V>(K key, V value)
 		{
 			try
 			{
@@ -247,14 +252,14 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<List<V>> SetAllAsync<K,V>(K key)
+		public virtual async Task<List<V>> SetAllAsync<K, V>(K key)
 		{
 			try
 			{
 				var stringKey = JsonConvert.SerializeObject(key);
 				var list = new List<V>();
 				var result = await database.SetMembersAsync(stringKey);
-				foreach(var item in result)
+				foreach (var item in result)
 				{
 					var temp = JsonConvert.DeserializeObject<V>(item);
 					list.Add(temp);
@@ -282,7 +287,7 @@ namespace RedisPractice
 			}
 		}
 
-		public virtual async Task<bool> SetContainsValueAsync<K,V>(K key, V value)
+		public virtual async Task<bool> SetContainsValueAsync<K, V>(K key, V value)
 		{
 			try
 			{
@@ -297,6 +302,7 @@ namespace RedisPractice
 				return false;
 			}
 		}
+
 		#endregion
 
 		#region Dynamic Proxy

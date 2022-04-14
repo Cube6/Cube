@@ -3,7 +3,7 @@ using Cube.User.Application.Cache;
 using Cube.User.Application.Configuration;
 using Cube.User.Application.Dtos;
 using Cube.User.Respository;
-using RedisPractice;
+using Cube.Infrastructure.Redis;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -88,7 +88,7 @@ namespace Cube.User.Application
 			{
 				if (!await _redis.SetContainsValueAsync(setKey, request.Name))
 				{
-					await _redis.SetAddAsync(setKey, request.Name);
+					await _redis.SetAddAsync(setKey, request.Name, CacheSettings.DefaultExpiryInSecondsForUser);
 				}
 			}
 			else

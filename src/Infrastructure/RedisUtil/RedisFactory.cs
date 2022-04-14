@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RedisPractice
+namespace Cube.Infrastructure.Redis
 {
 	public static class RedisFactory
 	{

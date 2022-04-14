@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Cube.Board.Application.Dtos;
 using Cube.Board.Application.Configuration;
+using Cube.Board.Application.Dtos;
 using Cube.Board.Domain;
 using Cube.Board.Respository;
+using Cube.Infrastructure.Redis;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using RedisPractice;
+using System.Threading.Tasks;
 
 namespace Cube.Board.Application
 {
@@ -27,19 +27,19 @@ namespace Cube.Board.Application
 		{
 			var list = new List<BoardDto>();
 			IEnumerable<DisscussionBoard> boards = new List<DisscussionBoard>();
-			if(type == BoardType.All)
+			if (type == BoardType.All)
 			{
 				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
 			}
-			else if(type == BoardType.InProgress)
+			else if (type == BoardType.InProgress)
 			{
 				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.InProgress);
 			}
-			else if(type == BoardType.Completed)
+			else if (type == BoardType.Completed)
 			{
 				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.Completed);
 			}
-			else if(type == BoardType.Deleted)
+			else if (type == BoardType.Deleted)
 			{
 				boards = _repository.ListAsync().Result.Where(t => t.IsDeleted);
 			}
@@ -65,7 +65,7 @@ namespace Cube.Board.Application
 
 		public BoardDto GetDetail(long boardId)
 		{
-			var DisscussionBoard = _repository.ListAsync().Result.Where(b=>b.Id==boardId).FirstOrDefault();
+			var DisscussionBoard = _repository.ListAsync().Result.Where(b => b.Id == boardId).FirstOrDefault();
 			return _mapper.Map<BoardDto>(DisscussionBoard);
 		}
 
@@ -106,7 +106,7 @@ namespace Cube.Board.Application
 				CreatedUser = boardItemDto.CreatedUser,
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now,
-				Type= boardItemDto.Type,
+				Type = boardItemDto.Type,
 			};
 			var id = await _repository.CreateBoardItemAsync(boardItem);
 			boardItem.Id = id;
@@ -123,7 +123,7 @@ namespace Cube.Board.Application
 				CreatedUser = boardItemDto.CreatedUser,
 				Action = boardItemDto.Action,
 				DateModified = DateTime.Now,
-				Type= boardItemDto.Type,
+				Type = boardItemDto.Type,
 			};
 			await _repository.UpdateBoardItemAsync(boardItem);
 		}
@@ -169,10 +169,11 @@ namespace Cube.Board.Application
 				DateModified = DateTime.Now,
 				Type = commentDto.Type,
 			};
-			if(!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+
+			if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
 			{
 				await _repository.CreateCommentAsync(comment);
-				await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser);
+				await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 			}
 		}
 
@@ -193,8 +194,8 @@ namespace Cube.Board.Application
 			var userNames = await _redis.SetAllAsync<long, string>(boardItemId);
 			if (userNames.Any())
 			{
-				var boardItem =await _repository.GetBoardItemByIdAsync(boardItemId);
-				foreach(var userName in userNames)
+				var boardItem = await _repository.GetBoardItemByIdAsync(boardItemId);
+				foreach (var userName in userNames)
 				{
 					comments.Add(new Comment() { CreatedUser = userName, BoardItem = boardItem });
 				}
@@ -204,7 +205,7 @@ namespace Cube.Board.Application
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
 				foreach (var comment in comments)
 				{
-					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, 60);
+					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
 
