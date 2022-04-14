@@ -28,13 +28,17 @@
                     <DropdownMenu slot="list">
                         <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem>
                         <DropdownItem v-if="state != 2"  v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
-                        <DropdownItem v-if="state != 2 && boardCreatedUser==userName"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
+                        <DropdownItem v-if="state != 2 && boardCreatedUser.toUpperCase()==userName"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
                         <DropdownItem v-on:click.native="exportData()"><Icon type="ios-code-download" size="28" />Export</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
 
+               <Icon type="ios-refresh" size="24" style="float: right;margin-top:6px;margin-right:5px;" 
+                        v-on:click.native="fetchData(true)" title="Refresh">
+                </Icon>
+
                 <a href="#" @click.prevent="sortItems()" title="Sort Items">
-                    <button class="css-b7766g" tabindex="-1" style="float: right; margin-top:10px;">
+                    <button class="css-b7766g" tabindex="-1" style="float: right; margin-top:10px;margin-right:10px;">
                         <i :class="sortButtonClass" style="color:#666666" aria-hidden="true"></i>
                     </button>
                 </a>
@@ -242,6 +246,8 @@
             sessionStorage.setItem('boardDetailPath', JSON.stringify(this.$route.params));
             this.fetchData(true);
             this.init();
+
+            console.log(this.boardCreatedUser+this.userName);
         },
         destroyed(){
             if(this.connection!=null){
@@ -1016,7 +1022,7 @@
         line-height: 1.75;
         letter-spacing: 0.02857em;
         text-transform: uppercase;
-        min-width: 64px;
+        min-width: 8px;
         border-radius: 4px;
         transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
         color: inherit;

@@ -2,7 +2,7 @@
     <div style="margin:0">
         <ul>
             <li style="width:260px; float: left;">
-                <Card style="width: 250px; cursor: pointer;" v-on:click.native="AddBoard()">
+                <Card style="width: 250px; cursor: pointer; margin:0px 0px 15px 0px" v-on:click.native="AddBoard()">
                     <div style="display: flex; padding-bottom: 36px; background: #fff;">
                         <i scripturl="../scripts/font.js" style="font-size:24px;">
                             <svg viewBox="0 0 1024 1024" style="width:1em;height:1em;fill:currentColor;overflow:hidden">
@@ -14,7 +14,7 @@
                 </Card>
             </li>
             <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
-                <Card :style="{width: '250px', cursor: 'pointer', background: getBoardCardBG(board)}" v-on:click.native="ViewBoard(board)">
+                <Card :style="{width: '250px', cursor: 'pointer', margin:'0px 0px 15px 0px', background: getBoardCardBG(board)}" v-on:click.native="ViewBoard(board)">
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
                         <img src="../assets/Icons/completed.jpg" v-if="board.State == 2" title="Completed" style="width:20px; height:20px; border-radius:50%; float:right" >
@@ -203,6 +203,10 @@
                 // {
                 //     return '#7FEE7A';
                 // }
+                else if(board.IsDeleted)
+                {
+                    return '#FCE9E9';
+                }
 
                 return '#FFF';
             }
