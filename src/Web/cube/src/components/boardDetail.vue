@@ -12,7 +12,7 @@
 
                 <Dropdown  v-if="state != 2">
                     <!-- <Icon type="md-people" size="24"></Icon> -->
-                    <div style="padding-left:10px;color:#00ad00" >
+                    <div style="cursor: pointer;padding-left:10px;color:#00ad00" >
                         <i class="fa fa-users" aria-hidden="true"></i>
                         <span>{{participants.length}}</span>
                     </div>
@@ -33,7 +33,7 @@
                     </DropdownMenu>
                 </Dropdown>
 
-               <Icon type="ios-refresh" size="24" style="float: right;margin-top:6px;margin-right:5px;" 
+               <Icon type="ios-refresh" size="24" style="float: right;cursor: pointer;margin-top:6px;margin-right:5px;" 
                         v-on:click.native="fetchData(true)" title="Refresh">
                 </Icon>
 
@@ -44,7 +44,7 @@
                 </a>
 
                 <!--Online Users-->
-                <!-- <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " /> -->
+                <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " />
             </span>
         </h1>
         <br />
