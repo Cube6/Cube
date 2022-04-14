@@ -14,11 +14,11 @@
                 </Card>
             </li>
             <li v-for="board in post" :key="board.Id" style="width:260px; float: left;">
-                <Card style="width: 250px; text-align: left; cursor: pointer;" v-on:click.native="ViewBoard(board)">
+                <Card :style="{width: '250px', cursor: 'pointer', background: getBoardCardBG(board)}" v-on:click.native="ViewBoard(board)">
                     <p slot="title">
                         <img :src="getUserAvatar(board.CreatedUser)" :title="board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
                         <img src="../assets/Icons/completed.jpg" v-if="board.State == 2" title="Completed" style="width:20px; height:20px; border-radius:50%; float:right" >
-                        <img src="../assets/Icons/inprogress.jpg" v-if="board.IsDeleted==false &&board.State == 1" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
+                        <img src="../assets/Icons/inprogress.jpg" v-if="board.IsDeleted==false && board.State == 1" title="In Progress" style="width:20px; height:20px; border-radius:50%; float:right" >
                         <img src="../assets/Icons/deleted.png" v-if="board.IsDeleted" title="Deleted" style="width:20px; height:20px; border-radius:50%; float:right" >
                     </p>
                     <div style="text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
@@ -191,6 +191,20 @@
             },
             pageChanged(page) {
                 console.log(page);
+            },
+
+            getBoardCardBG:function(board){
+
+                if(board.IsDeleted==false && board.State == 1)
+                {
+                    return '#F3FCF1';
+                }
+                // else if(board.State == 2)
+                // {
+                //     return '#7FEE7A';
+                // }
+
+                return '#FFF';
             }
         },
     }
