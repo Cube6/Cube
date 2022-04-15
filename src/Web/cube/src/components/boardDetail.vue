@@ -204,6 +204,7 @@
     const SortUpOption='asc';
     const SortDownOption='desc';
     const SortCreatedOption='createdTime';
+    const SortUserOption="createdUser";
 
     const DefaultSortButtonClass = 'fa fa-sort fa-1x';
 
@@ -927,18 +928,29 @@
                     this.sortItemsAsc(this.WellContent);
                     this.sortItemsAsc(this.ImproveContent);
                     this.sortItemsAsc(this.ActionContent);
+                    this.sortButtonClass = "fa fa-sort-amount-desc fa-1x";
 
                     this.sortOption = SortDownOption;
-                    this.sortButtonClass = "fa fa-sort-amount-desc fa-1x";
+                    
                 }
                 else if(this.sortOption == SortDownOption)
                 {
                     this.sortItemsDesc(this.WellContent);
                     this.sortItemsDesc(this.ImproveContent);
                     this.sortItemsDesc(this.ActionContent);
-
-                     this.sortOption = SortCreatedOption;
                      this.sortButtonClass = "fa fa-sort-amount-asc fa-1x";
+
+                     this.sortOption = SortUserOption;
+                }
+                else if(this.sortOption == SortUserOption)
+                {
+                    this.sortItemsUserAsc(this.WellContent);
+                    this.sortItemsUserAsc(this.ImproveContent);
+                    this.sortItemsUserAsc(this.ActionContent);
+                    this.sortButtonClass = "fa fa-sort-alpha-asc fa-1x";
+
+                    this.sortOption = SortCreatedOption;
+
                 }
                 else if(this.sortOption == SortCreatedOption)
                 {
@@ -960,6 +972,12 @@
             {
                 content.sort(function(a, b){
                     return a.ThumbsUp.length - b.ThumbsUp.length;
+                });
+            },
+            sortItemsUserAsc(content)
+            {
+                content.sort(function(a, b){
+                    return a.CreatedUser.localeCompare(b.CreatedUser);
                 });
             },
             resetSortItems(content)
