@@ -10,7 +10,7 @@
                         Completed
                 </span>
 
-                <Dropdown  v-if="state != 2">
+                <Dropdown  v-if="state != 2" v-on:click.native="toggleOnlineUsers()">
                     <!-- <Icon type="md-people" size="24"></Icon> -->
                     <div style="cursor: pointer;padding-left:10px;color:#00ad00" >
                         <i class="fa fa-users" aria-hidden="true"></i>
@@ -43,8 +43,8 @@
                     </button>
                 </a>
 
-                <!--Online Users-->
-                <img v-for="user in participants" :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " />
+                <!--Online Users-->    
+                <img v-for="user in participants" :hidden='showParticipants==false'  :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " />
             </span>
         </h1>
         <br />
@@ -232,7 +232,8 @@
                 sortButtonClass: DefaultSortButtonClass,
                 csvData:[],
                 csvColumns: [],
-                participants:[]
+                participants:[],
+                showParticipants:false
             };
         },
         created() {
@@ -314,6 +315,14 @@
                     }).catch(error=>{
                         this.$Message.error('Failed to load online users. Error:' + error);
                     });
+            },
+            toggleOnlineUsers(){
+                if(this.showParticipants){
+                    this.showParticipants = false;
+                }
+                else {
+                    this.showParticipants = true;
+                }
             },
             updateParticipant(action){
                 
@@ -909,7 +918,7 @@
                 let sortedItems = [];
                 content.forEach((value) => {
                     sortedItems.push({ 
-                        "content": value.Detail.replaceAll(',','_'), 
+                        "content": value.Detail.replaceAll(',','_').replaceAll('\n','').replaceAll('\r',''), 
                         "createdUser": value.CreatedUser, 
                         "vote": value.ThumbsUp.length 
                         });
