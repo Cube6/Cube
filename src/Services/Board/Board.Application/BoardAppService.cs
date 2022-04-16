@@ -101,7 +101,7 @@ namespace Cube.Board.Application
 			var boardItem = new DisscussionBoardItem()
 			{
 				Board = _repository.ListAsync().Result.Where(b => b.Id == boardItemDto.BoardId).FirstOrDefault(),
-				State = BoardItemState.None,
+				State = BoardItemState.InProgress,
 				Detail = boardItemDto.Detail,
 				Action = boardItemDto.Action,
 				CreatedUser = boardItemDto.CreatedUser,
@@ -121,7 +121,7 @@ namespace Cube.Board.Application
 			boardItem.Detail = boardItemDto.Detail;
 			boardItem.Action = boardItemDto.Action;
 			boardItem.DateModified = DateTime.Now;
-			if (boardItem.State != BoardItemState.None)
+			if (boardItemDto.State != BoardItemState.None)
 			{
 				boardItem.State = boardItemDto.State;
 			}

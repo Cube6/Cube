@@ -155,9 +155,10 @@
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
                                     <!-- background: #ECF5FC -->
+                                    <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #29984F"><i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>&nbsp;DONE</span>
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" class="boardItemContent actionItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input :disabled="action.State == 2" v-model="action.Detail" class="boardItemContent actionItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
@@ -176,7 +177,8 @@
                                             <Icon type="ios-more" size="28"></Icon>
                                             <DropdownMenu slot="list">
                                               <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                              <DropdownItem v-on:click.native="markBoardItem(action, 2)"  v-if="action.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
+                                              <DropdownItem v-on:click.native="markBoardItem(action, 1)"  v-if="action.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
                                             </DropdownMenu>
                                         </Dropdown>
                                     </p>
@@ -546,6 +548,31 @@
 
                         this.sendBoardItemMsg(context);
                     })
+            },
+
+            markBoardItem(boardItem, state) {
+                            
+                this.axios({
+                    method: 'put',
+                    url: '/BoardItem',
+                    data: {
+                        id: boardItem.Id,
+                        detail: boardItem.Detail,
+                        type: boardItem.Type,
+                        state: state,
+                        createduser: boardItem.CreatedUser,
+                        boardid: this.boardId
+                    }
+                }).then(() => {
+                    boardItem.State = state;
+                    this.renderFunc(boardItem.Detail + ' is updated successfully.');
+                }).then(() => {
+                    var context = {
+                        Operation: UpdateOperation,
+                        BoardItem: boardItem
+                    };              
+                    this.sendBoardItemMsg(context);
+                })
             },
 
             addActionUp(actionItem) {

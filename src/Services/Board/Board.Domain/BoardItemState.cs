@@ -3,6 +3,7 @@
 	public enum BoardItemState
 	{
 		None,
+		InProgress,
 		Done,
 	}
 }
