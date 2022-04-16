@@ -392,7 +392,7 @@
                 }).then((res) => {
 
                     var listOfItems = this.getListOfItems(type);
-                    listOfItems.push(res.data);
+                    listOfItems.unshift(res.data);
 
                     this.renderFunc(boardDetail + ' is created successfully.');
 
@@ -634,7 +634,7 @@
                         else if (boardItemEvent.Operation == AddOperation) {
                             var index = this.findIndexOfBoardItems(listOfItems, boardItemEvent.BoardItem.Id);
                             if (index == -1) {
-                                listOfItems.push(boardItemEvent.BoardItem);
+                                listOfItems.unshift(boardItemEvent.BoardItem);
                             }
                         }
                         else if (boardItemEvent.Operation == UpdateOperation) {
@@ -994,7 +994,7 @@
             resetSortItems(content)
             {
                 content.sort(function(a, b){
-                    return a.Id - b.Id;
+                    return  b.Id - a.Id;
                 });
             }
         }
@@ -1018,7 +1018,7 @@
     .boardItemContent .ivu-input{
         background-color:transparent;
         font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
-        font-size: 11pt;
+        font-size: 12pt;
     }
 
     .wellItem  .ivu-input{

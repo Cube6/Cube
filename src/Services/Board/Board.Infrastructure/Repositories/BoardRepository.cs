@@ -73,7 +73,10 @@ namespace Cube.Board.Respository
 
 		public async Task<List<DisscussionBoardItem>> GetBoardItemsByBoardIdAsync(long boardId)
 		{
-			var result = await _context.DisscussionBoardItems.Include(t=>t.Board).Where(it => it.Board.Id == (int)boardId).ToListAsync();
+			var result = await _context.DisscussionBoardItems.Include(t=>t.Board)
+																.Where(it => it.Board.Id == (int)boardId)
+																.OrderByDescending(t=>t.Id)
+																.ToListAsync();
 			return result;
 		}
 
