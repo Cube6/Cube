@@ -78,7 +78,8 @@
                     <td style="vertical-align:top">
                         <ul>
                             <li v-for="well in WellContent" :key="well.Id">
-                                <Card style="width: 100%; text-align: left;">
+                                <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;"> 
+                                     <!-- background: #F1F3F1 -->
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
                                     <Input v-model="well.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
@@ -117,9 +118,9 @@
                                 <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
                             </div>
                             <li v-for="improve in ImproveContent" :key="improve.Id">
-                                <Card style="width: 100%; text-align: left;">
+                                <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
+                                     <!-- background: #FBF5F5 -->
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
-
                                     <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
@@ -152,7 +153,8 @@
                     <td style="vertical-align:top">
                         <ul>
                             <li v-for="action in ActionContent" :key="action.Id">
-                                <Card style="width: 100%; text-align: left; ">
+                                <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
+                                    <!-- background: #ECF5FC -->
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
                                     <Input v-model="action.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
@@ -1012,6 +1014,10 @@
 
     .boardItemContent {
         margin-bottom: 15px;
+
+    }
+    .boardItemContent .ivu-input{
+        background-color:transparent;
     }
 
     .css-vubbuv {
