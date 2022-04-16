@@ -101,6 +101,7 @@ namespace Cube.Board.Application
 			var boardItem = new DisscussionBoardItem()
 			{
 				Board = _repository.ListAsync().Result.Where(b => b.Id == boardItemDto.BoardId).FirstOrDefault(),
+				State = BoardItemState.None,
 				Detail = boardItemDto.Detail,
 				Action = boardItemDto.Action,
 				CreatedUser = boardItemDto.CreatedUser,
@@ -116,15 +117,15 @@ namespace Cube.Board.Application
 
 		public async Task UpdateBoardItem(BoardItemDto boardItemDto)
 		{
-			var boardItem = new DisscussionBoardItem()
+			var boardItem = await _repository.GetBoardItemByIdAsync(boardItemDto.Id);
+			boardItem.Detail = boardItemDto.Detail;
+			boardItem.Action = boardItemDto.Action;
+			boardItem.DateModified = DateTime.Now;
+			if (boardItem.State != BoardItemState.None)
 			{
-				Id = boardItemDto.Id,
-				Detail = boardItemDto.Detail,
-				CreatedUser = boardItemDto.CreatedUser,
-				Action = boardItemDto.Action,
-				DateModified = DateTime.Now,
-				Type = boardItemDto.Type,
-			};
+				boardItem.State = boardItemDto.State;
+			}
+
 			await _repository.UpdateBoardItemAsync(boardItem);
 		}
 

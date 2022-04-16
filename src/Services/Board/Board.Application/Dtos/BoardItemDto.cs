@@ -12,6 +12,7 @@ namespace Cube.Board.Application.Dtos
 		public DateTime DateCreated { get; set; }
 		public DateTime DateModified { get; set; }
 		public BoardItemType Type { set; get; }
+		public BoardItemState State { get; set; }
 		public string Detail { get; set; }
 		public string Action { get; set; }
 		public IEnumerable<CommentDto> ThumbsUp { get; set; } = new List<CommentDto>();

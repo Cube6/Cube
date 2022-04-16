@@ -9,6 +9,9 @@ namespace Cube.Board.Domain
 		public BoardItemType Type { set; get; }
 
 		[Required]
+		public BoardItemState State { set; get; }
+
+		[Required]
 		public string Detail { get; set; }
 
 		public string Action { get; set; }
