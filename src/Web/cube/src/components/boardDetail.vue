@@ -63,13 +63,13 @@
                 </tr>
                 <tr v-if="state != 2">
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" placeholder="What went well ?" spellcheck :loading="loading" search enter-button="Add" @on-search="addWentWell" />
+                        <Input v-model="boardDetail.WellDetail" class="wellInputContent" placeholder="What went well ?" spellcheck :loading="loading" search enter-button="Add" @on-search="addWentWell" />
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImproveDetail" placeholder="What could be improved ?" spellcheck search enter-button="Add" @on-search="addImproved" />
+                        <Input v-model="boardDetail.ImproveDetail" class="improveInputContent" placeholder="What could be improved ?" spellcheck search enter-button="Add" @on-search="addImproved" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" placeholder="Action Items" spellcheck search enter-button="Add" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" class="actionInputContent" placeholder="Action Items" spellcheck search enter-button="Add" @on-search="addAction" />
                     </th>
                 </tr>
             </thead>
@@ -82,7 +82,7 @@
                                      <!-- background: #F1F3F1 -->
                                     <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="well.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
+                                    <Input v-model="well.Detail" class="boardItemContent wellItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -121,7 +121,7 @@
                                 <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
                                      <!-- background: #FBF5F5 -->
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
-                                    <Input v-model="improve.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
+                                    <Input v-model="improve.Detail" class="boardItemContent improveItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -157,7 +157,7 @@
                                     <!-- background: #ECF5FC -->
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" class="boardItemContent" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input v-model="action.Detail" class="boardItemContent actionItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
@@ -1014,10 +1014,36 @@
 
     .boardItemContent {
         margin-bottom: 15px;
-
     }
     .boardItemContent .ivu-input{
         background-color:transparent;
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+        font-size: 11pt;
+    }
+
+    .wellItem  .ivu-input{
+        color: #50AA62;
+    }
+    .improveItem  .ivu-input{
+        color: #E8897A;
+    }
+    .actionItem  .ivu-input{
+        color: #7A93E8;
+    }
+
+    .wellInputContent .ivu-input{
+        background-color:#F2F5F2;
+        font-size: 11pt;
+    }
+
+    .improveInputContent .ivu-input{
+        background-color:#FBF5F5;
+        font-size: 11pt;
+    }
+
+    .actionInputContent .ivu-input{
+        background-color:#ECF5FC;
+        font-size: 11pt;
     }
 
     .css-vubbuv {
