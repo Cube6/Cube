@@ -158,7 +158,7 @@
                                     <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #29984F"><i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>&nbsp;DONE</span>
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input :disabled="action.State == 2" v-model="action.Detail" class="boardItemContent actionItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input v-model="action.Detail" :class="getActionBoardItemClass(action.State)" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
@@ -1023,6 +1023,18 @@
                 content.sort(function(a, b){
                     return  b.Id - a.Id;
                 });
+            },
+            getActionBoardItemClass(state)
+            {
+                var style = 'boardItemContent';
+                if(state == 2)
+                {
+                    return style + ' ' + 'boardItemDoneClass';
+                }
+                else
+                {
+                    return style + ' ' + 'actionItem';
+                }
             }
         }
     }
@@ -1056,6 +1068,14 @@
     }
     .actionItem  .ivu-input{
         color: #7A93E8;
+    }
+
+    .boardItemDoneClass .ivu-input{
+        text-decoration: line-through;
+        font-style: oblique;
+        /* color: #218338; */
+        color:#29984F;
+        /* color: #97979B; */
     }
 
     .wellInputContent .ivu-input{
