@@ -26,7 +26,7 @@
                 <Dropdown style="float: right;position: relative; font-size:12pt; ">
                     <Icon type="ios-more" size="28"></Icon>
                     <DropdownMenu slot="list">
-                        <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem>
+                        <!-- <DropdownItem v-on:click.native="fetchData(true)"><Icon type="ios-refresh" size="28" />Refresh</DropdownItem> -->
                         <DropdownItem v-if="state != 2"  v-on:click.native="markCompleted()"><Icon type="ios-checkmark" size="28" />Mark as Completed</DropdownItem>
                         <DropdownItem v-if="state != 2 && boardCreatedUser.toUpperCase()==userName"  v-on:click.native="deleteBoard()"><Icon type="ios-close" size="28" />Delete</DropdownItem>
                         <DropdownItem v-on:click.native="exportData()"><Icon type="ios-code-download" size="28" />Export</DropdownItem>
@@ -37,7 +37,7 @@
                         v-on:click.native="fetchData(true)" title="Refresh">
                 </Icon>
 
-                <a href="#" @click.prevent="sortItems()" title="Sort Items">
+                <a href="#" @click.prevent="sortItems()" :title="sortButtonTitle">
                     <button class="css-b7766g" tabindex="-1" style="float: right; margin-top:10px;margin-right:10px;">
                         <i :class="sortButtonClass" style="color:#666666" aria-hidden="true"></i>
                     </button>
@@ -211,6 +211,7 @@
     const SortUserOption="createdUser";
 
     const DefaultSortButtonClass = 'fa fa-sort fa-1x';
+    const DefaultSortButtonTitle = 'Sort Items';
 
     export default {
         data() {
@@ -234,6 +235,7 @@
                 state: 0,
                 sortOption:SortUpOption,
                 sortButtonClass: DefaultSortButtonClass,
+                sortButtonTitle: DefaultSortButtonTitle,
                 csvData:[],
                 csvColumns: [],
                 participants:[],
@@ -968,9 +970,9 @@
                     this.sortItemsAsc(this.ImproveContent);
                     this.sortItemsAsc(this.ActionContent);
                     this.sortButtonClass = "fa fa-sort-amount-desc fa-1x";
+                    this.sortButtonTitle = "Sorted Items by Thumbup Descending";
 
-                    this.sortOption = SortDownOption;
-                    
+                    this.sortOption = SortDownOption;               
                 }
                 else if(this.sortOption == SortDownOption)
                 {
@@ -978,6 +980,7 @@
                     this.sortItemsDesc(this.ImproveContent);
                     this.sortItemsDesc(this.ActionContent);
                      this.sortButtonClass = "fa fa-sort-amount-asc fa-1x";
+                     this.sortButtonTitle = "Sorted Items by Thumbup Ascending";
 
                      this.sortOption = SortUserOption;
                 }
@@ -987,6 +990,7 @@
                     this.sortItemsUserAsc(this.ImproveContent);
                     this.sortItemsUserAsc(this.ActionContent);
                     this.sortButtonClass = "fa fa-sort-alpha-asc fa-1x";
+                    this.sortButtonTitle = "Sorted Items by User Name Ascending";
 
                     this.sortOption = SortCreatedOption;
 
@@ -996,9 +1000,10 @@
                     this.resetSortItems(this.WellContent);
                     this.resetSortItems(this.ImproveContent);
                     this.resetSortItems(this.ActionContent);
+                    this.sortButtonClass = DefaultSortButtonClass;
+                    this.sortButtonTitle = DefaultSortButtonTitle;
 
                      this.sortOption = SortUpOption;
-                     this.sortButtonClass = DefaultSortButtonClass;
                 }
             },
             sortItemsAsc(content)
