@@ -870,6 +870,7 @@
                                         createduser: this.userName
                                     }
                                 }).then(() => {
+                                    this.state = 2;
                                     this.renderFunc(this.boardName + ' is marked as completed successfully.');
                                 }).then(() => {
                                     this.sendBoardItemMsg();
