@@ -120,8 +120,9 @@
                             <li v-for="improve in ImproveContent" :key="improve.Id">
                                 <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
                                      <!-- background: #FBF5F5 -->
+                                    <span v-if="improve.State == 2" style="float: left; margin-left:5px; color: #29984F"><i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>&nbsp;<b>DONE</b></span>
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
-                                    <Input v-model="improve.Detail" class="boardItemContent improveItem" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
+                                    <Input v-model="improve.Detail" :class="getBoardItemClass(2, improve.State)" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
@@ -142,6 +143,8 @@
                                             <Icon type="ios-more" size="28"></Icon>
                                             <DropdownMenu slot="list">
                                               <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                              <DropdownItem v-on:click.native="markBoardItem(improve, 2)"  v-if="improve.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
+                                              <DropdownItem v-on:click.native="markBoardItem(improve, 1)"  v-if="improve.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
                                                 <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
                                             </DropdownMenu>
                                         </Dropdown>
@@ -155,10 +158,13 @@
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
                                     <!-- background: #ECF5FC -->
-                                    <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #29984F"><i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>&nbsp;DONE</span>
+                                    <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #29984F">
+                                        <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
+                                        &nbsp;<b>DONE</b>
+                                    </span>
                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
-                                    <Input v-model="action.Detail" :class="getActionBoardItemClass(action.State)" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                    <Input v-model="action.Detail" :class="getBoardItemClass(3, action.State)" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
@@ -1030,14 +1036,19 @@
                     return  b.Id - a.Id;
                 });
             },
-            getActionBoardItemClass(state)
+            getBoardItemClass(type, state)
             {
                 var style = 'boardItemContent';
                 if(state == 2)
                 {
                     return style + ' ' + 'boardItemDoneClass';
                 }
-                else
+
+                if(type == NeedsImproveType)
+                {
+                    return style + ' ' + 'improveItem';
+                }
+                else if(type == ActionType)
                 {
                     return style + ' ' + 'actionItem';
                 }
