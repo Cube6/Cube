@@ -1074,8 +1074,8 @@
         text-decoration: line-through;
         font-style: oblique;
         /* color: #218338; */
-        color:#29984F;
-        /* color: #97979B; */
+        /* color:#29984F; */
+        color: #B6B6B9;
     }
 
     .wellInputContent .ivu-input{
