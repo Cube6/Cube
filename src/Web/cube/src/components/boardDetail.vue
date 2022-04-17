@@ -120,7 +120,11 @@
                             <li v-for="improve in ImproveContent" :key="improve.Id">
                                 <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
                                      <!-- background: #FBF5F5 -->
-                                    <span v-if="improve.State == 2" style="float: left; margin-left:5px; color: #29984F"><i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>&nbsp;<b>DONE</b></span>
+                                    <span v-if="improve.State == 2" style="float: left; margin-left:5px; color: #CCCCD0">
+                                        <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
+                                        &nbsp;<b>DONE</b>
+                                    </span>
+                        
                                     <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
                                     <Input v-model="improve.Detail" :class="getBoardItemClass(2, improve.State)" type="textarea" :readonly="!canEditBoardItem()" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                     <p style="height:22px;">
@@ -158,7 +162,7 @@
                             <li v-for="action in ActionContent" :key="action.Id">
                                 <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
                                     <!-- background: #ECF5FC -->
-                                    <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #29984F">
+                                    <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #CCCCD0">
                                         <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
                                         &nbsp;<b>DONE</b>
                                     </span>
@@ -1092,7 +1096,7 @@
         font-style: oblique;
         /* color: #218338; */
         /* color:#29984F; */
-        color: #B6B6B9;
+        color: #CCCCD0;
     }
 
     .wellInputContent .ivu-input{
