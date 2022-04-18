@@ -1,5 +1,5 @@
 ﻿<template>
-    <div style="margin:0">
+    <div class="subLayout">
         <ul>
             <li style="width:260px; float: left;">
                 <Card style="width: 250px; cursor: pointer; margin:0px 0px 15px 0px" v-on:click.native="AddBoard()">
@@ -229,5 +229,13 @@
         left: 50%;
         transform: translate(-50%, -50%);
         background: #fff
+    }
+    .subLayout{
+        margin: 0;
+        padding: 12px;
+    }
+
+    .subLayout .ivu-card-body {
+        padding: 16px;
     }
 </style>

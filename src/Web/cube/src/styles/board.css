@@ -4,6 +4,12 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
+  z-index:0;
+  overflow-y:hidden
+}
+
+.layout .ivu-card-body {
+  padding: 0px;
 }
 
 .layout-logo {

@@ -74,14 +74,14 @@
                     </MenuItem>
                 </Menu>
             </Sider>
-            <Layout :style="{padding: '0 12px'}">
+            <Layout :style="{padding: '0 1px 12px 12px'}">
                 <Breadcrumb :style="{margin: '12px 0'}">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
                     <BreadcrumbItem  @click.native="fetchData(0)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
                     <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>
                 <Content :style="{minHeight: '280px'}">
-                    <Card style="height:100%">
+                    <Card style="height:95%">
                         <router-view :key="$route.path"></router-view>
                     </Card>
                 </Content>

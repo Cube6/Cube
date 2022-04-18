@@ -1,9 +1,9 @@
 ﻿<template>
-    <div>
+<fullscreen v-model="fullscreen" :teleport="teleport"  :page-only="pageOnly">
+    <div class="subLayout">
         <h1 style="width:100%;text-align:center; font-size:larger">
             <span>
-
-               <span :ref="'editBoardName'" @keydown="updateBoardNameKeydown($event)" @blur="updateBoardName()" :contenteditable="state == 1">{{boardName}}</span>
+                <span :ref="'editBoardName'" @keydown="updateBoardNameKeydown($event)" @blur="updateBoardName()" :contenteditable="state == 1">{{boardName}}</span>
 
                 <span style="color:forestgreen" v-if="state == 2">
                         <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
@@ -33,7 +33,19 @@
                     </DropdownMenu>
                 </Dropdown>
 
-               <Icon type="ios-refresh" size="24" style="float: right;cursor: pointer;margin-top:6px;margin-right:5px;" 
+                <!-- Full Screen -->
+                <Icon v-if="!fullscreen" type="md-qr-scanner" size="18" style="float: right;cursor: pointer;margin-top:8px;margin-right:5px;" 
+                        v-on:click.native="toggle()" title="Full Screen">
+                </Icon>
+
+                <a v-if="fullscreen" href="#" @click.prevent="toggle()" title="Exit Full Screen">
+                    <button class="css-b7766g" tabindex="-1" style="float: right;cursor: pointer;margin-top:10px;margin-right:5px;" >
+                        <i class="fa fa-window-restore fa-1x" style="color:#666666" aria-hidden="true"></i>
+                    </button>
+                </a>
+
+                <!-- Refresh -->
+                <Icon type="ios-refresh" size="24" style="float: right;cursor: pointer;margin-top:6px;margin-right:5px;" 
                         v-on:click.native="fetchData(true)" title="Refresh">
                 </Icon>
 
@@ -204,6 +216,7 @@
             <div class="top">Back to Top</div>
         </BackTop>
     </div>
+</fullscreen>
 </template>
 
 <script>
@@ -249,7 +262,11 @@
                 csvData:[],
                 csvColumns: [],
                 participants:[],
-                showParticipants:false
+                showParticipants:false,
+
+                fullscreen: false,
+                teleport: true,
+                pageOnly: true,
             };
         },
         created() {
@@ -1056,7 +1073,10 @@
                 {
                     return style + ' ' + 'actionItem';
                 }
-            }
+            },
+            toggle () {
+                this.fullscreen = !this.fullscreen
+            },
         }
     }
 </script>
@@ -1176,6 +1196,14 @@
         border: 2px solid rgba(0, 153, 229, .7);
         border-radius: 4px;
         transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
+    }
+
+    .subLayout{
+        minHeight:300px;height:100%;width:100%;padding:12px;position:absolute;overflow-y:auto;background:#FFFFFF;
+    }
+
+    .layoutDetail .ivu-card-body {
+        padding: 16px;
     }
 
 </style>

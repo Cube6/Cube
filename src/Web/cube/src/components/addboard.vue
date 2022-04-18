@@ -1,5 +1,5 @@
 ﻿<template>
-    <div>
+    <div class="subLayout">
         <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
             <FormItem prop="name" class="lgD">
                 <Input v-model="formInline.name" spellcheck="true" placeholder="Enter a board name. Ex: DE8.0 Runtime/DDW SprintX Retro"/>
@@ -87,4 +87,12 @@
 </script>
 
 <style>
+    .subLayout{
+        margin: 0;
+        padding: 12px;
+    }
+
+    .subLayout .ivu-card-body {
+        padding: 16px;
+    }
 </style>

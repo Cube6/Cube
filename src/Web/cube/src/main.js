@@ -8,12 +8,14 @@ import axios from 'axios';
 import canvas from 'html2canvas'
 import vueParticles from 'vue-particles';
 import VueConfirmDialog from 'vue-confirm-dialog'
+import VueFullscreen from 'vue-fullscreen'
 
 Vue.config.productionTip = false
 Vue.use(router);
 Vue.use(canvas);
 Vue.use(vueParticles);
-Vue.use(VueConfirmDialog)
+Vue.use(VueConfirmDialog);
+Vue.use(VueFullscreen);
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
 
 Vue.prototype.axios = axios;
