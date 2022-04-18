@@ -40,7 +40,7 @@
 
                 <a v-if="fullscreen" href="#" @click.prevent="toggle()" title="Exit Full Screen">
                     <button class="css-b7766g" tabindex="-1" style="float: right;cursor: pointer;margin-top:10px;margin-right:5px;" >
-                        <i class="fa fa-window-restore fa-1x" style="color:#666666" aria-hidden="true"></i>
+                        <i class="fa fa-window-restore fa-1x" style="color:#FFAA66" aria-hidden="true"></i>
                     </button>
                 </a>
 
