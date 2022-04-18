@@ -165,7 +165,7 @@
                 <Row>
                     <Col span="4">2022-04-25</Col>
                     <Col span="4">Version 0.5</Col>
-                    <Col span="16">Sort Items by User, Improve UX and fix</Col>
+                    <Col span="16">Support Full Screen, Sort Items by User, Improve UX and fix</Col>
                 </Row>
                 <Row>
                     <Col span="4">2022-03-22</Col>
