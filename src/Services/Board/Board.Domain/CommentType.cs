@@ -4,6 +4,7 @@ namespace Cube.Board.Domain
 {
 	public enum CommentType
 	{
-		ThumbsUp
+		ThumbsUp,
+		Message
 	}
 }
