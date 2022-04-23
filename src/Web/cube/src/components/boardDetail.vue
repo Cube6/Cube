@@ -960,7 +960,7 @@
                     });
             },
             canEditComment(comment){
-                if(this.state != 2 && comment.CreatedUser== this.userName)
+                if(comment.CreatedUser== this.userName)
                 {
                     return true;
                 }
@@ -1310,7 +1310,7 @@
 
             canDeleteComment(message){
 
-                if(this.state != 2 && message.CreatedUser == this.userName)
+                if(message.CreatedUser == this.userName)
                 {
                     return true;
                 }

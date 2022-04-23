@@ -8,7 +8,7 @@
                         Cube System
                     </span>
                       <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
-                        v0.5
+                        v0.6
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -150,7 +150,7 @@
         </Drawer>
         <Drawer :closable="false" width="640" v-model="showAboutView">
             <p :style="pStyle">About Cube</p>
-            <p :style="pStyle">Cube v0.5</p>
+            <p :style="pStyle">Cube v0.6</p>
             <div class="my-drawer-profile">
                 <img :src="getLogo()" style="width: 80px; height: 80px; border-radius: 50%; margin-top: 16px " />
                 <Row>
@@ -163,7 +163,12 @@
             <p :style="pStyle">History</p>
             <div class="my-drawer-profile">
                 <Row>
-                    <Col span="4">2022-04-25</Col>
+                    <Col span="4">2022-04-24</Col>
+                    <Col span="4">Version 0.6</Col>
+                    <Col span="16">Support Comment Feature</Col>
+                </Row>
+                <Row>
+                    <Col span="4">2022-04-16</Col>
                     <Col span="4">Version 0.5</Col>
                     <Col span="16">Support Full Screen, Sort Items by User, Improve UX and fix</Col>
                 </Row>
