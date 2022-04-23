@@ -73,6 +73,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificate
 		src\BuildingBlocks\Certificates\aspnetapp.pfx = src\BuildingBlocks\Certificates\aspnetapp.pfx
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageQueue", "src\Infrastructure\MessageQueue\MessageQueue.csproj", "{32333628-CD40-43AE-B841-D385C87291C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{F99CA5FC-329B-444C-874A-AA0C52782B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F99CA5FC-329B-444C-874A-AA0C52782B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F99CA5FC-329B-444C-874A-AA0C52782B51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32333628-CD40-43AE-B841-D385C87291C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32333628-CD40-43AE-B841-D385C87291C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32333628-CD40-43AE-B841-D385C87291C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32333628-CD40-43AE-B841-D385C87291C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +183,7 @@ Global
 		{990AC818-92C6-4658-A03B-207CA47FCABD} = {65A88BC6-15AC-4F22-A78B-16B5F2BFE8CF}
 		{F99CA5FC-329B-444C-874A-AA0C52782B51} = {71EEA16E-EE79-4BCF-8F3F-621218C4F411}
 		{D0C845BF-FEF9-4CB2-B01E-4AC00037DA10} = {4D29AFA5-D59A-4227-925C-3B934ECCE673}
+		{32333628-CD40-43AE-B841-D385C87291C0} = {65A88BC6-15AC-4F22-A78B-16B5F2BFE8CF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45DA94DF-2FDD-4B55-9EDC-E05AC0BBC81C}
