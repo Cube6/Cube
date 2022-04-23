@@ -112,7 +112,8 @@ namespace Cube.Board.Application
 			var id = await _repository.CreateBoardItemAsync(boardItem);
 			boardItem.Id = id;
 
-			return _mapper.Map<BoardItemDto>(boardItem);
+			var result = _mapper.Map<BoardItemDto>(boardItem);
+			return result;
 		}
 
 		public async Task UpdateBoardItem(BoardItemDto boardItemDto)
@@ -154,12 +155,14 @@ namespace Cube.Board.Application
 				var comments = await FindCommentsByIdAsync(boardItemDto.Id);
 
 				boardItemDto.ThumbsUp = comments.Where(t => t.Type == CommentType.ThumbsUp);
+				boardItemDto.Messages = comments.Where(t => t.Type == CommentType.Message);
+
 				list.Add(boardItemDto);
 			}
 			return list;
 		}
 
-		public async Task CreateComment(CommentDto commentDto)
+		public async Task<int> CreateComment(CommentDto commentDto)
 		{
 			var comment = new Comment()
 			{
@@ -171,22 +174,35 @@ namespace Cube.Board.Application
 				Type = commentDto.Type,
 			};
 
-			if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+			if (commentDto.Type == CommentType.ThumbsUp)
 			{
-				await _repository.CreateCommentAsync(comment);
-				await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
+				if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+				{
+					await _repository.CreateCommentAsync(comment);
+					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
+				}
 			}
-		}
+			else if(commentDto.Type == CommentType.Message)
+			{
+				return await _repository.CreateCommentAsync(comment);
+			}
+			else
+			{
+				throw new NotSupportedException($"{commentDto.Type} is not supported");
+			}
 
-		public async Task DeleteCommentByIdAsync(long id)
-		{
-			await _repository.DeleteBoardItemAsync(id);
+			return -1;
 		}
 
 		public async Task DeleteCommentAsync(long borderItemId, string username)
 		{
 			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
 			await _redis.SetRemoveAsync(borderItemId, username);
+		}
+
+		public async Task DeleteCommentAsync(long commentId)
+		{
+			await _repository.DeleteCommentAsync(commentId);
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -198,13 +214,16 @@ namespace Cube.Board.Application
 				var boardItem = await _repository.GetBoardItemByIdAsync(boardItemId);
 				foreach (var userName in userNames)
 				{
-					comments.Add(new Comment() { CreatedUser = userName, BoardItem = boardItem });
+					comments.Add(new Comment() { CreatedUser = userName, Type = CommentType.ThumbsUp, BoardItem = boardItem });
 				}
+
+				var messageComments = await _repository.GetCommentsByIdAsync(boardItemId, CommentType.Message);
+				comments.AddRange(messageComments);
 			}
 			else
 			{
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
-				foreach (var comment in comments)
+				foreach (var comment in comments.Where(c=>c.Type == CommentType.ThumbsUp))
 				{
 					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
@@ -217,6 +236,15 @@ namespace Cube.Board.Application
 				list.Add(boardItemDto);
 			}
 			return list;
+		}
+
+		public async Task UpdateComment(CommentDto commentDto)
+		{
+			var comment = await _repository.GetCommentByIdAsync(commentDto.Id);
+			comment.Detail = commentDto.Detail;
+			comment.DateModified = DateTime.Now;
+
+			await _repository.UpdateCommentAsync(comment);
 		}
 	}
 }

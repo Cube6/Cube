@@ -22,9 +22,9 @@ namespace Board.API.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task Create(CommentDto commentDto)
+		public async Task<int> Create(CommentDto commentDto)
 		{
-			await _appservice.CreateComment(commentDto);
+			return await _appservice.CreateComment(commentDto);
 		}
 
 		[HttpGet("{boardItemId}")]
@@ -40,7 +40,7 @@ namespace Board.API.Controllers
 		[Authorize]
 		public async Task Delete(long id)
 		{
-			await _appservice.DeleteCommentByIdAsync(id);
+			await _appservice.DeleteCommentAsync(id);
 		}
 
 		[HttpDelete]
@@ -48,6 +48,13 @@ namespace Board.API.Controllers
 		public async Task DeleteByBoardItemIdAndUserName(long borderItemId, string userName)
 		{
 			await _appservice.DeleteCommentAsync(borderItemId, userName);
+		}
+
+		[HttpPut]
+		[Authorize]
+		public async Task Update(CommentDto commentDto)
+		{
+			await _appservice.UpdateComment(commentDto);
 		}
 	}
 }
