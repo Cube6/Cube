@@ -610,6 +610,11 @@
                     return;
                 }
 
+                if(this.loading)
+                {
+                    return;
+                }
+
                 this.loading = true;
 
                 this.axios({
@@ -882,7 +887,12 @@
                     return;
                 }
 
-                console.log(listOfItems);
+                if(this.loading)
+                {
+                    return;
+                }
+
+                this.loading = true;
 
                 this.axios({
                     method: 'post',
@@ -910,7 +920,11 @@
                     this.sendCommentMsg(context);
 
                     boardItem.Comment.Detail = "";
-                })
+                    this.loading = false;
+                }).catch(error => {
+                    this.$Message.error('Failed to add comment item. Error:' + error);
+                    this.loading = false;
+                });
             },
 
             commentItemChanged() {
