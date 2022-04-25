@@ -1193,10 +1193,17 @@
             },
 
             thumbsUpUserNames(thumbsUp) {
-                var names = ''
-                for (var i = 0; i < thumbsUp.length; i++) {
-                    names = names + thumbsUp[i].CreatedUser +'\n';
+                var names = '';
+
+                if(thumbsUp.length>0){
+                    for (var i = 0; i < thumbsUp.length; i++) {
+                        names = names + thumbsUp[i].CreatedUser +'\n';
+                    }
                 }
+                else{
+                    names = 'Like';
+                }
+
                 return names;
             },
 
@@ -1613,7 +1620,7 @@
     }
 
     .commentActionStyle{
-        color: #E8F5E8
+        color: #CDE4D9
     }
 
     .commentActionStyle:hover {
