@@ -269,7 +269,7 @@
                                                         <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                     </td>
                                                     <td style="padding-bottom:8px"> 
-                                                        <Input v-model="message.Detail"  class="commentContent" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateImproveCommentItem(message)" @on-change="commentItemChanged" />
+                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateImproveCommentItem(message)" @on-change="commentItemChanged" />
                                                         <br/>
                                                     </td>
                                                     <td style="vertical-align:top;">
@@ -375,7 +375,7 @@
                                                         <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                     </td>
                                                     <td style="padding-bottom:8px"> 
-                                                        <Input v-model="message.Detail" class="commentContent" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
+                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
                                                         <br/>
                                                     </td>
                                                     <td style="vertical-align:top;">
