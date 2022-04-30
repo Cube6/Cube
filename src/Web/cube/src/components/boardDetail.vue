@@ -1646,7 +1646,7 @@
     }
 
     .deleteComment{
-        color: #F8F8F8
+        color: #F0F0F0
     }
 
     .deleteComment:hover {
