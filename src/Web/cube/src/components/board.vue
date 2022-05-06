@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="layout">
         <Header style="height:55px; background-color:#0747A6;">
-            <Menu mode="horizontal" theme="transparent" active-name="1">
+            <Menu mode="horizontal" theme="primary" style="height:55px; background-color:#0747A6;" active-name="1">
                 <div class="layout-logo">
                     <img src="../assets/logo.jpg" style="width:30px; height:30px; border-radius:50%; " />
                     <span style="position: relative; top:-8px;">

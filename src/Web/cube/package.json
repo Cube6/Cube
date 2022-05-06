@@ -11,7 +11,6 @@
     "@microsoft/signalr": "^6.0.1",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
-    "html2canvas": "^1.4.0",
     "iview": "^3.5.4",
     "jest": "^27.3.1",
     "jest-editor-support": "^30.0.2",
