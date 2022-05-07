@@ -66,11 +66,11 @@
             };
         },
         created() {
+
             // fetch the data when the view is created and the data is
             // already being observed
             this.UserToken = localStorage.getItem('TOKEN');
             this.UserName = localStorage.getItem('LOGINUSER');
-
 
             let boardDetailPath = sessionStorage.getItem("boardDetailPath");
 
@@ -92,11 +92,10 @@
         },
         methods: {
             fetchData() {
-
                 var msg = this.$Message.loading({
-                        content: 'Loading Boards...',
-                        duration: 0
-                    });
+                                                content: 'Loading Boards...',
+                                                duration: 0
+                                            });
                 
                 var type = this.$route.params.type;
                 var url = '/Board';
