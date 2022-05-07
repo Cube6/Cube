@@ -105,6 +105,7 @@ export default {
             localStorage.setItem('TOKEN', '');
 
             this.$router.push('/login');
+            this.$router.go();
         },
         createAccount() {
             this.$router.push('/register');
