@@ -16,6 +16,9 @@ namespace Cube.Board.Application.Dtos
 		public string Detail { get; set; }
 		public string Action { get; set; }
 		public IEnumerable<CommentDto> ThumbsUp { get; set; } = new List<CommentDto>();
+		public IEnumerable<CommentDto> Messages { get; set; } = new List<CommentDto>();
+		public bool ToggleComment { get; set; } = false;
+		public CommentDto Comment { get; set; } = new CommentDto();
 		public int BoardId { get; set; }
 	}
 }

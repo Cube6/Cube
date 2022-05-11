@@ -26,7 +26,7 @@
                     <label>Username</label>
                 </div>
                 <div prop="password" class="inputBox">
-                    <input type="password" v-model="formInline.password" password required="">
+                    <input type="password" v-model="formInline.password" password required="" @keyup.enter="handleSubmit('formInline')">
                     <label>Password</label>
                 </div>
                 <Button type="primary" size="large" long :loading="loading" @click="handleSubmit('formInline')">

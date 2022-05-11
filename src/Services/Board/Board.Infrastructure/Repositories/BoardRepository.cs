@@ -91,6 +91,12 @@ namespace Cube.Board.Respository
 			return result;
 		}
 
+		public async Task<List<Comment>> GetCommentsByIdAsync(long boardItemId, CommentType type)
+		{
+			var result = await _context.Comments.Where(it => it.BoardItem.Id == (int)boardItemId && it.Type == type).ToListAsync();
+			return result;
+		}
+
 		public async Task<Comment> GetCommentByIdAsync(long id)
 		{
 			var result = await _context.Comments.Include(t => t.BoardItem).SingleAsync(it => it.Id == (int)id);
@@ -103,10 +109,11 @@ namespace Cube.Board.Respository
 			return result;
 		}
 
-		public Task CreateCommentAsync(Comment comment)
+		public async Task<int> CreateCommentAsync(Comment comment)
 		{
 			_context.Comments.Add(comment);
-			return _context.SaveChangesAsync();
+			await _context.SaveChangesAsync();
+			return comment.Id;
 		}
 
 		public async Task<bool> DeleteCommentAsync(long commentId)
@@ -118,7 +125,10 @@ namespace Cube.Board.Respository
 
 		public async Task<bool> DeleteCommentByUserNameAsync(long borderItemId, string username)
 		{
-			var comment = await _context.Comments.SingleOrDefaultAsync(c => c.BoardItem.Id == borderItemId && c.CreatedUser == username);
+			var comment = await _context.Comments
+				.SingleOrDefaultAsync(c => c.BoardItem.Id == borderItemId &&
+											c.CreatedUser == username &&
+											c.Type == CommentType.ThumbsUp);
 			if (comment != null)
 			{
 				_context.Comments.Remove(comment);
@@ -126,6 +136,12 @@ namespace Cube.Board.Respository
 			}
 
 			return true;
+		}
+
+		public Task UpdateCommentAsync(Comment comment)
+		{
+			_context.Comments.Update(comment);
+			return _context.SaveChangesAsync();
 		}
 	}
 }

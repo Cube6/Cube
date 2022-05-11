@@ -67,7 +67,13 @@ export default {
             if (id == undefined || id == null) {
                     this.navURL = '/boardAll';
                     this.navName = null;
-                    this.$router.replace(this.navURL);
+                    this.$router.replace(this.navURL).catch(error => {
+                        if (
+                          error.name !== 'NavigationDuplicated' &&
+                          !error.message.includes('Avoided redundant navigation to current location')
+                        ) {
+                          console.log(error)
+                        }});
             }
             else
             {
@@ -99,6 +105,7 @@ export default {
             localStorage.setItem('TOKEN', '');
 
             this.$router.push('/login');
+            this.$router.go();
         },
         createAccount() {
             this.$router.push('/register');

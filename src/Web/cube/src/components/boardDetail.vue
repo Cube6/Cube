@@ -98,26 +98,89 @@
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :class="thumbsUpClass(well.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
+                                                <i :class="thumbsUpClass(well.ThumbsUp)" aria-hidden="true"></i>
                                                 &nbsp;<p>{{thumbsUpCount(well.ThumbsUp)}}</p>
                                             </button>
                                         </a>
-                                        <!-- <a href="#" style="float:right;" @click.prevent="deleteBoardItem(well)" title="Delete" v-if="well.CreatedUser==userName">
-                                            <span aria-label="Delete" class="">
-                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                    <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
-                                                </button>
-                                            </span>
-                                        </a> -->
 
+                                        <!-- Comments -->
+                                        <a v-if="!well.ToggleComment && well.Messages.length==0" href="#" @click.prevent="toggleComment(well)" title="Reply">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
+                                                <i :class="replyClass(well.ThumbsUp)" aria-hidden="true"></i>
+                                            </button>
+                                        </a>
+                                         <a v-if="!well.ToggleComment && well.Messages.length > 0" href="#" @click.prevent="toggleComment(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                <p>{{thumbsUpCount(well.Messages)}} Replies&nbsp;^</p>
+                                            </button>
+                                        </a>
+                                        <a v-if="well.ToggleComment" href="#" @click.prevent="toggleComment(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                <p>Collapse All&nbsp;^</p>
+                                            </button>
+                                        </a>
+
+                                        <!-- Menu Items -->
                                         <Dropdown style="float: right;position: relative; font-size:12pt; ">
                                             <Icon type="ios-more" size="28"></Icon>
                                             <DropdownMenu slot="list">
                                               <DropdownItem :disabled="!canDeleteBoardItem(well)"  v-on:click.native="canDeleteBoardItem(well)?deleteBoardItem(well):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
                                             </DropdownMenu>
                                         </Dropdown>
                                     </p>
+
+                                    <!-- Comments -->
+                                    <ul v-if="well.ToggleComment" >
+                                        <li>
+                                            <table style="width:100%">
+                                                  <thead>
+                                                    <tr>
+                                                        <th width="8%">
+                                                        </th>
+                                                        <th width="20px">
+                                                        </th>
+                                                        <th width="92%">
+                                                        </th>
+                                                        <th width="10px">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tr v-for="message in well.Messages" :key="message.Id">
+                                                    <td></td>
+                                                    <td style="vertical-align:top;"> 
+                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                    </td>
+                                                    <td style="padding-bottom:8px"> 
+                                                        <!-- <span class="commentUserName">
+                                                            {{message.CreatedUser}}
+                                                        </span> -->
+                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateWellCommentItem(message)" @on-change="commentItemChanged" />
+                                                        <br/>            
+                                                    </td>
+                                                    <td style="vertical-align:top;">
+                                                        <a href="#" style="float:right" v-if="canDeleteComment(message)" @click.prevent="deleteWellComment(message)" title="Delete">
+                                                            <span aria-label="Delete" class="">
+                                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
+                                                                     <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
+                                                                </button>
+                                                            </span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td></td>
+                                                    <td> 
+                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                    </td>
+                                                    <td> 
+                                                        <Input v-model="well.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addWellComment(well)" />
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                    
                                 </Card>
                             </li>
                         </ul>
@@ -142,7 +205,7 @@
                                     <p style="height:22px;">
                                         <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :class="thumbsUpClass(improve.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
+                                                <i :class="thumbsUpClass(improve.ThumbsUp)" aria-hidden="true"></i>
                                                 &nbsp;<p>{{thumbsUpCount(improve.ThumbsUp)}}</p>
                                             </button>
                                         </a>
@@ -155,6 +218,24 @@
                                             </span>
                                         </a> -->
 
+                                        <!-- Comments -->
+                                        <a v-if="!improve.ToggleComment && improve.Messages.length==0" href="#" @click.prevent="toggleComment(improve)" title="Reply">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
+                                                <i :class="replyClass(improve.ThumbsUp)" aria-hidden="true"></i>
+                                            </button>
+                                        </a>
+                                         <a v-if="!improve.ToggleComment && improve.Messages.length > 0" href="#" @click.prevent="toggleComment(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                <p>{{thumbsUpCount(improve.Messages)}} Replies&nbsp;^</p>
+                                            </button>
+                                        </a>
+                                        <a v-if="improve.ToggleComment" href="#" @click.prevent="toggleComment(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                <p>Collapse All&nbsp;^</p>
+                                            </button>
+                                        </a>
+
+                                        <!-- Menu Items -->
                                         <Dropdown style="float: right;position: relative; font-size:12pt; ">
                                             <Icon type="ios-more" size="28"></Icon>
                                             <DropdownMenu slot="list">
@@ -165,6 +246,55 @@
                                             </DropdownMenu>
                                         </Dropdown>
                                     </p>
+
+                                    <!-- Comments -->
+                                    <ul v-if="improve.ToggleComment" >
+                                        <li>
+                                            <table style="width:100%">
+                                                  <thead>
+                                                    <tr>
+                                                        <th width="8%">
+                                                        </th>
+                                                        <th width="20px">
+                                                        </th>
+                                                        <th width="92%">
+                                                        </th>
+                                                        <th width="10px">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tr v-for="message in improve.Messages" :key="message.Id">
+                                                    <td></td>
+                                                    <td style="vertical-align:top;"> 
+                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                    </td>
+                                                    <td style="padding-bottom:8px"> 
+                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateImproveCommentItem(message)" @on-change="commentItemChanged" />
+                                                        <br/>
+                                                    </td>
+                                                    <td style="vertical-align:top;">
+                                                        <a href="#" style="float:right" v-if="canDeleteComment(message)" @click.prevent="deleteImproveComment(message)" title="Delete">
+                                                            <span aria-label="Delete" class="">
+                                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
+                                                                     <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
+                                                                </button>
+                                                            </span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td></td>
+                                                    <td> 
+                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                    </td>
+                                                    <td> 
+                                                        <Input v-model="improve.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addImproveComment(improve)" />
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                        </li>
+                                    </ul>
                                 </Card>
                             </li>
                         </ul>
@@ -185,7 +315,7 @@
                                     <p style="height:22px; ">
                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                <i :class="thumbsUpClass(action.ThumbsUp)" style="color:#4CAF50" aria-hidden="true"></i>
+                                                <i :class="thumbsUpClass(action.ThumbsUp)" aria-hidden="true"></i>
                                                 &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
                                             </button>
                                         </a>
@@ -195,6 +325,24 @@
                                             </Button>
                                         </a> -->
 
+                                        <!-- Comments -->
+                                        <a v-if="!action.ToggleComment && action.Messages.length==0" href="#" @click.prevent="toggleComment(action)" title="Reply">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
+                                                <i :class="replyClass(action.ThumbsUp)" aria-hidden="true"></i>
+                                            </button>
+                                        </a>
+                                         <a v-if="!action.ToggleComment && action.Messages.length > 0" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                <p>{{thumbsUpCount(action.Messages)}} Replies&nbsp;^</p>
+                                            </button>
+                                        </a>
+                                        <a v-if="action.ToggleComment" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
+                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                <p>Collapse All&nbsp;^</p>
+                                            </button>
+                                        </a>
+
+                                        <!-- Menu Items -->
                                         <Dropdown style="float: right;position: relative; font-size:12pt; ">
                                             <Icon type="ios-more" size="28"></Icon>
                                             <DropdownMenu slot="list">
@@ -204,6 +352,55 @@
                                             </DropdownMenu>
                                         </Dropdown>
                                     </p>
+
+                                    <!-- Comments -->
+                                    <ul v-if="action.ToggleComment" >
+                                        <li>
+                                            <table style="width:100%">
+                                                  <thead>
+                                                    <tr>
+                                                        <th width="8%">
+                                                        </th>
+                                                        <th width="20px">
+                                                        </th>
+                                                        <th width="92%">
+                                                        </th>
+                                                        <th width="10px">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tr v-for="message in action.Messages" :key="message.Id">
+                                                    <td></td>
+                                                    <td style="vertical-align:top;"> 
+                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                    </td>
+                                                    <td style="padding-bottom:8px"> 
+                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
+                                                        <br/>
+                                                    </td>
+                                                    <td style="vertical-align:top;">
+                                                        <a href="#" style="float:right" v-if="canDeleteComment(message)"  @click.prevent="deleteActionComment(message)" title="Delete">
+                                                            <span aria-label="Delete" class="">
+                                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
+                                                                     <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
+                                                                </button>
+                                                            </span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td></td>
+                                                    <td> 
+                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                    </td>
+                                                    <td> 
+                                                        <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addActionComment(action)" />
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                        </li>
+                                    </ul>
                                 </Card>
                             </li>
                         </ul>
@@ -224,6 +421,9 @@
     const WentWellType = 1;
     const NeedsImproveType = 2;
     const ActionType = 3;
+
+    const CommentThumbupType = 0;
+    const CommentMessageType = 1;
 
     const AddOperation = 'add';
     const UpdateOperation = 'update';
@@ -251,6 +451,7 @@
                     ActionDetail: "",
                 },
                 boardItemTextChanged: false,
+                commentItemTextChanged: false,
                 boardName: null,
                 boardId: null,
                 boardCreatedUser: null,
@@ -409,6 +610,11 @@
                     return;
                 }
 
+                if(this.loading)
+                {
+                    return;
+                }
+
                 this.loading = true;
 
                 this.axios({
@@ -422,9 +628,11 @@
                     }
                 }).then((res) => {
 
+                    console.log("add");
+                    console.log(res.data);
                     var listOfItems = this.getListOfItems(type);
                     listOfItems.unshift(res.data);
-
+                    console.log(res.data);
                     this.renderFunc(boardDetail + ' is created successfully.');
 
                     var context = {
@@ -530,6 +738,18 @@
                 return index;
             },
 
+            findBoardItemById(arr, id) {
+                var boardItem = null;
+                arr.find(function (item) {
+                    if (item.Id === id) {
+                        boardItem = item;
+                        return item;
+                    }
+                });
+
+                return boardItem;
+            },
+
             removeBoardItemById(arr, id) {
                 var index = this.findIndexOfBoardItems(arr, id);
                 if (index === -1) {
@@ -604,19 +824,20 @@
                 })
             },
 
-            addActionUp(actionItem) {
-                this.thumbsUpAction(ActionType, this.ActionContent, actionItem);
-            },
 
             addWellUp(wellItem) {
-                this.thumbsUpAction(WentWellType, this.WellContent, wellItem);
+                this.thumbsUpAction(WentWellType, this.WellContent, wellItem, CommentThumbupType);
             },
 
             addImproveUp(improveItem) {
-                this.thumbsUpAction(NeedsImproveType, this.ImproveContent, improveItem);
+                this.thumbsUpAction(NeedsImproveType, this.ImproveContent, improveItem, CommentThumbupType);
             },
 
-            thumbsUpAction(type, listOfItems, item) {
+            addActionUp(actionItem) {
+                this.thumbsUpAction(ActionType, this.ActionContent, actionItem, CommentThumbupType);
+            },
+
+            thumbsUpAction(type, listOfItems, item, commentType) {
                 let username = this.userName;
                 var improveItemCache = listOfItems.find(c => c.Id == item.Id);
                 var listThrumps = improveItemCache.ThumbsUp;
@@ -624,7 +845,7 @@
 
                 var listItem = listThrumps.find(th => th.CreatedUser == username);
                 if (listItem == null) {
-                    var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: 0 };
+                    var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: commentType };
                     listThrumps.push(likeitem);
                 }
                 else {
@@ -638,7 +859,152 @@
                 }
 
                 if (isAdd) {
-                    this.addThumps(type, item.Id, 0);
+                    this.addThumps(type, item.Id, commentType);
+                }
+                else {
+                    this.deleteThumps(type, item.Id);
+                }
+            },
+
+            addWellComment(wellItem){
+                this.addComment(WentWellType, this.WellContent, wellItem, CommentMessageType);
+            },
+            addImproveComment(improveItem){
+                this.addComment(NeedsImproveType, this.ImproveContent, improveItem, CommentMessageType);
+            },
+            addActionComment(actionItem){
+                this.addComment(ActionType, this.ActionContent, actionItem, CommentMessageType);
+            },
+
+            toggleComment(boardItem)
+            {
+                boardItem.ToggleComment = !boardItem.ToggleComment;
+            },
+
+            addComment(type,listOfItems,boardItem, thumpType) {
+
+                if (!boardItem.Comment.Detail || !boardItem.Comment.Detail.trim()) {
+                    return;
+                }
+
+                if(this.loading)
+                {
+                    return;
+                }
+
+                this.loading = true;
+
+                this.axios({
+                    method: 'post',
+                    url: '/Comment',
+                    data: {
+                        BoardItemId: boardItem.Id,
+                        Type: thumpType,
+                        Detail: boardItem.Comment.Detail,
+                        CreatedUser: this.userName
+                    }
+                }).then(res => {
+                    var comment = {
+                        Id:res.data,
+                        CreatedUser: this.userName,
+                        Type: thumpType,
+                        Detail: boardItem.Comment.Detail,
+                        BoardItemId: boardItem.Id
+                    };
+                    var context = {
+                        Operation: AddOperation,
+                        BoardId: this.boardId,
+                        Type:type,
+                        Comment: comment
+                    };
+                    this.sendCommentMsg(context);
+
+                    boardItem.Comment.Detail = "";
+                    this.loading = false;
+                }).catch(error => {
+                    this.$Message.error('Failed to add comment item. Error:' + error);
+                    this.loading = false;
+                });
+            },
+
+            commentItemChanged() {
+                this.commentItemTextChanged = true;
+            },
+
+            updateWellCommentItem(message){
+                this.updateCommentItem(WentWellType, message);
+            },
+            updateImproveCommentItem(message){
+                this.updateCommentItem(NeedsImproveType, message);
+            },
+            updateActionCommentItem(message){
+                this.updateCommentItem(ActionType, message);
+            },
+
+            updateCommentItem(type, comment) {
+
+                if (!this.commentItemTextChanged) {
+                    return;
+                }
+
+                this.axios(
+                    {
+                        method: 'put',
+                        url: '/Comment',
+                        data: {
+                            id: comment.Id,
+                            detail: comment.Detail,
+                            type: comment.Type,
+                            createduser: comment.CreatedUser,
+                            boarditemid: comment.BoardItemId
+                        }
+                    }).then(() => {
+                        this.commentItemTextChanged = false;
+                    }).then(() => {
+                        this.renderFunc(comment.Detail + ' is updated successfully.');
+                    }).then(() => {
+
+                        var context = {
+                            Operation: UpdateOperation,
+                            BoardId: this.boardId,
+                            Type:type,
+                            Comment: comment
+                        };
+                        this.sendCommentMsg(context);
+                    });
+            },
+            canEditComment(comment){
+                if(comment.CreatedUser== this.userName)
+                {
+                    return true;
+                }
+
+                return false;
+            },
+
+            commentAction(type, listOfItems, item, commentType) {
+                let username = this.userName;
+                var improveItemCache = listOfItems.find(c => c.Id == item.Id);
+                var listThrumps = improveItemCache.ThumbsUp;
+                var isAdd = true;
+
+                var listItem = listThrumps.find(th => th.CreatedUser == username);
+                if (listItem == null) {
+                    var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: commentType };
+                    listThrumps.push(likeitem);
+                }
+                else {
+                    var index = listThrumps.findIndex(item => {
+                        if (item.CreatedUser == username) {
+                            return true;
+                        }
+                    })
+                    listThrumps.splice(index, 1);
+                    isAdd = false;
+                }
+
+                if (isAdd) {
+                    this.addThumps(type, item.Id, commentType);
                 }
                 else {
                     this.deleteThumps(type, item.Id);
@@ -688,15 +1054,19 @@
                             this.removeBoardItemById(listOfItems, boardItemEvent.BoardItem.Id);
                         }
                         else if (boardItemEvent.Operation == AddOperation) {
+                            console.log('New');
+                            console.log(boardItemEvent.BoardItem);
                             var index = this.findIndexOfBoardItems(listOfItems, boardItemEvent.BoardItem.Id);
                             if (index == -1) {
                                 listOfItems.unshift(boardItemEvent.BoardItem);
                             }
                         }
                         else if (boardItemEvent.Operation == UpdateOperation) {
-                            var indexOfEltToBeUpdated = this.findIndexOfBoardItems(listOfItems, boardItemEvent.BoardItem.Id);
-                            if (indexOfEltToBeUpdated != -1) {
-                                listOfItems.splice(indexOfEltToBeUpdated, 1, boardItemEvent.BoardItem)
+                            console.log(boardItemEvent.BoardItem);
+                            var boarditemToBeUpdated = this.findBoardItemById(listOfItems, boardItemEvent.BoardItem.Id);
+                            if (boarditemToBeUpdated != null) {
+                                boarditemToBeUpdated.Detail = boardItemEvent.BoardItem.Detail;
+                                boarditemToBeUpdated.State = boardItemEvent.BoardItem.State;
                             }
                         }
                         else {
@@ -711,25 +1081,60 @@
 
                         if (commentEvent.Operation == AddOperation) {
                             var improveItemCache1 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
-                            var listThrumps1 = improveItemCache1.ThumbsUp;
 
-                            var listItem = listThrumps1.find(th => th.CreatedUser == commentEvent.Comment.CreatedUser);
-                            if (listItem == null) {
-                                listThrumps1.push(commentEvent.Comment);
+                            if(commentEvent.Comment.Type == CommentThumbupType){
+                                var listThumbups = improveItemCache1.ThumbsUp;
+
+                                var listItem = listThumbups.find(th => th.CreatedUser == commentEvent.Comment.CreatedUser);
+                                if (listItem == null) {
+                                    listThumbups.push(commentEvent.Comment);
+                                }
+                            }
+                            else
+                            {
+                                improveItemCache1.Messages.push(commentEvent.Comment);
                             }
                         }
                         else if (commentEvent.Operation == DeleteOperation) {
+
                             var improveItemCache2 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
-                            var listThrumps2 = improveItemCache2.ThumbsUp;
-                            var index = listThrumps2.findIndex(item => {
-                                if (item.CreatedUser == commentEvent.Comment.CreatedUser) {
-                                    return true;
+
+                            if(commentEvent.Comment.Type == CommentThumbupType){
+                                var listThrumps2 = improveItemCache2.ThumbsUp;
+                                var index = listThrumps2.findIndex(item => {
+                                    if (item.CreatedUser == commentEvent.Comment.CreatedUser) {
+                                        return true;
+                                    }
+                                });
+                                if (index == -1) {
+                                    return;
                                 }
-                            });
-                            if (index == -1) {
-                                return;
+                                listThrumps2.splice(index, 1);
                             }
-                            listThrumps2.splice(index, 1);
+                            else
+                            {
+                                var listComments = improveItemCache2.Messages;
+                                var index2 = listComments.findIndex(item => {
+                                    if (item.Id == commentEvent.Comment.Id) {
+                                        return true;
+                                    }
+                                });
+                                if (index2 == -1) {
+                                    return;
+                                }
+
+                                listComments.splice(index2, 1);
+                            }
+                        }
+                        else if (commentEvent.Operation == UpdateOperation) {
+                            var improveItemCache3 = listOfItems.find(c => c.Id == commentEvent.Comment.BoardItemId);
+                            if(commentEvent.Comment.Type == CommentMessageType)
+                            {
+                                var commentToBeUpdated = improveItemCache3.Messages.find(m=>m.Id == commentEvent.Comment.Id);
+                                if (commentToBeUpdated != null) {
+                                    commentToBeUpdated.Detail = commentEvent.Comment.Detail;
+                                }
+                            }
                         }
                     }
                 });
@@ -802,10 +1207,17 @@
             },
 
             thumbsUpUserNames(thumbsUp) {
-                var names = ''
-                for (var i = 0; i < thumbsUp.length; i++) {
-                    names = names + thumbsUp[i].CreatedUser +'\n';
+                var names = '';
+
+                if(thumbsUp.length>0){
+                    for (var i = 0; i < thumbsUp.length; i++) {
+                        names = names + thumbsUp[i].CreatedUser +'\n';
+                    }
                 }
+                else{
+                    names = 'Like';
+                }
+
                 return names;
             },
 
@@ -821,14 +1233,51 @@
             },
 
             thumbsUpClass(thumbsUp){
+                var style='fa fa-2x';
                 var index = thumbsUp.find(item=> item.CreatedUser == this.userName);
                 if(index!=null)
                 {
-                    return 'fa fa-thumbs-up fa-2x';
+                    style += ' fa-thumbs-up';
                 }
                 else
                 {
-                    return 'fa fa-thumbs-o-up fa-2x';
+                     style += ' fa fa-thumbs-o-up';
+                }
+
+                if(this.thumbsUpCount(thumbsUp) >0 )
+                {
+                    style += ' commentActionHighlightStyle';
+                }
+                else
+                {
+                    style += ' commentActionStyle';
+                }
+                return style;
+            },
+
+            commentContentClass(message)
+            {
+                var style='';
+                if(message.CreatedUser == this.userName)
+                {
+                    style = 'commentContentHighlight';
+                }
+                else
+                {
+                    style = 'commentContent';
+                }
+                return style;
+            },
+
+            replyClass(thumbsUp){
+                var index = thumbsUp.find(item=> item.CreatedUser == this.userName);
+                if(index!=null)
+                {
+                    return 'fa fa-comment-o fa-2x commentActionStyle';
+                }
+                else
+                {
+                    return 'fa fa-comment-o fa-2x commentActionStyle';
                 }
             },
 
@@ -878,6 +1327,53 @@
                     };
                     this.sendCommentMsg(context);
                 })
+            },
+
+            canDeleteComment(message){
+
+                if(message.CreatedUser == this.userName)
+                {
+                    return true;
+                }
+
+                return false;
+            },
+
+            deleteWellComment(message) {
+                this.deleteComment(WentWellType, message);
+            },
+
+            deleteImproveComment(message) {
+                this.deleteComment(NeedsImproveType, message);
+            },
+
+            deleteActionComment(message) {
+                this.deleteComment(ActionType, message);
+            },
+            deleteComment(type, message)
+            {
+                this.$confirm(
+                    {
+                        message: 'Are you sure delete comment [' + message.Detail + '] ?',
+                        button: {
+                            no: 'No',
+                            yes: 'Yes'
+                        },
+                        callback: confirm => {
+                            if (confirm) {
+                                this.axios.delete('/Comment/' + message.Id + '')
+                                            .then(() => {
+                                                var context = {
+                                                    Operation: DeleteOperation,
+                                                    BoardId: this.boardId,
+                                                    Type: type,
+                                                    Comment: message
+                                                };
+                                                this.sendCommentMsg(context);
+                                            })
+                            }
+                        }
+                    })
             },
             markCompleted() {
                 this.$confirm(
@@ -1119,6 +1615,49 @@
         color: #CCCCD0;
     }
 
+    .commentUserName{
+        font-size: 6pt; 
+        color:#CDC7C7;
+        padding-left: 5px;
+    }
+
+    .commentContent .ivu-input{
+        background-color:#FFFFFF;
+        /* margin-bottom: 200x; */
+        font-size: 11pt;
+    }
+
+    .commentContentHighlight .ivu-input{
+        background-color:#F6FEFE;
+        /* margin-bottom: 200x; */
+        font-size: 11pt;
+    }
+
+    .commentActionStyle{
+        color: #CDE4D9
+    }
+
+    .commentActionStyle:hover {
+        color: #4CAF50
+    }
+
+    .commentActionHighlightStyle{
+        color: #4CAF50
+    }
+
+    .deleteComment{
+        color: #F0F0F0
+    }
+
+    .deleteComment:hover {
+        color: #E87D7D
+    }
+
+    .commentInputContent .ivu-input{
+        background-color:#FFFFFF;
+        font-size: 11pt;
+    }
+
     .wellInputContent .ivu-input{
         background-color:#F2F5F2;
         font-size: 11pt;
@@ -1168,7 +1707,7 @@
         font-size: 0.875rem;
         line-height: 1.75;
         letter-spacing: 0.02857em;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
         min-width: 8px;
         border-radius: 4px;
         transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;

@@ -1,14 +1,14 @@
 ﻿<template>
     <div class="layout">
         <Header style="height:55px; background-color:#0747A6;">
-            <Menu mode="horizontal" theme="transparent" active-name="1">
+            <Menu mode="horizontal" theme="primary" style="height:55px; background-color:#0747A6;" active-name="1">
                 <div class="layout-logo">
                     <img src="../assets/logo.jpg" style="width:30px; height:30px; border-radius:50%; " />
                     <span style="position: relative; top:-8px;">
                         Cube System
                     </span>
                       <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
-                        v0.5
+                        v0.6
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -53,7 +53,7 @@
                 </div>
             </Menu>
         </Header>
-        <Layout :style="{minHeight: '100vh'}">
+        <Layout :style="{minHeight: '90vh'}">
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
                     <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'Board':''">
@@ -74,21 +74,21 @@
                     </MenuItem>
                 </Menu>
             </Sider>
-            <Layout :style="{padding: '0 1px 12px 12px'}">
+            <Layout :style="{padding: '0 1px 0px 12px'}">
                 <Breadcrumb :style="{margin: '12px 0'}">
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
                     <BreadcrumbItem  @click.native="fetchData(0)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
                     <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>
                 <Content :style="{minHeight: '280px'}">
-                    <Card style="height:95%">
+                    <Card style="height:100%">
                         <router-view :key="$route.path"></router-view>
                     </Card>
                 </Content>
             </Layout>
         </Layout>
         <Footer class="layout-footer-center">
-            &copy; 2022 <a href="https://github.com/Cube6">Cube6</a>, All Rights Reserved
+            &copy; 2022 <a href="https://github.com/Cube6" target="_blank">Cube6</a>, All Rights Reserved
         </Footer>
 
         <symbol id="at-plus" viewBox="0 0 1024 1024"><path d="M476.16 476.16V191.0272c0-20.6848 16.0256-37.4272 35.84-37.4272 19.8144 0 35.84 16.7424 35.84 37.4272V476.16h285.1328c20.6848 0 37.4272 16.0256 37.4272 35.84 0 19.8144-16.7424 35.84-37.4272 35.84H547.84v285.1328c0 20.6848-16.0256 37.4272-35.84 37.4272-19.8144 0-35.84-16.7424-35.84-37.4272V547.84H191.0272C170.3424 547.84 153.6 531.8144 153.6 512c0-19.8144 16.7424-35.84 37.4272-35.84H476.16z"></path></symbol>
@@ -149,13 +149,17 @@
             </div>
         </Drawer>
         <Drawer :closable="false" width="640" v-model="showAboutView">
-            <p :style="pStyle">About Cube</p>
-            <p :style="pStyle">Cube v0.5</p>
+            <p :style="pStyle">About Cube (ver 0.6)</p>
             <div class="my-drawer-profile">
-                <img :src="getLogo()" style="width: 80px; height: 80px; border-radius: 50%; margin-top: 16px " />
                 <Row>
                     <Col span="24">
-                    &copy; 2022 <a href="https://github.com/Cube6">Cube6</a>, All Rights Reserved
+                    A Modern Retrospective System based on Microservices Architecture.<br/>
+                    </Col>
+                </Row>
+                <img :src="getLogo()" style="width: 90px; height: 90px; border-radius: 50%; margin-top: 16px " />
+                <Row>
+                    <Col span="24">
+                    &copy; 2022 <a href="https://github.com/Cube6" target="_blank">Cube6</a>, All Rights Reserved
                     </Col>
                 </Row>
             </div>
@@ -163,7 +167,12 @@
             <p :style="pStyle">History</p>
             <div class="my-drawer-profile">
                 <Row>
-                    <Col span="4">2022-04-25</Col>
+                    <Col span="4">2022-04-24</Col>
+                    <Col span="4">Version 0.6</Col>
+                    <Col span="16">Support Comment Feature</Col>
+                </Row>
+                <Row>
+                    <Col span="4">2022-04-16</Col>
                     <Col span="4">Version 0.5</Col>
                     <Col span="16">Support Full Screen, Sort Items by User, Improve UX and fix</Col>
                 </Row>
