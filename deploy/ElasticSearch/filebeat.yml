@@ -1,0 +1,21 @@
+# 1、filebeat收集nginx访问日志、系统日志，输出到redis服务器中。
+# grep -v "#" /etc/filebeat/filebeat.yml |grep -v "^$"
+ 
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - C:\Michael\DataExchange\DE8.0\EFK\DevEnv\samplelogs\*
+#setup.ilm.enabled: false
+
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+setup.template.settings:
+  index.number_of_shards: 1
+
+output.elasticsearch:
+  hosts: ["ustr-mvm-3430:9200"]
+  index: "samplelog-%{+YYYY.MM.dd}"
+setup.template.name: "samplelog"
+setup.template.pattern: "samplelog-*"

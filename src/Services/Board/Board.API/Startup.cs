@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Cube.Board.Application;
 using Microsoft.EntityFrameworkCore;
 using Board.API.Hubs;
+using RabbitMq;
 using Quartz;
 using Board.API.QuartzJobs;
 
@@ -79,7 +80,7 @@ namespace Board.API
 			services.AddScoped<IBoardRepository, BoardRepository>();
 			services.AddScoped<IBoardAppService, BoardAppService>();
 			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
-
+			services.AddSingleton<IMessageQueue>(new RabbitMQService(Configuration.GetSection("RabbitMq")["ConnectionString"]));
 			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();
 			Configuration.Bind("JwtSettings", jwtSettings);

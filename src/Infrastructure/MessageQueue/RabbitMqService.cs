@@ -3,6 +3,7 @@ using RabbitMQ.Client.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace RabbitMq
 {
@@ -19,6 +20,11 @@ namespace RabbitMq
 			Channel = Connection.CreateModel();
 		}
 
+		public void Publish(string queueName, object obj)
+		{
+			var jsonObject = JsonConvert.SerializeObject(obj);
+			Publish(queueName, jsonObject);
+		}
 		public void Publish(string queueName, string message)
 		{
 			DeclareQueue(queueName);
@@ -26,6 +32,21 @@ namespace RabbitMq
 			Channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
 		}
 
+		public Guid Subscribe<T>(string queueName, Action<T> messageHandler)
+		{
+			var consumer = new EventingBasicConsumer(Channel);
+			consumer.Received += (model, ea) =>
+			{
+				var body = ea.Body.ToArray();
+				var message = Encoding.UTF8.GetString(body);
+				var obj = JsonConvert.DeserializeObject<T>(message);
+				messageHandler(obj);
+			};
+			Channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
+			var guid = Guid.NewGuid();
+			Consumers.TryAdd(guid, consumer);
+			return guid;
+		}
 		public Guid Subscribe(string queueName, Action<string> messageHandler)
 		{
 			var consumer = new EventingBasicConsumer(Channel);
@@ -41,6 +62,12 @@ namespace RabbitMq
 			return guid;
 		}
 
+		public T Get<T>(string queueName)
+		{
+			string str = Get(queueName);
+			var obj = JsonConvert.DeserializeObject<T>(str);
+			return obj;
+		}
 		public string Get(string queueName)
 		{
 			DeclareQueue(queueName);

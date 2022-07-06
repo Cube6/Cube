@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Infrastructure\MessageQueue\MessageQueue.csproj" />
     <ProjectReference Include="..\..\..\ServiceCenter\ConsulManager\ConsulManager.csproj" />
     <ProjectReference Include="..\Board.Application\Board.Application.csproj" />
     <ProjectReference Include="..\Board.Domain\Board.Domain.csproj" />
