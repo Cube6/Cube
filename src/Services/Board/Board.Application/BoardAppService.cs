@@ -246,5 +246,11 @@ namespace Cube.Board.Application
 
 			await _repository.UpdateCommentAsync(comment);
 		}
+
+		public async Task CommitCommentToDB()
+		{
+			Console.WriteLine("Commit Comment To DB Periodically by quartz");
+		}
+
 	}
 }

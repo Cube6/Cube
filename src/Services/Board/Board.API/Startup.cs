@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using Cube.Board.Application;
 using Microsoft.EntityFrameworkCore;
 using Board.API.Hubs;
+using Quartz;
+using Board.API.QuartzJobs;
 
 namespace Board.API
 {
@@ -97,6 +99,26 @@ namespace Board.API
 			services.AddControllers().AddNewtonsoftJson(options => {
 				options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 			});
+
+			services.AddQuartz(q =>
+			{
+				//支持DI，默认Ijob 实现不支持有参构造函数
+				q.UseMicrosoftDependencyInjectionJobFactory();
+
+				q.ScheduleJob<CommitCommentToDBJob>(trigger => trigger
+								.WithIdentity("CommitCommentToDBJobTrigger")
+								.StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
+								.WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Second))
+								.WithDescription("Commit Comment To DB Periodically")
+						);
+			});
+			services.AddQuartzServer(options =>
+			{
+				// when shutting down we want jobs to complete gracefully
+				options.WaitForJobsToComplete = true;
+			});
+
+			services.AddTransient<CommitCommentToDBJob>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
