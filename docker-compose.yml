@@ -45,7 +45,7 @@ services:
             - ConnectionStrings__RedisConnection=10.63.223.58:6379
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
-            - RabbitMq__ConnectionString=amqp://admin:Welcome1@10.63.223.58:15672
+            - RabbitMq__ConnectionString=amqp://admin:Welcome1@10.63.223.58:5672
             - RabbitMq__QueueName=ProductQueue
      volumes:
             - ~/.aspnet/https:/https:ro
