@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Board.API.QuartzJobs
 {
-	public class CommitCommentToDBJob : IJob
+	public class PersistCommentJob : IJob
 	{
 		private readonly IBoardAppService _boardAppService;
-		public CommitCommentToDBJob(IBoardAppService boardAppService)
+		public PersistCommentJob(IBoardAppService boardAppService)
 		{
 			_boardAppService = boardAppService;
 		}
@@ -17,6 +17,5 @@ namespace Board.API.QuartzJobs
 		{
 			await _boardAppService.CommitCommentToDB();
 		}
-
 	}
 }

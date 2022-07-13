@@ -24,6 +24,7 @@ using Board.API.Hubs;
 using RabbitMq;
 using Quartz;
 using Board.API.QuartzJobs;
+using Board.API.Extensions;
 
 namespace Board.API
 {
@@ -81,45 +82,14 @@ namespace Board.API
 			services.AddScoped<IBoardAppService, BoardAppService>();
 			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
 			services.AddSingleton<IMessageQueue>(new RabbitMQService(Configuration.GetSection("RabbitMq")["ConnectionString"]));
-			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-			var jwtSettings = new JwtSettings();
-			Configuration.Bind("JwtSettings", jwtSettings);
 
-			services.AddAuthentication("OAuth")
-			.AddJwtBearer("OAuth", options =>
-			{
-				var secretBytes = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
-				var key = new SymmetricSecurityKey(secretBytes);
-				options.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidIssuer = jwtSettings.Issuer,
-					ValidAudience = jwtSettings.Audience,
-					IssuerSigningKey = key
-				};
-			});
+			services.AddJWTAuth(Configuration);
+
 			services.AddControllers().AddNewtonsoftJson(options => {
 				options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 			});
 
-			services.AddQuartz(q =>
-			{
-				//支持DI，默认Ijob 实现不支持有参构造函数
-				q.UseMicrosoftDependencyInjectionJobFactory();
-
-				q.ScheduleJob<CommitCommentToDBJob>(trigger => trigger
-								.WithIdentity("CommitCommentToDBJobTrigger")
-								.StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-								.WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Second))
-								.WithDescription("Commit Comment To DB Periodically")
-						);
-			});
-			services.AddQuartzServer(options =>
-			{
-				// when shutting down we want jobs to complete gracefully
-				options.WaitForJobsToComplete = true;
-			});
-
-			services.AddTransient<CommitCommentToDBJob>();
+			services.RegisterQuartz();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
