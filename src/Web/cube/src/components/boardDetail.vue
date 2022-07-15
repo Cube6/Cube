@@ -6,11 +6,11 @@
                 <span :ref="'editBoardName'" @keydown="updateBoardNameKeydown($event)" @blur="updateBoardName()" :contenteditable="state == 1">{{boardName}}</span>
 
                 <span style="color:forestgreen" v-if="state == 2">
-                        <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
-                        Completed
+                    <img src="../assets/Icons/completed.jpg" title="Completed" style="width:15px; height:15px;" >
+                    Completed
                 </span>
 
-                <Dropdown  v-if="state != 2" v-on:click.native="toggleOnlineUsers()">
+                <Dropdown v-if="state != 2" v-on:click.native="toggleOnlineUsers()">
                     <!-- <Icon type="md-people" size="24"></Icon> -->
                     <div style="cursor: pointer;padding-left:10px;color:#00ad00" >
                         <i class="fa fa-users" aria-hidden="true"></i>
@@ -61,7 +61,7 @@
         </h1>
         <br />
         <table width="100%">
-            <thead>
+            <thead style="vertical-align:top">
                 <tr v-if="state == 2">
                     <th width="33%">
                         What went well ?
@@ -75,13 +75,13 @@
                 </tr>
                 <tr v-if="state != 2">
                     <th width="33%">
-                        <Input v-model="boardDetail.WellDetail" class="wellInputContent" placeholder="What went well ?" spellcheck :loading="loading" search enter-button="Add" @on-search="addWentWell" />
+                        <Input v-model="boardDetail.WellDetail" class="wellInputContent" type="textarea" :autosize="true" placeholder="What went well ?" spellcheck :loading="loading" search enter-button="Add" @on-search="addWentWell" @keydown.native="handleKeydown" />
                     </th>
                     <th width="33%">
-                        <Input v-model="boardDetail.ImproveDetail" class="improveInputContent" placeholder="What could be improved ?" spellcheck search enter-button="Add" @on-search="addImproved" />
+                        <Input v-model="boardDetail.ImproveDetail" class="improveInputContent" type="textarea" :autosize="true" placeholder="What could be improved ?" spellcheck search enter-button="Add" @on-search="addImproved" @keydown.native="handleKeydown" />
                     </th>
                     <th width="34%">
-                        <Input v-model="boardDetail.ActionDetail" class="actionInputContent" placeholder="Action Items" spellcheck search enter-button="Add" @on-search="addAction" />
+                        <Input v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="true" placeholder="Action Items" spellcheck search enter-button="Add" @on-search="addAction" @keydown.native="handleKeydown" />
                     </th>
                 </tr>
             </thead>
@@ -464,7 +464,6 @@
                 csvColumns: [],
                 participants:[],
                 showParticipants:false,
-
                 fullscreen: false,
                 teleport: true,
                 pageOnly: true,
@@ -1573,6 +1572,11 @@
             toggle () {
                 this.fullscreen = !this.fullscreen
             },
+            handleKeydown (event) {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                }
+            }
         }
     }
 </script>
