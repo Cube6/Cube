@@ -1,6 +1,6 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 #Use asp.net core 5.0 as base Image and its alias is base
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 #Set Container's working directory to /app
 WORKDIR /app
 
@@ -8,7 +8,7 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 #Use dotnet sdk 5.0 as base Image and its alias is build
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 #Set Container's working directory to /src
 WORKDIR /src
 #Copy src/Services/User/User.API/User.API.csproj to container's src/Services/User/User.API/
