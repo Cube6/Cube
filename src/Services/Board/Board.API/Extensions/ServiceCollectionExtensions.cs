@@ -34,11 +34,11 @@ namespace Board.API.Extensions
 			});
 		}
 
-		public static void AddJWTAuth(this IServiceCollection services, IConfiguration Configuration)
+		public static void AddJWTAuth(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
+			services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
 			var jwtSettings = new JwtSettings();
-			Configuration.Bind("JwtSettings", jwtSettings);
+			configuration.Bind("JwtSettings", jwtSettings);
 
 			services.AddAuthentication("OAuth")
 			.AddJwtBearer("OAuth", options =>
