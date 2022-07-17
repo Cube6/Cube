@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cube.Board.Application.IntegrationEvents.EventHandling
+namespace Cube.Board.Application.IntegrationEvents.EventHandling;
+
+internal class CommentDeletedEventHandler : IIntegrationEventHandler<CommentDeletedEvent>
 {
-	internal class CommentDeletedEventHandler : IIntegrationEventHandler<CommentDeletedEvent>
+	public Task Handle(CommentDeletedEvent @event)
 	{
-		public Task Handle(CommentDeletedEvent @event)
-		{
-			throw new NotImplementedException();
-		}
+		throw new NotImplementedException();
 	}
 }

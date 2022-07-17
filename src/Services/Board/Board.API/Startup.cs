@@ -1,30 +1,20 @@
-﻿using Board.API.Models;
+﻿using Board.API.Extensions;
+using Board.API.Hubs;
+using Cube.Board.Application;
 using Cube.Board.Respository;
 using Cube.ConsulService;
 using Cube.Infrastructure.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cube.Board.Application;
-using Microsoft.EntityFrameworkCore;
-using Board.API.Hubs;
-using RabbitMq;
 using Quartz;
-using Board.API.QuartzJobs;
-using Board.API.Extensions;
+using RabbitMq;
+using System;
 
 namespace Board.API
 {
@@ -56,7 +46,6 @@ namespace Board.API
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
 
-
 			//services.AddCors(option => option.AddPolicy("cors", policy => policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().AllowAnyOrigin()));
 
 			services.AddCors(options =>
@@ -85,7 +74,8 @@ namespace Board.API
 
 			services.AddJWTAuth(Configuration);
 
-			services.AddControllers().AddNewtonsoftJson(options => {
+			services.AddControllers().AddNewtonsoftJson(options =>
+			{
 				options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 			});
 
