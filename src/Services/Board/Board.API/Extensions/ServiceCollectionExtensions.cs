@@ -22,8 +22,8 @@ namespace Board.API.Extensions
 				config.ScheduleJob<PersistCommentJob>(trigger => trigger
 								.WithIdentity("CommitCommentToDBJobTrigger")
 								.StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-								.WithDailyTimeIntervalSchedule(x => x.WithInterval(5, IntervalUnit.Second))
-								.WithDescription("Commit Comment To DB Periodically")
+								.WithDailyTimeIntervalSchedule(x => x.WithInterval(5, IntervalUnit.Minute))
+								.WithDescription("Test: Commit Comment To DB Periodically")
 				);
 			});
 
