@@ -64,7 +64,7 @@
             <tr style="vertical-align:top">
                 <td width="33%">
                     <table width="100%">
-                        <thead style="vertical-align:top">
+                        <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
                                     What went well ?
@@ -1727,16 +1727,19 @@
     .wellInputContent .ivu-input{
         background-color:#F2F5F2;
         font-size: 11pt;
+        margin-bottom: 5px;
     }
 
     .improveInputContent .ivu-input{
         background-color:#FBF5F5;
         font-size: 11pt;
+        margin-bottom: 5px;
     }
 
     .actionInputContent .ivu-input{
         background-color:#ECF5FC;
         font-size: 11pt;
+        margin-bottom: 5px;
     }
 
     .css-vubbuv {
