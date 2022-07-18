@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cube.Board.Application.Events
+namespace Cube.BuildingBlocks.EventBus.Events
 {
 	public abstract class IntegrationEvent
 	{

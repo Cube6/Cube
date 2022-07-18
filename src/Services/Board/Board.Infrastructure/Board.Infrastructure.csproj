@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Cube.Board.Infrastructure</AssemblyName>
     <RootNamespace>Cube.Board.Infrastructure</RootNamespace>
   </PropertyGroup>
