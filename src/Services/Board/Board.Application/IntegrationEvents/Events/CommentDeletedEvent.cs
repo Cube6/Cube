@@ -4,9 +4,9 @@ namespace Cube.Board.Application.IntegrationEvents.Events;
 
 public class CommentDeletedEvent : IntegrationEvent
 {
-	public int CommentId { get; private set; }
+	public long CommentId { get; private set; }
 
-	public CommentDeletedEvent(int commentId)
+	public CommentDeletedEvent(long commentId)
 	{
 		CommentId = commentId;
 	}

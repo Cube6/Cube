@@ -1,14 +1,21 @@
 ﻿using Cube.Board.Application.IntegrationEvents.Events;
+using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using System;
 using System.Threading.Tasks;
 
 namespace Cube.Board.Application.IntegrationEvents.EventHandling;
 
-internal class CommentAddedEventHandler : IIntegrationEventHandler<CommentAddedEvent>
+public class CommentAddedEventHandler : IIntegrationEventHandler<CommentAddedEvent>
 {
-	public Task Handle(CommentAddedEvent @event)
+	private IBoardRepository _repository;
+	public CommentAddedEventHandler(IBoardRepository repository)
 	{
-		throw new NotImplementedException();
+		_repository = repository;
+	}
+
+	public async Task Handle(CommentAddedEvent @event)
+	{
+		await _repository.CreateCommentAsync(@event.Comment);
 	}
 }

@@ -46,7 +46,7 @@ services:
             - ASPNETCORE_Kestrel__Certificates__Default__Password=Welcome1
             - ASPNETCORE_Kestrel__Certificates__Default__Path=./aspnetapp.pfx
             - RabbitMq__ConnectionString=amqp://admin:Welcome1@10.63.223.58:5672
-            - RabbitMq__QueueName=ProductQueue
+            - RabbitMq__QueueName=CubeEvent
      volumes:
             - ~/.aspnet/https:/https:ro
      networks: 

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Cube.Board.Application.Configuration;
 using Cube.Board.Application.Dtos;
+using Cube.Board.Application.IntegrationEvents.Events;
 using Cube.Board.Domain;
 using Cube.Board.Respository;
+using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
 using System;
 using System.Collections.Generic;
@@ -16,11 +18,13 @@ namespace Cube.Board.Application
 		private IBoardRepository _repository;
 		private IMapper _mapper = MapperFactory.GetMapper();
 		private IRedisInstance _redis;
+		private IEventBus _eventBus;
 
-		public BoardAppService(IBoardRepository repository, IRedisInstance redis)
+		public BoardAppService(IBoardRepository repository, IRedisInstance redis, IEventBus eventBus)
 		{
 			_repository = repository;
 			_redis = redis;
+			_eventBus = eventBus;
 		}
 
 		public IEnumerable<BoardDto> GetBoards(BoardType type)
@@ -185,6 +189,7 @@ namespace Cube.Board.Application
 			else if(commentDto.Type == CommentType.Message)
 			{
 				return await _repository.CreateCommentAsync(comment);
+				//_eventBus.Publish(new CommentAddedEvent(comment));
 			}
 			else
 			{
@@ -202,7 +207,8 @@ namespace Cube.Board.Application
 
 		public async Task DeleteCommentAsync(long commentId)
 		{
-			await _repository.DeleteCommentAsync(commentId);
+			_eventBus.Publish(new CommentDeletedEvent(commentId));
+			//await _repository.DeleteCommentAsync(commentId);
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -240,17 +246,12 @@ namespace Cube.Board.Application
 
 		public async Task UpdateComment(CommentDto commentDto)
 		{
-			var comment = await _repository.GetCommentByIdAsync(commentDto.Id);
-			comment.Detail = commentDto.Detail;
-			comment.DateModified = DateTime.Now;
+			_eventBus.Publish(new CommentUpdatedEvent(commentDto.Id, commentDto.Detail));
+			//var comment = await _repository.GetCommentByIdAsync(commentDto.Id);
+			//comment.Detail = commentDto.Detail;
+			//comment.DateModified = DateTime.Now;
 
-			await _repository.UpdateCommentAsync(comment);
+			//await _repository.UpdateCommentAsync(comment);
 		}
-
-		public async Task CommitCommentToDB()
-		{
-			Console.WriteLine("Commit Comment To DB Periodically by quartz");
-		}
-
 	}
 }

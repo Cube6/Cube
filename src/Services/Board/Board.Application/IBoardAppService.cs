@@ -22,9 +22,5 @@ namespace Cube.Board.Application
 		Task DeleteCommentAsync(long borderItemId, string userName);
 		Task DeleteCommentAsync(long commentId);
 		Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId);
-
-
-		Task CommitCommentToDB();
-
 	}
 }

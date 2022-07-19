@@ -1,8 +1,12 @@
-﻿using Board.API.Extensions;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Board.API.Extensions;
 using Board.API.Hubs;
 using Cube.Board.Application;
+using Cube.Board.Application.IntegrationEvents.EventHandling;
+using Cube.Board.Application.IntegrationEvents.Events;
 using Cube.Board.Respository;
-using Cube.ConsulService;
+using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +17,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Quartz;
-using RabbitMq;
 using System;
 
 namespace Board.API
@@ -28,7 +31,7 @@ namespace Board.API
 		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
+		public virtual IServiceProvider ConfigureServices(IServiceCollection services)
 		{
 			services.AddSignalR(options =>
 			{
@@ -41,13 +44,13 @@ namespace Board.API
 			});
 
 			services.AddControllers();
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
 
 			//services.AddCors(option => option.AddPolicy("cors", policy => policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().AllowAnyOrigin()));
-
 			services.AddCors(options =>
 			{
 				options.AddPolicy(name: "cors",
@@ -70,7 +73,8 @@ namespace Board.API
 			services.AddScoped<IBoardRepository, BoardRepository>();
 			services.AddScoped<IBoardAppService, BoardAppService>();
 			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
-			services.AddSingleton<IMessageQueue>(new RabbitMQService(Configuration.GetSection("RabbitMq")["ConnectionString"]));
+
+			services.RegisterEventBus(Configuration);
 
 			services.AddJWTAuth(Configuration);
 
@@ -80,6 +84,11 @@ namespace Board.API
 			});
 
 			services.RegisterQuartz();
+
+			var container = new ContainerBuilder();
+			container.Populate(services);
+
+			return new AutofacServiceProvider(container.Build());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -117,6 +126,17 @@ namespace Board.API
 			//服务注册
 			app.RegisterConsul(Configuration, lifetime);
 #endif
+
+			ConfigureEventBus(app);
+		}
+
+		private void ConfigureEventBus(IApplicationBuilder app)
+		{
+			var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+			eventBus.Subscribe<CommentAddedEvent, CommentAddedEventHandler>();
+			eventBus.Subscribe<CommentUpdatedEvent, CommentUpdatedEventHandler>();
+			eventBus.Subscribe<CommentDeletedEvent, CommentDeletedEventHandler>();
 		}
 	}
 }

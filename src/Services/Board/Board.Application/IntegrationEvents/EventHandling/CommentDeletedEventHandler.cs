@@ -1,4 +1,5 @@
 ﻿using Cube.Board.Application.IntegrationEvents.Events;
+using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,16 @@ using System.Threading.Tasks;
 
 namespace Cube.Board.Application.IntegrationEvents.EventHandling;
 
-internal class CommentDeletedEventHandler : IIntegrationEventHandler<CommentDeletedEvent>
+public class CommentDeletedEventHandler : IIntegrationEventHandler<CommentDeletedEvent>
 {
-	public Task Handle(CommentDeletedEvent @event)
+	private IBoardRepository _repository;
+	public CommentDeletedEventHandler(IBoardRepository repository)
 	{
-		throw new NotImplementedException();
+		_repository = repository;
+	}
+
+	public async Task Handle(CommentDeletedEvent @event)
+	{
+		await _repository.DeleteCommentAsync(@event.CommentId);
 	}
 }

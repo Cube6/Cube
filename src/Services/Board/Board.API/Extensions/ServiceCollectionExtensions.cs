@@ -1,17 +1,44 @@
-﻿using Board.API.Models;
+﻿using Autofac;
+using Board.API.Models;
 using Board.API.QuartzJobs;
+using Cube.Board.Application.IntegrationEvents.EventHandling;
+using Cube.BuildingBlocks.EventBus;
+using Cube.BuildingBlocks.EventBus.Abstractions;
+using Cube.BuildingBlocks.EventBus.EventBusRabbitMQ;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using RabbitMq;
 using System;
-using System.Configuration;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 
 namespace Board.API.Extensions
 {
 	public static class ServiceCollectionExtensions
 	{
+		public static void RegisterEventBus(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+			{
+				string rabbitMQConnStr = configuration.GetSection("RabbitMq")["ConnectionString"];
+				string rabbitMQTopic = configuration.GetSection("RabbitMq")["QueueName"];
+
+				IMessageQueue messageQueue = new RabbitMQService(rabbitMQConnStr, rabbitMQTopic);
+				var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+
+				var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+
+				return new EventBusRabbitMQ(messageQueue, eventBusSubcriptionsManager, iLifetimeScope);
+			});
+
+			services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+
+			services.AddTransient<CommentAddedEventHandler>();
+			services.AddTransient<CommentUpdatedEventHandler>();
+			services.AddTransient<CommentDeletedEventHandler>();
+		}
+
 		public static void RegisterQuartz(this IServiceCollection services)
 		{
 			services.AddQuartz(config =>
@@ -22,7 +49,7 @@ namespace Board.API.Extensions
 				config.ScheduleJob<PersistCommentJob>(trigger => trigger
 								.WithIdentity("CommitCommentToDBJobTrigger")
 								.StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-								.WithDailyTimeIntervalSchedule(x => x.WithInterval(5, IntervalUnit.Minute))
+								.WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Minute))
 								.WithDescription("Test: Commit Comment To DB Periodically")
 				);
 			});
