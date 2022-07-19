@@ -7,6 +7,7 @@ using Cube.Board.Application.IntegrationEvents.EventHandling;
 using Cube.Board.Application.IntegrationEvents.Events;
 using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
+using Cube.ConsulService;
 using Cube.Infrastructure.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
