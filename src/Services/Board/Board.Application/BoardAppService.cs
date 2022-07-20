@@ -189,7 +189,6 @@ namespace Cube.Board.Application
 			else if(commentDto.Type == CommentType.Message)
 			{
 				return await _repository.CreateCommentAsync(comment);
-				//_eventBus.Publish(new CommentAddedEvent(comment));
 			}
 			else
 			{
@@ -208,7 +207,6 @@ namespace Cube.Board.Application
 		public async Task DeleteCommentAsync(long commentId)
 		{
 			_eventBus.Publish(new CommentDeletedEvent(commentId));
-			//await _repository.DeleteCommentAsync(commentId);
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -247,11 +245,6 @@ namespace Cube.Board.Application
 		public async Task UpdateComment(CommentDto commentDto)
 		{
 			_eventBus.Publish(new CommentUpdatedEvent(commentDto.Id, commentDto.Detail));
-			//var comment = await _repository.GetCommentByIdAsync(commentDto.Id);
-			//comment.Detail = commentDto.Detail;
-			//comment.DateModified = DateTime.Now;
-
-			//await _repository.UpdateCommentAsync(comment);
 		}
 	}
 }

@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace Cube.BuildingBlocks.EventBus.Events
 {
-	public abstract class IntegrationEvent
+	public record IntegrationEvent
 	{
-		public DateTime DateTime { get; set; }
+		public Guid Id { get; set; }
+		public DateTime CreationTime { get; set; }
 
 		public string EventSource { get; set; }
+
+		public IntegrationEvent()
+		{
+			Id = Guid.NewGuid();
+			CreationTime = DateTime.UtcNow;
+		}
 	}
 }

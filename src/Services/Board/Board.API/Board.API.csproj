@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EventHandling\**" />
     <Compile Remove="Protos\**" />
+    <Content Remove="EventHandling\**" />
     <Content Remove="Protos\**" />
+    <EmbeddedResource Remove="EventHandling\**" />
     <EmbeddedResource Remove="Protos\**" />
+    <None Remove="EventHandling\**" />
     <None Remove="Protos\**" />
   </ItemGroup>
 

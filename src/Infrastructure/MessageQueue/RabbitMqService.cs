@@ -42,28 +42,6 @@ namespace RabbitMq
 			Channel.BasicPublish(exchange: BROKER_NAME, routingKey: routingKey, mandatory: true, basicProperties: null, body: body);
 		}
 
-		//public Guid Subscribe<T>(Action<string, T> messageHandler)
-		//{
-		//	//var eventName = "String";
-		//	//Channel.QueueBind(queue: _queueName,
-		//	//					exchange: BROKER_NAME,
-		//	//					routingKey: eventName);
-
-		//	var consumer = new EventingBasicConsumer(Channel);
-		//	consumer.Received += (model, ea) =>
-		//	{
-		//		var routingKey = ea.RoutingKey;
-		//		var body = ea.Body.ToArray();
-		//		var message = Encoding.UTF8.GetString(body);
-		//		var obj = JsonConvert.DeserializeObject<T>(message);
-		//		messageHandler(routingKey,obj);
-		//	};
-		//	Channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
-		//	var guid = Guid.NewGuid();
-		//	Consumers.TryAdd(guid, consumer);
-		//	return guid;
-		//}
-
 		public Guid Subscribe<T>(Func<string, string, Task> messageHandler)
 		{
 			DeclareQueue();
