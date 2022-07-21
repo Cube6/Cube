@@ -1,4 +1,5 @@
 ﻿using Cube.Board.Application.IntegrationEvents.Events;
+using Cube.Board.Domain;
 using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using System;
@@ -16,6 +17,18 @@ public class CommentAddedEventHandler : IIntegrationEventHandler<CommentAddedEve
 
 	public async Task Handle(CommentAddedEvent @event)
 	{
-		await _repository.CreateCommentAsync(@event.Comment);
+		var commentDto = @event.Comment;
+
+		var comment = new Comment()
+		{
+			BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
+			Detail = commentDto.Detail,
+			CreatedUser = commentDto.CreatedUser,
+			DateCreated = DateTime.Now,
+			DateModified = DateTime.Now,
+			Type = commentDto.Type,
+		};
+
+		await _repository.CreateCommentAsync(comment);
 	}
 }

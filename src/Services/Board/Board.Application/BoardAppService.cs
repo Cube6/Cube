@@ -168,26 +168,28 @@ namespace Cube.Board.Application
 
 		public async Task<int> CreateComment(CommentDto commentDto)
 		{
-			var comment = new Comment()
-			{
-				BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
-				Detail = commentDto.Detail,
-				CreatedUser = commentDto.CreatedUser,
-				DateCreated = DateTime.Now,
-				DateModified = DateTime.Now,
-				Type = commentDto.Type,
-			};
-
 			if (commentDto.Type == CommentType.ThumbsUp)
 			{
-				if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+				var ownerBoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result;
+
+				if (!await _redis.SetContainsValueAsync(ownerBoardItem.Id, commentDto.CreatedUser))
 				{
-					await _repository.CreateCommentAsync(comment);
-					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
+					_eventBus.Publish(new CommentAddedEvent(commentDto));
+					await _redis.SetAddAsync(ownerBoardItem.Id, commentDto.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
 			else if(commentDto.Type == CommentType.Message)
 			{
+				var comment = new Comment()
+				{
+					BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
+					Detail = commentDto.Detail,
+					CreatedUser = commentDto.CreatedUser,
+					DateCreated = DateTime.Now,
+					DateModified = DateTime.Now,
+					Type = commentDto.Type,
+				};
+
 				return await _repository.CreateCommentAsync(comment);
 			}
 			else

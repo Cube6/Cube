@@ -6,9 +6,9 @@ namespace Cube.Board.Application.IntegrationEvents.Events;
 
 public record CommentAddedEvent : IntegrationEvent
 {
-	public Comment Comment { get; private set; }
+	public CommentDto Comment { get; private set; }
 
-	public CommentAddedEvent(Comment comment)
+	public CommentAddedEvent(CommentDto comment)
 	{
 		Comment = comment;
 	}
