@@ -37,6 +37,7 @@ namespace Board.API.Extensions
 			services.AddTransient<CommentAddedEventHandler>();
 			services.AddTransient<CommentUpdatedEventHandler>();
 			services.AddTransient<CommentDeletedEventHandler>();
+			services.AddTransient<ThumbUpDeletedEventHandler>();
 		}
 
 		public static void RegisterQuartz(this IServiceCollection services)

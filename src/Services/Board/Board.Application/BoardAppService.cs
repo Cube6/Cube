@@ -182,7 +182,7 @@ namespace Cube.Board.Application
 			{
 				if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
 				{
-					await _repository.CreateCommentAsync(comment);
+					_eventBus.Publish(new CommentAddedEvent(comment));
 					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
@@ -198,10 +198,10 @@ namespace Cube.Board.Application
 			return -1;
 		}
 
-		public async Task DeleteCommentAsync(long borderItemId, string username)
+		public async Task DeleteCommentAsync(long boardItemId, string username)
 		{
-			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
-			await _redis.SetRemoveAsync(borderItemId, username);
+			_eventBus.Publish(new ThumbUpDeletedEvent(boardItemId, username));
+			await _redis.SetRemoveAsync(boardItemId, username);
 		}
 
 		public async Task DeleteCommentAsync(long commentId)

@@ -138,6 +138,7 @@ namespace Board.API
 			eventBus.Subscribe<CommentAddedEvent, CommentAddedEventHandler>();
 			eventBus.Subscribe<CommentUpdatedEvent, CommentUpdatedEventHandler>();
 			eventBus.Subscribe<CommentDeletedEvent, CommentDeletedEventHandler>();
+			eventBus.Subscribe<ThumbUpDeletedEvent, ThumbUpDeletedEventHandler>();
 		}
 	}
 }

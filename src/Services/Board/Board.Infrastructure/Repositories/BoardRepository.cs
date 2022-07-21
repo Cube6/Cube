@@ -123,7 +123,7 @@ namespace Cube.Board.Respository
 			return _context.SaveChanges() > 0;
 		}
 
-		public async Task<bool> DeleteCommentByUserNameAsync(long borderItemId, string username)
+		public async Task<bool> DeleteThumbsUpAsync(long borderItemId, string username)
 		{
 			var comment = await _context.Comments
 				.SingleOrDefaultAsync(c => c.BoardItem.Id == borderItemId &&

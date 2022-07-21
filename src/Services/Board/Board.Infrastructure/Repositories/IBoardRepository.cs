@@ -19,12 +19,12 @@ namespace Cube.Board.Respository
 		Task UpdateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
 
 		Task<Comment> GetCommentByIdAsync(long id);
-		Task<Comment> GetCommentByUserNameAsync(long borderItemId, string username);
+		Task<Comment> GetCommentByUserNameAsync(long borderItemId, string userName);
 		Task<List<Comment>> GetCommentsByIdAsync(long boardItemId);
 		Task<List<Comment>> GetCommentsByIdAsync(long boardItemId, CommentType type);
 		Task<int> CreateCommentAsync(Comment comment);
 		Task<bool> DeleteCommentAsync(long id);
-		Task<bool> DeleteCommentByUserNameAsync(long borderItemId, string username);
+		Task<bool> DeleteThumbsUpAsync(long borderItemId, string userName);
 		Task UpdateCommentAsync(Comment comment);
 	}
 }
