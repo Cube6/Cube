@@ -182,7 +182,7 @@ namespace Cube.Board.Application
 			{
 				if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
 				{
-					_eventBus.Publish(new CommentAddedEvent(comment));
+					await _repository.CreateCommentAsync(comment);
 					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
