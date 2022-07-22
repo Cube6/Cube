@@ -1,0 +1,6 @@
+
+--Copy local file in VM to container
+docker cp ./kibana.yml 3a0496d6f4e9:/usr/share/kibana/config/kibana.yml
+
+--Copy file in container to local VM
+docker cp ./kibana.yml 3a0496d6f4e9:/usr/share/kibana/config/kibana.yml
