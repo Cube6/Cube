@@ -21,7 +21,7 @@ public class CommentAddedEventHandler : IIntegrationEventHandler<CommentAddedEve
 
 		var comment = new Comment()
 		{
-			BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
+			BoardItem = await _repository.GetBoardItemByIdAsync(commentDto.BoardItemId),
 			Detail = commentDto.Detail,
 			CreatedUser = commentDto.CreatedUser,
 			DateCreated = DateTime.Now,

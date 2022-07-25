@@ -22,18 +22,16 @@ namespace Board.API.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<BoardItemDto> Create(BoardItemDto boardItemDto)
+		public async Task<BoardItemDto> CreateAsync(BoardItemDto boardItemDto)
 		{
-			return await _appservice.CreateBoardItem(boardItemDto);
+			return await _appservice.CreateBoardItemAsync(boardItemDto);
 		}
 
 		[HttpGet("{boardId}")]
 		[Authorize]
-		public IEnumerable<BoardItemDto> Find(long boardId)
+		public async Task<IEnumerable<BoardItemDto>> FindAsync(long boardId)
 		{
-			var boardItems = _appservice.FindBoardItemByBoardIdAsync(boardId);
-			var result = boardItems.Result;
-			return result;
+			return await _appservice.FindBoardItemByBoardIdAsync(boardId);
 		}
 
 		[HttpDelete("{id}")]
@@ -45,9 +43,9 @@ namespace Board.API.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public async Task Update(BoardItemDto boardItemDto)
+		public async Task UpdateAsync(BoardItemDto boardItemDto)
 		{
-			await _appservice.UpdateBoardItem(boardItemDto);
+			await _appservice.UpdateBoardItemAsync(boardItemDto);
 		}
 	}
 }

@@ -73,7 +73,7 @@ namespace Cube.Board.Application
 			return _mapper.Map<BoardDto>(DisscussionBoard);
 		}
 
-		public Task<int> CreateBoard(CreateBoardDto createBoardDto)
+		public Task<int> CreateBoardAsync(CreateBoardDto createBoardDto)
 		{
 			var board = new DisscussionBoard()
 			{
@@ -87,7 +87,7 @@ namespace Cube.Board.Application
 			return _repository.CreateBoardAsync(board);
 		}
 
-		public async Task UpdateBoard(BoardDto boardDto)
+		public async Task UpdateBoardAsync(BoardDto boardDto)
 		{
 			var board = _repository.ListAsync().Result.Where(b => b.Id == boardDto.Id).FirstOrDefault();
 			board.Name = boardDto.Name;
@@ -100,7 +100,7 @@ namespace Cube.Board.Application
 			await _repository.UpdateBoardAsync(board);
 		}
 
-		public async Task<BoardItemDto> CreateBoardItem(BoardItemDto boardItemDto)
+		public async Task<BoardItemDto> CreateBoardItemAsync(BoardItemDto boardItemDto)
 		{
 			var boardItem = new DisscussionBoardItem()
 			{
@@ -120,7 +120,7 @@ namespace Cube.Board.Application
 			return result;
 		}
 
-		public async Task UpdateBoardItem(BoardItemDto boardItemDto)
+		public async Task UpdateBoardItemAsync(BoardItemDto boardItemDto)
 		{
 			var boardItem = await _repository.GetBoardItemByIdAsync(boardItemDto.Id);
 			boardItem.Detail = boardItemDto.Detail;
@@ -166,7 +166,7 @@ namespace Cube.Board.Application
 			return list;
 		}
 
-		public async Task<int> CreateComment(CommentDto commentDto)
+		public async Task<int> CreateCommentAsync(CommentDto commentDto)
 		{
 			if (commentDto.Type == CommentType.ThumbsUp)
 			{
@@ -208,7 +208,10 @@ namespace Cube.Board.Application
 
 		public async Task DeleteCommentAsync(long commentId)
 		{
-			_eventBus.Publish(new CommentDeletedEvent(commentId));
+			await Task.Run(() =>
+			{
+				_eventBus.Publish(new CommentDeletedEvent(commentId));
+			});
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -244,9 +247,12 @@ namespace Cube.Board.Application
 			return list;
 		}
 
-		public async Task UpdateComment(CommentDto commentDto)
+		public async Task UpdateCommentAsync(CommentDto commentDto)
 		{
-			_eventBus.Publish(new CommentUpdatedEvent(commentDto.Id, commentDto.Detail));
+			await Task.Run(() =>
+			{
+				_eventBus.Publish(new CommentUpdatedEvent(commentDto.Id, commentDto.Detail));
+			});
 		}
 	}
 }

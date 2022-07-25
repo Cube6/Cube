@@ -52,7 +52,8 @@ namespace Cube.User.API
 
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserAppService, UserAppService>();
-			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
+
+			services.AddRedis(Configuration);
 
 			services.AddJWTAuth(Configuration);
 
