@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Elastic.Application.IntegrationEvents.EventHandling
 {
-	public class UserActionEventHandler
+	internal class MiscellaneousActionEventHandler
 	{
 	}
 }

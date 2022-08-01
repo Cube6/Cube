@@ -22,22 +22,22 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IElasticService, ElasticService>();
 
-builder.Services.AddSingleton<ElasticClient>(sp =>
-{
-	var nestConfig = builder.Configuration.GetSection("Nest");
-	var nodes = nestConfig.GetSection("Connections")
-		.Get<string[]>()
-		.AsEnumerable()
-		.Select(node => new Uri(node));
-	var pool = new StaticConnectionPool(nodes);
-	var settings = new ConnectionSettings(pool)
-		.DefaultIndex("UnknownIndex")
-		.BasicAuthentication(nestConfig["Username"], nestConfig["Password"])
-		.ServerCertificateValidationCallback((a,b,c,d) => true)
-		.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
-		.ThrowExceptions();
-	var client = new ElasticClient(settings);
+var nestConfig = builder.Configuration.GetSection("Nest");
+var nodes = nestConfig.GetSection("Connections")
+	.Get<string[]>()
+	.AsEnumerable()
+	.Select(node => new Uri(node));
+var pool = new StaticConnectionPool(nodes);
+var settings = new ConnectionSettings(pool)
+	.DefaultIndex("UnknownIndex")
+	.BasicAuthentication(nestConfig["Username"], nestConfig["Password"])
+	.ServerCertificateValidationCallback((a, b, c, d) => true)//TODO: Configure the service certificate
+	.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
+	.ThrowExceptions();
 
+builder.Services.AddScoped<ElasticClient>(sp =>
+{
+	var client = new ElasticClient(settings);
 	return client;
 });
 
