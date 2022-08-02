@@ -8,5 +8,7 @@ namespace Elastic.Application.Dao
 {
 	public abstract record BaseDao
 	{
+		public Guid Id { get; set; }
+		public DateTime Timestamp { get; set; }
 	}
 }

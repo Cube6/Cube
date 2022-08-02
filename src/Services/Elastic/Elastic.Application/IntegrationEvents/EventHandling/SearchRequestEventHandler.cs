@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Elastic.Application.IntegrationEvents.Events
+namespace Elastic.Application.IntegrationEvents.EventHandling
 {
-	public record BoardInfoSearchResponseEvent
+	public class SearchRequestEventHandler
 	{
 	}
 }

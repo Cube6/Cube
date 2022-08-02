@@ -1,5 +1,7 @@
 using Elastic.Application;
 using Microsoft.AspNetCore.Mvc;
+using Elastic.Application.IntegrationEvents.Events.SearchEvents.Response;
+using Elastic.Application.IntegrationEvents.Events.SearchEvents.Request;
 
 namespace Elastic.API.Controllers
 {
@@ -31,5 +33,13 @@ namespace Elastic.API.Controllers
 				return es.ToString();
 			}
 		}
+
+		[HttpPut]
+		[Route(nameof(GlobalInfoSearch))]
+		public async Task<GlobalInfoSearchResponseEvent> GlobalInfoSearch(GlobalInfoSearchRequestEvent request)
+		{
+			return await _service.GlobalInfoSearchAsync(request);
+		}
+
 	}
 }

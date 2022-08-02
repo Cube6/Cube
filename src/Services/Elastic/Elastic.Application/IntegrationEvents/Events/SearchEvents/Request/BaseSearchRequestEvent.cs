@@ -5,14 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Elastic.Application.IntegrationEvents.Events
+namespace Elastic.Application.IntegrationEvents.Events.SearchEvents.Request
 {
-	public record BoardInfoSearchRequestEvent : IntegrationEvent
+	public record BaseSearchRequestEvent : IntegrationEvent
 	{
-		public int BoardId { get; init; }
 		public bool Pagination { get; init; }
 		public int PageSize { get; init; }
 		public int Page { get; init; }
-		
 	}
 }
