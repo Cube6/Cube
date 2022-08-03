@@ -15,7 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".vscode\" />
-    <Folder Include="src\scripts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dockerfile" />
