@@ -1,5 +1,5 @@
 ﻿<template>
-<fullscreen v-model="fullscreen" :teleport="teleport"  :page-only="pageOnly">
+<fullscreen v-model="fullscreen" :teleport="teleport" :page-only="pageOnly">
     <div class="subLayout">
         <h1 style="width:100%;text-align:center; font-size:larger">
             <span>
@@ -81,9 +81,9 @@
                                 <td style="vertical-align:top">
                                     <ul>
                                         <li v-for="well in WellContent" :key="well.Id">
-                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click="clickContent" > 
+                                            <Card :id="well.Id" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click="clickContent" ref="contentCard" > 
                                                 <!-- background: #F1F3F1 -->
-                                                <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
+                                                <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; " />
 
                                                 <Input v-model="well.Detail" class="boardItemContent wellItem" type="textarea" :readonly="!canEditBoardItem(well)" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                                 <p style="height:22px;">
@@ -204,13 +204,13 @@
                                             <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
                                         </div>
                                         <li v-for="improve in ImproveContent" :key="improve.Id">
-                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
+                                            <Card :id="improve.Id" :type="improve.Type" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" ref="contentCard">
                                                 <!-- background: #FBF5F5 -->
                                                 <span v-if="improve.State == 2" style="float: left; margin-left:5px; color: #CCCCD0">
                                                     <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
                                                     &nbsp;<b>DONE</b>
                                                 </span>
-                                    
+
                                                 <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
                                                 <Input v-model="improve.Detail" :class="getBoardItemClass(2, improve.State)" type="textarea" :readonly="!canEditBoardItem(improve)" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
                                                 <p style="height:22px;">
@@ -245,14 +245,20 @@
                                                             <p>Collapse All&nbsp;^</p>
                                                         </button>
                                                     </a>
-
+                                                    <a href="#" @click.prevent="associateAction(improve.Id)" title="Relate">
+                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                                            <i :class="improveAssociatedClass(improve.Id)" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                    
                                                     <!-- Menu Items -->
                                                     <Dropdown style="float: right;position: relative; font-size:12pt; ">
                                                         <Icon type="ios-more" size="28"></Icon>
                                                         <DropdownMenu slot="list">
-                                                        <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                        <DropdownItem v-on:click.native="markBoardItem(improve, 2)"  v-if="improve.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
-                                                        <DropdownItem v-on:click.native="markBoardItem(improve, 1)"  v-if="improve.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
+                                                            <DropdownItem v-on:click.native="addAssociatedBoardItem(improve.Id)"><i class="fa fa-plus fa-2x" aria-hidden="true"></i>&nbsp;Add related action</DropdownItem>
+                                                            <DropdownItem v-on:click.native="markBoardItem(improve, 2)"  v-if="improve.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
+                                                            <DropdownItem v-on:click.native="markBoardItem(improve, 1)"  v-if="improve.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
+                                                            <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
                                                             <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
                                                         </DropdownMenu>
                                                     </Dropdown>
@@ -333,106 +339,108 @@
                                 <td style="vertical-align:top">
                                     <ul>
                                         <li v-for="action in ActionContent" :key="action.Id">
-                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;">
-                                                <!-- background: #ECF5FC -->
-                                                <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #CCCCD0">
-                                                    <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
-                                                    &nbsp;<b>DONE</b>
-                                                </span>
-                                                <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
+                                            <transition name="transition-drop">
+                                                <Card v-show="!isFocus || (isFocus && currentFocusImproveBoardItemId == action.AssociatedBoardItemId)" :AssociatedBoardItemId="action.AssociatedBoardItemId" :type="action.Type" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" v-on:click.native="associateImprove(action.AssociatedBoardItemId)" ref="contentCard">
+                                                    <!-- background: #ECF5FC -->
+                                                    <span v-if="action.State == 2" style="float: left; margin-left:5px; color: #CCCCD0">
+                                                        <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
+                                                        &nbsp;<b>DONE</b>
+                                                    </span>
+                                                    <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: right; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
 
-                                                <Input v-model="action.Detail" :class="getBoardItemClass(3, action.State)" type="textarea" :readonly="!canEditBoardItem(action)" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
+                                                    <Input v-model="action.Detail" :class="getBoardItemClass(3, action.State)" type="textarea" :readonly="!canEditBoardItem(action)" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
-                                                <p style="height:22px; ">
-                                                    <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                            <i :class="thumbsUpClass(action.ThumbsUp)" aria-hidden="true"></i>
-                                                            &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
-                                                        </button>
-                                                    </a>
-                                                    <!-- <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName && state != 2">
-                                                        <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                            <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
-                                                        </Button>
-                                                    </a> -->
+                                                    <p style="height:22px; ">
+                                                        <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
+                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
+                                                                <i :class="thumbsUpClass(action.ThumbsUp)" aria-hidden="true"></i>
+                                                                &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
+                                                            </button>
+                                                        </a>
+                                                        <!-- <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName && state != 2">
+                                                            <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
+                                                                <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
+                                                            </Button>
+                                                        </a> -->
+
+                                                        <!-- Comments -->
+                                                        <a v-if="!action.ToggleComment && action.Messages.length==0" href="#" @click.prevent="toggleComment(action)" title="Reply">
+                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
+                                                                <i :class="replyClass(action.ThumbsUp)" aria-hidden="true"></i>
+                                                            </button>
+                                                        </a>
+                                                        <a v-if="!action.ToggleComment && action.Messages.length > 0" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
+                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                                <p>{{thumbsUpCount(action.Messages)}} Replies&nbsp;^</p>
+                                                            </button>
+                                                        </a>
+                                                        <a v-if="action.ToggleComment" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
+                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
+                                                                <p>Collapse All&nbsp;^</p>
+                                                            </button>
+                                                        </a>
+
+                                                        <!-- Menu Items -->
+                                                        <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                                            <Icon type="ios-more" size="28"></Icon>
+                                                            <DropdownMenu slot="list">
+                                                            <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
+                                                            <DropdownItem v-on:click.native="markBoardItem(action, 2)"  v-if="action.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
+                                                            <DropdownItem v-on:click.native="markBoardItem(action, 1)"  v-if="action.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
+                                                            </DropdownMenu>
+                                                        </Dropdown>
+                                                    </p>
 
                                                     <!-- Comments -->
-                                                    <a v-if="!action.ToggleComment && action.Messages.length==0" href="#" @click.prevent="toggleComment(action)" title="Reply">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
-                                                            <i :class="replyClass(action.ThumbsUp)" aria-hidden="true"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a v-if="!action.ToggleComment && action.Messages.length > 0" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>{{thumbsUpCount(action.Messages)}} Replies&nbsp;^</p>
-                                                        </button>
-                                                    </a>
-                                                    <a v-if="action.ToggleComment" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>Collapse All&nbsp;^</p>
-                                                        </button>
-                                                    </a>
-
-                                                    <!-- Menu Items -->
-                                                    <Dropdown style="float: right;position: relative; font-size:12pt; ">
-                                                        <Icon type="ios-more" size="28"></Icon>
-                                                        <DropdownMenu slot="list">
-                                                        <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                        <DropdownItem v-on:click.native="markBoardItem(action, 2)"  v-if="action.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
-                                                        <DropdownItem v-on:click.native="markBoardItem(action, 1)"  v-if="action.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
-                                                </p>
-
-                                                <!-- Comments -->
-                                                <ul v-if="action.ToggleComment" >
-                                                    <li>
-                                                        <table style="width:100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="8%">
-                                                                    </th>
-                                                                    <th width="20px">
-                                                                    </th>
-                                                                    <th width="92%">
-                                                                    </th>
-                                                                    <th width="10px">
-                                                                    </th>
+                                                    <ul v-if="action.ToggleComment" >
+                                                        <li>
+                                                            <table style="width:100%">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="8%">
+                                                                        </th>
+                                                                        <th width="20px">
+                                                                        </th>
+                                                                        <th width="92%">
+                                                                        </th>
+                                                                        <th width="10px">
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tr v-for="message in action.Messages" :key="message.Id">
+                                                                    <td></td>
+                                                                    <td style="vertical-align:top;"> 
+                                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                    </td>
+                                                                    <td style="padding-bottom:8px"> 
+                                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
+                                                                        <br/>
+                                                                    </td>
+                                                                    <td style="vertical-align:top;">
+                                                                        <a href="#" style="float:right" v-if="canDeleteComment(message)"  @click.prevent="deleteActionComment(message)" title="Delete">
+                                                                            <span aria-label="Delete" class="">
+                                                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
+                                                                                    <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </a>
+                                                                    </td>
                                                                 </tr>
-                                                            </thead>
-                                                            <tr v-for="message in action.Messages" :key="message.Id">
-                                                                <td></td>
-                                                                <td style="vertical-align:top;"> 
-                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
-                                                                </td>
-                                                                <td style="padding-bottom:8px"> 
-                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
-                                                                    <br/>
-                                                                </td>
-                                                                <td style="vertical-align:top;">
-                                                                    <a href="#" style="float:right" v-if="canDeleteComment(message)"  @click.prevent="deleteActionComment(message)" title="Delete">
-                                                                        <span aria-label="Delete" class="">
-                                                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
-                                                                                <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td> 
-                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
-                                                                </td>
-                                                                <td> 
-                                                                    <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addActionComment(action)" />
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </li>
-                                                </ul>
-                                            </Card>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td> 
+                                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                    </td>
+                                                                    <td> 
+                                                                        <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addActionComment(action)" />
+                                                                    </td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </table>
+                                                        </li>
+                                                    </ul>
+                                                </Card>
+                                            </transition>
                                         </li>
                                     </ul>
                                 </td>
@@ -501,6 +509,8 @@
                 fullscreen: false,
                 teleport: true,
                 pageOnly: true,
+                isFocus: false,
+                currentFocusImproveBoardItemId: null
             };
         },
         created() {
@@ -513,6 +523,7 @@
             this.UserToken = localStorage.getItem('TOKEN');
             this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
             sessionStorage.setItem('boardDetailPath', JSON.stringify(this.$route.params));
+            
             this.fetchData(true);
             this.init();
 
@@ -555,7 +566,7 @@
                         this.WellContent = all.data.filter(item => item.Type == WentWellType);
                         this.ImproveContent = all.data.filter(item => item.Type == NeedsImproveType);
                         this.ActionContent = all.data.filter(item => item.Type == ActionType);
-
+                
                         if (forceRefresh) {
                             setTimeout(msg);
                         }
@@ -571,6 +582,7 @@
             },
             
             fetchParticipants(){
+                
                 this.axios({
                         method: 'get',
                         url: '/User/Online/'+this.boardId
@@ -578,7 +590,7 @@
                         this.participants = [];
                         res.data.Users.forEach((item) =>{
                             this.participants.push(item.Name);
-                        });  
+                        });
                     }).catch(error=>{
                         this.$Message.error('Failed to load online users. Error:' + error);
                     });
@@ -638,9 +650,11 @@
                 })
             },
 
-            addBoardDetail(boardDetail, type) {
-                if (!boardDetail || !boardDetail.trim()) {
-                    return;
+            addBoardDetail(boardDetail, type, associatedBoardItemId) {
+                if (associatedBoardItemId == -1) {
+                    if (!boardDetail || !boardDetail.trim()) {
+                        return;
+                    }
                 }
 
                 if(this.loading)
@@ -657,10 +671,10 @@
                         boardid: this.boardId,
                         detail: boardDetail,
                         type: type,
-                        createduser: this.userName
+                        createduser: this.userName,
+                        associatedBoardItemId: associatedBoardItemId
                     }
                 }).then((res) => {
-
                     console.log("add");
                     console.log(res.data);
                     var listOfItems = this.getListOfItems(type);
@@ -686,15 +700,18 @@
             },
 
             addWentWell() {
-                this.addBoardDetail(this.boardDetail.WellDetail, WentWellType);          
+                this.addBoardDetail(this.boardDetail.WellDetail, WentWellType, -1);          
             },
 
             addImproved() {
-                this.addBoardDetail(this.boardDetail.ImproveDetail, NeedsImproveType);      
+                this.addBoardDetail(this.boardDetail.ImproveDetail, NeedsImproveType, -1);      
             },
 
             addAction() {
-                this.addBoardDetail(this.boardDetail.ActionDetail, ActionType);
+                this.addBoardDetail(this.boardDetail.ActionDetail, ActionType, -1);
+            },
+            addAssociatedBoardItem(Id) {
+                this.addBoardDetail(this.boardDetail.ActionDetail, ActionType, Id);
             },
             canEditBoardItem(boardItem){
                 if(this.state != 2 && boardItem.CreatedUser== this.userName)
@@ -754,7 +771,7 @@
                 } else if (type == ActionType) {
                     listOfItems = this.ActionContent;
                 }
-
+                
                 return listOfItems;
             },
 
@@ -1607,7 +1624,8 @@
                 this.fullscreen = !this.fullscreen
             },
             handleKeydown (event) {
-                if (event.shiftKey && event.keyCode == 13) {
+                let enterCode = 13;
+                if (event.shiftKey && event.keyCode == enterCode) {
                     event.preventDefault();
                     if (event.target.id == 'wentWell') {
                         this.boardDetail.WellDetail += '\n';
@@ -1621,7 +1639,7 @@
                         this.boardDetail.ActionDetail += '\n';
                     }
                 }
-                else if (event.keyCode == 13) {
+                else if (event.keyCode == enterCode) {
                     event.preventDefault();
                     if (event.target.id == 'wentWell') {
                         this.addWentWell();
@@ -1636,8 +1654,49 @@
                     }
                 }
             },
-            clickContent (event) {
-                console.log(event);
+            improveAssociatedClass(id) {
+                if (this.isFocus && this.currentFocusImproveBoardItemId == id) {
+                    return 'fa fa-hand-o-right fa-2x commentActionHighlightStyle';
+                }
+                else {
+                    return 'fa fa-hand-o-right fa-2x commentActionStyle';
+                }
+            },
+            associateAction (id) {
+                if (this.isFocus == true && this.currentFocusImproveBoardItemId == id) {
+                    this.isFocus = false;
+                    this.currentFocusImproveBoardItemId = null;
+                }
+                else {
+                    this.isFocus = true;
+                    this.currentFocusImproveBoardItemId = id;
+                }
+            },
+            associateImprove (associatedBoardItemId) {
+                let improvedCode = 2;
+
+                if (associatedBoardItemId == -1) {
+                    return;
+                }
+
+                if (this.isFocus == true && this.currentFocusImproveBoardItemId == associatedBoardItemId) {
+                    this.isFocus = false;
+                    this.currentFocusImproveBoardItemId = null;
+
+                    this.$refs.contentCard.forEach((item) =>{
+                        item.$el.style.opacity = 1;
+                    });  
+                }
+                else {
+                    this.isFocus = true;
+                    this.currentFocusImproveBoardItemId = associatedBoardItemId;
+
+                    this.$refs.contentCard.forEach((item) =>{
+                        if (associatedBoardItemId != item.$attrs.id && item.$attrs.type == improvedCode) {
+                            item.$el.style.opacity = 0.2;
+                        }
+                    });  
+                }
             }
         }
     }
@@ -1804,11 +1863,25 @@
     }
 
     .subLayout{
-        minHeight:300px;height:100%;width:100%;padding:12px;position:absolute;overflow-y:auto;background:#FFFFFF;
+        minHeight: 300px;
+        height: 100%;
+        width: 100%;
+        padding: 12px;
+        position: absolute;
+        overflow-y: auto;
+        background: #FFFFFF;
+        overflow-y: scroll;
     }
 
     .layoutDetail .ivu-card-body {
         padding: 16px;
+    }
+
+    .transition-drop-enter-active {
+        transition: all .20s ease;
+    }
+    .transition-drop-leave-active {
+        transition: all .20s ease;
     }
 
 </style>

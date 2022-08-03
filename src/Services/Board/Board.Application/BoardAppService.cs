@@ -108,6 +108,7 @@ namespace Cube.Board.Application
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now,
 				Type = boardItemDto.Type,
+				AssociatedBoardItemId = boardItemDto.AssociatedBoardItemId
 			};
 			var id = await _repository.CreateBoardItemAsync(boardItem);
 			boardItem.Id = id;
