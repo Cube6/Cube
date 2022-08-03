@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Cube.Infrastructure.Redis;
 using System;
 using System.Text;
+using Cube.User.API.Extensions;
 
 namespace Cube.User.API
 {
@@ -51,24 +52,10 @@ namespace Cube.User.API
 
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IUserAppService, UserAppService>();
-			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
 
-			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-			var jwtSettings = new JwtSettings();
-			Configuration.Bind("JwtSettings", jwtSettings);
+			services.AddRedis(Configuration);
 
-			services.AddAuthentication("OAuth")
-			.AddJwtBearer("OAuth", options =>
-			{
-				var secretBytes = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
-				var key = new SymmetricSecurityKey(secretBytes);
-				options.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidIssuer = jwtSettings.Issuer,
-					ValidAudience = jwtSettings.Audience,
-					IssuerSigningKey = key
-				};
-			});
+			services.AddJWTAuth(Configuration);
 
 			services.AddAuthorization();
 

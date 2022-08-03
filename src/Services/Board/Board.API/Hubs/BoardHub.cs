@@ -1,5 +1,4 @@
-﻿using Cube.Board.Application.Dtos;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
 
 namespace Board.API.Hubs

@@ -29,16 +29,16 @@ namespace Board.API.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public Task<int> CreateBoard(CreateBoardDto ceateBoard)
+		public async Task<int> CreateBoardAsync(CreateBoardDto ceateBoard)
 		{
-			return _appservice.CreateBoard(ceateBoard);
+			return await _appservice.CreateBoardAsync(ceateBoard);
 		}
 
 		[HttpPut]
 		[Authorize]
-		public Task UpdateBoard(BoardDto board)
+		public async Task UpdateBoardAsync(BoardDto board)
 		{
-			return _appservice.UpdateBoard(board);
+			await _appservice.UpdateBoardAsync(board);
 		}
 
 		[HttpDelete("{id}")]

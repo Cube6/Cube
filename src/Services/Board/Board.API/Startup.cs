@@ -1,29 +1,24 @@
-﻿using Board.API.Models;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Board.API.Extensions;
+using Board.API.Hubs;
+using Cube.Board.Application;
+using Cube.Board.Application.IntegrationEvents.EventHandling;
+using Cube.Board.Application.IntegrationEvents.Events;
 using Cube.Board.Respository;
+using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.ConsulService;
 using Cube.Infrastructure.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cube.Board.Application;
-using Microsoft.EntityFrameworkCore;
-using Board.API.Hubs;
-using RabbitMq;
 using Quartz;
-using Board.API.QuartzJobs;
+using System;
 
 namespace Board.API
 {
@@ -37,7 +32,7 @@ namespace Board.API
 		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
+		public virtual IServiceProvider ConfigureServices(IServiceCollection services)
 		{
 			services.AddSignalR(options =>
 			{
@@ -50,14 +45,13 @@ namespace Board.API
 			});
 
 			services.AddControllers();
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Board.API", Version = "v1" });
 			});
 
-
 			//services.AddCors(option => option.AddPolicy("cors", policy => policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().AllowAnyOrigin()));
-
 			services.AddCors(options =>
 			{
 				options.AddPolicy(name: "cors",
@@ -80,46 +74,22 @@ namespace Board.API
 			services.AddScoped<IBoardRepository, BoardRepository>();
 			services.AddScoped<IBoardAppService, BoardAppService>();
 			services.AddSingleton<IRedisInstance>(RedisFactory.GetInstanceAsync(Configuration.GetConnectionString("RedisConnection")).GetAwaiter().GetResult());
-			services.AddSingleton<IMessageQueue>(new RabbitMQService(Configuration.GetSection("RabbitMq")["ConnectionString"]));
-			services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-			var jwtSettings = new JwtSettings();
-			Configuration.Bind("JwtSettings", jwtSettings);
 
-			services.AddAuthentication("OAuth")
-			.AddJwtBearer("OAuth", options =>
+			services.RegisterEventBus(Configuration);
+
+			services.AddJWTAuth(Configuration);
+
+			services.AddControllers().AddNewtonsoftJson(options =>
 			{
-				var secretBytes = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
-				var key = new SymmetricSecurityKey(secretBytes);
-				options.TokenValidationParameters = new TokenValidationParameters
-				{
-					ValidIssuer = jwtSettings.Issuer,
-					ValidAudience = jwtSettings.Audience,
-					IssuerSigningKey = key
-				};
-			});
-			services.AddControllers().AddNewtonsoftJson(options => {
 				options.SerializerSettings.ContractResolver = new DefaultContractResolver();
 			});
 
-			services.AddQuartz(q =>
-			{
-				//支持DI，默认Ijob 实现不支持有参构造函数
-				q.UseMicrosoftDependencyInjectionJobFactory();
+			services.RegisterQuartz();
 
-				q.ScheduleJob<CommitCommentToDBJob>(trigger => trigger
-								.WithIdentity("CommitCommentToDBJobTrigger")
-								.StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-								.WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Second))
-								.WithDescription("Commit Comment To DB Periodically")
-						);
-			});
-			services.AddQuartzServer(options =>
-			{
-				// when shutting down we want jobs to complete gracefully
-				options.WaitForJobsToComplete = true;
-			});
+			var container = new ContainerBuilder();
+			container.Populate(services);
 
-			services.AddTransient<CommitCommentToDBJob>();
+			return new AutofacServiceProvider(container.Build());
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -157,6 +127,18 @@ namespace Board.API
 			//服务注册
 			app.RegisterConsul(Configuration, lifetime);
 #endif
+
+			ConfigureEventBus(app);
+		}
+
+		private void ConfigureEventBus(IApplicationBuilder app)
+		{
+			var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+
+			eventBus.Subscribe<CommentAddedEvent, CommentAddedEventHandler>();
+			eventBus.Subscribe<CommentUpdatedEvent, CommentUpdatedEventHandler>();
+			eventBus.Subscribe<CommentDeletedEvent, CommentDeletedEventHandler>();
+			eventBus.Subscribe<ThumbUpDeletedEvent, ThumbUpDeletedEventHandler>();
 		}
 	}
 }

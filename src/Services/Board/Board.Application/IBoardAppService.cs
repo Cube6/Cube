@@ -8,23 +8,19 @@ namespace Cube.Board.Application
 	{
 		IEnumerable<BoardDto> GetBoards(BoardType type);
 		IEnumerable<BoardDto> GetRemovedBoards();
-		Task UpdateBoard(BoardDto disscussionBoard);
-		Task<int> CreateBoard(CreateBoardDto disscussionBoard);
+		Task UpdateBoardAsync(BoardDto disscussionBoard);
+		Task<int> CreateBoardAsync(CreateBoardDto disscussionBoard);
 		Task DeleteBoardByIdAsync(long id);
 
-		Task<BoardItemDto> CreateBoardItem(BoardItemDto boardItemDto);
+		Task<BoardItemDto> CreateBoardItemAsync(BoardItemDto boardItemDto);
 		Task DeleteBoardItemByIdAsync(long id);
-		Task UpdateBoardItem(BoardItemDto boardItemDto);
+		Task UpdateBoardItemAsync(BoardItemDto boardItemDto);
 		Task<List<BoardItemDto>> FindBoardItemByBoardIdAsync(long id);
 
-		Task<int> CreateComment(CommentDto commentDto);
-		Task UpdateComment(CommentDto commentDto);
+		Task<int> CreateCommentAsync(CommentDto commentDto);
+		Task UpdateCommentAsync(CommentDto commentDto);
 		Task DeleteCommentAsync(long borderItemId, string userName);
 		Task DeleteCommentAsync(long commentId);
 		Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId);
-
-
-		Task CommitCommentToDB();
-
 	}
 }
