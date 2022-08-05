@@ -1118,5 +1118,38 @@ export default {
     toggle() {
       this.fullscreen = !this.fullscreen
     },
+    handleKeydown(event) {
+      if (event.shiftKey && event.keyCode == 13) {
+        event.preventDefault();
+        if (event.target.id == 'wentWell') {
+          this.boardDetail.WellDetail += '\n';
+        }
+
+        if (event.target.id == 'improved') {
+          this.boardDetail.ImproveDetail += '\n';
+        }
+
+        if (event.target.id == 'action') {
+          this.boardDetail.ActionDetail += '\n';
+        }
+      }
+      else if (event.keyCode == 13) {
+        event.preventDefault();
+        if (event.target.id == 'wentWell') {
+          this.addWentWell();
+        }
+
+        if (event.target.id == 'improved') {
+          this.addImproved();
+        }
+
+        if (event.target.id == 'action') {
+          this.addAction();
+        }
+      }
+    },
+    clickContent(event) {
+      console.log(event);
+    }
   }
 }
