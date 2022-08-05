@@ -1,114 +1,167 @@
+const signalR = require("@microsoft/signalr");
+
 export default {
-    compontents: {
-    },
-    data() {
-        return {
-            isCollapsed: false,
-            userName: null,
-            navURL:null,
-            navName:null,
 
-            showMyProfile: false,
-            showAboutView: false,
-            pStyle: {
-                fontSize: '16px',
-                color: 'rgba(0,0,0,0.85)',
-                lineHeight: '24px',
-                display: 'block',
-                marginBottom: '16px'
-            }
-        };
-    },
-    created() {
-        // fetch the data when the view is created and the data is
-        // already being observed
-        this.fetchData();
-        this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
+  data() {
+    return {
+      UserToken: null,
+      post: null,
+      UserName: null,
+      connection: "",
+      pageSetting: {
+        currentPage: 1,
+        pageSize: 50,
+      }
+    };
+  },
+  created() {
 
-        var isMenuCollapsed = localStorage.getItem('IsMenuCollapsed');
-        if(isMenuCollapsed !=null)
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.UserToken = localStorage.getItem('TOKEN');
+    this.UserName = localStorage.getItem('LOGINUSER');
+
+    let boardDetailPath = sessionStorage.getItem("boardDetailPath");
+
+    if (boardDetailPath != '' && boardDetailPath != null) {
+      let board = JSON.parse(boardDetailPath);
+      this.$router.push({ name: 'boardDetail', params: { boardId: board.boardId, boardName: board.boardName, createdUser: board.createdUser, state: board.state } });
+    }
+    else {
+      this.fetchData();
+      this.init();
+    }
+
+  },
+  destroyed() {
+    if (this.connection != null) {
+      console.log("Hub for BoardAll with " + this.connection.connectionId + "is stopped");
+      this.connection.stop();
+    }
+  },
+  methods: {
+    fetchData() {
+      var msg = this.$Message.loading({
+        content: 'Loading Boards...',
+        duration: 0
+      });
+
+      var type = this.$route.params.type;
+      var url = '/Board';
+      if (type != null && type != 'undefined') {
+        url = url + '/' + type + '';
+      } else {
+        url = url + '/0';
+      }
+
+      this.axios(
         {
-            this.isCollapsed = localStorage.getItem('IsMenuCollapsed') == "true";
+          method: 'get',
+          url: url
+        })
+        .then(json => {
+          this.post = json.data;
+          this.pageSetting.total = this.post.length;
+
+          setTimeout(msg);
+          return;
+        }).catch(error => {
+          setTimeout(msg);
+          console.log('Failed to get board. Error:' + error);
+        })
+    },
+    AddBoard() {
+      this.$router.push('/addboard');
+    },
+    ViewBoard(board) {
+      this.$router.replace({ name: 'boardDetail', params: { boardId: board.Id, boardName: board.Name, createdUser: board.CreatedUser, state: board.State } });
+    },
+    DeleteBoard(board) {
+      this.$confirm(
+        {
+          message: 'Are you sure delete board [' + board.Name + '] ?',
+          button: {
+            no: 'No',
+            yes: 'Yes'
+          },
+          callback: confirm => {
+            if (confirm) {
+              this.axios.delete('/Board/' + board.Id + '').then(() => {
+                this.fetchData();
+              }).then(() => {
+                this.renderFunc(board.Name + ' is deleted successfully.');
+              }).then(() => {
+                this.sendBoardMessage();
+              })
+            }
+          }
         }
+      )
     },
-    computed: {
-        menuitemClasses: function () {
-            return [
-                'menu-item',
-                this.isCollapsed ? 'collapsed-menu' : ''
-            ]
-        },
-        rotateIcon() {
-            return [
-                'menu-icon',
-                this.isCollapsed ? 'rotate-icon' : ''
-            ];
-        },
+    getUserAvatar(userName) {
+      let userAvatar = ""
+      try {
+        userAvatar = require('../assets/Person/' + userName.toLowerCase() + '.jpg')
+        return userAvatar
+      } catch (e) {
+        userAvatar = require('../assets/Person/cube.jpg')
+        return userAvatar
+      }
     },
-    methods: {
-        getLoginUserAvatar() {
-            let userAvatar = ""
-            try {
-                userAvatar = require('../assets/Person/' + this.userName.toLowerCase() + '.jpg')
-                return userAvatar
-            } catch (e) {
-                userAvatar = require('../assets/Person/cube.jpg')
-                return userAvatar
-            }
-        },
-        getLogo() {
-            return require('../assets/logo.jpg');
-        },
-        collapsedSider() {
-            this.$refs.side1.toggleCollapse();
-            localStorage.setItem('IsMenuCollapsed', this.isCollapsed );
-        },
-        fetchData(id) {
-            if (id == undefined || id == null) {
-                    this.navURL = '/boardAll';
-                    this.navName = null;
-                    this.$router.replace(this.navURL).catch(error => {
-                        if (
-                          error.name !== 'NavigationDuplicated' &&
-                          !error.message.includes('Avoided redundant navigation to current location')
-                        ) {
-                          console.log(error)
-                        }});
-            }
-            else
-            {
-                this.navURL = '/boardAll/'+id;
+    renderFunc(message) {
+      this.$Notice.success({
+        // title: 'Notification',
+        desc: 'The desc will hide when you set render.',
+        render: h => {
 
-                if (id == 0) {
-                    this.navURL = '/boardAll';
-                    this.navName = null;
-                }
-                else if(id == 1)
-                {
-                    this.navName = "In Progress";
-                }
-                else if(id == 2)
-                {
-                    this.navName = "Completed";
-                }
-                else if(id == 3)
-                {
-                    this.navName = "Recycle Bin";
-                }
-                sessionStorage.setItem('boardDetailPath', '')
-                this.$router.replace(this.navURL);
-            }
-        },
-        logout() {
+          return h('span', [
+            message
+          ])
 
-            localStorage.setItem('LOGINUSER', '');
-            localStorage.setItem('TOKEN', '');
-
-            this.$router.push('/login');
-            this.$router.go();
-        },
-        createAccount() {
-            this.$router.push('/register');
+          //return h('span', [
+          //    'This is created by ',
+          //    h('a', 'render'),
+          //    ' function'
+          //])
         }
+      });
     },
+    init() {
+      this.connection = new signalR.HubConnectionBuilder()
+        .withUrl("http://10.63.224.86:5050/BoardHub", {})
+        .configureLogging(signalR.LogLevel.Error)
+        .build();
+      this.connection.on("ReceiveBoardMessage", () => {
+        this.fetchData();
+      });
+      this.connection.start();
+    },
+    sendBoardMessage() {
+      this.connection.invoke("SendBoardMessage");
+    },
+    pageChanged(page) {
+      console.log(page);
+    },
+
+    getBoardCardBG(board) {
+
+      if (board.IsDeleted == false && board.State == 1) {
+        return '#F3FCF1';
+      }
+      // else if(board.State == 2)
+      // {
+      //     return '#7FEE7A';
+      // }
+      else if (board.IsDeleted) {
+        return '#FCE9E9';
+      }
+
+      return '#FFF';
+    },
+    getBoardCardTooltip(board) {
+
+      return board.Name + ' (Owner: ' + board.CreatedUser.toUpperCase() + ')' + '\n' +
+        board.DateCreated;
+    }
+  },
 }
