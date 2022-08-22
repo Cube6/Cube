@@ -17,6 +17,7 @@ services:
       - XPACK_GRAPH_ENABLED=true
       - TIMELION_ENABLED=true
       - XPACK_MONITORING_COLLECTION_ENABLED="true"
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=fhjskloppd678ehkdfdlliverpoolfcr
     ports:
       - "5601:5601"
     networks:

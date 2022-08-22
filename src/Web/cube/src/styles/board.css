@@ -69,6 +69,23 @@
   width: 100%;
 }
 
+.page-footer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff
+}
+
+.subLayout {
+  margin: 0;
+  padding: 12px;
+}
+
+.subLayout .ivu-card-body {
+  padding: 16px;
+}
+
 .menu-item span {
   display: inline-block;
   overflow: hidden;

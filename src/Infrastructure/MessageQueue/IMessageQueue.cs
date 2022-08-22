@@ -8,9 +8,9 @@ namespace RabbitMq
 {
 	public interface IMessageQueue
 	{
-		void Publish(string queueName, string message);
-		Guid Subscribe(string queueName, Action<string> messageHandler);
-		string Get(string queueName);
+		void Publish<MessageType>(MessageType message);
+		Guid Subscribe<T>(Func<string, string, Task> messageHandler);
+		string Get();
 		void UnSubscribe(Guid consumerGuid);
 	}
 }

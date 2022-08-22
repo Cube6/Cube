@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Middleware\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Middleware\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Middleware\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
@@ -14,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middleware\" />
-    <Folder Include="Services\Board\" />
-    <Folder Include="Services\User\" />
+    <ProjectReference Include="..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MessageQueue\MessageQueue.csproj" />
+    <ProjectReference Include="..\..\Services\Board\Board.Application\Board.Application.csproj" />
   </ItemGroup>
 
 </Project>

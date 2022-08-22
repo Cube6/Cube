@@ -2,7 +2,7 @@
 
 namespace Cube.Board.Application.IntegrationEvents.Events;
 
-public class CommentUpdatedEvent : IntegrationEvent
+public record CommentUpdatedEvent : IntegrationEvent
 {
 	public int CommentId { get; private set; }
 	public string NewComment { get; private set; }

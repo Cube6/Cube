@@ -22,39 +22,37 @@ namespace Board.API.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<int> Create(CommentDto commentDto)
+		public async Task<int> CreateAsync(CommentDto commentDto)
 		{
-			return await _appservice.CreateComment(commentDto);
+			return await _appservice.CreateCommentAsync(commentDto);
 		}
 
 		[HttpGet("{boardItemId}")]
 		[Authorize]
-		public IEnumerable<CommentDto> FindComments(long boardItemId)
+		public async Task<IEnumerable<CommentDto>> FindCommentsAsync(long boardItemId)
 		{
-			var list = _appservice.FindCommentsByIdAsync(boardItemId);
-			var result = list.Result;
-			return result;
+			return await _appservice.FindCommentsByIdAsync(boardItemId);
 		}
 
 		[HttpDelete("{id}")]
 		[Authorize]
-		public async Task Delete(long id)
+		public async Task DeleteAsync(long id)
 		{
 			await _appservice.DeleteCommentAsync(id);
 		}
 
 		[HttpDelete]
 		[Authorize]
-		public async Task DeleteByBoardItemIdAndUserName(long borderItemId, string userName)
+		public async Task DeleteByBoardItemIdAndUserNameAsync(long borderItemId, string userName)
 		{
 			await _appservice.DeleteCommentAsync(borderItemId, userName);
 		}
 
 		[HttpPut]
 		[Authorize]
-		public async Task Update(CommentDto commentDto)
+		public async Task UpdateAsync(CommentDto commentDto)
 		{
-			await _appservice.UpdateComment(commentDto);
+			await _appservice.UpdateCommentAsync(commentDto);
 		}
 	}
 }

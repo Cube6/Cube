@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Cube.Board.Application.Configuration;
 using Cube.Board.Application.Dtos;
+using Cube.Board.Application.IntegrationEvents.Events;
 using Cube.Board.Domain;
 using Cube.Board.Respository;
+using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
 using System;
 using System.Collections.Generic;
@@ -16,11 +18,13 @@ namespace Cube.Board.Application
 		private IBoardRepository _repository;
 		private IMapper _mapper = MapperFactory.GetMapper();
 		private IRedisInstance _redis;
+		private IEventBus _eventBus;
 
-		public BoardAppService(IBoardRepository repository, IRedisInstance redis)
+		public BoardAppService(IBoardRepository repository, IRedisInstance redis, IEventBus eventBus)
 		{
 			_repository = repository;
 			_redis = redis;
+			_eventBus = eventBus;
 		}
 
 		public IEnumerable<BoardDto> GetBoards(BoardType type)
@@ -69,7 +73,7 @@ namespace Cube.Board.Application
 			return _mapper.Map<BoardDto>(DisscussionBoard);
 		}
 
-		public Task<int> CreateBoard(CreateBoardDto createBoardDto)
+		public Task<int> CreateBoardAsync(CreateBoardDto createBoardDto)
 		{
 			var board = new DisscussionBoard()
 			{
@@ -83,7 +87,7 @@ namespace Cube.Board.Application
 			return _repository.CreateBoardAsync(board);
 		}
 
-		public async Task UpdateBoard(BoardDto boardDto)
+		public async Task UpdateBoardAsync(BoardDto boardDto)
 		{
 			var board = _repository.ListAsync().Result.Where(b => b.Id == boardDto.Id).FirstOrDefault();
 			board.Name = boardDto.Name;
@@ -96,7 +100,7 @@ namespace Cube.Board.Application
 			await _repository.UpdateBoardAsync(board);
 		}
 
-		public async Task<BoardItemDto> CreateBoardItem(BoardItemDto boardItemDto)
+		public async Task<BoardItemDto> CreateBoardItemAsync(BoardItemDto boardItemDto)
 		{
 			var boardItem = new DisscussionBoardItem()
 			{
@@ -117,7 +121,7 @@ namespace Cube.Board.Application
 			return result;
 		}
 
-		public async Task UpdateBoardItem(BoardItemDto boardItemDto)
+		public async Task UpdateBoardItemAsync(BoardItemDto boardItemDto)
 		{
 			var boardItem = await _repository.GetBoardItemByIdAsync(boardItemDto.Id);
 			boardItem.Detail = boardItemDto.Detail;
@@ -163,28 +167,30 @@ namespace Cube.Board.Application
 			return list;
 		}
 
-		public async Task<int> CreateComment(CommentDto commentDto)
+		public async Task<int> CreateCommentAsync(CommentDto commentDto)
 		{
-			var comment = new Comment()
-			{
-				BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
-				Detail = commentDto.Detail,
-				CreatedUser = commentDto.CreatedUser,
-				DateCreated = DateTime.Now,
-				DateModified = DateTime.Now,
-				Type = commentDto.Type,
-			};
-
 			if (commentDto.Type == CommentType.ThumbsUp)
 			{
-				if (!await _redis.SetContainsValueAsync(comment.BoardItem.Id, comment.CreatedUser))
+				var ownerBoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result;
+
+				if (!await _redis.SetContainsValueAsync(ownerBoardItem.Id, commentDto.CreatedUser))
 				{
-					await _repository.CreateCommentAsync(comment);
-					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
+					_eventBus.Publish(new CommentAddedEvent(commentDto));
+					await _redis.SetAddAsync(ownerBoardItem.Id, commentDto.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
 			else if(commentDto.Type == CommentType.Message)
 			{
+				var comment = new Comment()
+				{
+					BoardItem = _repository.GetBoardItemByIdAsync(commentDto.BoardItemId).Result,
+					Detail = commentDto.Detail,
+					CreatedUser = commentDto.CreatedUser,
+					DateCreated = DateTime.Now,
+					DateModified = DateTime.Now,
+					Type = commentDto.Type,
+				};
+
 				return await _repository.CreateCommentAsync(comment);
 			}
 			else
@@ -195,15 +201,18 @@ namespace Cube.Board.Application
 			return -1;
 		}
 
-		public async Task DeleteCommentAsync(long borderItemId, string username)
+		public async Task DeleteCommentAsync(long boardItemId, string username)
 		{
-			await _repository.DeleteCommentByUserNameAsync(borderItemId, username);
-			await _redis.SetRemoveAsync(borderItemId, username);
+			_eventBus.Publish(new ThumbUpDeletedEvent(boardItemId, username));
+			await _redis.SetRemoveAsync(boardItemId, username);
 		}
 
 		public async Task DeleteCommentAsync(long commentId)
 		{
-			await _repository.DeleteCommentAsync(commentId);
+			await Task.Run(() =>
+			{
+				_eventBus.Publish(new CommentDeletedEvent(commentId));
+			});
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -239,19 +248,12 @@ namespace Cube.Board.Application
 			return list;
 		}
 
-		public async Task UpdateComment(CommentDto commentDto)
+		public async Task UpdateCommentAsync(CommentDto commentDto)
 		{
-			var comment = await _repository.GetCommentByIdAsync(commentDto.Id);
-			comment.Detail = commentDto.Detail;
-			comment.DateModified = DateTime.Now;
-
-			await _repository.UpdateCommentAsync(comment);
+			await Task.Run(() =>
+			{
+				_eventBus.Publish(new CommentUpdatedEvent(commentDto.Id, commentDto.Detail));
+			});
 		}
-
-		public async Task CommitCommentToDB()
-		{
-			Console.WriteLine("Commit Comment To DB Periodically by quartz");
-		}
-
 	}
 }

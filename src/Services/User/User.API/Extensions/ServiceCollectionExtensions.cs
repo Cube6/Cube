@@ -1,4 +1,5 @@
-﻿using Cube.User.API.Models;
+﻿using Cube.Infrastructure.Redis;
+using Cube.User.API.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -28,5 +29,12 @@ namespace Cube.User.API.Extensions
 			});
 		}
 
+		public static void AddRedis(this IServiceCollection services, IConfiguration configuration)
+		{
+			string connectionStr = configuration.GetConnectionString("RedisConnection");
+			var redisInstance = RedisFactory.GetInstanceAsync(connectionStr).Result;
+
+			services.AddSingleton(redisInstance);
+		}
 	}
 }

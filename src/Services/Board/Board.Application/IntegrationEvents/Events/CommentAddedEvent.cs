@@ -1,9 +1,10 @@
 ﻿using Cube.Board.Application.Dtos;
+using Cube.Board.Domain;
 using Cube.BuildingBlocks.EventBus.Events;
 
 namespace Cube.Board.Application.IntegrationEvents.Events;
 
-public class CommentAddedEvent : IntegrationEvent
+public record CommentAddedEvent : IntegrationEvent
 {
 	public CommentDto Comment { get; private set; }
 

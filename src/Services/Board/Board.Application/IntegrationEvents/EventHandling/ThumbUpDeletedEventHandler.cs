@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Cube.Board.Application.IntegrationEvents.EventHandling;
 
-public class CommentDeletedEventHandler : IIntegrationEventHandler<CommentDeletedEvent>
+public class ThumbUpDeletedEventHandler : IIntegrationEventHandler<ThumbUpDeletedEvent>
 {
 	private IBoardRepository _repository;
-	public CommentDeletedEventHandler(IBoardRepository repository)
+	public ThumbUpDeletedEventHandler(IBoardRepository repository)
 	{
 		_repository = repository;
 	}
 
-	public async Task Handle(CommentDeletedEvent @event)
+	public async Task Handle(ThumbUpDeletedEvent @event)
 	{
-		await _repository.DeleteCommentAsync(@event.CommentId);
+		await _repository.DeleteThumbsUpAsync(@event.BoardItemId, @event.UserName);
 	}
 }

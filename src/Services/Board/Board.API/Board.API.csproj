@@ -9,13 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EventHandling\**" />
     <Compile Remove="Protos\**" />
+    <Content Remove="EventHandling\**" />
     <Content Remove="Protos\**" />
+    <EmbeddedResource Remove="EventHandling\**" />
     <EmbeddedResource Remove="Protos\**" />
+    <None Remove="EventHandling\**" />
     <None Remove="Protos\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.4.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
     <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.1.0-alpha.21317.5" />
@@ -26,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
     <ProjectReference Include="..\..\..\Infrastructure\MessageQueue\MessageQueue.csproj" />
     <ProjectReference Include="..\..\..\ServiceCenter\ConsulManager\ConsulManager.csproj" />
     <ProjectReference Include="..\Board.Application\Board.Application.csproj" />
