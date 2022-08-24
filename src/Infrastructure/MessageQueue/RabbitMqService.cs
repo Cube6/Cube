@@ -11,9 +11,9 @@ namespace RabbitMq
 	public class RabbitMQService : IMessageQueue, IDisposable
 	{
 		private readonly string BROKER_NAME = "cube_event_bus";
-		private ConcurrentDictionary<Guid, EventingBasicConsumer> Consumers = new ConcurrentDictionary<Guid, EventingBasicConsumer>();
-		private IConnection Connection { get; set; }
-		private IModel Channel { get; set; }
+		private ConcurrentDictionary<Guid, EventingBasicConsumer> consumers = new ConcurrentDictionary<Guid, EventingBasicConsumer>();
+		private IConnection _connection { get; set; }
+		private IModel _channel { get; set; }
 		private string _queueName { get; set; }
 
 		public RabbitMQService(string connectionString, string queueName)
@@ -22,10 +22,10 @@ namespace RabbitMq
 
 			var uri = new Uri(connectionString);
 			var factory = new ConnectionFactory() { Uri = uri };
-			Connection = factory.CreateConnection();
-			Channel = Connection.CreateModel();
+			_connection = factory.CreateConnection();
 
-			Channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct", durable:true);
+			_channel = _connection.CreateModel();
+			_channel.ExchangeDeclare(exchange: BROKER_NAME, type: "direct", durable:true);
 		}
 
 		public void Publish<MessageType>(MessageType message)
@@ -39,18 +39,25 @@ namespace RabbitMq
 		{
 			DeclareQueue();
 			var body = Encoding.UTF8.GetBytes(message);
-			Channel.BasicPublish(exchange: BROKER_NAME, routingKey: routingKey, mandatory: true, basicProperties: null, body: body);
+
+			_channel.BasicPublish(
+				exchange: BROKER_NAME, 
+				routingKey: routingKey, 
+				mandatory: true, 
+				basicProperties: null, 
+				body: body);
 		}
 
 		public Guid Subscribe<T>(Func<string, string, Task> messageHandler)
 		{
 			DeclareQueue();
 			var eventName = typeof(T).Name;
-			Channel.QueueBind(queue: _queueName,
-								exchange: BROKER_NAME,
-								routingKey: eventName);
+			_channel.QueueBind(
+				queue: _queueName,
+				exchange: BROKER_NAME,
+				routingKey: eventName);
 
-			var consumer = new EventingBasicConsumer(Channel);
+			var consumer = new EventingBasicConsumer(_channel);
 			consumer.Received += (model, ea) =>
 			{
 				var routingKey = ea.RoutingKey;
@@ -58,9 +65,9 @@ namespace RabbitMq
 				var message = Encoding.UTF8.GetString(body);
 				messageHandler(routingKey, message);
 			};
-			Channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+			_channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
 			var guid = Guid.NewGuid();
-			Consumers.TryAdd(guid, consumer);
+			consumers.TryAdd(guid, consumer);
 			return guid;
 		}
 
@@ -74,7 +81,7 @@ namespace RabbitMq
 		public string Get()
 		{
 			DeclareQueue();
-			var result = Channel.BasicGet(_queueName, true);
+			var result = _channel.BasicGet(_queueName, true);
 			if (result == null)
 				return null;
 			var response = Encoding.UTF8.GetString(result.Body.ToArray());
@@ -82,26 +89,26 @@ namespace RabbitMq
 		}
 		public void UnSubscribe(Guid consumerGuid)
 		{
-			if (Consumers.TryGetValue(consumerGuid, out _))
+			if (consumers.TryGetValue(consumerGuid, out _))
 			{
-				Consumers.TryRemove(consumerGuid, out _);
+				consumers.TryRemove(consumerGuid, out _);
 			}
 		}
 
 		public void DeclareQueue()
 		{
-			Channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+			_channel.QueueDeclare(queue: _queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 		}
 
 		public void Dispose()
 		{
-			if (Channel.IsOpen)
+			if (_channel.IsOpen)
 			{
-				Channel.Close();
+				_channel.Close();
 			}
-			if (Connection.IsOpen)
+			if (_connection.IsOpen)
 			{
-				Connection.Close();
+				_connection.Close();
 			}
 		}
 	}

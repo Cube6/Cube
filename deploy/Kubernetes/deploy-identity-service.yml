@@ -35,7 +35,7 @@ spec:
             - name: UserService__Scheme
               value: https
             - name: UserService__Host
-              value: cubeuserservice-service
+              value: 10.10.86.136
             - name: UserService__Port
               value: '4000'
             - name: ASPNETCORE_Kestrel__Certificates__Default__Password
