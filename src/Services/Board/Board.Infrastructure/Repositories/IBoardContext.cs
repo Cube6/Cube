@@ -7,5 +7,7 @@ namespace Cube.Board.Respository
 	{
 		DbSet<DisscussionBoardItem> DisscussionBoardItems { get; set; }
 		DbSet<DisscussionBoard> DisscussionBoards { get; set; }
+		DbSet<IntegrationEvent> IntegrationEvents { get; set; }
+		public DbSet<Comment> Comments { get; set; }
 	}
 }

@@ -26,5 +26,9 @@ namespace Cube.Board.Respository
 		Task<bool> DeleteCommentAsync(long id);
 		Task<bool> DeleteThumbsUpAsync(long borderItemId, string userName);
 		Task UpdateCommentAsync(Comment comment);
+
+		Task<int> CreateIntegrationEventAsync(IntegrationEvent @event);
+		Task UpdateIntegrationEventAsync(IntegrationEvent @event);
+		Task<IntegrationEvent> GetIntegrationEventAsync();
 	}
 }

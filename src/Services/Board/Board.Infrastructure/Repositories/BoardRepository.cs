@@ -118,9 +118,14 @@ namespace Cube.Board.Respository
 
 		public async Task<bool> DeleteCommentAsync(long commentId)
 		{
-			var comment = await _context.Comments.SingleAsync(it => it.Id == commentId);
-			_context.Comments.Remove(comment);
-			return _context.SaveChanges() > 0;
+			var comment = await _context.Comments.SingleOrDefaultAsync(it => it.Id == commentId);
+			if (comment != null)
+			{
+				_context.Comments.Remove(comment);
+				return _context.SaveChanges() > 0;
+			}
+
+			return true;
 		}
 
 		public async Task<bool> DeleteThumbsUpAsync(long borderItemId, string username)
@@ -142,6 +147,27 @@ namespace Cube.Board.Respository
 		{
 			_context.Comments.Update(comment);
 			return _context.SaveChangesAsync();
+		}
+
+		public async Task<int> CreateIntegrationEventAsync(IntegrationEvent @event)
+		{
+			_context.IntegrationEvents.Add(@event);
+			await _context.SaveChangesAsync();
+			return @event.Id;
+		}
+
+		public Task UpdateIntegrationEventAsync(IntegrationEvent @event)
+		{
+			_context.IntegrationEvents.Update(@event);
+			return _context.SaveChangesAsync();
+		}
+
+		public async Task<IntegrationEvent> GetIntegrationEventAsync()
+		{
+			var result = await _context.IntegrationEvents.Where(e => !e.Published)
+															.OrderBy(e => e.DateCreated)
+															.FirstOrDefaultAsync();
+			return result;
 		}
 	}
 }
