@@ -31,6 +31,11 @@ namespace Board.API.QuartzJobs
 
 		public async Task Execute(IJobExecutionContext context)
 		{
+			if(!PublishLockManager.AcquareLock(nameof(PublishEventJob)))
+			{
+				return;
+			}
+
 			var @event = await _boardRepository.GetIntegrationEventAsync();
 			if (@event != null)
 			{
@@ -47,6 +52,8 @@ namespace Board.API.QuartzJobs
 
 				await MarkEventAsPublishedAsync(@event, integrationEvent);
 			}
+
+			PublishLockManager.ReleaseLock(nameof(PublishEventJob));
 		}
 
 		private void PublishEvent(Cube.Board.Domain.IntegrationEvent @event, IntegrationEvent integrationEvent)
