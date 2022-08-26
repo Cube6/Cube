@@ -59,7 +59,7 @@ namespace Board.API.QuartzJobs
 		private void PublishEvent(Cube.Board.Domain.IntegrationEvent @event, IntegrationEvent integrationEvent)
 		{
 			_eventBus.Publish(integrationEvent);
-			_logger.LogInformation($"Publish {@event.EventType} {integrationEvent.Id}");
+			_logger.LogInformation($"Event Published: {@event.EventType} {integrationEvent.Id}");
 		}
 
 		private async Task MarkEventAsPublishedAsync(Cube.Board.Domain.IntegrationEvent @event, IntegrationEvent integrationEvent)
@@ -67,7 +67,7 @@ namespace Board.API.QuartzJobs
 			@event.Published = true;
 			await _boardRepository.UpdateIntegrationEventAsync(@event);
 
-			_logger.LogInformation($"Mark {@event.EventType} {integrationEvent.Id} as Published");
+			_logger.LogInformation($"Mark Published: {@event.EventType} {integrationEvent.Id}");
 		}
 	}
 }

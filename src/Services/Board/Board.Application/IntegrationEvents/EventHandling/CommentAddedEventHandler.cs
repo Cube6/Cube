@@ -2,6 +2,7 @@
 using Cube.Board.Domain;
 using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -10,14 +11,26 @@ namespace Cube.Board.Application.IntegrationEvents.EventHandling;
 public class CommentAddedEventHandler : IIntegrationEventHandler<CommentAddedEvent>
 {
 	private IBoardRepository _repository;
-	public CommentAddedEventHandler(IBoardRepository repository)
+	private ILogger<CommentAddedEventHandler> _logger;
+
+	public CommentAddedEventHandler(IBoardRepository repository, ILogger<CommentAddedEventHandler> logger)
 	{
 		_repository = repository;
+		_logger = logger;
 	}
 
 	public async Task Handle(CommentAddedEvent @event)
 	{
 		var commentDto = @event.Comment;
+
+		if (commentDto.Type == CommentType.ThumbsUp)
+		{
+			var existItem = await _repository.GetCommentByUserNameAsync(commentDto.BoardItemId, commentDto.CreatedUser);
+			if (existItem != null)
+			{
+				return;
+			}
+		}
 
 		var comment = new Comment()
 		{
@@ -30,5 +43,7 @@ public class CommentAddedEventHandler : IIntegrationEventHandler<CommentAddedEve
 		};
 
 		await _repository.CreateCommentAsync(comment);
+
+		_logger.LogInformation($"Thumbsup Added: BoardItem:{commentDto.BoardItemId} by {commentDto.CreatedUser}");
 	}
 }
