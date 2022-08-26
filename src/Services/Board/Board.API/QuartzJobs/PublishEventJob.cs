@@ -1,11 +1,12 @@
 ﻿using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
-using Cube.BuildingBlocks.EventBus.Events;
 using Cube.Infrastructure.Redis;
 using Microsoft.Extensions.Logging;
 using Quartz;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using IntegrationEvent = Cube.BuildingBlocks.EventBus.Events.IntegrationEvent;
 
 namespace Board.API.QuartzJobs
 {
@@ -38,31 +39,41 @@ namespace Board.API.QuartzJobs
 				return;
 			}
 
-			var @event = await _boardRepository.GetIntegrationEventAsync();
-			if (@event == null)
+			try
 			{
-				return;
+				var @event = await _boardRepository.GetIntegrationEventAsync();
+				if (@event == null)
+				{
+					return;
+				}
+
+				var eventType = _subscriptionsManager.GetEventTypeByName(@event.EventType);
+				var integrationEventObj = JsonSerializer.Deserialize(@event.EventBody,
+																	eventType,
+																	new JsonSerializerOptions()
+																	{
+																		PropertyNameCaseInsensitive = true
+																	});
+				var integrationEvent = integrationEventObj as IntegrationEvent;
+
+				PublishEvent(@event, integrationEvent);
+
+				await MarkEventAsPublishedAsync(@event, integrationEvent);
 			}
-
-			var eventType = _subscriptionsManager.GetEventTypeByName(@event.EventType);
-			var integrationEventObj = JsonSerializer.Deserialize(@event.EventBody,
-																eventType,
-																new JsonSerializerOptions()
-																{
-																	PropertyNameCaseInsensitive = true
-																});
-			var integrationEvent = integrationEventObj as IntegrationEvent;
-
-			PublishEvent(@event, integrationEvent);
-
-			await MarkEventAsPublishedAsync(@event, integrationEvent);
-
-			_redis.LockRelease(EventPublishKey);
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, $"Failed to publish event. Exception:{ex.Message}");
+			}
+			finally
+			{
+				_redis.LockRelease(EventPublishKey);
+			}
 		}
 
 		private void PublishEvent(Cube.Board.Domain.IntegrationEvent @event, IntegrationEvent integrationEvent)
 		{
 			_eventBus.Publish(integrationEvent);
+
 			_logger.LogInformation($"Event Published: {@event.EventType} {integrationEvent.Id}");
 		}
 
