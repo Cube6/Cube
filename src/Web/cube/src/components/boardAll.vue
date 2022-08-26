@@ -2,7 +2,7 @@
     <div class="subLayout">
         <ul>
             <li style="width:260px; float: left;">
-                <Card style="width: 250px; cursor: pointer; margin:0px 0px 15px 0px" v-on:click.native="AddBoard()">
+                <Card style="width: 250px; cursor: pointer;" v-on:click.native="AddBoard()">
                     <div style="display: flex; padding-bottom: 36px; background: #fff;">
                         <i scripturl="../scripts/font.js" style="font-size:24px;">
                             <svg viewBox="0 0 1024 1024" style="width:1em;height:1em;fill:currentColor;overflow:hidden">
