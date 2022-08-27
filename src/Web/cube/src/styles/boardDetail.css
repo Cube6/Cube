@@ -29,7 +29,7 @@ textarea {
 }
 
 .boardItemDoneClass .ivu-input {
-	text-decoration: line-through;
+	/* text-decoration: line-through; */
 	font-style: oblique;
 	/* color: #218338; */
 	/* color:#29984F; */

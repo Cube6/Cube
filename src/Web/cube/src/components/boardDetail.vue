@@ -221,9 +221,12 @@
                                                         <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
                                                         </DropdownMenu>
                                                 </Dropdown>
-                                                <span v-if="improve.State == 2" style="float: right; margin-right: 10px; color: #CCCCD0">
+                                                <span v-if="improve.State == 2" style="float: right; margin-right: 10px; color: #006644">
                                                     <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
-                                                    &nbsp;<b>DONE</b>
+                                                    &nbsp;
+                                                    <span style="background-color: #E3FCEF; padding: 1px 3px; border-radius: 5px;">
+                                                        <b>DONE</b>
+                                                    </span>
                                                 </span>
 
                                                 <Input v-model="improve.Detail" :class="getBoardItemClass(2, improve.State)" type="textarea" :readonly="!canEditBoardItem(improve)" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
@@ -358,9 +361,12 @@
                                                         </DropdownMenu>
                                                     </Dropdown>
                                                     
-                                                    <span v-if="action.State == 2" style="float: right; margin-left: 10px; color: #CCCCD0">
+                                                    <span v-if="action.State == 2" style="float: right; margin-left: 10px; color: #006644;">
                                                         <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
-                                                        &nbsp;<b>DONE</b>
+                                                        &nbsp;
+                                                        <span style="background-color: #E3FCEF; padding: 1px 3px; border-radius: 5px;">
+                                                            <b>DONE</b>
+                                                        </span>
                                                     </span>
 
                                                     <Input v-model="action.Detail" :class="getBoardItemClass(3, action.State)" type="textarea" :readonly="!canEditBoardItem(action)" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
