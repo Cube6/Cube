@@ -85,6 +85,14 @@
                                                 <!-- background: #F1F3F1 -->
                                                 <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
 
+                                                <!-- Menu Items -->
+                                                <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                                    <Icon type="ios-more" size="28"></Icon>
+                                                    <DropdownMenu slot="list">
+                                                    <DropdownItem :disabled="!canDeleteBoardItem(well)"  v-on:click.native="canDeleteBoardItem(well)?deleteBoardItem(well):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i><span style="color:red">&nbsp;Delete</span></DropdownItem>
+                                                    </DropdownMenu>
+                                                </Dropdown>
+
                                                 <Input v-model="well.Detail" class="boardItemContent wellItem" type="textarea" :readonly="!canEditBoardItem(well)" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                                 <p style="height:22px;">
                                                     <a href="#" @click.prevent="addWellUp(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
@@ -110,14 +118,6 @@
                                                             <p>Collapse All&nbsp;^</p>
                                                         </button>
                                                     </a>
-
-                                                    <!-- Menu Items -->
-                                                    <Dropdown style="float: right;position: relative; font-size:12pt; ">
-                                                        <Icon type="ios-more" size="28"></Icon>
-                                                        <DropdownMenu slot="list">
-                                                        <DropdownItem :disabled="!canDeleteBoardItem(well)"  v-on:click.native="canDeleteBoardItem(well)?deleteBoardItem(well):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                        </DropdownMenu>
-                                                    </Dropdown>
                                                 </p>
 
                                                 <!-- Comments -->
@@ -206,8 +206,22 @@
                                         <li v-for="improve in ImproveContent" :key="improve.Id">
                                             <Card :style="{'opacity': setImprovedItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native="cleanFocusedImprovedItem(improve.Id)">
                                                 <!-- background: #FBF5F5 -->
+                                                
                                                 <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: left;width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
-                                                <span v-if="improve.State == 2" style="float: right; margin-left: 10px; color: #CCCCD0">
+                                               
+
+                                                <!-- Menu Items -->
+                                                <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                                    <Icon type="ios-more" size="28"></Icon>
+                                                    <DropdownMenu slot="list">
+                                                        <DropdownItem v-on:click.native="addAssociatedActionItem(improve.Id)"><i class="fa fa-plus fa-2x" aria-hidden="true"></i>&nbsp;Add Action Item</DropdownItem>
+                                                        <DropdownItem v-on:click.native="markBoardItem(improve, 2)"  v-if="improve.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
+                                                        <DropdownItem v-on:click.native="markBoardItem(improve, 1)"  v-if="improve.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
+                                                        <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i><span style="color:red">&nbsp;Delete</span></DropdownItem>
+                                                        <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
+                                                        </DropdownMenu>
+                                                </Dropdown>
+                                                <span v-if="improve.State == 2" style="float: right; margin-right: 10px; color: #CCCCD0">
                                                     <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
                                                     &nbsp;<b>DONE</b>
                                                 </span>
@@ -245,23 +259,13 @@
                                                             <p>Collapse All&nbsp;^</p>
                                                         </button>
                                                     </a>
-                                                     <!-- Menu Items -->
-                                                    <Dropdown style="float: right;position: relative; font-size:12pt; ">
-                                                        <Icon type="ios-more" size="28"></Icon>
-                                                        <DropdownMenu slot="list">
-                                                            <DropdownItem v-on:click.native="addAssociatedActionItem(improve.Id)"><i class="fa fa-plus fa-2x" aria-hidden="true"></i>&nbsp;Add Action Item</DropdownItem>
-                                                            <DropdownItem v-on:click.native="markBoardItem(improve, 2)"  v-if="improve.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
-                                                            <DropdownItem v-on:click.native="markBoardItem(improve, 1)"  v-if="improve.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
-                                                            <DropdownItem :disabled="!canDeleteBoardItem(improve)"  v-on:click.native="canDeleteBoardItem(improve)?deleteBoardItem(improve):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                            <!-- <DropdownItem v-on:click.native="exportData()"><i class="fa fa-hand-o-right fa-2x" style="color: rgb(80, 83, 239)" aria-hidden="true"></i>&nbsp;Take Action</DropdownItem> -->
-                                                        </DropdownMenu>
-                                                    </Dropdown>
+                                                    
                                                     <a href="#" @click.prevent="showAllAssociatedAtions(improve.Id)" title="View Actions">
                                                         <button class="css-b7766g" tabindex="-1" style="float: right; position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
                                                             <i :class="getViewActionsClass(improve.Id)" aria-hidden="true"></i>
                                                         </button>
                                                     </a>
-                                                   
+                                               
                                                 </p>
 
                                                 <!-- Comments -->
@@ -343,6 +347,17 @@
                                                 <Card v-show="currentFocusImprovedItemId == null || currentFocusImprovedItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native="focusAssociatedImprovedItem(action.AssociatedBoardItemId)">
                                                     <!-- background: #ECF5FC -->
                                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: left; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
+                                                    
+                                                    <!-- Menu Items -->
+                                                     <Dropdown style="float: right;position: relative; font-size:12pt; ">
+                                                        <Icon type="ios-more" size="28"></Icon>
+                                                        <DropdownMenu slot="list">
+                                                            <DropdownItem v-on:click.native="markBoardItem(action, 2)"  v-if="action.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
+                                                            <DropdownItem v-on:click.native="markBoardItem(action, 1)"  v-if="action.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
+                                                            <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i><span style="color:red">&nbsp;Delete</span></DropdownItem>
+                                                        </DropdownMenu>
+                                                    </Dropdown>
+                                                    
                                                     <span v-if="action.State == 2" style="float: right; margin-left: 10px; color: #CCCCD0">
                                                         <i class="fa fa-check-circle fa-1x" style="" aria-hidden="true"></i>
                                                         &nbsp;<b>DONE</b>
@@ -380,15 +395,7 @@
                                                             </button>
                                                         </a>
 
-                                                            <!-- Menu Items -->
-                                                            <Dropdown style="float: right;position: relative; font-size:12pt; ">
-                                                                <Icon type="ios-more" size="28"></Icon>
-                                                                <DropdownMenu slot="list">
-                                                                <DropdownItem :disabled="!canDeleteBoardItem(action)"  v-on:click.native="canDeleteBoardItem(action)?deleteBoardItem(action):''"><i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>&nbsp;Delete</DropdownItem>
-                                                                <DropdownItem v-on:click.native="markBoardItem(action, 2)"  v-if="action.State != 2"><i class="fa fa-check-circle fa-2x" style="color: #29984F" aria-hidden="true"></i>&nbsp;Mark as Done</DropdownItem>
-                                                                <DropdownItem v-on:click.native="markBoardItem(action, 1)"  v-if="action.State != 1"><i class="fa fa-clock-o fa-2x" style="color: #5AC967" aria-hidden="true"></i>&nbsp;Mark as In Progress</DropdownItem>
-                                                                </DropdownMenu>
-                                                            </Dropdown>
+                                  
                                                     </p>
 
                                                     <!-- Comments -->

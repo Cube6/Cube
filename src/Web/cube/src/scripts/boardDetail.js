@@ -1178,12 +1178,14 @@ export default {
       return this.currentFocusImprovedItemId == improvedItemId || this.currentFocusImprovedItemId == null? '1.0' : '0.2';
     },
     getViewActionsClass(improvedItemId) {
-      var css = "fa fa-hand-o-right fa-2x ";
+      var css = "fa fa-2x ";
       if (this.currentFocusImprovedItemId == improvedItemId) {
-          return css + 'commentActionHighlightStyle';
+          css +=  " fa-hand-o-right ";
+          return css + 'viewActionhighlightStyle';
       }
       else {
-          return css + 'commentActionStyle';
+          css += " fa-hand-o-right ";
+          return css + 'viewActionStyle';
       }
     },
   }

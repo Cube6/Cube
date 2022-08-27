@@ -58,12 +58,24 @@ textarea {
 	color: #CDE4D9
 }
 
-	.commentActionStyle:hover {
+.commentActionStyle:hover {
 		color: #4CAF50
 	}
 
 .commentActionHighlightStyle {
 	color: #4CAF50
+}
+
+.viewActionStyle {
+	color: #CDE4D9
+}
+
+.viewActionStyle:hover {
+		color: #FCF74E
+	}
+
+.viewActionhighlightStyle {
+	color: #FCF74E
 }
 
 .deleteComment {
