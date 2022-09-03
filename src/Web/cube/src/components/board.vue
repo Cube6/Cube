@@ -8,7 +8,7 @@
                         Cube System
                     </span>
                       <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
-                        v0.6
+                        v0.7
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -149,7 +149,7 @@
             </div>
         </Drawer>
         <Drawer :closable="false" width="640" v-model="showAboutView">
-            <p :style="pStyle">About Cube (ver 0.6)</p>
+            <p :style="pStyle">About Cube (v0.7)</p>
             <div class="my-drawer-profile">
                 <Row>
                     <Col span="24">
@@ -166,6 +166,11 @@
             <Divider />
             <p :style="pStyle">History</p>
             <div class="my-drawer-profile">
+                <Row>
+                    <Col span="4">2022-09-03</Col>
+                    <Col span="4">Version 0.7</Col>
+                    <Col span="16">Associate What can be improved with Action</Col>
+                </Row>
                 <Row>
                     <Col span="4">2022-04-24</Col>
                     <Col span="4">Version 0.6</Col>
