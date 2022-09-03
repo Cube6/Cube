@@ -14,7 +14,7 @@ export default {
 <style>
     body {
         background-image: url(./assets/login_bg.jpg);
-        background-size: cover;
+        background-size: inherit;
         height: calc(100% - 10px);
         font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
         margin: 0;
