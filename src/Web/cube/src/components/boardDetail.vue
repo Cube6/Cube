@@ -60,7 +60,7 @@
             </span>
         </h1>
         <br />
-        <table width="100%">
+        <table width="100%" @click="currentFocusImprovedItemId = null">
             <tr style="vertical-align:top">
                 <td width="33%">
                     <table width="100%">
@@ -204,7 +204,7 @@
                                             <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
                                         </div>
                                         <li v-for="improve in ImproveContent" :key="improve.Id">
-                                            <Card :style="{'opacity': setImprovedItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native="cleanFocusedImprovedItem(improve.Id)">
+                                            <Card :style="{'opacity': setImprovedItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="cleanFocusedImprovedItem(improve.Id)">
                                                 <!-- background: #FBF5F5 -->
                                                 
                                                 <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: left;width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
@@ -230,7 +230,7 @@
                                                 </span>
 
                                                 <Input v-model="improve.Detail" :class="getBoardItemClass(2, improve.State)" type="textarea" :readonly="!canEditBoardItem(improve)" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
-                                                <p style="height:22px;" @click.stop>
+                                                <p style="height:22px;">
                                                     <a href="#" @click.prevent="addImproveUp(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                                         <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                             <i :class="thumbsUpClass(improve.ThumbsUp)" aria-hidden="true"></i>
@@ -347,7 +347,7 @@
                                     <ul>
                                         <li v-for="action in ActionContent" :key="action.Id">
                                             <transition name="transition-drop">
-                                                <Card v-show="currentFocusImprovedItemId == null || currentFocusImprovedItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native="focusAssociatedImprovedItem(action.AssociatedBoardItemId)">
+                                                <Card v-show="currentFocusImprovedItemId == null || currentFocusImprovedItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImprovedItem(action.AssociatedBoardItemId)">
                                                     <!-- background: #ECF5FC -->
                                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: left; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
                                                     
@@ -371,7 +371,7 @@
 
                                                     <Input v-model="action.Detail" :class="getBoardItemClass(3, action.State)" type="textarea" :readonly="!canEditBoardItem(action)" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
-                                                    <p style="height:22px; " @click.stop>
+                                                    <p style="height:22px;">
                                                         <a href="#" @click.prevent="addActionUp(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
                                                                 <i :class="thumbsUpClass(action.ThumbsUp)" aria-hidden="true"></i>
