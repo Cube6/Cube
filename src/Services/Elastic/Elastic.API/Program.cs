@@ -6,6 +6,7 @@ using Cube.BuildingBlocks.EventBus.EventBusRabbitMQ;
 using Cube.Infrastructure.Redis;
 using Elastic.Application;
 using Elastic.Application.Configuration;
+using Elastic.Application.Dao;
 using Elasticsearch.Net;
 using Nest;
 using Quartz;
@@ -29,11 +30,16 @@ var nodes = nestConfig.GetSection("Connections")
 	.Select(node => new Uri(node));
 var pool = new StaticConnectionPool(nodes);
 var settings = new ConnectionSettings(pool)
-	.DefaultIndex("UnknownIndex")
+	.DefaultIndex("Default")
 	.BasicAuthentication(nestConfig["Username"], nestConfig["Password"])
 	.ServerCertificateValidationCallback((a, b, c, d) => true)//TODO: Configure the service certificate
 	.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
-	.ThrowExceptions();
+	.ThrowExceptions()
+	.DefaultMappingFor<BaseDao>(m => m.IndexName("Cube.Default"))
+	.DefaultMappingFor<UserActionDao>(m => m.IndexName("Cube.Action.Default"))
+	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("Cube.BoardItem.Defualt"))
+	.DefaultMappingFor<BoardDao>(m => m.IndexName("Cube.Board.Default"))
+	.DefaultMappingFor<CommentDao>(m => m.IndexName("Cube.Comment.Defualt"));
 
 builder.Services.AddScoped<ElasticClient>(sp =>
 {

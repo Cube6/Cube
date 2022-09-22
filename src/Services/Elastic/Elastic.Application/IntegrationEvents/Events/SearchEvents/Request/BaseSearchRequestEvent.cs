@@ -12,5 +12,8 @@ namespace Elastic.Application.IntegrationEvents.Events.SearchEvents.Request
 		public bool Pagination { get; init; }
 		public int PageSize { get; init; }
 		public int Page { get; init; }
+		public DateTime? StartTime { get; set; }
+		public DateTime? EndTime { get; set; }
+		public string UserName { get; set; }
 	}
 }

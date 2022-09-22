@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record DeleteBoardActionEvent : BoardActionEvent
 	{
-		public DeleteBoardActionEvent(int userId, int boardId, string description = "") : base(userId, boardId, description)
+		public DeleteBoardActionEvent(string username, int boardId, string description = "") : base(username, boardId, description)
 		{
 		}
 	}

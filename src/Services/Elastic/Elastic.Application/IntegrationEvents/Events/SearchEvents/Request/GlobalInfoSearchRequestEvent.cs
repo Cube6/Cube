@@ -10,5 +10,6 @@ namespace Elastic.Application.IntegrationEvents.Events.SearchEvents.Request
 	public record GlobalInfoSearchRequestEvent : BaseSearchRequestEvent
 	{
 		public string Keyword { get; set; }
+		public bool Fuzzy { get; set; }
 	}
 }

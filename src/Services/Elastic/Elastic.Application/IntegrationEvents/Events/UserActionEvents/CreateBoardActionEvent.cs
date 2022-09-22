@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elastic.Application.Dao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,14 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record CreateBoardActionEvent : BoardActionEvent
 	{
-		public CreateBoardActionEvent(int userId, int boardId, string description = "") : base(userId, boardId, description)
+		public BoardDao Board { get; set; }
+		public CreateBoardActionEvent(string username, int boardId, string description = "") : base(username, boardId, description)
 		{
+		}
+
+		public CreateBoardActionEvent(BoardDao board, string description = "") : this(board.CreateUser, board.EntityId, description)
+		{
+			this.Board = board;
 		}
 	}
 }

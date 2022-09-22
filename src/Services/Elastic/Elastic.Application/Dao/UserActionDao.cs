@@ -9,13 +9,14 @@ namespace Elastic.Application.Dao
 {
 	public record UserActionDao : BaseDao
 	{
-		public int UserId { get; set; }
+		public string Username { get; set; }
+		public DateTime CreationTime { get; set; }
 		public string OperationType { get; set; }
 		public UserActionEvent ExtraInfo { get; set; }
 
 		public UserActionDao(UserActionEvent @event)
 		{
-			this.UserId = @event.UserId;
+			this.Username = @event.UserName;
 			this.OperationType = @event.GetType().Name;
 			this.ExtraInfo = @event;
 		}

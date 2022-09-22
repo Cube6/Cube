@@ -10,7 +10,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 	{
 		public int BoardId { get; init; }
 
-		public BoardActionEvent(int userId, int boardId, string description = "") : base(userId, description)
+		public BoardActionEvent(string username, int boardId, string description = "") : base(username, description)
 		{
 			this.BoardId = boardId;
 		}

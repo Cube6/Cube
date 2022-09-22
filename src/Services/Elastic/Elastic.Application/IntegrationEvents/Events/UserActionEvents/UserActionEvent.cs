@@ -9,12 +9,12 @@ namespace Elastic.Application.IntegrationEvents.Events
 {
 	public record UserActionEvent : IntegrationEvent
 	{
-		public int UserId { get; init; }
+		public string UserName { get; init; }
 		public string Description { get; init; }
 
-		public UserActionEvent(int userId, string description = "")
+		public UserActionEvent(string userName, string description = "")
 		{
-			this.UserId = userId;
+			this.UserName = userName;
 			this.Description = description;
 		}
 	}

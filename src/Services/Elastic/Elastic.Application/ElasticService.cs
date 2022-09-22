@@ -34,11 +34,26 @@ namespace Elastic.Application
 		public async Task<GlobalInfoSearchResponseEvent> GlobalInfoSearchAsync(GlobalInfoSearchRequestEvent request)
 		{
 			var response = new GlobalInfoSearchResponseEvent();
-			//TODO: This is only a test, shall be replaced later.
-			var result = await _client.SearchAsync<UserActionDao>(s => s.Query(q => q.MatchAll()));
-			var actions = result.Documents;
-			response = response with { UserActions = actions };
+
+			{
+				var searchDescriptor = new SearchDescriptor<BoardDao>().Query(q => q.Match(
+					m => m.Field(b => b.Name).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
+				var boardResult = await _client.SearchAsync<BoardDao>(searchDescriptor);
+				response.Boards = boardResult.Documents;
+			}
+			{
+				var searchDescriptor = new SearchDescriptor<BoardItemDao>().Query(q => q.Match(m => m.Field(b => b.Detail).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
+				var boardItemResult = await _client.SearchAsync<BoardItemDao>(searchDescriptor);
+				response.BoardItems = boardItemResult.Documents;
+			}
+
+
 			return response;
+		}
+
+		private async Task<ISearchResponse<BoardDao>> SearchBoard(GlobalInfoSearchRequestEvent request)
+		{
+			return null;
 		}
 	}
 }

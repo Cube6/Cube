@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Elastic.Application.Dao
 {
-	public abstract record BaseDao
+	public record EntityDao : BaseDao
 	{
-		public Guid Id { get; set; }
+		//Like Board Id, BorderItem Id, and 
+		public int EntityId { get; set; }
+		public string Creator { get; set; }
+
 	}
 }
