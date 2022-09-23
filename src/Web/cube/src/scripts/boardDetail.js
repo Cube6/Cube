@@ -49,7 +49,7 @@ export default {
       fullscreen: false,
       teleport: true,
       pageOnly: true,
-
+      
       currentFocusImprovedItemId: null
     };
   },
@@ -1156,37 +1156,50 @@ export default {
     addAssociatedActionItem(improvedItemId) {
       this.addBoardDetail(this.boardDetail.ActionDetail, ActionType, improvedItemId);
     },
-    showAllAssociatedAtions(improvedItemId) {
+    showAllAssociatedActions(improvedItemId) {
       if (improvedItemId == this.currentFocusImprovedItemId) {
-        this.currentFocusImprovedItemId = null;
+        this.blurImproveItem();
       }
       else {
-        this.currentFocusImprovedItemId = improvedItemId;
+        this.focusImproveItem(improvedItemId);
       }
     },
     focusAssociatedImprovedItem(associatedBoardItemId) {
-      if (this.currentFocusImprovedItemId == null) {
-        this.currentFocusImprovedItemId = associatedBoardItemId;
+      if (this.currentFocusImprovedItemId == null && associatedBoardItemId != null) {
+        this.focusImproveItem(associatedBoardItemId);
+      }
+    },
+    refocusImprovedItem(improvedItemId) {
+      if (improvedItemId != this.currentFocusImprovedItemId && this.currentFocusImprovedItemId != null) {
+        this.blurImproveItem();
+        this.focusImproveItem(improvedItemId);
       }
     },
     cleanFocusedImprovedItem(improvedItemId) {
-      if (improvedItemId != this.currentFocusImprovedItemId) {
-        this.currentFocusImprovedItemId = null;
+      if (improvedItemId != null) {
+        this.blurImproveItem();
       }
     },
     setImprovedItemOpacity(improvedItemId) {
       return this.currentFocusImprovedItemId == improvedItemId || this.currentFocusImprovedItemId == null? '1.0' : '0.2';
     },
+    focusImproveItem(improvedItemId) {
+      this.currentFocusImprovedItemId = improvedItemId;
+    },
+    blurImproveItem() {
+      this.currentFocusImprovedItemId = null;
+      this.offsetActionItemListPlaceholder = 0;
+    },
     getViewActionsClass(improvedItemId) {
       var css = "fa fa-2x ";
       if (this.currentFocusImprovedItemId == improvedItemId) {
           css +=  " fa-hand-o-right ";
-          return css + 'viewActionhighlightStyle';
+          return css + 'viewActionHighlightStyle';
       }
       else {
           css += " fa-hand-o-right ";
           return css + 'viewActionStyle';
       }
-    },
+    }
   }
 }

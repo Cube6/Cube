@@ -60,7 +60,7 @@
             </span>
         </h1>
         <br />
-        <table width="100%" @click="currentFocusImprovedItemId = null">
+        <table width="100%" @click="cleanFocusedImprovedItem(currentFocusImprovedItemId)">
             <tr style="vertical-align:top">
                 <td width="33%">
                     <table width="100%">
@@ -204,7 +204,7 @@
                                             <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
                                         </div>
                                         <li v-for="improve in ImproveContent" :key="improve.Id">
-                                            <Card :style="{'opacity': setImprovedItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="cleanFocusedImprovedItem(improve.Id)">
+                                            <Card :style="{'opacity': setImprovedItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="refocusImprovedItem(improve.Id)">
                                                 <!-- background: #FBF5F5 -->
                                                 
                                                 <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: left;width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
@@ -263,12 +263,11 @@
                                                         </button>
                                                     </a>
                                                     
-                                                    <a href="#" @click.prevent="showAllAssociatedAtions(improve.Id)" title="View Actions">
+                                                    <a href="#" @click.prevent.stop="showAllAssociatedActions(improve.Id)" title="View Actions">
                                                         <button class="css-b7766g" tabindex="-1" style="float: right; position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
                                                             <i :class="getViewActionsClass(improve.Id)" aria-hidden="true"></i>
                                                         </button>
                                                     </a>
-                                               
                                                 </p>
 
                                                 <!-- Comments -->
