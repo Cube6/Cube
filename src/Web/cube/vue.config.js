@@ -66,31 +66,31 @@ module.exports = {
             /*Connect to remote Microservices directly*/
 
             //'^/Board': {
-            //    target: 'https://10.63.224.86:5000'
+            //    target: 'https://10.63.223.6:5000'
             //},
             //'^/Comment': {
-            //    target: 'https://10.63.224.86:5000'
+            //    target: 'https://10.63.223.6:5000'
             //},
             //'^/User': {
-            //    target: 'https://10.63.224.86:4000'
+            //    target: 'https://10.63.223.6:4000'
             //},
             //'^/Authorize': {
-            //    target: 'https://10.63.224.86:3000'
+            //    target: 'https://10.63.223.6:3000'
             //}
 
             /*Connect to remote microservices via Gateway Service*/
 
             '^/Board': {
-              target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.223.6:9070'
             },
             '^/Comment': {
-              target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.223.6:9070'
             },
             '^/User': {
-              target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.223.6:9070'
             },
             '^/Authorize': {
-              target: 'http://10.63.224.86:9070'
+              target: 'http://10.63.223.6:9070'
             }
 
             /*Connect to remote microservices on K8S*/
