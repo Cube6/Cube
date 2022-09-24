@@ -311,7 +311,7 @@ namespace Cube.Infrastructure.Redis
 		private RedisValue LockToken = "Cube";
 		public bool LockTake(string lockKey)
 		{
-			return database.LockTake(lockKey, LockToken, TimeSpan.FromSeconds(10));
+			return database.LockTake(lockKey, LockToken, TimeSpan.FromSeconds(30));
 		}
 
 		public bool LockRelease(string lockKey)

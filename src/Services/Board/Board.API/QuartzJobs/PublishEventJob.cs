@@ -34,13 +34,13 @@ namespace Board.API.QuartzJobs
 
 		public async Task Execute(IJobExecutionContext context)
 		{
-			if (!_redis.LockTake(EventPublishKey))
-			{
-				return;
-			}
-
 			try
 			{
+				if (!_redis.LockTake(EventPublishKey))
+				{
+					return;
+				}
+
 				var @event = await _boardRepository.GetIntegrationEventAsync();
 				if (@event == null)
 				{
