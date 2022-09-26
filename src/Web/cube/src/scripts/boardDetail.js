@@ -50,7 +50,9 @@ export default {
       teleport: true,
       pageOnly: true,
       
-      currentFocusImprovedItemId: null
+      currentFocusImprovedItemId: null,
+      offsetActionItemListPlaceholder: 0,
+      actionItemListPlaceholderTop: 0
     };
   },
   created() {
@@ -67,6 +69,9 @@ export default {
     this.init();
 
     console.log(this.boardCreatedUser + this.userName);
+  },
+  mounted() {
+    this.actionItemListPlaceholderTop = this.$refs.actionItemListPlaceholder.getBoundingClientRect().top;
   },
   destroyed() {
     if (this.connection != null) {
@@ -1188,7 +1193,6 @@ export default {
     },
     blurImproveItem() {
       this.currentFocusImprovedItemId = null;
-      this.offsetActionItemListPlaceholder = 0;
     },
     getViewActionsClass(improvedItemId) {
       var css = "fa fa-2x ";

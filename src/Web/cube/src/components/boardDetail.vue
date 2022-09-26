@@ -60,7 +60,7 @@
             </span>
         </h1>
         <br />
-        <table width="100%" @click="cleanFocusedImprovedItem(currentFocusImprovedItemId)">
+        <table width="100%" height="100%" @click="cleanFocusedImprovedItem(currentFocusImprovedItemId)">
             <tr style="vertical-align:top">
                 <td width="33%">
                     <table width="100%">
