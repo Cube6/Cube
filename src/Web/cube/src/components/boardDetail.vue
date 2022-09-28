@@ -60,7 +60,7 @@
             </span>
         </h1>
         <br />
-        <table width="100%" height="100%" @click="cleanFocusedImprovedItem(currentFocusImprovedItemId)">
+        <table width="100%" height="100%" @click="cleanFocusedImproveItem(currentFocusImproveItemId)">
             <tr style="vertical-align:top">
                 <td width="33%">
                     <table width="100%">
@@ -204,7 +204,7 @@
                                             <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
                                         </div>
                                         <li v-for="improve in ImproveContent" :key="improve.Id">
-                                            <Card :style="{'opacity': setImprovedItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="refocusImprovedItem(improve.Id)">
+                                            <Card ref="improvedItemCard" :id="improve.Id" :style="{'opacity': setImproveItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="refocusImproveItem(improve.Id)">
                                                 <!-- background: #FBF5F5 -->
                                                 
                                                 <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: left;width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
@@ -344,9 +344,10 @@
                             <tr>
                                 <td style="vertical-align:top">
                                     <ul>
+                                        <div :style="{'margin-top': actionItemBlockOffset + 'px'}"></div>
                                         <li v-for="action in ActionContent" :key="action.Id">
                                             <transition name="transition-drop">
-                                                <Card v-show="currentFocusImprovedItemId == null || currentFocusImprovedItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImprovedItem(action.AssociatedBoardItemId)">
+                                                <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
                                                     <!-- background: #ECF5FC -->
                                                     <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: left; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
                                                     
