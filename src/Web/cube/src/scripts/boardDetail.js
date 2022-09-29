@@ -50,7 +50,8 @@ export default {
       teleport: true,
       pageOnly: true,
       
-      currentFocusImprovedItemId: null
+      currentFocusImproveItemId: null,
+      actionItemBlockOffset: 0
     };
   },
   created() {
@@ -1157,42 +1158,52 @@ export default {
       this.addBoardDetail(this.boardDetail.ActionDetail, ActionType, improvedItemId);
     },
     showAllAssociatedActions(improvedItemId) {
-      if (improvedItemId == this.currentFocusImprovedItemId) {
+      if (improvedItemId == this.currentFocusImproveItemId) {
         this.blurImproveItem();
       }
       else {
         this.focusImproveItem(improvedItemId);
       }
     },
-    focusAssociatedImprovedItem(associatedBoardItemId) {
-      if (this.currentFocusImprovedItemId == null && associatedBoardItemId != null) {
+    focusAssociatedImproveItem(associatedBoardItemId) {
+      if (this.currentFocusImproveItemId == null && associatedBoardItemId != null) {
         this.focusImproveItem(associatedBoardItemId);
       }
     },
-    refocusImprovedItem(improvedItemId) {
-      if (improvedItemId != this.currentFocusImprovedItemId && this.currentFocusImprovedItemId != null) {
+    refocusImproveItem(improvedItemId) {
+      if (improvedItemId != this.currentFocusImproveItemId && this.currentFocusImproveItemId != null) {
         this.blurImproveItem();
         this.focusImproveItem(improvedItemId);
       }
     },
-    cleanFocusedImprovedItem(improvedItemId) {
+    cleanFocusedImproveItem(improvedItemId) {
       if (improvedItemId != null) {
         this.blurImproveItem();
       }
     },
-    setImprovedItemOpacity(improvedItemId) {
-      return this.currentFocusImprovedItemId == improvedItemId || this.currentFocusImprovedItemId == null? '1.0' : '0.2';
-    },
     focusImproveItem(improvedItemId) {
-      this.currentFocusImprovedItemId = improvedItemId;
+      this.currentFocusImproveItemId = improvedItemId;
+      this.calculateOffset(improvedItemId);
     },
     blurImproveItem() {
-      this.currentFocusImprovedItemId = null;
-      this.offsetActionItemListPlaceholder = 0;
+      this.currentFocusImproveItemId = null;
+      this.actionItemBlockOffset = 0;
+    },
+    calculateOffset(improvedItemId) {
+      var cardBlockHeight = 32;
+      this.$refs.improvedItemCard.some((item) => {
+        if (item.$attrs.id == improvedItemId) {
+          this.actionItemBlockOffset = item.$el.offsetTop + cardBlockHeight - item.$el.offsetHeight;
+          return true;
+        }
+      });
+    },
+    setImproveItemOpacity(improvedItemId) {
+      return this.currentFocusImproveItemId == improvedItemId || this.currentFocusImproveItemId == null? '1.0' : '0.2';
     },
     getViewActionsClass(improvedItemId) {
       var css = "fa fa-2x ";
-      if (this.currentFocusImprovedItemId == improvedItemId) {
+      if (this.currentFocusImproveItemId == improvedItemId) {
           css +=  " fa-hand-o-right ";
           return css + 'viewActionHighlightStyle';
       }
