@@ -20,5 +20,7 @@ namespace Cube.Board.Domain
 
 		[Required]
 		public string CreatedUser { get; set; }
+
+		public int? AssociatedBoardItemId { get; set; }
 	}
 }

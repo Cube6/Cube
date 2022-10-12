@@ -47,11 +47,11 @@ namespace Board.API.Extensions
 				//支持DI，默认Ijob 实现不支持有参构造函数
 				config.UseMicrosoftDependencyInjectionJobFactory();
 
-				config.ScheduleJob<PersistCommentJob>(trigger => trigger
-								.WithIdentity("CommitCommentToDBJobTrigger")
+				config.ScheduleJob<PublishEventJob>(trigger => trigger
+								.WithIdentity("PublishEventToMQJobTrigger")
 								.StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
-								.WithDailyTimeIntervalSchedule(x => x.WithInterval(1, IntervalUnit.Minute))
-								.WithDescription("Test: Commit Comment To DB Periodically")
+								.WithDailyTimeIntervalSchedule(x => x.WithInterval(3, IntervalUnit.Second))
+								.WithDescription("Test: Publish Event to MQ Periodically")
 				);
 			});
 

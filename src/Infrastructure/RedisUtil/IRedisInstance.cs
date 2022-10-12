@@ -1,10 +1,7 @@
 ﻿using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Castle.DynamicProxy;
 
 namespace Cube.Infrastructure.Redis
 {
@@ -34,5 +31,9 @@ namespace Cube.Infrastructure.Redis
 		public Task<List<V>> SetAllAsync<K, V>(K key);
 		public Task<long> SetLengthAsync<K>(K key);
 		public Task<bool> SetContainsValueAsync<K, V>(K key, V value);
+
+		public bool LockTake(string lockKey);
+
+		public bool LockRelease(string lockKey);
 	}
 }

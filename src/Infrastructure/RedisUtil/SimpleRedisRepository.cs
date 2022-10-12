@@ -305,6 +305,22 @@ namespace Cube.Infrastructure.Redis
 
 		#endregion
 
+		#region Lock
+
+
+		private RedisValue LockToken = "Cube";
+		public bool LockTake(string lockKey)
+		{
+			return database.LockTake(lockKey, LockToken, TimeSpan.FromSeconds(30));
+		}
+
+		public bool LockRelease(string lockKey)
+		{
+			return database.LockRelease(lockKey, LockToken);
+		}
+
+		#endregion
+
 		#region Dynamic Proxy
 		/// <summary>
 		/// Called for methods that return Task but not generic Task<T>

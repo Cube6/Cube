@@ -1,0 +1,185 @@
+﻿ul {
+	list-style-type: none;
+}
+
+textarea {
+	border-style: none !important;
+}
+
+.boardItemContent {
+	margin-bottom: 15px;
+}
+
+.boardItemContent .ivu-input {
+	background-color: transparent;
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+	font-size: 12pt;
+}
+
+.wellItem .ivu-input {
+	color: #50AA62;
+}
+
+.improveItem .ivu-input {
+	color: #E8897A;
+}
+
+.actionItem .ivu-input {
+	color: #7A93E8;
+}
+
+.boardItemDoneClass .ivu-input {
+	/* text-decoration: line-through; */
+	font-style: oblique;
+	/* color: #218338; */
+	/* color:#29984F; */
+	color: #CCCCD0;
+}
+
+.commentUserName {
+	font-size: 6pt;
+	color: #CDC7C7;
+	padding-left: 5px;
+}
+
+.commentContent .ivu-input {
+	background-color: #FFFFFF;
+	/* margin-bottom: 200x; */
+	font-size: 11pt;
+}
+
+.commentContentHighlight .ivu-input {
+	background-color: #F6FEFE;
+	/* margin-bottom: 200x; */
+	font-size: 11pt;
+}
+
+.commentActionStyle {
+	color: #CDE4D9
+}
+
+.commentActionStyle:hover {
+		color: #4CAF50
+	}
+
+.commentActionHighlightStyle {
+	color: #4CAF50
+}
+
+.viewActionStyle {
+	color: #CDE4D9
+}
+
+.viewActionStyle:hover {
+		color: #FCF74E
+	}
+
+.viewActionHighlightStyle {
+	color: #FCF74E
+}
+
+.deleteComment {
+	color: #F0F0F0
+}
+
+	.deleteComment:hover {
+		color: #E87D7D
+	}
+
+.commentInputContent .ivu-input {
+	background-color: #FFFFFF;
+	font-size: 11pt;
+}
+
+.wellInputContent .ivu-input {
+	background-color: #F2F5F2;
+	font-size: 11pt;
+}
+
+.improveInputContent .ivu-input {
+	background-color: #FBF5F5;
+	font-size: 11pt;
+}
+
+.actionInputContent .ivu-input {
+	background-color: #ECF5FC;
+	font-size: 11pt;
+}
+
+.css-vubbuv {
+	user-select: none;
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+	fill: currentcolor;
+	flex-shrink: 0;
+	transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	font-size: 1.5rem;
+}
+
+.css-b7766g {
+	display: inline-flex;
+	-webkit-box-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	justify-content: center;
+	position: relative;
+	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
+	background-color: transparent;
+	outline: 0px;
+	border: 0px currentcolor;
+	margin: 0px;
+	cursor: pointer;
+	user-select: none;
+	vertical-align: middle;
+	appearance: none;
+	text-decoration: none;
+	font-family: Roboto, Helvetica, Arial, sans-serif;
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1.75;
+	letter-spacing: 0.02857em;
+	/* text-transform: uppercase; */
+	min-width: 8px;
+	border-radius: 4px;
+	transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	color: inherit;
+}
+
+.top {
+	padding: 10px;
+	background: rgba(0, 153, 229, .7);
+	color: #fff;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.noItemsStyle {
+	width: 100%;
+	text-align: center;
+	font-size: 12pt;
+	color: #D1D0CE;
+	margin-top: 250px;
+}
+
+[contenteditable]:focus {
+	outline: none;
+	border: 2px solid rgba(0, 153, 229, .7);
+	border-radius: 4px;
+	transition: border .2s ease-in-out,background .2s ease-in-out,box-shadow .2s ease-in-out;
+}
+
+.subLayout {
+	minHeight: 300px;
+	height: 100%;
+	width: 100%;
+	padding: 12px;
+	position: absolute;
+	overflow-y: auto;
+	background: #FFFFFF;
+}
+
+.layoutDetail .ivu-card-body {
+	padding: 16px;
+}

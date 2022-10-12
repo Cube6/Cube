@@ -67,7 +67,7 @@ namespace Board.API
 						options =>
 						{
 							string connectionString = Configuration.GetConnectionString("DefaultConnection");
-							Console.WriteLine(connectionString);
+							//Console.WriteLine(connectionString);
 							options.UseSqlServer(connectionString);
 						});
 

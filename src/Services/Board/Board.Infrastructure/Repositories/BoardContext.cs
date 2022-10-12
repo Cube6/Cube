@@ -7,6 +7,7 @@ namespace Cube.Board.Respository
 	{
 		public DbSet<DisscussionBoard> DisscussionBoards { get; set; }
 		public DbSet<DisscussionBoardItem> DisscussionBoardItems { get; set; }
+		public DbSet<IntegrationEvent> IntegrationEvents { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 
 		public BoardContext(DbContextOptions options)

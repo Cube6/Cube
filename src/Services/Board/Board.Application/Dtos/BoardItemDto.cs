@@ -20,5 +20,6 @@ namespace Cube.Board.Application.Dtos
 		public bool ToggleComment { get; set; } = false;
 		public CommentDto Comment { get; set; } = new CommentDto();
 		public int BoardId { get; set; }
+		public int? AssociatedBoardItemId { get; set; }
 	}
 }

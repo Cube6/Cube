@@ -33,9 +33,13 @@ spec:
             - name: ASPNETCORE_URLS
               value: https://+:5000
             - name: ConnectionStrings__DefaultConnection
-              value: Server=tcp:10.122.1.17,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
+              value: Server=tcp:10.10.39.138,1433;Initial Catalog=cube_board;User ID=sa;Password=Welcome1*;
             - name: ConnectionStrings__RedisConnection
-              value: 10.122.2.23:6379
+              value: 10.10.176.150:6379
+            - name: RabbitMq__ConnectionString
+              value: amqp://admin:Welcome1@10.63.223.58:5672
+            - name: RabbitMq__QueueName
+              value: CubeEvent
             - name: ASPNETCORE_Kestrel__Certificates__Default__Password
               value: Welcome1
             - name: ASPNETCORE_Kestrel__Certificates__Default__Path

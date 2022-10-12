@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Cube.Board.Application.Configuration;
 using Cube.Board.Application.Dtos;
+using Cube.Board.Application.Factory;
 using Cube.Board.Application.IntegrationEvents.Events;
 using Cube.Board.Domain;
 using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,6 +114,7 @@ namespace Cube.Board.Application
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now,
 				Type = boardItemDto.Type,
+				AssociatedBoardItemId = boardItemDto.AssociatedBoardItemId
 			};
 			var id = await _repository.CreateBoardItemAsync(boardItem);
 			boardItem.Id = id;
@@ -174,7 +177,9 @@ namespace Cube.Board.Application
 
 				if (!await _redis.SetContainsValueAsync(ownerBoardItem.Id, commentDto.CreatedUser))
 				{
-					_eventBus.Publish(new CommentAddedEvent(commentDto));
+					await _repository.CreateIntegrationEventAsync(
+										IntegrationEventModelCreator.Create(
+											new CommentAddedEvent(commentDto)));
 					await _redis.SetAddAsync(ownerBoardItem.Id, commentDto.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
@@ -202,16 +207,17 @@ namespace Cube.Board.Application
 
 		public async Task DeleteCommentAsync(long boardItemId, string username)
 		{
-			_eventBus.Publish(new ThumbUpDeletedEvent(boardItemId, username));
+			await _repository.CreateIntegrationEventAsync(
+								IntegrationEventModelCreator.Create(
+									new ThumbUpDeletedEvent(boardItemId, username)));
 			await _redis.SetRemoveAsync(boardItemId, username);
 		}
 
 		public async Task DeleteCommentAsync(long commentId)
 		{
-			await Task.Run(() =>
-			{
-				_eventBus.Publish(new CommentDeletedEvent(commentId));
-			});
+			await _repository.CreateIntegrationEventAsync(
+								IntegrationEventModelCreator.Create(
+									new CommentDeletedEvent(commentId)));
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -249,10 +255,9 @@ namespace Cube.Board.Application
 
 		public async Task UpdateCommentAsync(CommentDto commentDto)
 		{
-			await Task.Run(() =>
-			{
-				_eventBus.Publish(new CommentUpdatedEvent(commentDto.Id, commentDto.Detail));
-			});
+			await _repository.CreateIntegrationEventAsync(
+								IntegrationEventModelCreator.Create(
+									new CommentUpdatedEvent(commentDto.Id, commentDto.Detail)));
 		}
 	}
 }

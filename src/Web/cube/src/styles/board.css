@@ -69,6 +69,26 @@
   width: 100%;
 }
 
+.main-board{
+  width: 100%;flex:1;
+}
+
+.page-footer {
+  height: 50px;
+  text-align: center;
+}
+
+.subLayout { 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.subLayout .ivu-card-body {
+  padding: 16px;
+}
+
 .menu-item span {
   display: inline-block;
   overflow: hidden;
