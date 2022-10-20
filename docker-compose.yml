@@ -53,6 +53,7 @@ services:
             - my-net
      depends_on: 
             - consul
+            - searchservice1
 
   boardservice2:
      image: cubeboardservice
@@ -73,6 +74,7 @@ services:
             - my-net
      depends_on: 
             - boardservice1
+            - searchservice1
 
   boardservice3:
      image: cubeboardservice
@@ -93,6 +95,7 @@ services:
             - my-net
      depends_on: 
             - boardservice1
+            - searchservice1
 
   # User Microservice #
   userservice1:
@@ -117,6 +120,7 @@ services:
             - my-net
      depends_on: 
             - consul
+            - searchservice1
 
   userservice2:
      image: cubeuserservice
@@ -140,6 +144,7 @@ services:
             - my-net
      depends_on: 
             - consul
+            - searchservice1
 
   # Identity Microservice #
   identityservice1:
@@ -167,6 +172,7 @@ services:
             - consul
             - userservice1
             - userservice2
+            - searchservice1
 
   identityservice2:
      image: cubeidentityservice
@@ -193,6 +199,17 @@ services:
             - consul
             - userservice1
             - userservice2
+            - searchservice1
+
+    searchservice1:
+      image: cubeelasticsearch
+      build:
+        context: .
+        dockerfile: ./src/Services/Elastic/Elastic.API/Dockerfile
+      networks:
+        - my-net
+      depends_on:
+        - consul
 
   # CubeWeb #
   #cubewebapp:

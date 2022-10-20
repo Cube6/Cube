@@ -31,7 +31,7 @@ var nodes = nestConfig.GetSection("Connections")
 var pool = new StaticConnectionPool(nodes);
 var settings = new ConnectionSettings(pool)
 	.DefaultIndex("Default")
-	.BasicAuthentication(nestConfig["Username"], nestConfig["Password"])
+	//.BasicAuthentication(nestConfig["Username"], nestConfig["Password"])
 	.ServerCertificateValidationCallback((a, b, c, d) => true)//TODO: Configure the service certificate
 	.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
 	.ThrowExceptions()
