@@ -66,7 +66,7 @@ export default {
     sessionStorage.setItem('boardDetailPath', JSON.stringify(this.$route.params));
     this.fetchData(true);
     this.init();
-
+    
     console.log(this.boardCreatedUser + this.userName);
   },
   destroyed() {
@@ -1190,10 +1190,9 @@ export default {
       this.actionItemBlockOffset = 0;
     },
     calculateOffset(improvedItemId) {
-      var cardBlockHeight = 32;
       this.$refs.improvedItemCard.some((item) => {
         if (item.$attrs.id == improvedItemId) {
-          this.actionItemBlockOffset = item.$el.offsetTop + cardBlockHeight - item.$el.offsetHeight;
+          this.actionItemBlockOffset = item.$el.getBoundingClientRect().top - this.$refs.actionItemBlock.getBoundingClientRect().top;
           return true;
         }
       });
