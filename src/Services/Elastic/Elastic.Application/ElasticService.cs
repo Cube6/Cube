@@ -35,18 +35,36 @@ namespace Elastic.Application
 		{
 			var response = new GlobalInfoSearchResponseEvent();
 
-			{
-				var searchDescriptor = new SearchDescriptor<BoardDao>().Query(q => q.Match(
-					m => m.Field(b => b.Name).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
-				var boardResult = await _client.SearchAsync<BoardDao>(searchDescriptor);
-				response.Boards = boardResult.Documents;
-			}
-			{
-				var searchDescriptor = new SearchDescriptor<BoardItemDao>().Query(q => q.Match(m => m.Field(b => b.Detail).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
-				var boardItemResult = await _client.SearchAsync<BoardItemDao>(searchDescriptor);
-				response.BoardItems = boardItemResult.Documents;
-			}
+			//{
+			//	var searchDescriptor = new SearchDescriptor<BoardDao>().Query(q => q.Match(
+			//		m => m.Field(b => b.Name).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
+			//	var boardResult = await _client.SearchAsync<BoardDao>(searchDescriptor);
+			//	response.Boards = boardResult.Documents;
+			//}
 
+			//{
+			//	var searchDescriptor = new SearchDescriptor<BoardItemDao>().Query(q => q.Match(m => m.Field(b => b.Detail).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
+			//	var boardItemResult = await _client.SearchAsync<BoardItemDao>(searchDescriptor);
+			//	response.BoardItems = boardItemResult.Documents;
+			//}
+
+			//{
+			//	var searchDescriptor = new SearchDescriptor<CommentDao>().Query(q => q.Match(m => m.Field(b => b.Detail).Fuzziness(Fuzziness.Auto).Query(request.Keyword)));
+			//	var commentResult = await _client.SearchAsync<CommentDao>(searchDescriptor);
+			//	response.Comments = commentResult.Documents;
+			//}
+
+			int from = (request.Page - 1) * request.PageSize;
+			int size = request.PageSize;
+
+			var searchDescriptor = new SearchDescriptor<EntityDao>("Cube.Entity.*").From(from).Size(size).Query(q => q.Match(m => m.Field(f => f.Keyword).Fuzziness(Fuzziness.Auto).Query(request.Keyword)) && q.DateRange(r => r.Field(f => f.CreationDate).GreaterThanOrEquals(request.StartTime).LessThanOrEquals(request.EndTime)) && q.Match(m => m.Field(f => f.Creator).Query(request.UserName)));
+
+			var result = await _client.SearchAsync<EntityDao>(searchDescriptor);
+			
+			foreach(var item in result.Documents)
+			{
+				//Do something
+			}
 
 			return response;
 		}

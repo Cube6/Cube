@@ -17,7 +17,7 @@ namespace Application.FunctionalTests
 		}
 
 		[TestMethod]
-		public void ElasticCanHandleEvents()
+		public void ElasticCanHandleGlobalEvents()
 		{
 
 		}

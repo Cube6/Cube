@@ -11,6 +11,8 @@ namespace Elastic.Application.Dao
 		//Like Board Id, BorderItem Id, and 
 		public int EntityId { get; set; }
 		public string Creator { get; set; }
+		public DateTime CreationDate { get; set; }
+		public string Keyword { get; set; }
 
 	}
 }

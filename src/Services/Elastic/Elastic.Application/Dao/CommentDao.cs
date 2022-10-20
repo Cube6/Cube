@@ -10,7 +10,7 @@ namespace Elastic.Application.Dao
 	{
 		public int BoardItemId { get; set; }
 		public CommentType Type { get; set; }
-		public string Detail { get; set; }
+		public string Detail => Keyword;
 	}
 
 	public enum CommentType

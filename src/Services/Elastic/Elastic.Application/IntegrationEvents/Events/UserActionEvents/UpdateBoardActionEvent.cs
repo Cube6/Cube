@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record UpdateBoardActionEvent : BoardActionEvent
 	{
-		public UpdateBoardActionEvent(int userId, int boardId, string description = "") : base(userId, boardId, description)
+		public UpdateBoardActionEvent(string userName, int boardId, string description = "") : base(userName, boardId, description)
 		{
 		}
 	}

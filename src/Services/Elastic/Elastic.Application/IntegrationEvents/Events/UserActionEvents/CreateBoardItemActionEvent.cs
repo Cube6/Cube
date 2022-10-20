@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record CreateBoardItemActionEvent : BoardItemActionEvent
 	{
-		public CreateBoardItemActionEvent(int userId, int boardItemId, string description = "") : base(userId, boardItemId, description)
+		public CreateBoardItemActionEvent(string userId, int boardItemId, string description = "") : base(userId, boardItemId, description)
 		{
 		}
 	}

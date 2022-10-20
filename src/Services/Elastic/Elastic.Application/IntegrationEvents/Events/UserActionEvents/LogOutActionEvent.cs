@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record LogOutActionEvent : MiscellaneousActionEvent
 	{
-		public LogOutActionEvent(int userId, string description = "") : base(userId, description)
+		public LogOutActionEvent(string userName, string description = "") : base(userName, description)
 		{
 		}
 	}

@@ -37,9 +37,10 @@ var settings = new ConnectionSettings(pool)
 	.ThrowExceptions()
 	.DefaultMappingFor<BaseDao>(m => m.IndexName("Cube.Default"))
 	.DefaultMappingFor<UserActionDao>(m => m.IndexName("Cube.Action.Default"))
-	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("Cube.BoardItem.Defualt"))
-	.DefaultMappingFor<BoardDao>(m => m.IndexName("Cube.Board.Default"))
-	.DefaultMappingFor<CommentDao>(m => m.IndexName("Cube.Comment.Defualt"));
+	.DefaultMappingFor<EntityDao>(m => m.IndexName("Cube.Entity.Default"))
+	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("Cube.Entity.BoardItem"))
+	.DefaultMappingFor<BoardDao>(m => m.IndexName("Cube.Entity.Board"))
+	.DefaultMappingFor<CommentDao>(m => m.IndexName("Cube.Entity.Comment"));
 
 builder.Services.AddScoped<ElasticClient>(sp =>
 {

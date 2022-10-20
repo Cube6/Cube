@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record UpdateCommentActionEvent : CommentActionEvent
 	{
-		public UpdateCommentActionEvent(int userId, int commentId, string description = "") : base(userId, commentId, description)
+		public UpdateCommentActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
 		{
 		}
 	}

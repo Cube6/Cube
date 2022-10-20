@@ -10,7 +10,7 @@ namespace Elastic.Application.Dao
 	{
 		public int BorderId { get; set; }
 		public string CreateUser { get; set; }
-		public string Detail { get; set; }
+		public string Detail => Keyword;
 		public string Action { get; set; }
 		public BoardItemType Type { get; set; }
 		public BoardItemState State { get; set; }

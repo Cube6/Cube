@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record LogInActionEvent : MiscellaneousActionEvent
 	{
-		public LogInActionEvent(int userId, string description = "") : base(userId, description)
+		public LogInActionEvent(string userName, string description = "") : base(userName, description)
 		{
 		}
 	}

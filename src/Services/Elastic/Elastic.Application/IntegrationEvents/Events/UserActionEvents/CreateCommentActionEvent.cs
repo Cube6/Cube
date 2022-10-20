@@ -9,7 +9,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record CreateCommentActionEvent : CommentActionEvent
 	{
-		public CreateCommentActionEvent(int userId, int commentId, string description = "") : base(userId, commentId, description)
+		public CreateCommentActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
 		{
 		}
 	}

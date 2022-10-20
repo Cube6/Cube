@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record CreateThumbUpActionEvent : CommentActionEvent
 	{
-		public CreateThumbUpActionEvent(int userId, int commentId, string description = "") : base(userId, commentId, description)
+		public CreateThumbUpActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
 		{
 		}
 	}
