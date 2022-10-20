@@ -201,15 +201,15 @@ services:
             - userservice2
             - searchservice1
 
-    searchservice1:
-      image: cubeelasticsearch
-      build:
-        context: .
-        dockerfile: ./src/Services/Elastic/Elastic.API/Dockerfile
-      networks:
-        - my-net
-      depends_on:
-        - consul
+  searchservice1:
+     image: cubeelasticsearch
+     build:
+       context: .
+       dockerfile: ./src/Services/Elastic/Elastic.API/Dockerfile
+     networks:
+            - my-net
+     depends_on:
+            - consul
 
   # CubeWeb #
   #cubewebapp:
