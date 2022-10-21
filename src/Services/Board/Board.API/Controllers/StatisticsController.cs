@@ -20,7 +20,7 @@ namespace Board.API.Controllers
 			_logger = logger;
 		}
 
-		//[Authorize]
+		[Authorize]
 		[HttpGet("boarditems")]
 		public IEnumerable<BoardItemStatsDto> GetAll()
 		{
