@@ -7,7 +7,6 @@ using Cube.Board.Domain;
 using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -183,7 +182,7 @@ namespace Cube.Board.Application
 					await _redis.SetAddAsync(ownerBoardItem.Id, commentDto.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
-			else if(commentDto.Type == CommentType.Message)
+			else if (commentDto.Type == CommentType.Message)
 			{
 				var comment = new Comment()
 				{
@@ -238,7 +237,7 @@ namespace Cube.Board.Application
 			else
 			{
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
-				foreach (var comment in comments.Where(c=>c.Type == CommentType.ThumbsUp))
+				foreach (var comment in comments.Where(c => c.Type == CommentType.ThumbsUp))
 				{
 					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
@@ -258,6 +257,36 @@ namespace Cube.Board.Application
 			await _repository.CreateIntegrationEventAsync(
 								IntegrationEventModelCreator.Create(
 									new CommentUpdatedEvent(commentDto.Id, commentDto.Detail)));
+		}
+
+		public IEnumerable<BoardItemStatsDto> GetBoardItemStats()
+		{
+			IEnumerable<DisscussionBoard> boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+
+			var dict = new Dictionary<string, int>();
+			foreach (var board in boards)
+			{
+				var boardItems = _repository.GetBoardItemsByBoardIdAsync(board.Id).Result.GroupBy(d => d.CreatedUser);
+				foreach (var item in boardItems)
+				{
+					if (dict.ContainsKey(item.Key))
+					{
+						dict[item.Key] += item.Count();
+					}
+					else
+					{
+						dict[item.Key] = item.Count();
+					}
+				}
+			}
+
+			var list = dict.Select(item => new BoardItemStatsDto()
+			{
+				CreatedUser = item.Key,
+				Count = item.Value
+			});
+
+			return list.OrderByDescending(t => t.Count);
 		}
 	}
 }
