@@ -19,11 +19,9 @@
                         </Tooltip>
                     </MenuItem>
 
-                    <MenuItem name="menuUsers">
-                        <Tooltip content="Not implemented yet" placement="bottom-start">
+                    <MenuItem name="menuUsers" @click.native="goToUsers()" >
                             <Icon type="md-person"></Icon>
                             Users
-                        </Tooltip>
                     </MenuItem>
 
                     <MenuItem name="menuSettings">

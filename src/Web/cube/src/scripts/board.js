@@ -99,6 +99,11 @@ export default {
                 this.$router.replace(this.navURL);
             }
         },
+        goToUsers() {
+            
+                this.navURL = '/users';
+                this.$router.replace(this.navURL);
+        },
         logout() {
 
             localStorage.setItem('LOGINUSER', '');

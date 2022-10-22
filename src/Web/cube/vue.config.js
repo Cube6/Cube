@@ -34,18 +34,21 @@ module.exports = {
             /************************************* Development *********************************/
             /*Connect to local Microservices*/
 
-            //'^/Board': {
+            // '^/Board': {
             //    target: 'https://localhost:5000'
-            //},
-            //'^/Comment': {
+            // },
+            // '^/Comment': {
             //    target: 'https://localhost:5000'
-            //},
-            //'^/User': {
+            // },
+            // '^/Statistics': {
+            //    target: 'https://localhost:5000'
+            // },
+            // '^/User': {
             //    target: 'https://localhost:4000'
-            //},
-            //'^/Authorize': {
+            // },
+            // '^/Authorize': {
             //    target: 'https://localhost:3000',
-            //},
+            // },
 
             /*Connect to local microservices via Gateway Service*/
 
@@ -71,6 +74,9 @@ module.exports = {
             //'^/Comment': {
             //    target: 'https://10.63.223.6:5000'
             //},
+            // '^/Statistics': {
+            //    target: 'https://10.63.223.6:5000'
+            // },
             //'^/User': {
             //    target: 'https://10.63.223.6:4000'
             //},
@@ -84,6 +90,9 @@ module.exports = {
               target: 'http://10.63.223.6:9070'
             },
             '^/Comment': {
+              target: 'http://10.63.223.6:9070'
+            },
+            '^/Statistics': {
               target: 'http://10.63.223.6:9070'
             },
             '^/User': {
