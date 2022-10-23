@@ -1,14 +1,35 @@
 export default {
     data() {
         return {
+            loading: false,
             columns: [
                 {
                     title: 'Name',
                     slot: 'name'
                 },
                 {
-                    title: 'Items Submitted',
+                    title: 'Total Items',
                     key: 'Count',
+                    sortable: true
+                },
+                {
+                    title: 'Went Well Items(Sum)',
+                    key: 'CountOfWell',
+                    sortable: true
+                },
+                {
+                    title: 'Improved Items(Sum)',
+                    key: 'CountOfImproved',
+                    sortable: true
+                },
+                {
+                    title: 'Comments(Sum)',
+                    key: 'CountOfComments',
+                    sortable: true
+                },
+                {
+                    title: 'Thumbsup(Sum)',
+                    key: 'CountOfThumbsup',
                     sortable: true
                 },
                 {
@@ -29,18 +50,20 @@ export default {
     },
     methods: {
         fetchData() {
-            this.axios(
-                {
-                  method: 'get',
-                  url: '/Statistics/boarditems'
-                })
-                .then(json => {
-                  this.data = json.data;
-                  console.log(this.data);
-                  return;
-                }).catch(error => {
-                  console.log('Failed to get statistics. Error:' + error);
-                })
+          this.loading = true;
+          this.axios(
+              {
+                method: 'get',
+                url: '/Statistics/boarditems'
+              })
+              .then(json => {
+                this.data = json.data;
+                this.loading = false;
+                return;
+              }).catch(error => {
+                this.loading = false;
+                console.log('Failed to get statistics. Error:' + error);
+              })
         },
         ViewBoard(val) {
             this.$router.push({ name:'boardDetail', params: { boardId: val } });

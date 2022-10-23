@@ -8,6 +8,17 @@ namespace Cube.Board.Application.Dtos
 	{
 		public int Id { get; set; }
 		public string CreatedUser { get; set; }
-		public int Count { get; set; }
+		public int Count 
+		{
+			get 
+			{
+				return CountOfWell + CountOfImproved;
+			}
+		}
+
+		public int CountOfWell { get; set; } = 0;
+		public int CountOfImproved { get; set; } = 0;
+		public int CountOfComments { get; set; } = 0;
+		public int CountOfThumbsup { get; set; } = 0;
 	}
 }

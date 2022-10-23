@@ -1,10 +1,10 @@
 <template>
     <div class="usersTable">
-        <Table border :columns="columns" :data="data">
+        <Table border :columns="columns" :data="data" :loading="loading">
             <template #name="{ row }">
             <img :src="getUserAvatar(row.CreatedUser)" style="width:20px; height:20px; border-radius:50%; " />
             &nbsp;
-            <strong>{{ row.CreatedUser }}</strong>
+            {{ row.CreatedUser }}
         </template>
 
         <template #action="{ row, index }">

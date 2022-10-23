@@ -261,32 +261,62 @@ namespace Cube.Board.Application
 
 		public IEnumerable<BoardItemStatsDto> GetBoardItemStats()
 		{
-			IEnumerable<DisscussionBoard> boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+			var dict = new Dictionary<string, BoardItemStatsDto>();
 
-			var dict = new Dictionary<string, int>();
+			IEnumerable<DisscussionBoard> boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
 			foreach (var board in boards)
 			{
-				var boardItems = _repository.GetBoardItemsByBoardIdAsync(board.Id).Result.GroupBy(d => d.CreatedUser);
-				foreach (var item in boardItems)
+				var boardItems = _repository.GetBoardItemsByBoardIdAsync(board.Id).Result;
+
+				foreach (var item in boardItems.GroupBy(d => d.CreatedUser))
 				{
-					if (dict.ContainsKey(item.Key))
+					if (!dict.ContainsKey(item.Key))
 					{
-						dict[item.Key] += item.Count();
+						dict[item.Key] = new BoardItemStatsDto()
+						{
+							CreatedUser = item.Key,
+						};
 					}
-					else
+
+					foreach (var boardItem in item.GroupBy(t => t.Type))
 					{
-						dict[item.Key] = item.Count();
+						if (boardItem.Key == BoardItemType.WentWell)
+						{
+							dict[item.Key].CountOfWell += boardItem.Count();
+						}
+						else if (boardItem.Key == BoardItemType.NeedsImproved)
+						{
+							dict[item.Key].CountOfImproved += boardItem.Count();
+						}
 					}
 				}
 			}
 
-			var list = dict.Select(item => new BoardItemStatsDto()
+			var comments = _repository.GetComments().Result;
+			foreach (var item in comments.GroupBy(t => t.CreatedUser))
 			{
-				CreatedUser = item.Key,
-				Count = item.Value
-			});
+				if (!dict.ContainsKey(item.Key))
+				{
+					dict[item.Key] = new BoardItemStatsDto()
+					{
+						CreatedUser = item.Key,
+					};
+				}
 
-			return list.OrderByDescending(t => t.Count);
+				foreach (var comment in item.GroupBy(t => t.Type))
+				{
+					if (comment.Key == CommentType.ThumbsUp)
+					{
+						dict[item.Key].CountOfThumbsup += comment.Count();
+					}
+					else if (comment.Key == CommentType.Message)
+					{
+						dict[item.Key].CountOfComments += comment.Count();
+					}
+				}
+			}
+
+			return dict.Values.ToList().OrderByDescending(t => t.Count);
 		}
 	}
 }

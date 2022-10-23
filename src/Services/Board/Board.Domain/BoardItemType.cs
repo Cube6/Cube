@@ -1,8 +1,8 @@
 ﻿namespace Cube.Board.Domain
 {
-	public enum BoardItemType
+	public enum BoardItemType:int
 	{
-		WentWell,
+		WentWell = 1 ,
 		NeedsImproved,
 		Action
 	}
