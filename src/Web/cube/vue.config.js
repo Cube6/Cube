@@ -58,6 +58,9 @@ module.exports = {
             // '^/Comment': {
             //     target: 'http://localhost:9070'
             // },
+            // '^/Statistics': {
+            //    target: 'http://localhost:9070'
+            // },
             // '^/User': {
             //     target: 'http://localhost:9070'
             // },
@@ -108,6 +111,9 @@ module.exports = {
             //    target: 'https://10.63.207.97:30500'
             // },
             // '^/Comment': {
+            //    target: 'https://10.63.207.97:30500'
+            // },
+            // '^/Statistics': {
             //    target: 'https://10.63.207.97:30500'
             // },
             // '^/User': {

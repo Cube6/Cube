@@ -4,15 +4,21 @@ export default {
             columns: [
                 {
                     title: 'Name',
-                    key: 'CreatedUser'
+                    slot: 'name'
                 },
                 {
                     title: 'Items Submitted',
                     key: 'Count',
                     sortable: true
                 },
+                {
+                    title: 'Action',
+                    slot: 'action',
+                    width: 200,
+                    align: 'center'
+                }     
             ],
-            post: [
+            data: [
             ]
         };
     },
@@ -23,30 +29,18 @@ export default {
     },
     methods: {
         fetchData() {
-            // fetch()
-            //     .then(r => r.json())
-            //     .then(json => {
-            //         this.post = json;
-            //         console.log(this.post);
-            //         return;
-            //     });
-
-
-                this.axios(
-                    {
-                      method: 'get',
-                      url: '/Statistics/boarditems'
-                    })
-                    .then(json => {
-                      this.post = json.data;
-                      //this.pageSetting.total = this.post.length;
-                      console.log(this.post);
-                      //setTimeout(msg);
-                      return;
-                    }).catch(error => {
-                      //setTimeout(msg);
-                      console.log('Failed to get statistics. Error:' + error);
-                    })
+            this.axios(
+                {
+                  method: 'get',
+                  url: '/Statistics/boarditems'
+                })
+                .then(json => {
+                  this.data = json.data;
+                  console.log(this.data);
+                  return;
+                }).catch(error => {
+                  console.log('Failed to get statistics. Error:' + error);
+                })
         },
         ViewBoard(val) {
             this.$router.push({ name:'boardDetail', params: { boardId: val } });
@@ -60,6 +54,15 @@ export default {
               userAvatar = require('../assets/Person/cube.jpg')
               return userAvatar
             }
-          },
+        },
+        show (index) {
+          this.$Modal.info({
+              title: 'User Info',
+              content: `Name：${this.data[index].CreatedUser}<br>Items Submitted: ${this.data[index].Count}`
+          })
+        },
+        remove (index) {
+            this.data.splice(index, 1);
+        }
     },
 }

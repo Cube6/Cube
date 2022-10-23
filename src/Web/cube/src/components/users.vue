@@ -1,6 +1,18 @@
 <template>
-    <div style="margin:0">
-        <Table border :columns="columns" :data="post"></Table>
+    <div class="usersTable">
+        <Table border :columns="columns" :data="data">
+            <template #name="{ row }">
+            <img :src="getUserAvatar(row.CreatedUser)" style="width:20px; height:20px; border-radius:50%; " />
+            &nbsp;
+            <strong>{{ row.CreatedUser }}</strong>
+        </template>
+
+        <template #action="{ row, index }">
+            <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">View</Button>
+            <Button type="error" size="small" @click="remove(index)">Delete</Button>
+        </template>
+        
+        </Table>
         <!-- <table>
             <thead>
                 <tr>
@@ -33,6 +45,14 @@
 </script>
 
 <style>
+.usersTable{
+    minHeight: 300px;
+	height: 100%;
+	width: 100%;
+	padding: 12px;
+	position: absolute;
+	overflow-y: auto;
+}
 .table {
     font: Helvetica;
     font-size:12pt;
