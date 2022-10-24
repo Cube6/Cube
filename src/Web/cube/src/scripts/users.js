@@ -35,7 +35,7 @@ export default {
                 {
                     title: 'Action',
                     slot: 'action',
-                    width: 200,
+                    width: 100,
                     align: 'center'
                 }     
             ],
@@ -79,9 +79,27 @@ export default {
             }
         },
         show (index) {
-          this.$Modal.info({
+
+            // <img src='${this.getUserAvatar(this.data[index].CreatedUser)}" style="width:20px; height:20px; border-radius:50%; ' />
+
+            this.$Modal.info({
               title: 'User Info',
-              content: `Name：${this.data[index].CreatedUser}<br>Items Submitted: ${this.data[index].Count}`
+              content: 
+              `
+              
+
+              Name：${this.data[index].CreatedUser} <br>
+
+              Items Submitted: ${this.data[index].Count} <br>
+
+              Went Well Items: ${this.data[index].CountOfWell} <br>
+
+              Improved Items(Sum): ${this.data[index].CountOfImproved} <br>
+
+              Comments(Sum): ${this.data[index].CountOfComments} <br>
+
+              Thumbsup(Sum): ${this.data[index].CountOfThumbsup} <br>
+              `
           })
         },
         remove (index) {

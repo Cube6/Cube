@@ -9,7 +9,7 @@
 
         <template #action="{ row, index }">
             <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">View</Button>
-            <Button type="error" size="small" @click="remove(index)">Delete</Button>
+            <!-- <Button type="error" size="small" @click="remove(index)">Delete</Button> -->
         </template>
         
         </Table>
