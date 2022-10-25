@@ -8,6 +8,7 @@ import axios from 'axios';
 import vueParticles from 'vue-particles';
 import VueConfirmDialog from 'vue-confirm-dialog'
 import VueFullscreen from 'vue-fullscreen'
+import englishLang from 'view-design/dist/locale/en-US'
 
 Vue.config.productionTip = false
 Vue.use(router);
@@ -19,8 +20,9 @@ Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
 Vue.prototype.axios = axios;
 
 Vue.use(ViewUI, {
-    transfer: true,
-    size: 'default',
+  transfer: true,
+  size: 'default',
+  locale: englishLang
 });
 
 axios.interceptors.response.use(
