@@ -29,12 +29,17 @@ namespace Elastic.API.Controllers
 		[Route("Test")]
 		public void Test()
 		{
+			var random = new Random();
+			var randNum = random.Next(1, 100000);
 			IMessageQueue messageQueue = new RabbitMQService("amqp://admin:admin@localhost:5672", "TestQueue");
 			var eventBus = new EventBusRabbitMQ(messageQueue, new InMemoryEventBusSubscriptionsManager(), null);
 			var board = new BoardDao()
 			{
-				Keyword = "test",
-				CreationDate = DateTime.Now
+				Keyword = "test" + randNum,
+				CreationDate = DateTime.Now,
+				Id = Guid.NewGuid(),
+				EntityId = randNum,
+				CreateUser = "tester"
 			};
 			eventBus.Publish(new CreateBoardActionEvent(board));
 		}

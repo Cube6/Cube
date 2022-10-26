@@ -57,10 +57,30 @@ namespace Elastic.Application
 			//	response.Comments = commentResult.Documents;
 			//}
 
-			int from = (request.Page - 1) * request.PageSize;
-			int size = request.PageSize;
 
-			var searchDescriptor = new SearchDescriptor<EntityDao>("Cube.Entity.*").From(from).Size(size).Query(q => q.Match(m => m.Field(f => f.Keyword).Fuzziness(Fuzziness.Auto).Query(request.Keyword)) && q.DateRange(r => r.Field(f => f.CreationDate).GreaterThanOrEquals(request.StartTime).LessThanOrEquals(request.EndTime)) && q.Match(m => m.Field(f => f.Creator).Query(request.UserName)));
+			//"cube.entity.default, cube.eneity.board, cube.entity.boardItem, cube.entity.comment"
+
+			var searchDescriptor = new SearchDescriptor<EntityDao>("cube.entity.default, cube.eneity.board, cube.entity.boardItem, cube.entity.comment");
+
+			if (request.Pagination)
+			{
+				int from = (request.Page - 1) * request.PageSize;
+				int size = request.PageSize;
+				searchDescriptor.From(from).Size(size);
+			}
+			
+
+			searchDescriptor.Query(query =>
+			{
+				var queryContainer = query.Match(m => m.Field(f => f.Keyword).Fuzziness(Fuzziness.Auto).Query(request.Keyword)) && query.DateRange(r => r.Field(f => f.CreationDate).GreaterThanOrEquals(request.StartTime).LessThanOrEquals(request.EndTime));
+
+				if (!string.IsNullOrEmpty(request.UserName))
+				{
+					queryContainer = queryContainer && query.Match(m => m.Field(f => f.Creator).Query(request.UserName));
+				}
+
+				return queryContainer;
+			});
 
 			var result = await _client.SearchAsync<EntityDao>(searchDescriptor);
 			

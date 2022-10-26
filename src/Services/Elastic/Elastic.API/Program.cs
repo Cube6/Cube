@@ -33,6 +33,7 @@ var nodes = nestConfig.GetSection("Connections")
 var pool = new StaticConnectionPool(nodes);
 var settings = new ConnectionSettings(pool)
 	.DefaultIndex("Default")
+	.EnableDebugMode()
 	//.BasicAuthentication(nestConfig["Username"], nestConfig["Password"])
 	.ServerCertificateValidationCallback((a, b, c, d) => true)//TODO: Configure the service certificate
 	.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
@@ -47,6 +48,7 @@ var settings = new ConnectionSettings(pool)
 builder.Services.AddScoped<ElasticClient>(sp =>
 {
 	var client = new ElasticClient(settings);
+
 	return client;
 });
 
