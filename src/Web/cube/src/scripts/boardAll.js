@@ -144,14 +144,19 @@ export default {
     sendBoardMessage() {
       this.connection.invoke("SendBoardMessage");
     },
+
     pIndexChange(currentIndex) {
       this.pageSetting.currentPage = currentIndex;
-      this.fetchData();
+      this.showBoardData = this.allBoardData.slice(
+        (this.pageSetting.currentPage - 1) * this.pageSetting.pageSize,
+        this.pageSetting.currentPage * this.pageSetting.pageSize);
     },
 
     pSizeChange(size) {
       this.pageSetting.pageSize = size;
-      this.fetchData();
+      this.showBoardData = this.allBoardData.slice(
+        (this.pageSetting.currentPage - 1) * this.pageSetting.pageSize,
+        this.pageSetting.currentPage * this.pageSetting.pageSize);
     },
 
     formatBoardCreateTime(board) {
