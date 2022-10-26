@@ -11,7 +11,7 @@ export default {
       connection: "",
       pageSetting: {
         currentPage: 1,
-        pageSize: 50,
+        pageSize: 20,
         total:50
       }
     };
@@ -166,7 +166,7 @@ export default {
     getBoardCardBG(board) {
 
       if (board.IsDeleted == false && board.State == 1) {
-        return '#c4ebaf';
+        return 'rgb(79 201 13)';
       }
       // else if(board.State == 2)
       // {
@@ -175,8 +175,7 @@ export default {
       else if (board.IsDeleted) {
         return '#f3c1c1';
       }
-
-      return '#327c2d';
+      return '#c4ebaf';
     },
     getBoardCardTooltip(board) {
 
