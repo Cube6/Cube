@@ -7,6 +7,8 @@ using Cube.Infrastructure.Redis;
 using Elastic.Application;
 using Elastic.Application.Configuration;
 using Elastic.Application.Dao;
+using Elastic.Application.IntegrationEvents.EventHandling;
+using Elastic.Application.IntegrationEvents.Events.UserActionEvents;
 using Elasticsearch.Net;
 using Nest;
 using Quartz;
@@ -35,12 +37,12 @@ var settings = new ConnectionSettings(pool)
 	.ServerCertificateValidationCallback((a, b, c, d) => true)//TODO: Configure the service certificate
 	.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
 	.ThrowExceptions()
-	.DefaultMappingFor<BaseDao>(m => m.IndexName("Cube.Default"))
-	.DefaultMappingFor<UserActionDao>(m => m.IndexName("Cube.Action.Default"))
-	.DefaultMappingFor<EntityDao>(m => m.IndexName("Cube.Entity.Default"))
-	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("Cube.Entity.BoardItem"))
-	.DefaultMappingFor<BoardDao>(m => m.IndexName("Cube.Entity.Board"))
-	.DefaultMappingFor<CommentDao>(m => m.IndexName("Cube.Entity.Comment"));
+	.DefaultMappingFor<BaseDao>(m => m.IndexName("cube.default"))
+	.DefaultMappingFor<UserActionDao>(m => m.IndexName("cube.action.default"))
+	.DefaultMappingFor<EntityDao>(m => m.IndexName("cube.entity.default"))
+	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("cube.entity.boardItem"))
+	.DefaultMappingFor<BoardDao>(m => m.IndexName("cube.entity.board"))
+	.DefaultMappingFor<CommentDao>(m => m.IndexName("cube.entity.comment"));
 
 builder.Services.AddScoped<ElasticClient>(sp =>
 {
@@ -71,12 +73,19 @@ builder.Services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
 	IMessageQueue messageQueue = new RabbitMQService(rabbitMQConnStr, rabbitMQTopic);
 	var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 	var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-	return new EventBusRabbitMQ(messageQueue, eventBusSubcriptionsManager, iLifetimeScope);
+	var eventBus = new EventBusRabbitMQ(messageQueue, eventBusSubcriptionsManager, iLifetimeScope);
+	eventBus.Subscribe<CreateBoardActionEvent, BoardActionEventHandler>();
+	eventBus.Subscribe<DeleteBoardActionEvent, BoardActionEventHandler>();
+	eventBus.Subscribe<UpdateBoardActionEvent, BoardActionEventHandler>();
+	eventBus.Subscribe<BoardActionEvent, BoardActionEventHandler>();
+	return eventBus;
 });
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-#endregion
+builder.Services.AddTransient<BoardActionEventHandler>();
 
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+
+#endregion
 
 var app = builder.Build();
 

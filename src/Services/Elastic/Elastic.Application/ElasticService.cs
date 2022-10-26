@@ -27,9 +27,12 @@ namespace Elastic.Application
 			//Console.WriteLine(result);
 			//var search = new SearchDescriptor<Object>();
 			//search.
-			//_client.Search<Object>(o => o.Index("indexname").Query(q =>  q.MatchAll() ));
+			//_client.Search<Object>(o => o.Index("indexname").Query(q => q.MatchAll()));
 			//_client.IndexAsync("hello", f => f.Index("test").Id(Guid.NewGuid().ToString()));
 			//_eventBus.Publish(new UserActionEvent(1, ActionType.LoggedIn, "This is a test event"));
+
+			var result = _client.IndexDocumentAsync<BoardDao>(new BoardDao() { Keyword = "test" }).GetAwaiter().GetResult();
+			Console.WriteLine(result);
 		}
 		public async Task<GlobalInfoSearchResponseEvent> GlobalInfoSearchAsync(GlobalInfoSearchRequestEvent request)
 		{

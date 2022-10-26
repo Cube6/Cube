@@ -20,20 +20,6 @@ namespace Elastic.API.Controllers
 			_service = service;
 		}
 
-		[HttpGet]
-		[Route("Test")]
-		public string Test()
-		{
-			try
-			{
-				_service.Test();
-				return "good";
-			}catch(Exception es)
-			{
-				return es.ToString();
-			}
-		}
-
 		[HttpPut]
 		[Route(nameof(GlobalInfoSearch))]
 		public async Task<GlobalInfoSearchResponseEvent> GlobalInfoSearch(GlobalInfoSearchRequestEvent request)
