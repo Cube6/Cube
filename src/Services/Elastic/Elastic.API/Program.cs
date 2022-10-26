@@ -40,10 +40,10 @@ var settings = new ConnectionSettings(pool)
 	.ThrowExceptions()
 	.DefaultMappingFor<BaseDao>(m => m.IndexName("cube.default"))
 	.DefaultMappingFor<UserActionDao>(m => m.IndexName("cube.action.default"))
-	.DefaultMappingFor<EntityDao>(m => m.IndexName("cube.entity.default"))
-	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("cube.entity.boardItem"))
-	.DefaultMappingFor<BoardDao>(m => m.IndexName("cube.entity.board"))
-	.DefaultMappingFor<CommentDao>(m => m.IndexName("cube.entity.comment"));
+	.DefaultMappingFor<EntityDao>(m => m.IndexName("cube.entity.default").IdProperty(d => d.EntityId))
+	.DefaultMappingFor<BoardItemDao>(m => m.IndexName("cube.entity.boarditem").IdProperty(d => d.EntityId))
+	.DefaultMappingFor<BoardDao>(m => m.IndexName("cube.entity.board").IdProperty(d => d.EntityId))
+	.DefaultMappingFor<CommentDao>(m => m.IndexName("cube.entity.comment").IdProperty(d => d.EntityId));
 
 builder.Services.AddScoped<ElasticClient>(sp =>
 {
@@ -68,6 +68,7 @@ builder.Services.AddQuartz(config =>
 #region Register Message Queue
 string rabbitMQConnStr = builder.Configuration.GetSection("RabbitMq")["ConnectionString"];
 string rabbitMQTopic = builder.Configuration.GetSection("RabbitMq")["QueueName"];
+bool firstInitialize = false;
 
 builder.Services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 builder.Services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
@@ -76,14 +77,37 @@ builder.Services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
 	var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 	var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
 	var eventBus = new EventBusRabbitMQ(messageQueue, eventBusSubcriptionsManager, iLifetimeScope);
-	eventBus.Subscribe<CreateBoardActionEvent, BoardActionEventHandler>();
-	eventBus.Subscribe<DeleteBoardActionEvent, BoardActionEventHandler>();
-	eventBus.Subscribe<UpdateBoardActionEvent, BoardActionEventHandler>();
-	eventBus.Subscribe<BoardActionEvent, BoardActionEventHandler>();
+	if (!firstInitialize)
+	{
+		eventBus.Subscribe<CreateBoardActionEvent, BoardActionEventHandler>();
+		eventBus.Subscribe<DeleteBoardActionEvent, BoardActionEventHandler>();
+		eventBus.Subscribe<UpdateBoardActionEvent, BoardActionEventHandler>();
+		eventBus.Subscribe<BoardActionEvent, BoardActionEventHandler>();
+
+		eventBus.Subscribe<CreateBoardItemActionEvent, BoardItemActionEventHandler>();
+		eventBus.Subscribe<DeleteBoardItemActionEvent, BoardItemActionEventHandler>();
+		eventBus.Subscribe<UpdateBoardItemActionEvent, BoardItemActionEventHandler>();
+		eventBus.Subscribe<BoardItemActionEvent, BoardItemActionEventHandler>();
+
+		eventBus.Subscribe<CreateCommentActionEvent, CommentActionEventHandler>();
+		eventBus.Subscribe<DeleteCommentActionEvent, CommentActionEventHandler>();
+		eventBus.Subscribe<UpdateCommentActionEvent, CommentActionEventHandler>();
+		eventBus.Subscribe<CommentActionEvent, CommentActionEventHandler>();
+
+		eventBus.Subscribe<LogInActionEvent, MiscellaneousActionEventHandler>();
+		eventBus.Subscribe<LogOutActionEvent, MiscellaneousActionEventHandler>();
+		eventBus.Subscribe<MiscellaneousActionEvent, MiscellaneousActionEventHandler>();
+
+		firstInitialize = true;
+	}
+	
 	return eventBus;
 });
 
 builder.Services.AddTransient<BoardActionEventHandler>();
+builder.Services.AddTransient<BoardItemActionEventHandler>();
+builder.Services.AddTransient<CommentActionEventHandler>();
+builder.Services.AddTransient<MiscellaneousActionEventHandler>();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 

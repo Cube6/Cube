@@ -12,13 +12,15 @@ namespace Elastic.Application.Dao
 		public string Username { get; set; }
 		public DateTime CreationTime { get; set; }
 		public string OperationType { get; set; }
-		public UserActionEvent ExtraInfo { get; set; }
+		public object ExtraInfo { get; set; }
 
 		public UserActionDao(UserActionEvent @event)
 		{
+			this.Id = Guid.NewGuid();
 			this.Username = @event.UserName;
 			this.OperationType = @event.GetType().Name;
 			this.ExtraInfo = @event;
+			this.CreationTime = DateTime.Now;
 		}
 	}
 }

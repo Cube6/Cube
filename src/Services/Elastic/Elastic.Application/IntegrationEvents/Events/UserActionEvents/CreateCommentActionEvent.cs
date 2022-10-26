@@ -9,8 +9,15 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record CreateCommentActionEvent : CommentActionEvent
 	{
-		public CreateCommentActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
+		public CommentDao Comment { get; set; }
+
+		private CreateCommentActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
 		{
+		}
+
+		public CreateCommentActionEvent(CommentDao comment, string description = "") : this(comment.Creator, comment.EntityId, description)
+		{
+			this.Comment = comment;
 		}
 	}
 }

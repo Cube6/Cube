@@ -10,8 +10,8 @@ namespace Elastic.Application.IntegrationEvents.Events.SearchEvents.Response
 {
 	public record GlobalInfoSearchResponseEvent : IntegrationEvent
 	{
-		public IEnumerable<BoardDao> Boards { get; set; }
-		public IEnumerable<BoardItemDao> BoardItems { get; set; }
-		public IEnumerable<CommentDao> Comments { get; set; }
+		public List<EntityDao> Boards { get; set; } = new List<EntityDao>();
+		public List<EntityDao> BoardItems { get; set; } = new List<EntityDao>();
+		public List<EntityDao> Comments { get; set; } = new List<EntityDao>();
 	}
 }

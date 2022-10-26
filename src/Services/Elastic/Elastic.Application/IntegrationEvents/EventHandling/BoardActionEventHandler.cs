@@ -14,17 +14,20 @@ namespace Elastic.Application.IntegrationEvents.EventHandling
 		}
 		public async Task Handle(BoardActionEvent @event)
 		{
+			var response = _client.IndexDocumentAsync<UserActionDao>(new UserActionDao(@event));
 			switch (@event)
 			{
 				case CreateBoardActionEvent createEvent:
 					var indexResponse = await _client.IndexDocumentAsync<BoardDao>(createEvent.Board);
 					break;
 				case UpdateBoardActionEvent updateEvent:
-					var updateResponse = await _client.UpdateAsync<BoardDao>(updateEvent.Id, u => u.Doc(updateEvent.Board));
+					var updateResponse = await _client.UpdateAsync<BoardDao>(updateEvent.BoardId, u => u.Doc(updateEvent.Board));
 					break;
 				case DeleteBoardActionEvent deleteEvent:
-					var deleteResponse = await _client.DeleteAsync<BoardDao>(deleteEvent.Id);
+					var deleteResponse = await _client.DeleteAsync<BoardDao>(deleteEvent.BoardId);
 					break;
+				default:
+					throw new NotImplementedException();
 			}
 		}
 	}

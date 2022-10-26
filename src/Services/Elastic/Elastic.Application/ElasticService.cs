@@ -5,6 +5,7 @@ using Elastic.Application.IntegrationEvents.Events;
 using Elastic.Application.IntegrationEvents.Events.SearchEvents.Request;
 using Elastic.Application.IntegrationEvents.Events.SearchEvents.Response;
 using Nest;
+using Newtonsoft.Json;
 
 namespace Elastic.Application
 {
@@ -60,7 +61,7 @@ namespace Elastic.Application
 
 			//"cube.entity.default, cube.eneity.board, cube.entity.boardItem, cube.entity.comment"
 
-			var searchDescriptor = new SearchDescriptor<EntityDao>("cube.entity.default, cube.eneity.board, cube.entity.boardItem, cube.entity.comment");
+			var searchDescriptor = new SearchDescriptor<EntityDao>("cube.entity.board, cube.entity.boarditem, cube.entity.comment");
 
 			if (request.Pagination)
 			{
@@ -84,17 +85,23 @@ namespace Elastic.Application
 
 			var result = await _client.SearchAsync<EntityDao>(searchDescriptor);
 			
-			foreach(var item in result.Documents)
+			foreach(var hit in result.Hits)
 			{
-				//Do something
+				switch (hit.Index)
+				{
+					case "cube.entity.board":
+						response.Boards.Add(hit.Source);
+						break;
+					case "cube.entity.boarditem":
+						response.BoardItems.Add(hit.Source);
+						break;
+					case "cube.entity.comment":
+						response.Comments.Add(hit.Source);
+						break;
+				}
 			}
 
 			return response;
-		}
-
-		private async Task<ISearchResponse<BoardDao>> SearchBoard(GlobalInfoSearchRequestEvent request)
-		{
-			return null;
 		}
 	}
 }

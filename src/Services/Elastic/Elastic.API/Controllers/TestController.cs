@@ -26,23 +26,83 @@ namespace Elastic.API.Controllers
 		}
 
 		[HttpGet]
-		[Route("Test")]
-		public void Test()
+		[Route("CreateTest")]
+		public void CreateTest()
 		{
 			var random = new Random();
-			var randNum = random.Next(1, 100000);
+			var boardId = random.Next(1, 100000);
 			IMessageQueue messageQueue = new RabbitMQService("amqp://admin:admin@localhost:5672", "TestQueue");
 			var eventBus = new EventBusRabbitMQ(messageQueue, new InMemoryEventBusSubscriptionsManager(), null);
 			var board = new BoardDao()
 			{
-				Keyword = "test" + randNum,
+				Keyword = "test" + boardId,
 				CreationDate = DateTime.Now,
 				Id = Guid.NewGuid(),
-				EntityId = randNum,
+				EntityId = boardId,
 				CreateUser = "tester"
 			};
-			eventBus.Publish(new CreateBoardActionEvent(board));
+			var newEvent = new CreateBoardActionEvent(board);
+			newEvent.CreationTime = DateTime.Now;
+			eventBus.Publish(newEvent);
+
+			var boardItemId = random.Next(1, 100000);
+			var boardItem = new BoardItemDao()
+			{
+				BoardId = boardId,
+				CreateUser = "tester",
+				Keyword = "test detail",
+				EntityId = boardItemId,
+				CreationDate = DateTime.Now
+			};
+			var newEvent2 = new CreateBoardItemActionEvent(boardItem);
+			newEvent2.CreationTime = DateTime.Now;
+			eventBus.Publish(newEvent2);
+
+			var comment = new CommentDao()
+			{
+				BoardItemId = boardItemId,
+				Keyword = "test comment",
+				EntityId = random.Next(1, 100000),
+				CreationDate = DateTime.Now
+			};
+			var newEvent3 = new CreateCommentActionEvent(comment);
+			newEvent3.CreationTime = DateTime.Now;
+			eventBus.Publish(newEvent3);
 		}
 
+		[HttpGet]
+		[Route("UpdateTest")]
+		public void UpdateTest()
+		{
+			IMessageQueue messageQueue = new RabbitMQService("amqp://admin:admin@localhost:5672", "TestQueue");
+			var eventBus = new EventBusRabbitMQ(messageQueue, new InMemoryEventBusSubscriptionsManager(), null);
+			var board = new BoardDao()
+			{
+				Keyword = "test" + 100000,
+				CreationDate = DateTime.Now,
+				Id = Guid.NewGuid(),
+				EntityId = 100000,
+				CreateUser = "tester"
+			};
+			var newEvent = new CreateBoardActionEvent(board);
+			newEvent.CreationTime = DateTime.Now;
+			eventBus.Publish(newEvent);
+			board.Keyword = "ModifiedEvent";
+
+			var newEvent2 = new UpdateBoardActionEvent(board);
+			newEvent2.CreationTime = DateTime.Now;
+			eventBus.Publish(newEvent2);
+		}
+
+		[HttpGet]
+		[Route("DeleteTest")]
+		public void DeleteTest()
+		{
+			var newEvent = new DeleteBoardActionEvent("test", 100000);
+			newEvent.CreationTime = DateTime.Now;
+			IMessageQueue messageQueue = new RabbitMQService("amqp://admin:admin@localhost:5672", "TestQueue");
+			var eventBus = new EventBusRabbitMQ(messageQueue, new InMemoryEventBusSubscriptionsManager(), null);
+			eventBus.Publish(newEvent);
+		}
 	}
 }
