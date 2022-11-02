@@ -208,8 +208,27 @@ services:
        dockerfile: ./src/Services/Elastic/Elastic.API/Dockerfile
      networks:
             - my-net
-     depends_on:
-            - consul
+     environment:
+            ConnectionStrings__RedisConnection: 10.63.223.58:6379
+            RabbitMq__ConnectionString: admin:Welcome1@10.63.223.58:5672
+            RabbitMq__QueueName: TestQueue
+            Nest__Connections__0: http://10.63.223.58:9200
+            Nest_RequestTimeout: 60
+
+  searchservice2:
+     image: cubeelasticsearch
+     build:
+        context: .
+        dockerfile: ./src/Services/Elastic/Elastic.API/Dockerfile
+     networks:
+            - my-net
+     environment:
+            ConnectionStrings__RedisConnection: 10.63.223.58:6379
+            RabbitMq__ConnectionString: admin:Welcome1@10.63.223.58:5672
+            RabbitMq__QueueName: TestQueue
+            Nest__Connections__0: http://10.63.223.58:9200
+            Nest_RequestTimeout: 60
+
 
   # CubeWeb #
   #cubewebapp:
