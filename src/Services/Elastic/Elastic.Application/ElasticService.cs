@@ -1,6 +1,7 @@
 ﻿using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
 using Elastic.Application.Dao;
+using Elastic.Application.Helper;
 using Elastic.Application.IntegrationEvents.Events;
 using Elastic.Application.IntegrationEvents.Events.SearchEvents.Request;
 using Elastic.Application.IntegrationEvents.Events.SearchEvents.Response;
@@ -61,7 +62,7 @@ namespace Elastic.Application
 
 			//"cube.entity.default, cube.eneity.board, cube.entity.boardItem, cube.entity.comment"
 
-			var searchDescriptor = new SearchDescriptor<EntityDao>("cube.entity.board, cube.entity.boarditem, cube.entity.comment");
+			var searchDescriptor = new SearchDescriptor<EntityDao>($"{IndexHelper.CommentIndex}, {IndexHelper.BoardItemIndex}, {IndexHelper.BoardIndex}");
 
 			if (request.Pagination)
 			{
@@ -87,20 +88,17 @@ namespace Elastic.Application
 			
 			foreach(var hit in result.Hits)
 			{
-				switch (hit.Index)
+				if(hit.Index == IndexHelper.BoardIndex)
 				{
-					case "cube.entity.board":
-						response.Boards.Add(hit.Source);
-						break;
-					case "cube.entity.boarditem":
-						response.BoardItems.Add(hit.Source);
-						break;
-					case "cube.entity.comment":
-						response.Comments.Add(hit.Source);
-						break;
+					response.Boards.Add(hit.Source);
+				}else if(hit.Index == IndexHelper.BoardItemIndex)
+				{
+					response.BoardItems.Add(hit.Source);
+				}else if(hit.Index == IndexHelper.CommentIndex)
+				{
+					response.Comments.Add(hit.Source);
 				}
 			}
-
 			return response;
 		}
 	}

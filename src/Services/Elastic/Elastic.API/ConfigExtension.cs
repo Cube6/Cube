@@ -9,6 +9,7 @@ using Cube.BuildingBlocks.EventBus;
 using Elastic.Application.IntegrationEvents.EventHandling;
 using Elastic.Application.IntegrationEvents.Events.UserActionEvents;
 using RabbitMq;
+using Elastic.Application.Helper;
 
 namespace Elastic.API
 {
@@ -16,6 +17,11 @@ namespace Elastic.API
 	{
 		public static IServiceCollection AddElastic(this IServiceCollection services, ConfigurationManager configuration)
 		{
+			IndexHelper.BoardIndex = "cube.entity.board";
+			IndexHelper.BoardItemIndex = "cube.entity.boarditem";
+			IndexHelper.CommentIndex = "cube.entity.comment";
+			IndexHelper.UserActionIndex = "cube.action.default";
+
 			services.AddScoped<IElasticService, ElasticService>();
 
 			var nestConfig = configuration.GetSection("Nest");
@@ -31,12 +37,10 @@ namespace Elastic.API
 				.ServerCertificateValidationCallback((a, b, c, d) => true)//TODO: Configure the service certificate
 				.RequestTimeout(TimeSpan.FromSeconds(nestConfig.GetSection("RequestTimeout").Get<int>()))
 				.ThrowExceptions()
-				.DefaultMappingFor<BaseDao>(m => m.IndexName("cube.default"))
-				.DefaultMappingFor<UserActionDao>(m => m.IndexName("cube.action.default"))
-				.DefaultMappingFor<EntityDao>(m => m.IndexName("cube.entity.default").IdProperty(d => d.EntityId))
-				.DefaultMappingFor<BoardItemDao>(m => m.IndexName("cube.entity.boarditem").IdProperty(d => d.EntityId))
-				.DefaultMappingFor<BoardDao>(m => m.IndexName("cube.entity.board").IdProperty(d => d.EntityId))
-				.DefaultMappingFor<CommentDao>(m => m.IndexName("cube.entity.comment").IdProperty(d => d.EntityId));
+				.DefaultMappingFor<UserActionDao>(m => m.IndexName(IndexHelper.UserActionIndex))
+				.DefaultMappingFor<BoardItemDao>(m => m.IndexName(IndexHelper.BoardItemIndex).IdProperty(d => d.EntityId))
+				.DefaultMappingFor<BoardDao>(m => m.IndexName(IndexHelper.BoardIndex).IdProperty(d => d.EntityId))
+				.DefaultMappingFor<CommentDao>(m => m.IndexName(IndexHelper.CommentIndex).IdProperty(d => d.EntityId));
 
 			services.AddScoped<ElasticClient>(sp =>
 			{
