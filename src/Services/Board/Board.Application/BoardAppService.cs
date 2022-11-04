@@ -7,6 +7,8 @@ using Cube.Board.Domain;
 using Cube.Board.Respository;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.Infrastructure.Redis;
+using Elastic.Application.Dao;
+using Elastic.Application.IntegrationEvents.Events.UserActionEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -86,6 +88,18 @@ namespace Cube.Board.Application
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now
 			};
+
+			_eventBus.Publish(new CreateBoardActionEvent(new BoardDao
+			{
+				CreateUser = board.CreatedUser,
+				State = (int)board.State,
+				CreationDate = board.DateCreated,
+				EntityId = board.Id,
+				Creator = board.CreatedUser,
+				IsDeleted = board.IsDeleted,
+				Keyword = board.Name
+			}));
+
 			return _repository.CreateBoardAsync(board);
 		}
 

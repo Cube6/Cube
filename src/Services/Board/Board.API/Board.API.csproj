@@ -11,12 +11,16 @@
   <ItemGroup>
     <Compile Remove="EventHandling\**" />
     <Compile Remove="Protos\**" />
+    <Compile Remove="SearchServiceModels\**" />
     <Content Remove="EventHandling\**" />
     <Content Remove="Protos\**" />
+    <Content Remove="SearchServiceModels\**" />
     <EmbeddedResource Remove="EventHandling\**" />
     <EmbeddedResource Remove="Protos\**" />
+    <EmbeddedResource Remove="SearchServiceModels\**" />
     <None Remove="EventHandling\**" />
     <None Remove="Protos\**" />
+    <None Remove="SearchServiceModels\**" />
   </ItemGroup>
 
   <ItemGroup>
