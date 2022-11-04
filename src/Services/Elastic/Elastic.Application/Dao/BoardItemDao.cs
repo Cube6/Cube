@@ -12,21 +12,7 @@ namespace Elastic.Application.Dao
 		public string CreateUser { get; set; }
 		public string Detail => Keyword;
 		public string Action { get; set; }
-		public BoardItemType Type { get; set; }
-		public BoardItemState State { get; set; }
-	}
-
-	public enum BoardItemType
-	{
-		WentWell,
-		NeedsImprovded,
-		Action
-	}
-
-	public enum BoardItemState
-	{
-		None,
-		InProgress,
-		Done,
+		public int Type { get; set; }
+		public int State { get; set; }
 	}
 }

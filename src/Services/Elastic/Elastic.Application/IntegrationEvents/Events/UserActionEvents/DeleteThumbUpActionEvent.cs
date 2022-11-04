@@ -8,7 +8,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 {
 	public record DeleteThumbUpActionEvent : CommentActionEvent
 	{
-		public DeleteThumbUpActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
+		public DeleteThumbUpActionEvent(string userName, long commentId, string description = "") : base(userName, commentId, description)
 		{
 		}
 	}

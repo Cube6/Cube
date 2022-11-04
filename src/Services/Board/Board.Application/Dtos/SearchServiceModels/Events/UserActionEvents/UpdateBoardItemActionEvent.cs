@@ -6,7 +6,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 	public record UpdateBoardItemActionEvent : BoardItemActionEvent
 	{
 		public BoardItemDao BoardItem { get; set; }
-		private UpdateBoardItemActionEvent(string userName, int boardItemId, int boardId, string description = "") : base(userName, boardItemId, boardId, description)
+		private UpdateBoardItemActionEvent(string userName, long boardItemId, long boardId, string description = "") : base(userName, boardItemId, boardId, description)
 		{
 		}
 

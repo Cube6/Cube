@@ -14,6 +14,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BoardItemState = Cube.Board.Domain.BoardItemState;
+using BoardItemType = Cube.Board.Domain.BoardItemType;
+using CommentType = Cube.Board.Domain.CommentType;
 
 namespace Cube.Board.Application
 {
@@ -89,6 +92,8 @@ namespace Cube.Board.Application
 				DateModified = DateTime.Now
 			};
 
+			var result =  _repository.CreateBoardAsync(board);
+
 			_eventBus.Publish(new CreateBoardActionEvent(new BoardDao
 			{
 				CreateUser = board.CreatedUser,
@@ -100,7 +105,7 @@ namespace Cube.Board.Application
 				Keyword = board.Name
 			}));
 
-			return _repository.CreateBoardAsync(board);
+			return result;
 		}
 
 		public async Task UpdateBoardAsync(BoardDto boardDto)
@@ -114,6 +119,17 @@ namespace Cube.Board.Application
 			}
 
 			await _repository.UpdateBoardAsync(board);
+
+			_eventBus.Publish(new UpdateBoardActionEvent(new BoardDao
+			{
+				CreateUser = board.CreatedUser,
+				State = (int)board.State,
+				CreationDate = board.DateCreated,
+				EntityId = board.Id,
+				Creator = board.CreatedUser,
+				IsDeleted = board.IsDeleted,
+				Keyword = board.Name
+			}));
 		}
 
 		public async Task<BoardItemDto> CreateBoardItemAsync(BoardItemDto boardItemDto)
@@ -133,6 +149,19 @@ namespace Cube.Board.Application
 			var id = await _repository.CreateBoardItemAsync(boardItem);
 			boardItem.Id = id;
 
+			_eventBus.Publish(new CreateBoardItemActionEvent(new BoardItemDao
+			{
+				CreateUser = boardItem.CreatedUser,
+				CreationDate = boardItem.DateCreated,
+				EntityId = boardItem.Id,
+				Creator = boardItem.CreatedUser,
+				Keyword = boardItem.Detail,
+				BoardId = boardItem.Board.Id,
+				Type = (int)boardItem.Type,
+				State = (int)boardItem.State,
+				Action = boardItem.Action,
+			}));
+
 			var result = _mapper.Map<BoardItemDto>(boardItem);
 			return result;
 		}
@@ -149,6 +178,19 @@ namespace Cube.Board.Application
 			}
 
 			await _repository.UpdateBoardItemAsync(boardItem);
+
+			_eventBus.Publish(new UpdateBoardItemActionEvent(new BoardItemDao
+			{
+				CreateUser = boardItem.CreatedUser,
+				CreationDate = boardItem.DateCreated,
+				EntityId = boardItem.Id,
+				Creator = boardItem.CreatedUser,
+				Keyword = boardItem.Detail,
+				BoardId = boardItem.Board.Id,
+				Type = (int)boardItem.Type,
+				State = (int)boardItem.State,
+				Action = boardItem.Action,
+			}));
 		}
 
 		public async Task DeleteBoardByIdAsync(long id)
@@ -195,6 +237,12 @@ namespace Cube.Board.Application
 										IntegrationEventModelCreator.Create(
 											new CommentAddedEvent(commentDto)));
 					await _redis.SetAddAsync(ownerBoardItem.Id, commentDto.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
+					_eventBus.Publish(new CreateThumbUpActionEvent(new CommentDao
+					{
+						Creator = commentDto.CreatedUser,
+						Type = (int)commentDto.Type,
+						EntityId = commentDto.BoardItemId
+					}));
 				}
 			}
 			else if (commentDto.Type == CommentType.Message)
@@ -209,7 +257,19 @@ namespace Cube.Board.Application
 					Type = commentDto.Type,
 				};
 
-				return await _repository.CreateCommentAsync(comment);
+				var result = await _repository.CreateCommentAsync(comment);
+
+				_eventBus.Publish(new CreateCommentActionEvent(new CommentDao
+				{
+					Creator = comment.CreatedUser,
+					CreationDate = comment.DateCreated,
+					EntityId = comment.Id,
+					Keyword = comment.Detail,
+					BoardItemId = comment.BoardItem.Id,
+					Type = (int)comment.Type,
+				}));
+
+				return result;
 			}
 			else
 			{
@@ -225,6 +285,7 @@ namespace Cube.Board.Application
 								IntegrationEventModelCreator.Create(
 									new ThumbUpDeletedEvent(boardItemId, username)));
 			await _redis.SetRemoveAsync(boardItemId, username);
+			_eventBus.Publish(new DeleteThumbUpActionEvent(username, boardItemId));
 		}
 
 		public async Task DeleteCommentAsync(long commentId)
@@ -232,6 +293,7 @@ namespace Cube.Board.Application
 			await _repository.CreateIntegrationEventAsync(
 								IntegrationEventModelCreator.Create(
 									new CommentDeletedEvent(commentId)));
+			_eventBus.Publish(new DeleteCommentActionEvent("", commentId));
 		}
 
 		public async Task<List<CommentDto>> FindCommentsByIdAsync(long boardItemId)
@@ -272,6 +334,16 @@ namespace Cube.Board.Application
 			await _repository.CreateIntegrationEventAsync(
 								IntegrationEventModelCreator.Create(
 									new CommentUpdatedEvent(commentDto.Id, commentDto.Detail)));
+
+			_eventBus.Publish(new UpdateCommentActionEvent(new CommentDao
+			{
+				Creator = commentDto.CreatedUser,
+				CreationDate = commentDto.DateCreated,
+				EntityId = commentDto.Id,
+				Keyword = commentDto.Detail,
+				BoardItemId = commentDto.BoardItemId,
+				Type = (int)commentDto.Type,
+			}));
 		}
 
 		public IEnumerable<BoardItemStatsDto> GetBoardItemStats()

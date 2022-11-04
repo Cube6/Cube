@@ -11,7 +11,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 	{
 		public CommentDao Comment { get; set; }
 
-		private CreateCommentActionEvent(string userName, int commentId, string description = "") : base(userName, commentId, description)
+		private CreateCommentActionEvent(string userName, long commentId, string description = "") : base(userName, commentId, description)
 		{
 		}
 

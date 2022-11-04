@@ -10,7 +10,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 	public record CreateBoardItemActionEvent : BoardItemActionEvent
 	{
 		public BoardItemDao BoardItem { get; set; }
-		private CreateBoardItemActionEvent(string userName, int boardItemId, int boardId, string description = "") : base(userName, boardItemId, boardId, description)
+		private CreateBoardItemActionEvent(string userName, long boardItemId, int boardId, string description = "") : base(userName, boardItemId, boardId, description)
 		{
 		}
 

@@ -9,13 +9,7 @@ namespace Elastic.Application.Dao
 	public record CommentDao : EntityDao
 	{
 		public int BoardItemId { get; set; }
-		public CommentType Type { get; set; }
+		public int Type { get; set; }
 		public string Detail => Keyword;
-	}
-
-	public enum CommentType
-	{
-		ThumbsUp,
-		Message
 	}
 }

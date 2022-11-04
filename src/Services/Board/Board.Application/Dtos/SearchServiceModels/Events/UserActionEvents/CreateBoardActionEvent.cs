@@ -6,7 +6,7 @@ namespace Elastic.Application.IntegrationEvents.Events.UserActionEvents
 	public record CreateBoardActionEvent : BoardActionEvent
 	{
 		public BoardDao Board { get; set; }
-		private CreateBoardActionEvent(string username, int boardId, string description = "") : base(username, boardId, description)
+		private CreateBoardActionEvent(string username, long boardId, string description = "") : base(username, boardId, description)
 		{
 		}
 
