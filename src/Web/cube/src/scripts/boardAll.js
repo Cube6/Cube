@@ -5,12 +5,14 @@ export default {
   data() {
     return {
       UserToken: null,
-      post: null,
+      allBoardData: null,
+      showBoardData: null,
       UserName: null,
       connection: "",
       pageSetting: {
         currentPage: 1,
-        pageSize: 50,
+        pageSize: 20,
+        total:50
       }
     };
   },
@@ -60,8 +62,11 @@ export default {
           url: url
         })
         .then(json => {
-          this.post = json.data;
-          this.pageSetting.total = this.post.length;
+          this.allBoardData = json.data;
+          this.pageSetting.total = this.allBoardData.length;
+          this.showBoardData = this.allBoardData.slice(
+            (this.pageSetting.currentPage - 1) * this.pageSetting.pageSize,
+            this.pageSetting.currentPage * this.pageSetting.pageSize);
 
           setTimeout(msg);
           return;
@@ -139,24 +144,38 @@ export default {
     sendBoardMessage() {
       this.connection.invoke("SendBoardMessage");
     },
-    pageChanged(page) {
-      console.log(page);
+
+    pIndexChange(currentIndex) {
+      this.pageSetting.currentPage = currentIndex;
+      this.showBoardData = this.allBoardData.slice(
+        (this.pageSetting.currentPage - 1) * this.pageSetting.pageSize,
+        this.pageSetting.currentPage * this.pageSetting.pageSize);
     },
+
+    pSizeChange(size) {
+      this.pageSetting.pageSize = size;
+      this.showBoardData = this.allBoardData.slice(
+        (this.pageSetting.currentPage - 1) * this.pageSetting.pageSize,
+        this.pageSetting.currentPage * this.pageSetting.pageSize);
+    },
+
+    formatBoardCreateTime(board) {
+      return board.DateCreated.substring(0, 10);
+		},
 
     getBoardCardBG(board) {
 
       if (board.IsDeleted == false && board.State == 1) {
-        return '#F3FCF1';
+        return 'rgb(79 201 13)';
       }
       // else if(board.State == 2)
       // {
       //     return '#7FEE7A';
       // }
       else if (board.IsDeleted) {
-        return '#FCE9E9';
+        return '#f3c1c1';
       }
-
-      return '#FFF';
+      return '#c4ebaf';
     },
     getBoardCardTooltip(board) {
 

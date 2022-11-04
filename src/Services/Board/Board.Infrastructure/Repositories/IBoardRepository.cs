@@ -18,6 +18,7 @@ namespace Cube.Board.Respository
 		Task<bool> DeleteBoardItemAsync(long id);
 		Task UpdateBoardItemAsync(DisscussionBoardItem disscussionBoardItem);
 
+		Task<List<Comment>> GetComments();
 		Task<Comment> GetCommentByIdAsync(long id);
 		Task<Comment> GetCommentByUserNameAsync(long borderItemId, string userName);
 		Task<List<Comment>> GetCommentsByIdAsync(long boardItemId);

@@ -6,6 +6,7 @@ import board from '@/components/board';
 import addboard from '@/components/addboard';
 import boardAll from '@/components/boardAll';
 import boardDetail from '@/components/boardDetail';
+import users from '@/components/users';
 
 Vue.use(Router);
 
@@ -27,6 +28,7 @@ const router = new Router({
             name: 'login',
             component: login
         },
+
         {
             path: '/register',
             name: 'register',
@@ -51,7 +53,12 @@ const router = new Router({
                     path: '/boardDetail',
                     name: 'boardDetail',
                     component: boardDetail
-                }
+                },
+                {
+                    path: '/users',
+                    name: 'users',
+                    component: users
+                },
             ]
         }
     ]

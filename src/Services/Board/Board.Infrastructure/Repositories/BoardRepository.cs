@@ -85,6 +85,12 @@ namespace Cube.Board.Respository
 			return _context.DisscussionBoards.OrderByDescending(t=>t.DateCreated).ToListAsync();
 		}
 
+		public async Task<List<Comment>> GetComments()
+		{
+			var result = await _context.Comments.ToListAsync();
+			return result;
+		}
+
 		public async Task<List<Comment>> GetCommentsByIdAsync(long boardItemId)
 		{
 			var result = await _context.Comments.Where(it => it.BoardItem.Id == (int)boardItemId).ToListAsync();

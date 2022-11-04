@@ -197,7 +197,7 @@ namespace Cube.Board.Application
 					await _redis.SetAddAsync(ownerBoardItem.Id, commentDto.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
 			}
-			else if(commentDto.Type == CommentType.Message)
+			else if (commentDto.Type == CommentType.Message)
 			{
 				var comment = new Comment()
 				{
@@ -252,7 +252,7 @@ namespace Cube.Board.Application
 			else
 			{
 				comments = await _repository.GetCommentsByIdAsync(boardItemId);
-				foreach (var comment in comments.Where(c=>c.Type == CommentType.ThumbsUp))
+				foreach (var comment in comments.Where(c => c.Type == CommentType.ThumbsUp))
 				{
 					await _redis.SetAddAsync(comment.BoardItem.Id, comment.CreatedUser, CacheSettings.DefaultExpiryInSecondsForComments);
 				}
@@ -272,6 +272,66 @@ namespace Cube.Board.Application
 			await _repository.CreateIntegrationEventAsync(
 								IntegrationEventModelCreator.Create(
 									new CommentUpdatedEvent(commentDto.Id, commentDto.Detail)));
+		}
+
+		public IEnumerable<BoardItemStatsDto> GetBoardItemStats()
+		{
+			var dict = new Dictionary<string, BoardItemStatsDto>();
+
+			IEnumerable<DisscussionBoard> boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+			foreach (var board in boards)
+			{
+				var boardItems = _repository.GetBoardItemsByBoardIdAsync(board.Id).Result;
+
+				foreach (var item in boardItems.GroupBy(d => d.CreatedUser))
+				{
+					if (!dict.ContainsKey(item.Key))
+					{
+						dict[item.Key] = new BoardItemStatsDto()
+						{
+							CreatedUser = item.Key,
+						};
+					}
+
+					foreach (var boardItem in item.GroupBy(t => t.Type))
+					{
+						if (boardItem.Key == BoardItemType.WentWell)
+						{
+							dict[item.Key].CountOfWell += boardItem.Count();
+						}
+						else if (boardItem.Key == BoardItemType.NeedsImproved)
+						{
+							dict[item.Key].CountOfImproved += boardItem.Count();
+						}
+					}
+				}
+			}
+
+			var comments = _repository.GetComments().Result;
+			foreach (var item in comments.GroupBy(t => t.CreatedUser))
+			{
+				if (!dict.ContainsKey(item.Key))
+				{
+					dict[item.Key] = new BoardItemStatsDto()
+					{
+						CreatedUser = item.Key,
+					};
+				}
+
+				foreach (var comment in item.GroupBy(t => t.Type))
+				{
+					if (comment.Key == CommentType.ThumbsUp)
+					{
+						dict[item.Key].CountOfThumbsup += comment.Count();
+					}
+					else if (comment.Key == CommentType.Message)
+					{
+						dict[item.Key].CountOfComments += comment.Count();
+					}
+				}
+			}
+
+			return dict.Values.ToList().OrderByDescending(t => t.Count);
 		}
 	}
 }

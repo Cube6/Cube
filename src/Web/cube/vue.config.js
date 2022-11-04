@@ -34,18 +34,21 @@ module.exports = {
             /************************************* Development *********************************/
             /*Connect to local Microservices*/
 
-            //'^/Board': {
+            // '^/Board': {
             //    target: 'https://localhost:5000'
-            //},
-            //'^/Comment': {
+            // },
+            // '^/Comment': {
             //    target: 'https://localhost:5000'
-            //},
-            //'^/User': {
+            // },
+            // '^/Statistics': {
+            //    target: 'https://localhost:5000'
+            // },
+            // '^/User': {
             //    target: 'https://localhost:4000'
-            //},
-            //'^/Authorize': {
+            // },
+            // '^/Authorize': {
             //    target: 'https://localhost:3000',
-            //},
+            // },
 
             /*Connect to local microservices via Gateway Service*/
 
@@ -54,6 +57,9 @@ module.exports = {
             // },
             // '^/Comment': {
             //     target: 'http://localhost:9070'
+            // },
+            // '^/Statistics': {
+            //    target: 'http://localhost:9070'
             // },
             // '^/User': {
             //     target: 'http://localhost:9070'
@@ -71,6 +77,9 @@ module.exports = {
             //'^/Comment': {
             //    target: 'https://10.63.223.6:5000'
             //},
+            // '^/Statistics': {
+            //    target: 'https://10.63.223.6:5000'
+            // },
             //'^/User': {
             //    target: 'https://10.63.223.6:4000'
             //},
@@ -86,6 +95,9 @@ module.exports = {
             '^/Comment': {
               target: 'http://10.63.223.6:9070'
             },
+            '^/Statistics': {
+              target: 'http://10.63.223.6:9070'
+            },
             '^/User': {
               target: 'http://10.63.223.6:9070'
             },
@@ -99,6 +111,9 @@ module.exports = {
             //    target: 'https://10.63.207.97:30500'
             // },
             // '^/Comment': {
+            //    target: 'https://10.63.207.97:30500'
+            // },
+            // '^/Statistics': {
             //    target: 'https://10.63.207.97:30500'
             // },
             // '^/User': {

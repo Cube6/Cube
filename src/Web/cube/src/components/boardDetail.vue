@@ -344,7 +344,7 @@
                             <tr>
                                 <td style="vertical-align:top">
                                     <ul>
-                                        <div :style="{'margin-top': actionItemBlockOffset + 'px'}"></div>
+                                        <div ref="actionItemBlock" :style="{'height': actionItemBlockOffset + 'px'}"></div>
                                         <li v-for="action in ActionContent" :key="action.Id">
                                             <transition name="transition-drop">
                                                 <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
