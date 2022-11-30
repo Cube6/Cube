@@ -67,12 +67,12 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    What went well ?
+                                    Went well / Liked / keep doing
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
                                 <th width="100%">
-                                    <Input element-id="wentWell" v-model="boardDetail.WellDetail" class="wellInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="What went well ?" spellcheck :loading="loading" @keydown.native="handleKeydown" />
+                                    <Input element-id="wentWell" v-model="boardDetail.WellDetail" class="wellInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="Went well / Liked / Keep doing" spellcheck :loading="loading" @keydown.native="handleKeydown" />
                                 </th>
                             </tr>
                         </thead>
@@ -185,12 +185,12 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    What could be improved ?
+                                    Can be improved / Lacked / Stop doing
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
                                 <th width="100%">
-                                    <Input element-id="improved" v-model="boardDetail.ImproveDetail" class="improveInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="What could be improved ?" spellcheck @keydown.native="handleKeydown" />
+                                    <Input element-id="improved" v-model="boardDetail.ImproveDetail" class="improveInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="Can be improved / Lacked / Stop doing" spellcheck @keydown.native="handleKeydown" />
                                 </th>
                             </tr>
                         </thead>
@@ -331,12 +331,12 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    Action Items
+                                    An idea / A suggestion / A change
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
                                 <th width="100%">
-                                    <Input element-id="action" v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="Action Items" spellcheck @keydown.native="handleKeydown" />
+                                    <Input element-id="action" v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="An idea / A suggestion/ A change" spellcheck @keydown.native="handleKeydown" />
                                 </th>
                             </tr>
                         </thead>
