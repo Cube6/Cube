@@ -44,7 +44,7 @@ export default {
       csvData: [],
       csvColumns: [],
       participants: [],
-      showParticipants: false,
+      showParticipants: true,
 
       fullscreen: false,
       teleport: true,
