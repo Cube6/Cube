@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Cube.BuildingBlocks.EventBus;
 using Cube.BuildingBlocks.EventBus.Abstractions;
 using Cube.BuildingBlocks.EventBus.EventBusRabbitMQ;
+using Cube.ConsulService;
 using Cube.Infrastructure.Redis;
 using Elastic.API;
 using Elastic.Application;
@@ -59,5 +60,10 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+#if RELEASE
+	//ЗўЮёзЂВс
+	app.RegisterConsul(builder.Configuration, app.Lifetime);
+#endif
 
 app.Run();
