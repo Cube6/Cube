@@ -17,10 +17,10 @@ namespace Elastic.API
 	{
 		public static IServiceCollection AddElastic(this IServiceCollection services, ConfigurationManager configuration)
 		{
-			IndexHelper.BoardIndex = "cube.entity.board";
-			IndexHelper.BoardItemIndex = "cube.entity.boarditem";
-			IndexHelper.CommentIndex = "cube.entity.comment";
-			IndexHelper.UserActionIndex = "cube.action.default";
+			IndexHelper.BoardIndex = configuration["IndexConfig:BoardIndex"];
+			IndexHelper.BoardItemIndex = configuration["IndexConfig:BoardItemIndex"];
+			IndexHelper.CommentIndex = configuration["IndexConfig:CommentIndex"];
+			IndexHelper.UserActionIndex = configuration["IndexConfig:UserActionIndex"];
 
 			services.AddScoped<IElasticService, ElasticService>();
 
