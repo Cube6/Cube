@@ -90,19 +90,19 @@ module.exports = {
             /*Connect to remote microservices via Gateway Service*/
 
             '^/Board': {
-              target: 'http://10.63.223.6:9070'
+              target: 'http://techgroupdockerdc:9070'
             },
             '^/Comment': {
-              target: 'http://10.63.223.6:9070'
+              target: 'http://techgroupdockerdc:9070'
             },
             '^/Statistics': {
-              target: 'http://10.63.223.6:9070'
+              target: 'http://techgroupdockerdc:9070'
             },
             '^/User': {
-              target: 'http://10.63.223.6:9070'
+              target: 'http://techgroupdockerdc:9070'
             },
             '^/Authorize': {
-              target: 'http://10.63.223.6:9070'
+              target: 'http://techgroupdockerdc:9070'
             }
 
             /*Connect to remote microservices on K8S*/
