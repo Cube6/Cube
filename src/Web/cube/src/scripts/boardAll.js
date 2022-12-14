@@ -133,7 +133,7 @@ export default {
     },
     init() {
       this.connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://10.63.223.6:5050/BoardHub", {})
+        .withUrl("http://techgroupdockerdc:5050/BoardHub", {})
         .configureLogging(signalR.LogLevel.Error)
         .build();
       this.connection.on("ReceiveBoardMessage", () => {
