@@ -110,7 +110,7 @@
                                                     </a>
                                                     <a v-if="!well.ToggleComment && well.Messages.length > 0" href="#" @click.prevent="toggleComment(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
                                                         <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>{{thumbsUpCount(well.Messages)}} Replies&nbsp;^</p>
+                                                            <p>{{thumbsUpCount(well.Messages)}} Comments&nbsp;^</p>
                                                         </button>
                                                     </a>
                                                     <a v-if="well.ToggleComment" href="#" @click.prevent="toggleComment(well)" :title="thumbsUpUserNames(well.ThumbsUp)">
@@ -254,7 +254,7 @@
                                                     </a>
                                                     <a v-if="!improve.ToggleComment && improve.Messages.length > 0" href="#" @click.prevent="toggleComment(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
                                                         <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>{{thumbsUpCount(improve.Messages)}} Replies&nbsp;^</p>
+                                                            <p>{{thumbsUpCount(improve.Messages)}} Comments&nbsp;^</p>
                                                         </button>
                                                     </a>
                                                     <a v-if="improve.ToggleComment" href="#" @click.prevent="toggleComment(improve)" :title="thumbsUpUserNames(improve.ThumbsUp)">
@@ -331,12 +331,12 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    An idea / A suggestion / A change
+                                    An action / An idea / A suggestion / A change
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
                                 <th width="100%">
-                                    <Input element-id="action" v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="An idea / A suggestion/ A change" spellcheck @keydown.native="handleKeydown" />
+                                    <Input element-id="action" v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="An action /An idea / A suggestion/ A change" spellcheck @keydown.native="handleKeydown" />
                                 </th>
                             </tr>
                         </thead>
@@ -392,7 +392,7 @@
                                                         </a>
                                                         <a v-if="!action.ToggleComment && action.Messages.length > 0" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">
                                                             <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                                <p>{{thumbsUpCount(action.Messages)}} Replies&nbsp;^</p>
+                                                                <p>{{thumbsUpCount(action.Messages)}} Comments&nbsp;^</p>
                                                             </button>
                                                         </a>
                                                         <a v-if="action.ToggleComment" href="#" @click.prevent="toggleComment(action)" :title="thumbsUpUserNames(action.ThumbsUp)">

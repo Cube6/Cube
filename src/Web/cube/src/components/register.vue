@@ -43,7 +43,7 @@
                 <a @click="redirectToLogin()" href="#">Sign in</a>
             </p>
             <p class="login-tip">
-                &copy; 2022 Cube6
+                &copy; 2023 Cube6
             </p>
         </div>
     </div>
