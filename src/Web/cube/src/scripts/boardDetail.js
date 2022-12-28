@@ -488,7 +488,7 @@ export default {
           CreatedUser: this.userName,
           Type: thumpType,
           Detail: boardItem.Comment.Detail,
-          DateCreated: (new Date()).getTime() - 8*60*60*1000,
+          DateCreated: new Date((new Date()).getTime() - 8*60*60*1000),
           BoardItemId: boardItem.Id
         };
         var context = {
