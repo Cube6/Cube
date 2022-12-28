@@ -5,20 +5,20 @@
             <li style="width:260px; float: left;">
               <Card style="width: 250px; cursor: pointer;" v-on:click.native="AddBoard()">
                 <div style="display: flex; padding-bottom: 36px; background: #fff; height:113px">
-                  <i scripturl="../scripts/font.js" style="font-size:24px;">
+                  <i scripturl="../scripts/font.js" style="font-size:25px;">
                     <svg viewBox="0 0 1024 1024" style="width:1em;height:1em;fill:currentColor;overflow:hidden">
                       <use xlink:href="#at-plus"></use>
                     </svg>
                   </i>
                 </div>
-                <span style="position:absolute;left:16px;bottom:12px;">Add Board</span>
+                <span style="position:absolute;left:50px;bottom:50px; font-size:13pt;">Create a new board</span>
               </Card>
             </li>
             <li v-for="board in showBoardData" :key="board.Id" style="width: 260px; float: left;padding-right: 10px">
-              <Card :style="{width: '250px', cursor: 'pointer',float: 'right'}" v-on:click.native="ViewBoard(board)">
+              <Card :style="{background:getBoardCardFullBG(board), width: '250px', cursor: 'pointer',float: 'right'}" v-on:click.native="ViewBoard(board)">
                 <p slot="title" :title="getBoardCardTooltip(board)" style="height:25px;">
                   <span style="float:right">
-                    <img :src="getUserAvatar(board.CreatedUser)" :title="'Owner: ' + board.CreatedUser" style="width:20px; height:20px; border-radius:50%; " />
+                    <img :src="getUserAvatar(board.CreatedUser)" :title="'Owner: ' + board.CreatedUser" style="width:24px; height:24px; border-radius:50%; " />
                   </span>
                   <span>
                     <img v-if="board.State == 2" src="../assets/Icons/completed.jpg" title="Completed" style="width:20px; height:20px; border-radius:50%;">
@@ -31,7 +31,10 @@
                     {{board.Name}}
                   </a>
                 </div>
-                <div style="text-align: center; overflow: hidden; color: #b7beb7; white-space: nowrap; text-overflow: ellipsis;">{{formatBoardCreateTime(board)}}</div>
+                <div style="text-align: center; overflow: hidden; color: #b7beb7; white-space: nowrap; text-overflow: ellipsis;">
+                  <!-- {{formatBoardCreateTime(board)}} -->
+                  <Time :time="(new Date(board.DateCreated)).getTime() +8*60*60*1000 " />
+                </div>
               </Card>
               <Card :style="{ width: '5px', height: '150px','background-color': getBoardCardBG(board)}"></Card>
             </li>

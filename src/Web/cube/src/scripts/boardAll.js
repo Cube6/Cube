@@ -162,6 +162,13 @@ export default {
     formatBoardCreateTime(board) {
       return board.DateCreated.substring(0, 10);
 		},
+    getBoardCardFullBG(board) {
+
+      if (board.IsDeleted == false && board.State == 1) {
+        return 'rgb(238,255,242)';
+      }
+      return '#FFFFFF';
+    },
 
     getBoardCardBG(board) {
 

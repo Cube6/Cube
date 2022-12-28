@@ -56,7 +56,7 @@
                 <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
                     <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'Board':''">
                         <Icon type="md-book"></Icon>
-                        <span>Board</span>
+                        <span>All Boards</span>
                     </MenuItem>
                     <MenuItem name="1-2" @click.native="fetchData(1)" :title="isCollapsed?'In Progress':''">
                         <Icon type="md-time"></Icon>
