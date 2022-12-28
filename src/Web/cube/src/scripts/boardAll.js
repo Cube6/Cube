@@ -198,10 +198,5 @@ export default {
       }
       return '#c4ebaf';
     },
-    getBoardCardTooltip(board) {
-
-      return board.Name + ' (Owner: ' + board.CreatedUser.toUpperCase() + ')' + '\n' +
-        board.DateCreated;
-    }
   },
 }

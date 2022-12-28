@@ -16,9 +16,11 @@
             </li>
             <li v-for="board in showBoardData" :key="board.Id" style="width: 260px; float: left;padding-right: 10px">
               <Card :style="{background:getBoardCardFullBG(board), width: '250px', cursor: 'pointer',float: 'right'}" v-on:click.native="ViewBoard(board)">
-                <p slot="title" :title="getBoardCardTooltip(board)" style="height:25px;">
+                <p slot="title" style="height:25px;">
                   <span style="float:right">
-                    <img :src="getUserAvatar(board.CreatedUser)" :title="'Owner: ' + board.CreatedUser" style="width:24px; height:24px; border-radius:50%; " />
+                    <Tooltip :content="'Owner: ' + board.CreatedUser" placement="bottom">
+                      <img :src="getUserAvatar(board.CreatedUser)" style="width:24px; height:24px; border-radius:50%; " />
+                    </Tooltip>
                   </span>
                   <span>
                     <img v-if="board.State == 2" src="../assets/Icons/completed.jpg" title="Completed" style="width:20px; height:20px; border-radius:50%;">
@@ -27,7 +29,7 @@
                   </span>
                 </p>
                 <div style="text-align: center; overflow: hidden; text-overflow: ellipsis; height:38px">
-                  <a href="#" slot="extra" :title="getBoardCardTooltip(board)">
+                  <a href="#" slot="extra">
                     {{board.Name}}
                   </a>
                 </div>
