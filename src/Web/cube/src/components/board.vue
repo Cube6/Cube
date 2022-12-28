@@ -8,7 +8,7 @@
                         Cube System
                     </span>
                       <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
-                        v0.8
+                        v0.9
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -147,7 +147,7 @@
             </div>
         </Drawer>
         <Drawer :closable="false" width="640" v-model="showAboutView">
-            <p :style="pStyle">About Cube (v0.8)</p>
+            <p :style="pStyle">About Cube (v0.9)</p>
             <div class="my-drawer-profile">
                 <Row>
                     <Col span="24">
@@ -157,13 +157,18 @@
                 <img :src="getLogo()" style="width: 90px; height: 90px; border-radius: 50%; margin-top: 16px " />
                 <Row>
                     <Col span="24">
-                    &copy; 2022 <a href="https://github.com/Cube6" target="_blank">Cube6</a>, All Rights Reserved
+                    &copy; 2023 <a href="https://github.com/Cube6" target="_blank">Cube6</a>, All Rights Reserved
                     </Col>
                 </Row>
             </div>
             <Divider />
             <p :style="pStyle">History</p>
             <div class="my-drawer-profile">
+                <Row>
+                    <Col span="4">2022-12-28</Col>
+                    <Col span="4">Version 0.9</Col>
+                    <Col span="16">Improve User Experence</Col>
+                </Row>
                 <Row>
                     <Col span="4">2022-10-24</Col>
                     <Col span="4">Version 0.8</Col>
