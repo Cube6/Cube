@@ -82,7 +82,7 @@ namespace Cube.Board.Respository
 
 		public Task<List<DisscussionBoard>> ListAsync()
 		{
-			return _context.DisscussionBoards.OrderByDescending(t=>t.DateCreated).ToListAsync();
+			return _context.DisscussionBoards.Include(t=>t.BoardItems.Where(i=>i.Type== BoardItemType.Action)).OrderByDescending(t=>t.DateCreated).ToListAsync();
 		}
 
 		public async Task<List<Comment>> GetComments()

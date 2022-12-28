@@ -31,6 +31,9 @@
                     {{board.Name}}
                   </a>
                 </div>
+                <div style="float:right; height: 30px;">
+                  <Progress vertical :percent="getCompletionRateOfAction(board)" :stroke-width="5" title="Completion rate of Action"/>
+                </div>
                 <div style="text-align: center; overflow: hidden; color: #b7beb7; white-space: nowrap; text-overflow: ellipsis;">
                   <!-- {{formatBoardCreateTime(board)}} -->
                   <Time :time="(new Date(board.DateCreated)).getTime() +8*60*60*1000 " />

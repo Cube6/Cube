@@ -162,6 +162,20 @@ export default {
     formatBoardCreateTime(board) {
       return board.DateCreated.substring(0, 10);
 		},
+    getCompletionRateOfAction(board) {
+      var total = board.BoardItems.length;
+      if(total==0)
+      {
+        return 100;
+      }
+      var numOfComplete = board.BoardItems.filter(c => c.Type == 3 && c.State == 2).length;
+
+      console.log("total" + total);
+      console.log("complete" + numOfComplete);
+
+      var percent = (numOfComplete/total)*100;
+      return Math.round(percent);
+    },
     getBoardCardFullBG(board) {
 
       if (board.IsDeleted == false && board.State == 1) {
