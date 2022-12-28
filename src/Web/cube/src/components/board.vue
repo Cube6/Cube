@@ -167,7 +167,7 @@
                 <Row>
                     <Col span="4">2022-12-28</Col>
                     <Col span="4">Version 0.9</Col>
-                    <Col span="16">Improve User Experence</Col>
+                    <Col span="16">Support Completion Rate of Action, Improve UX(Tooltip etc.)</Col>
                 </Row>
                 <Row>
                     <Col span="4">2022-10-24</Col>
