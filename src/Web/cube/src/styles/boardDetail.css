@@ -19,21 +19,25 @@ textarea {
 .wellItem .ivu-input {
 	color: #50AA62;
 	font-size: 13pt;
+	font-weight:500;
 }
 
 .improveItem .ivu-input {
 	color: #E8897A;
 	font-size: 13pt;
+	font-weight:500;
 }
 
 .actionItem .ivu-input {
 	color: #7A93E8;
 	font-size: 13pt;
+	font-weight:500;
 }
 
 .boardItemDoneClass .ivu-input {
 	/* text-decoration: line-through; */
 	font-style: oblique;
+	font-weight:500;
 	/* color: #218338; */
 	/* color:#29984F; */
 	color: #CCCCD0;

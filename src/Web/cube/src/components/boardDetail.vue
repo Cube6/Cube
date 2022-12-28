@@ -1,7 +1,7 @@
 ﻿<template>
 <fullscreen v-model="fullscreen" :teleport="teleport" :page-only="pageOnly">
     <div class="subLayout">
-        <h1 style="width:100%;text-align:center; font-size:larger">
+        <h1 style="width:100%;text-align:center; font-size:15pt;">
             <span>
                 <span :ref="'editBoardName'" @keydown="updateBoardNameKeydown($event)" @blur="updateBoardName()" :contenteditable="state == 1">{{boardName}}</span>
 
@@ -56,7 +56,7 @@
                 </a>
 
                 <!--Online Users-->    
-                <img v-for="user in participants" :hidden='showParticipants==false'  :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 20px; height: 20px; border-radius: 50%; " />
+                <img v-for="user in participants" :hidden='showParticipants==false'  :key="user" :src="getUserAvatar(user)" :title="user" style="float: left; width: 24px; height: 24px; border-radius: 50%; " />
             </span>
         </h1>
         <br />
@@ -67,7 +67,7 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    Went well / Liked / keep doing
+                                    Went well / Liked / keep doing (<span style="color:#50AA62; font-weight: bolder;font-style: italic;">{{ WellContent.length }}</span> )
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
@@ -83,7 +83,7 @@
                                         <li v-for="well in WellContent" :key="well.Id">
                                             <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click="clickContent" > 
                                                 <!-- background: #F1F3F1 -->
-                                                <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
+                                                <img :src="getUserAvatar(well.CreatedUser)" :title="well.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px;" />
 
                                                 <!-- Menu Items -->
                                                 <Dropdown style="float: right;position: relative; font-size:12pt; ">
@@ -139,7 +139,7 @@
                                                             <tr v-for="message in well.Messages" :key="message.Id">
                                                                 <td></td>
                                                                 <td style="vertical-align:top;"> 
-                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td style="padding-bottom:8px"> 
                                                                     <span class="commentUserName">
@@ -162,7 +162,7 @@
                                                             <tr>
                                                                 <td></td>
                                                                 <td> 
-                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 24px; height: 24px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td> 
                                                                     <Input v-model="well.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addWellComment(well)" />
@@ -186,7 +186,7 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    Can be improved / Lacked / Stop doing
+                                    Can be improved / Lacked / Stop doing (<span style="color:#E8897A; font-weight: bolder;font-style: italic;">{{ ImproveContent.length }}</span> )
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
@@ -208,7 +208,7 @@
                                             <Card ref="improvedItemCard" :id="improve.Id" :style="{'opacity': setImproveItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="refocusImproveItem(improve.Id)">
                                                 <!-- background: #FBF5F5 -->
                                                 
-                                                <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: left;width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
+                                                <img :src="getUserAvatar(improve.CreatedUser)" :title="improve.CreatedUser" style="float: left;width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
                                                
 
                                                 <!-- Menu Items -->
@@ -290,7 +290,7 @@
                                                             <tr v-for="message in improve.Messages" :key="message.Id">
                                                                 <td></td>
                                                                 <td style="vertical-align:top;"> 
-                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td style="padding-bottom:8px"> 
                                                                     <span class="commentUserName">
@@ -313,7 +313,7 @@
                                                             <tr>
                                                                 <td></td>
                                                                 <td> 
-                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 24px; height: 24px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td> 
                                                                     <Input v-model="improve.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addImproveComment(improve)" />
@@ -336,7 +336,7 @@
                         <thead>
                             <tr v-if="state == 2">
                                 <th width="100%">
-                                    An action / An idea / A suggestion / A change
+                                    An action / An idea / A suggestion / A change (<span style="color:#7A93E8; font-weight: bolder;font-style: italic;">{{ ActionContent.length }}</span> )
                                 </th>
                             </tr>
                             <tr v-if="state != 2">
@@ -354,7 +354,7 @@
                                             <transition name="transition-drop">
                                                 <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
                                                     <!-- background: #ECF5FC -->
-                                                    <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: left; width: 20px; height: 20px; border-radius: 50%; margin-bottom: 5px;" />
+                                                    <img :src="getUserAvatar(action.CreatedUser)" :title="action.CreatedUser" style="float: left; width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px;" />
                                                     
                                                     <!-- Menu Items -->
                                                      <Dropdown style="float: right;position: relative; font-size:12pt; ">
@@ -428,7 +428,7 @@
                                                                 <tr v-for="message in action.Messages" :key="message.Id">
                                                                     <td></td>
                                                                     <td style="vertical-align:top;"> 
-                                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; " />
                                                                     </td>
                                                                     <td style="padding-bottom:8px"> 
                                                                         <span class="commentUserName">
@@ -451,7 +451,7 @@
                                                                 <tr>
                                                                     <td></td>
                                                                     <td> 
-                                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
+                                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 24px; height: 24px; border-radius: 50%; " />
                                                                     </td>
                                                                     <td> 
                                                                         <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addActionComment(action)" />
