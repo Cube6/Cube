@@ -142,10 +142,11 @@
                                                                     <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td style="padding-bottom:8px"> 
-                                                                    <!-- <span class="commentUserName">
+                                                                    <span class="commentUserName">
                                                                         {{message.CreatedUser}}
-                                                                    </span> -->
-                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateWellCommentItem(message)" @on-change="commentItemChanged" />
+                                                                        <Time style="float:right" :time="(new Date(message.DateCreated)).getTime() +8*60*60*1000 " />
+                                                                    </span>
+                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Add a new comment"  @on-blur="updateWellCommentItem(message)" @on-change="commentItemChanged" />
                                                                     <br/>            
                                                                 </td>
                                                                 <td style="vertical-align:top;">
@@ -164,7 +165,7 @@
                                                                     <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td> 
-                                                                    <Input v-model="well.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addWellComment(well)" />
+                                                                    <Input v-model="well.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addWellComment(well)" />
                                                                 </td>
                                                                 <td></td>
                                                             </tr>
@@ -292,7 +293,11 @@
                                                                     <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td style="padding-bottom:8px"> 
-                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateImproveCommentItem(message)" @on-change="commentItemChanged" />
+                                                                    <span class="commentUserName">
+                                                                        {{message.CreatedUser}}
+                                                                        <Time style="float:right" :time="(new Date(message.DateCreated)).getTime() +8*60*60*1000 " />
+                                                                    </span>
+                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Add a new comment"  @on-blur="updateImproveCommentItem(message)" @on-change="commentItemChanged" />
                                                                     <br/>
                                                                 </td>
                                                                 <td style="vertical-align:top;">
@@ -311,7 +316,7 @@
                                                                     <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                                 </td>
                                                                 <td> 
-                                                                    <Input v-model="improve.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addImproveComment(improve)" />
+                                                                    <Input v-model="improve.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addImproveComment(improve)" />
                                                                 </td>
                                                                 <td></td>
                                                             </tr>
@@ -426,7 +431,11 @@
                                                                         <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                                     </td>
                                                                     <td style="padding-bottom:8px"> 
-                                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Reply..."  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
+                                                                        <span class="commentUserName">
+                                                                        {{message.CreatedUser}}
+                                                                        <Time style="float:right" :time="(new Date(message.DateCreated)).getTime() +8*60*60*1000 " />
+                                                                    </span>
+                                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Add a new comment"  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
                                                                         <br/>
                                                                     </td>
                                                                     <td style="vertical-align:top;">
@@ -445,7 +454,7 @@
                                                                         <img :src="getUserAvatar(userName)" :title="userName" style="width: 20px; height: 20px; border-radius: 50%; " />
                                                                     </td>
                                                                     <td> 
-                                                                        <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Reply..." spellcheck :loading="loading" @on-enter="addActionComment(action)" />
+                                                                        <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addActionComment(action)" />
                                                                     </td>
                                                                     <td></td>
                                                                 </tr>
