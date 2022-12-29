@@ -371,10 +371,24 @@
                                         <li v-for="action in ActionContent" :key="action.Id">
                                             <transition name="transition-drop">
                                                 <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
-                                                    <Tooltip :content="action.CreatedUser" placement="bottom">
-                                                        <!-- background: #ECF5FC -->
-                                                        <img :src="getUserAvatar(action.CreatedUser)" style="float: left; width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px;" />
-                                                    </Tooltip>
+                                                    <Poptip :ref="generateAssigneeList(action.Id)">
+                                                        <template #content>
+                                                            <span style="font-weight:700;">Choose an assignee</span>
+                                                            <!-- <Input prefix="ios-contact" placeholder="Choose an assignee"/> -->
+                                                            <div style="min-width:300px; height: 300px; margin-top: 10px; overflow-y: scroll; ">
+                                                                <p v-for="assignee in assignees" :key="assignee" @click.prevent="selectAssignee(action, assignee)" 
+                                                                style="cursor:pointer;height: 45px;">
+                                                                    <img :src="getUserAvatar(assignee)" 
+                                                                    style="float: left; cursor:pointer; width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px; margin-right: 10px;" />
+                                                                    {{ assignee }}
+                                                                </p>
+                                                            </div>
+                                                        </template>
+                                                        <Tooltip :content="'Assignee:' + action.Assignee" placement="bottom">
+                                                            <!-- background: #ECF5FC -->
+                                                            <img :src="getUserAvatar(action.Assignee)" style="float: left; cursor:pointer; width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px;" />
+                                                        </Tooltip>
+                                                    </Poptip>
                                                     <!-- Menu Items -->
                                                      <Dropdown style="float: right;position: relative; font-size:12pt; ">
                                                         <Icon type="ios-more" size="28"></Icon>

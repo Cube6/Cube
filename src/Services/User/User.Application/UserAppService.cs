@@ -24,6 +24,7 @@ namespace Cube.User.Application
 		public async Task<ResultDto> Register(CreateUserDto request)
 		{
 			var user = _mapper.Map<Domain.User>(request);
+			user.IsLeave = false;
 
 			var result = user.Validate();
 			if (result)

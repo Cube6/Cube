@@ -1,6 +1,7 @@
 ﻿using Cube.User.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cube.User.Respository
@@ -43,7 +44,7 @@ namespace Cube.User.Respository
 
 		public Task<List<Domain.User>> ListAsync()
 		{
-			return _context.Users.ToListAsync();
+			return _context.Users.Where(u => !u.IsLeave).ToListAsync();
 		}
 	}
 }

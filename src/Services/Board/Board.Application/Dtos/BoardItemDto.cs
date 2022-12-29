@@ -21,5 +21,6 @@ namespace Cube.Board.Application.Dtos
 		public CommentDto Comment { get; set; } = new CommentDto();
 		public int BoardId { get; set; }
 		public int? AssociatedBoardItemId { get; set; }
+		public string Assignee { get; set; }
 	}
 }

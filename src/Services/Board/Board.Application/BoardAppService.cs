@@ -113,7 +113,8 @@ namespace Cube.Board.Application
 				DateCreated = DateTime.Now,
 				DateModified = DateTime.Now,
 				Type = boardItemDto.Type,
-				AssociatedBoardItemId = boardItemDto.AssociatedBoardItemId
+				AssociatedBoardItemId = boardItemDto.AssociatedBoardItemId,
+				Assignee = boardItemDto.Assignee
 			};
 			var id = await _repository.CreateBoardItemAsync(boardItem);
 			boardItem.Id = id;
@@ -127,6 +128,7 @@ namespace Cube.Board.Application
 			var boardItem = await _repository.GetBoardItemByIdAsync(boardItemDto.Id);
 			boardItem.Detail = boardItemDto.Detail;
 			boardItem.Action = boardItemDto.Action;
+			boardItem.Assignee = boardItemDto.Assignee;
 			boardItem.DateModified = DateTime.Now;
 			if (boardItemDto.State != BoardItemState.None)
 			{

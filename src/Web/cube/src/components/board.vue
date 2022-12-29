@@ -167,7 +167,7 @@
                 <Row>
                     <Col span="4">2022-12-28</Col>
                     <Col span="4">Version 0.9</Col>
-                    <Col span="16">Support Completion Rate of Action, Improve UX(Tooltip etc.)</Col>
+                    <Col span="16">Support Completion Rate of Action and Assignee</Col>
                 </Row>
                 <Row>
                     <Col span="4">2022-10-24</Col>
@@ -187,7 +187,7 @@
                 <Row>
                     <Col span="4">2022-04-16</Col>
                     <Col span="4">Version 0.5</Col>
-                    <Col span="16">Support Full Screen, Sort Items by User, Improve UX and fix</Col>
+                    <Col span="16">Support Full Screen, Sort Items by User</Col>
                 </Row>
                 <Row>
                     <Col span="4">2022-03-22</Col>

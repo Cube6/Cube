@@ -51,7 +51,9 @@ export default {
       pageOnly: true,
       
       currentFocusImproveItemId: null,
-      actionItemBlockOffset: 0
+      actionItemBlockOffset: 0,
+
+      assignees:[],
     };
   },
   created() {
@@ -82,6 +84,7 @@ export default {
     fetchData(forceRefresh) {
       this.fetchBoardItems(forceRefresh);
       this.fetchParticipants();
+      this.fetchAssignees();
     },
 
     fetchBoardItems(forceRefresh) {
@@ -129,6 +132,27 @@ export default {
         });
       }).catch(error => {
         this.$Message.error('Failed to load online users. Error:' + error);
+      });
+    },
+    fetchAssignees() {
+      this.axios({
+        method: 'get',
+        url: '/User/GetAll'
+      }).then((res) => {
+        this.assignees = [];
+        res.data.Users.forEach((item) => {
+          this.assignees.push(item.Name.toUpperCase());
+        });
+
+        this.assignees.sort(function (a, b) {
+          return a.localeCompare(b);
+        });
+
+        this.assignees.unshift('Team');
+        this.assignees.unshift('Unassigned');
+
+      }).catch(error => {
+        this.$Message.error('Failed to load assignees. Error:' + error);
       });
     },
     toggleOnlineUsers() {
@@ -208,7 +232,8 @@ export default {
             detail: boardDetail,
             type: type,
             createduser: this.userName,
-            associatedBoardItemId: improvedItemId
+            associatedBoardItemId: improvedItemId,
+            assignee: 'Unassigned'
         }
       }).then((res) => {
         console.log("add");
@@ -646,6 +671,7 @@ export default {
             if (boarditemToBeUpdated != null) {
               boarditemToBeUpdated.Detail = boardItemEvent.BoardItem.Detail;
               boarditemToBeUpdated.State = boardItemEvent.BoardItem.State;
+              boarditemToBeUpdated.Assignee = boardItemEvent.BoardItem.Assignee;
             }
           }
           else {
@@ -1211,6 +1237,37 @@ export default {
           css += " fa-hand-o-right ";
           return css + 'viewActionStyle';
       }
-    }
+    },
+    selectAssignee(action, user){
+      this.axios({
+        method: 'put',
+        url: '/BoardItem',
+        data: {
+          id: action.Id,
+          detail: action.Detail,
+          type: action.Type,
+          state: action.State,
+          createduser: action.CreatedUser,
+          assignee: user,
+          boardid: this.boardId
+        }
+      }).then(() => {
+        action.Assignee = user;
+        this.renderFunc('Changed assignee to ' + user + ' successfully.');
+      }).then(() => {
+        var context = {
+          Operation: UpdateOperation,
+          BoardItem: action
+        };
+        this.sendBoardItemMsg(context);
+      })
+
+      var assigneeListId = this.generateAssigneeList(action.Id);
+      this.$refs[assigneeListId][0].handleClose();
+    },
+    generateAssigneeList(id)
+    {
+      return "assigneeList" + id;
+    },
   }
 }
