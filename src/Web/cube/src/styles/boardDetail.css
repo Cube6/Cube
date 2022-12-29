@@ -73,6 +73,14 @@ textarea {
 	color: #4CAF50
 }
 
+.assigneeItemStyle{
+	background-color: #FFFFFF;
+}
+
+.assigneeItemStyle:hover{
+	background-color: #F4F5F7;
+}
+
 .viewActionStyle {
 	color: #CDE4D9
 }

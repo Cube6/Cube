@@ -377,7 +377,8 @@
                                                             <!-- <Input prefix="ios-contact" placeholder="Choose an assignee"/> -->
                                                             <div style="min-width:300px; height: 300px; margin-top: 10px; overflow-y: scroll; ">
                                                                 <p v-for="assignee in assignees" :key="assignee" @click.prevent="selectAssignee(action, assignee)" 
-                                                                style="cursor:pointer;height: 45px;">
+                                                                class="assigneeItemStyle"
+                                                                style="cursor:pointer;padding-top: 10px; padding-bottom: 10px; padding-left: 10px;">
                                                                     <img :src="getUserAvatar(assignee)" 
                                                                     style="float: left; cursor:pointer; width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px; margin-right: 10px;" />
                                                                     {{ assignee }}
