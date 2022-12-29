@@ -54,6 +54,9 @@ export default {
       actionItemBlockOffset: 0,
 
       assignees:[],
+      assigneesFilter:[],
+      lastDisplayAssignees:null,
+      assigneeKeyWord:null
     };
   },
   created() {
@@ -150,6 +153,8 @@ export default {
 
         this.assignees.unshift('Team');
         this.assignees.unshift('Unassigned');
+
+        this.assigneesFilter = this.assignees;
 
       }).catch(error => {
         this.$Message.error('Failed to load assignees. Error:' + error);
@@ -1269,5 +1274,28 @@ export default {
     {
       return "assigneeList" + id;
     },
+    filterAssignees()
+    {
+      this.assigneesFilter = this.assignees.filter(t=>t.includes(this.assigneeKeyWord.toUpperCase()));
+      console.log(this.assignees);
+      console.log(this.assigneesFilter);
+    },
+    showAssignees(id){
+      var newId = this.generateAssigneeList(id);
+      if(this.lastDisplayAssignees!=null && this.lastDisplayAssignees != newId)
+      {
+        this.$refs[this.lastDisplayAssignees][0].handleClose();
+      }
+
+      this.lastDisplayAssignees = newId;
+
+      console.log('showAssignees' + this.lastDisplayAssignees);
+    },
+    clearAssignees(){
+      this.assigneesFilter = this.assignees;
+      this.assigneeKeyWord = null;
+
+      console.log('clearAssignees');
+    }
   }
 }

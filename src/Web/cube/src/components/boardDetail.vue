@@ -371,12 +371,11 @@
                                         <li v-for="action in ActionContent" :key="action.Id">
                                             <transition name="transition-drop">
                                                 <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
-                                                    <Poptip :ref="generateAssigneeList(action.Id)">
+                                                    <Poptip :ref="generateAssigneeList(action.Id)" @on-popper-show="showAssignees(action.Id)" @on-popper-hide="clearAssignees">
                                                         <template #content>
-                                                            <span style="font-weight:700;">Choose an assignee</span>
-                                                            <!-- <Input prefix="ios-contact" placeholder="Choose an assignee"/> -->
+                                                            <Input prefix="ios-contact" placeholder="Choose an assignee" v-model="assigneeKeyWord" @on-change="filterAssignees"  />
                                                             <div style="min-width:300px; height: 300px; margin-top: 10px; overflow-y: scroll; ">
-                                                                <p v-for="assignee in assignees" :key="assignee" @click.prevent="selectAssignee(action, assignee)" 
+                                                                <p v-for="assignee in assigneesFilter" :key="assignee" @click.prevent="selectAssignee(action, assignee)" 
                                                                 class="assigneeItemStyle"
                                                                 style="cursor:pointer;padding-top: 10px; padding-bottom: 10px; padding-left: 10px;">
                                                                     <img :src="getUserAvatar(assignee)" 
