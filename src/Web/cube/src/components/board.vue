@@ -52,8 +52,9 @@
             </Menu>
         </Header>
         <Layout :style="{minHeight: '90vh'}">
-            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" :style="{background: '#fff'}" v-model="isCollapsed">
-                <Menu active-name="1-1" theme="light" width="auto" :class="menuitemClasses">
+            <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" 
+            :style="{background: '#fff', margin:'5px 0', minHeight: '120px',}" v-model="isCollapsed">
+                <Menu active-name="1-1" theme="light" width="auto" style="height:100%" :class="menuitemClasses">
                     <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'Board':''">
                         <Icon type="md-book"></Icon>
                         <span>All Boards</span>
@@ -71,14 +72,19 @@
                         <span>Recycle Bin</span>
                     </MenuItem>
                 </Menu>
+                <Icon @click.native="collapsedSider" 
+                        :class="rotateIcon" 
+                        style="width:auto;position:absolute;margin:-30px 10px 0 0;z-index:1000;right:10px" 
+                        type="md-menu" 
+                        size="24" />
             </Sider>
             <Layout :style="{padding: '0 1px 0px 12px'}">
-                <Breadcrumb :style="{margin: '12px 0'}">
-                    <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon>
+                <Breadcrumb :style="{margin: '12px 0 0 0'}" v-if="this.isCollapsed">
+                    <!-- <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon> -->
                     <BreadcrumbItem  @click.native="fetchData(0)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
                     <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>
-                <Content :style="{minHeight: '280px'}">
+                <Content :style="{minHeight: '280px', margin:'5px 0'}">
                     <Card style="height:100%">
                         <router-view :key="$route.path"></router-view>
                     </Card>
