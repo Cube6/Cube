@@ -60,9 +60,9 @@
             </span>
         </h1>
         <br />
-        <table width="100%" height="100%" @click="cleanFocusedImproveItem(currentFocusImproveItemId)">
+        <table width="100%">
             <tr style="vertical-align:top">
-                <td width="33%">
+                <td width="33.2%">
                     <table width="100%">
                         <thead>
                             <tr v-if="state == 2">
@@ -76,12 +76,52 @@
                                 </th>
                             </tr>
                         </thead>
+                    </table>          
+                </td>
+                <td width="33.2%">
+                    <table width="100%">
+                        <thead>
+                            <tr v-if="state == 2">
+                                <th width="100%">
+                                    Can be improved / Lacked / Stop doing (<span style="color:#E8897A; font-weight: bolder;font-style: italic;">{{ ImproveContent.length }}</span> )
+                                </th>
+                            </tr>
+                            <tr v-if="state != 2">
+                                <th width="100%">
+                                    <Input element-id="improved" v-model="boardDetail.ImproveDetail" class="improveInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="Can be improved / Lacked / Stop doing" spellcheck @keydown.native="handleKeydown" />
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>            
+                </td>
+                <td width="33.2%">
+                    <table width="100%">
+                        <thead>
+                            <tr v-if="state == 2">
+                                <th width="100%">
+                                    An action / An idea / A suggestion / A change (<span style="color:#7A93E8; font-weight: bolder;font-style: italic;">{{ ActionContent.length }}</span> )
+                                </th>
+                            </tr>
+                            <tr v-if="state != 2">
+                                <th width="100%">
+                                    <Input element-id="action" v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="An action /An idea / A suggestion/ A change" spellcheck @keydown.native="handleKeydown" />
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </td>
+            </tr>       
+        </table>
+        <table width="100%" height="100%" style="margin-top:-5px;" @click="cleanFocusedImproveItem(currentFocusImproveItemId)">
+            <tr style="vertical-align:top">
+                <td width="33.2%" style="background-color: #F4F5F7;padding: 4px; border-radius: 0.5ch;">
+                    <table width="100%">
                         <tbody>
                             <tr>
-                                <td style="vertical-align:top">
+                                <td style="vertical-align:top;">
                                     <ul>
                                         <li v-for="well in WellContent" :key="well.Id">
-                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click="clickContent" > 
+                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" class="boardItemCard" @click="clickContent" > 
                                                 <Tooltip :content="well.CreatedUser" placement="bottom">
                                                     <!-- background: #F1F3F1 -->
                                                     <img :src="getUserAvatar(well.CreatedUser)" style="width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px;" />
@@ -191,20 +231,9 @@
                         </tbody>
                     </table>
                 </td>
-               <td width="33%">
+                <td width="2px"></td>
+               <td width="33.2%" style="background-color: #F4F5F7;padding: 4px;border-radius: 0.5ch;">
                      <table width="100%">
-                        <thead>
-                            <tr v-if="state == 2">
-                                <th width="100%">
-                                    Can be improved / Lacked / Stop doing (<span style="color:#E8897A; font-weight: bolder;font-style: italic;">{{ ImproveContent.length }}</span> )
-                                </th>
-                            </tr>
-                            <tr v-if="state != 2">
-                                <th width="100%">
-                                    <Input element-id="improved" v-model="boardDetail.ImproveDetail" class="improveInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="Can be improved / Lacked / Stop doing" spellcheck @keydown.native="handleKeydown" />
-                                </th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <tr>
                                 <td style="vertical-align:top">
@@ -215,7 +244,7 @@
                                             <img src="../assets/Icons/share.png" title="Your Voice Matters" style="width:100px;height:50px;opacity:30%;" >
                                         </div>
                                         <li v-for="improve in ImproveContent" :key="improve.Id">
-                                            <Card ref="improvedItemCard" :id="improve.Id" :style="{'opacity': setImproveItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="refocusImproveItem(improve.Id)">
+                                            <Card ref="improvedItemCard" :id="improve.Id" :style="{'opacity': setImproveItemOpacity(improve.Id)}" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;"  class="boardItemCard" @click.native.stop="refocusImproveItem(improve.Id)">
                                                 <Tooltip :content="improve.CreatedUser" placement="bottom">
                                                     <!-- background: #FBF5F5 -->                                               
                                                     <img :src="getUserAvatar(improve.CreatedUser)" style="float: left;width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px; margin-left: 5px;" />
@@ -349,20 +378,9 @@
                         </tbody>
                     </table>
                 </td>
-                <td width="34%">  
+                <td width="2px"></td>
+                <td width="33.2%" style="background-color: #F4F5F7;padding:4px;border-radius: 0.5ch;">  
                     <table width="100%">
-                        <thead>
-                            <tr v-if="state == 2">
-                                <th width="100%">
-                                    An action / An idea / A suggestion / A change (<span style="color:#7A93E8; font-weight: bolder;font-style: italic;">{{ ActionContent.length }}</span> )
-                                </th>
-                            </tr>
-                            <tr v-if="state != 2">
-                                <th width="100%">
-                                    <Input element-id="action" v-model="boardDetail.ActionDetail" class="actionInputContent" type="textarea" :autosize="{maxRows: 4}" placeholder="An action /An idea / A suggestion/ A change" spellcheck @keydown.native="handleKeydown" />
-                                </th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <tr>
                                 <td style="vertical-align:top">
@@ -370,10 +388,10 @@
                                         <div ref="actionItemBlock" :style="{'height': actionItemBlockOffset + 'px'}"></div>
                                         <li v-for="action in ActionContent" :key="action.Id">
                                             <transition name="transition-drop">
-                                                <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
+                                                <Card v-show="currentFocusImproveItemId == null || currentFocusImproveItemId == action.AssociatedBoardItemId" style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" class="boardItemCard" @click.native.stop="focusAssociatedImproveItem(action.AssociatedBoardItemId)">
                                                     <Poptip :ref="generateAssigneeList(action.Id)" @on-popper-show="showAssignees(action.Id)" @on-popper-hide="clearAssignees">
                                                         <template #content>
-                                                            <Input prefix="ios-contact" placeholder="Choose an assignee" v-model="assigneeKeyWord" @on-change="filterAssignees"  />
+                                                            <Input prefix="ios-contact" placeholder="Choose an assignee" v-model="assigneeKeyWord" @on-change="filterAssignees" clearable  />
                                                             <div style="min-width:300px; height: 300px; margin-top: 10px; overflow-y: scroll; ">
                                                                 <p v-for="assignee in assigneesFilter" :key="assignee" @click.prevent="selectAssignee(action, assignee)" 
                                                                 class="assigneeItemStyle"

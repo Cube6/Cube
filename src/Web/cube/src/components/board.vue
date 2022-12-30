@@ -55,7 +55,7 @@
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" 
             :style="{background: '#fff', margin:'5px 0', minHeight: '120px',}" v-model="isCollapsed">
                 <Menu active-name="1-1" theme="light" width="auto" style="height:100%" :class="menuitemClasses">
-                    <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'Board':''">
+                    <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'All Boards':''">
                         <Icon type="md-book"></Icon>
                         <span>All Boards</span>
                     </MenuItem>
@@ -64,7 +64,7 @@
                         <span>In Progress</span>
                     </MenuItem>
                     <MenuItem name="1-3" @click.native="fetchData(2)" :title="isCollapsed?'Completed':''">
-                        <Icon type="ios-paper"></Icon>
+                        <Icon type="md-checkbox-outline"></Icon>
                         <span>Completed</span>
                     </MenuItem>
                     <MenuItem name="1-4" @click.native="fetchData(3)" :title="isCollapsed?'Recycle Bin':''">
@@ -73,14 +73,13 @@
                     </MenuItem>
                 </Menu>
                 <Icon @click.native="collapsedSider" 
-                        :class="rotateIcon" 
-                        style="width:auto;position:absolute;margin:-30px 10px 0 0;z-index:1000;right:10px" 
-                        type="md-menu" 
+                        style="width:auto;cursor:pointer; position:absolute;margin:-30px 10px 0 0;z-index:1000;right:10px" 
+                        :type="isCollapsed?'ios-arrow-forward':'ios-arrow-back'"
+                        :title="isCollapsed?'Expand Sidebar':'Collapse Sidebar'"
                         size="24" />
             </Sider>
             <Layout :style="{padding: '0 1px 0px 12px'}">
                 <Breadcrumb :style="{margin: '12px 0 0 0'}" v-if="this.isCollapsed">
-                    <!-- <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{width:'auto', float:'left'}" type="md-menu" size="24"></Icon> -->
                     <BreadcrumbItem  @click.native="fetchData(0)" v-if="this.isCollapsed">&nbsp;&nbsp; Board</BreadcrumbItem>
                     <BreadcrumbItem :to='navURL' v-if="navName != null && this.isCollapsed">{{navName}}</BreadcrumbItem>
                 </Breadcrumb>

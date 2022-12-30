@@ -6,6 +6,16 @@ textarea {
 	border-style: none !important;
 }
 
+.boardItemCard:hover {
+	background-color: #f8f8f8;
+}
+
+/* .boardItemCard .ivu-card-bordered:hover {
+	border-color: #F0FAFF;
+	border: 1.5px solid #dcdee2;
+	box-shadow: 0px 0px  30px #ccc;
+} */
+
 .boardItemContent {
 	margin-bottom: 15px;
 }
@@ -13,25 +23,24 @@ textarea {
 .boardItemContent .ivu-input {
 	background-color: transparent;
 	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
-	font-size: 12pt;
+	font-size: 13pt;
+	font-weight:500;
+}
+
+.boardItemContent .ivu-input:focus {
+	background-color: white;
 }
 
 .wellItem .ivu-input {
 	color: #50AA62;
-	font-size: 13pt;
-	font-weight:500;
 }
 
 .improveItem .ivu-input {
 	color: #E8897A;
-	font-size: 13pt;
-	font-weight:500;
 }
 
 .actionItem .ivu-input {
 	color: #7A93E8;
-	font-size: 13pt;
-	font-weight:500;
 }
 
 .boardItemDoneClass .ivu-input {

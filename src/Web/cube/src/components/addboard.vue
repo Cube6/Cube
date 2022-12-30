@@ -2,7 +2,7 @@
     <div class="subLayout">
         <Form ref="formInline" label-position="right" :model="formInline" :rules="ruleInline">
             <FormItem prop="name" class="lgD">
-                <Input v-model="formInline.name" spellcheck="true"
+                <Input v-model="formInline.name" spellcheck="true" clearable 
                         placeholder="Enter a board name. Eg: Runtime/DDW SprintX Retro"/>
             </FormItem>
             <FormItem>

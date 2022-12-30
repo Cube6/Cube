@@ -20,6 +20,7 @@ export default {
     },
     created(){
         this.redirectToBoardIfAlreadyLoggedIn();
+        this.formInline.user = localStorage.getItem('LOGINUSER');
     },
     methods: {
         handleSubmit(name) {

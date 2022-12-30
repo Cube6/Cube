@@ -26,10 +26,6 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.rotate-icon {
-  transform: rotate(-90deg);
-}
-
 .layout-loginUser {
   /*border-radius: 3px;*/
   color: #ccc;
@@ -116,6 +112,10 @@
   transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s;
   vertical-align: middle;
   font-size: 22px;
+}
+
+.rotate-icon {
+  transform: rotate(-90deg);
 }
 
 .my-drawer-profile {
