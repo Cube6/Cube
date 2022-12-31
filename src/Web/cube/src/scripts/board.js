@@ -114,18 +114,22 @@ export default {
                 if(cachedProject){
                     this.activeProject = cachedProject;
                 }else {
-                    this.activeProject = this.projects[0].Name;
+                    var firstProject = this.projects[0];
+                    this.activeProject = firstProject.Name;
+                    this.cacheProjectInfo(firstProject);
                 }
-
             }).catch(error => {
               this.$Message.error('Failed to load projects. Error:' + error);
             });
         },
         setActiveProject(project){
             this.activeProject = project.Name;
+            this.cacheProjectInfo(project);
+            this.$router.replace('/boardAll');
+        },
+        cacheProjectInfo(project){
             localStorage.setItem('ACTIVE_PROJECT_NAME', project.Name);
             localStorage.setItem('ACTIVE_PROJECT_ID', project.Id);
-            this.$router.replace('/boardAll');
         },
         goToUsers() {
             this.navURL = '/users';
