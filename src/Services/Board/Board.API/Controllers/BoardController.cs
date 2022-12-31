@@ -20,11 +20,11 @@ namespace Board.API.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet("{type}")]
+		[HttpGet("{projectId}/{type}")]
 		[Authorize]
-		public IEnumerable<BoardDto> GetAll(int type)
+		public IEnumerable<BoardDto> GetAll(int projectId, int type)
 		{
-			return _appservice.GetBoards((BoardType)type);
+			return _appservice.GetBoards(projectId, (BoardType)type);
 		}
 
 		[HttpPost]

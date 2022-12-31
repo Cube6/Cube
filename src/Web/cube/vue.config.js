@@ -34,6 +34,9 @@ module.exports = {
             /************************************* Development *********************************/
             /*Connect to local Microservices*/
 
+            // '^/Project': {
+            //    target: 'https://localhost:5000'
+            // },
             // '^/Board': {
             //    target: 'https://localhost:5000'
             // },
@@ -52,6 +55,9 @@ module.exports = {
 
             /*Connect to local microservices via Gateway Service*/
 
+            // '^/Project': {
+            //    target: 'https://localhost:9070'
+            // },
             // '^/Board': {
             //     target: 'http://localhost:9070'
             // },
@@ -71,6 +77,9 @@ module.exports = {
             /************************************* Production *********************************/
             /*Connect to remote Microservices directly*/
 
+            // '^/Project': {
+            //    target: 'https://10.63.223.6:5000'
+            // },
             //'^/Board': {
             //    target: 'https://10.63.223.6:5000'
             //},
@@ -89,6 +98,9 @@ module.exports = {
 
             /*Connect to remote microservices via Gateway Service*/
 
+            '^/Project': {
+              target: 'http://techgroupdockerdc:9070'
+            },
             '^/Board': {
               target: 'http://techgroupdockerdc:9070'
             },
@@ -106,7 +118,10 @@ module.exports = {
             }
 
             /*Connect to remote microservices on K8S*/
-            
+
+            // '^/Project': {
+            //    target: 'https://10.63.207.97:30500'
+            // },
             // '^/Board': {
             //    target: 'https://10.63.207.97:30500'
             // },

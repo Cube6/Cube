@@ -4,6 +4,7 @@ export default {
     return {
       UserToken: null,
       formInline: {
+        ProjectId: null,
         Name: "",
         CreatedUser: "",
       },
@@ -19,6 +20,7 @@ export default {
   },
   created() {
     this.UserToken = localStorage.getItem('TOKEN');
+    this.formInline.ProjectId = localStorage.getItem('ACTIVE_PROJECT_ID');
     this.formInline.CreatedUser = localStorage.getItem('LOGINUSER');
     this.init();
   },

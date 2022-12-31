@@ -35,7 +35,7 @@ namespace Cube.Board.Application
 			return projectDtos;
 		}
 
-		public IEnumerable<BoardDto> GetBoards(BoardType type)
+		public IEnumerable<BoardDto> GetBoards(int projectId, BoardType type)
 		{
 			var list = new List<BoardDto>();
 			IEnumerable<DisscussionBoard> boards = new List<DisscussionBoard>();
@@ -56,7 +56,7 @@ namespace Cube.Board.Application
 				boards = _repository.GetBoards().Result.Where(t => t.IsDeleted);
 			}
 
-			foreach (var item in boards)
+			foreach (var item in boards.Where(t => t.Project?.Id == projectId))
 			{
 				var boardDto = _mapper.Map<BoardDto>(item);
 				list.Add(boardDto);
@@ -90,7 +90,8 @@ namespace Cube.Board.Application
 				State = BoardState.InProgress,
 				IsDeleted = false,
 				DateCreated = DateTime.Now,
-				DateModified = DateTime.Now
+				DateModified = DateTime.Now,
+				Project = _repository.GetProjects().Result.Where(b => b.Id == createBoardDto.ProjectId).FirstOrDefault(),
 			};
 			return _repository.CreateBoardAsync(board);
 		}

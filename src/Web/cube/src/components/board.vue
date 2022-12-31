@@ -54,7 +54,21 @@
         <Layout :style="{minHeight: '90vh'}">
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" 
             :style="{background: '#fff', margin:'5px 0', minHeight: '120px',}" v-model="isCollapsed">
+                
                 <Menu active-name="1-1" theme="light" width="auto" style="height:100%" :class="menuitemClasses">
+                    <MenuItem name="1-0" :title="isCollapsed? activeProject :''">
+                        <Icon type="ios-paper" />
+                        <Dropdown v-if="!isCollapsed" trigger="click" placement="bottom">
+                            <span>{{ activeProject }}</span>
+                            <Icon type="ios-arrow-down" />
+                            <DropdownMenu slot="list" style="minWidth:150px;">            
+                                <DropdownItem v-for="project in projects" :key="project"
+                                                @click.native="setActiveProject(project)">
+                                    {{ project.Name }}
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </MenuItem>
                     <MenuItem name="1-1" @click.native="fetchData(0)" :title="isCollapsed?'All Boards':''">
                         <Icon type="md-book"></Icon>
                         <span>All Boards</span>

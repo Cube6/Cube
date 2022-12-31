@@ -4,6 +4,7 @@ export default {
 
   data() {
     return {
+      projectId: null,
       UserToken: null,
       allBoardData: null,
       showBoardData: null,
@@ -22,6 +23,7 @@ export default {
     // already being observed
     this.UserToken = localStorage.getItem('TOKEN');
     this.UserName = localStorage.getItem('LOGINUSER');
+    this.projectId = localStorage.getItem('ACTIVE_PROJECT_ID');
 
     let boardDetailPath = sessionStorage.getItem("boardDetailPath");
 
@@ -49,7 +51,7 @@ export default {
       });
 
       var type = this.$route.params.type;
-      var url = '/Board';
+      var url = '/Board/'+this.projectId;
       if (type != null && type != 'undefined') {
         url = url + '/' + type + '';
       } else {
@@ -169,9 +171,6 @@ export default {
         return 100;
       }
       var numOfComplete = board.BoardItems.filter(c => c.Type == 3 && c.State == 2).length;
-
-      console.log("total" + total);
-      console.log("complete" + numOfComplete);
 
       var percent = (numOfComplete/total)*100;
       return Math.round(percent);

@@ -3,6 +3,8 @@ export default {
     },
     data() {
         return {
+            projects: [],
+            activeProject: null,
             isCollapsed: false,
             userName: null,
             navURL:null,
@@ -64,6 +66,8 @@ export default {
             localStorage.setItem('IsMenuCollapsed', this.isCollapsed );
         },
         fetchData(id) {
+            this.fetchProjects();
+
             if (id == undefined || id == null) {
                     this.navURL = '/boardAll';
                     this.navName = null;
@@ -99,13 +103,35 @@ export default {
                 this.$router.replace(this.navURL);
             }
         },
+        fetchProjects() {
+            this.axios({
+              method: 'get',
+              url: '/Project'
+            }).then((res) => {
+              this.projects = res.data;
+
+                var cachedProject = localStorage.getItem('ACTIVE_PROJECT_NAME');
+                if(cachedProject){
+                    this.activeProject = cachedProject;
+                }else {
+                    this.activeProject = this.projects[0].Name;
+                }
+
+            }).catch(error => {
+              this.$Message.error('Failed to load projects. Error:' + error);
+            });
+        },
+        setActiveProject(project){
+            this.activeProject = project.Name;
+            localStorage.setItem('ACTIVE_PROJECT_NAME', project.Name);
+            localStorage.setItem('ACTIVE_PROJECT_ID', project.Id);
+            this.$router.replace('/boardAll');
+        },
         goToUsers() {
-            
-                this.navURL = '/users';
-                this.$router.replace(this.navURL);
+            this.navURL = '/users';
+            this.$router.replace(this.navURL);
         },
         logout() {
-
             //localStorage.setItem('LOGINUSER', '');
             localStorage.setItem('TOKEN', '');
 
