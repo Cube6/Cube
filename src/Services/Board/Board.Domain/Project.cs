@@ -4,21 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cube.Board.Domain
 {
-	public class DisscussionBoard: Entity
+	public class Project : Entity
 	{
 		[MaxLength(100)]
 		[Required]
 		public string Name { get; set; }
 
-		[Required]
-		public string CreatedUser { get; set; }
-
-		public List<DisscussionBoardItem> BoardItems { get; set; }
-
-		public virtual Project Project { get; set; }
-
-		[Required]
-		public BoardState State { set; get; }
+		public List<DisscussionBoard> Boards { get; set; }
 
 		public bool IsDeleted { get; set; }
 	}

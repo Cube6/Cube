@@ -8,6 +8,8 @@ namespace Cube.Board.Application.Configuration
 	{
 		public BoardProfile()
 		{
+			CreateMap<Project, ProjectDto>();
+
 			CreateMap<DisscussionBoard, BoardDto>();
 
 			CreateMap<DisscussionBoardItem, BoardItemDto>()

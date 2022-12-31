@@ -28,25 +28,32 @@ namespace Cube.Board.Application
 			_eventBus = eventBus;
 		}
 
+		public IEnumerable<ProjectDto> GetProjects()
+		{
+			var projects = _repository.GetProjects().Result.Where(t => !t.IsDeleted);
+			var projectDtos = projects.Select(p => _mapper.Map<ProjectDto>(p));
+			return projectDtos;
+		}
+
 		public IEnumerable<BoardDto> GetBoards(BoardType type)
 		{
 			var list = new List<BoardDto>();
 			IEnumerable<DisscussionBoard> boards = new List<DisscussionBoard>();
 			if (type == BoardType.All)
 			{
-				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+				boards = _repository.GetBoards().Result.Where(t => !t.IsDeleted);
 			}
 			else if (type == BoardType.InProgress)
 			{
-				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.InProgress);
+				boards = _repository.GetBoards().Result.Where(t => !t.IsDeleted && t.State == BoardState.InProgress);
 			}
 			else if (type == BoardType.Completed)
 			{
-				boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted && t.State == BoardState.Completed);
+				boards = _repository.GetBoards().Result.Where(t => !t.IsDeleted && t.State == BoardState.Completed);
 			}
 			else if (type == BoardType.Deleted)
 			{
-				boards = _repository.ListAsync().Result.Where(t => t.IsDeleted);
+				boards = _repository.GetBoards().Result.Where(t => t.IsDeleted);
 			}
 
 			foreach (var item in boards)
@@ -60,7 +67,7 @@ namespace Cube.Board.Application
 		public IEnumerable<BoardDto> GetRemovedBoards()
 		{
 			var list = new List<BoardDto>();
-			foreach (var item in _repository.ListAsync().Result.Where(t => t.IsDeleted))
+			foreach (var item in _repository.GetBoards().Result.Where(t => t.IsDeleted))
 			{
 				var boardDto = _mapper.Map<BoardDto>(item);
 				list.Add(boardDto);
@@ -70,7 +77,7 @@ namespace Cube.Board.Application
 
 		public BoardDto GetDetail(long boardId)
 		{
-			var DisscussionBoard = _repository.ListAsync().Result.Where(b => b.Id == boardId).FirstOrDefault();
+			var DisscussionBoard = _repository.GetBoards().Result.Where(b => b.Id == boardId).FirstOrDefault();
 			return _mapper.Map<BoardDto>(DisscussionBoard);
 		}
 
@@ -90,7 +97,7 @@ namespace Cube.Board.Application
 
 		public async Task UpdateBoardAsync(BoardDto boardDto)
 		{
-			var board = _repository.ListAsync().Result.Where(b => b.Id == boardDto.Id).FirstOrDefault();
+			var board = _repository.GetBoards().Result.Where(b => b.Id == boardDto.Id).FirstOrDefault();
 			board.Name = boardDto.Name;
 			board.DateModified = DateTime.Now;
 			if (boardDto.State != BoardState.None)
@@ -105,7 +112,7 @@ namespace Cube.Board.Application
 		{
 			var boardItem = new DisscussionBoardItem()
 			{
-				Board = _repository.ListAsync().Result.Where(b => b.Id == boardItemDto.BoardId).FirstOrDefault(),
+				Board = _repository.GetBoards().Result.Where(b => b.Id == boardItemDto.BoardId).FirstOrDefault(),
 				State = BoardItemState.InProgress,
 				Detail = boardItemDto.Detail,
 				Action = boardItemDto.Action,
@@ -265,7 +272,7 @@ namespace Cube.Board.Application
 		{
 			var dict = new Dictionary<string, BoardItemStatsDto>();
 
-			IEnumerable<DisscussionBoard> boards = _repository.ListAsync().Result.Where(t => !t.IsDeleted);
+			IEnumerable<DisscussionBoard> boards = _repository.GetBoards().Result.Where(t => !t.IsDeleted);
 			foreach (var board in boards)
 			{
 				var boardItems = _repository.GetBoardItemsByBoardIdAsync(board.Id).Result;

@@ -80,9 +80,14 @@ namespace Cube.Board.Respository
 			return result;
 		}
 
-		public Task<List<DisscussionBoard>> ListAsync()
+		public Task<List<DisscussionBoard>> GetBoards()
 		{
 			return _context.DisscussionBoards.Include(t=>t.BoardItems.Where(i=>i.Type== BoardItemType.Action)).OrderByDescending(t=>t.DateCreated).ToListAsync();
+		}
+
+		public Task<List<Project>> GetProjects()
+		{
+			return _context.Projects.OrderByDescending(t => t.DateCreated).ToListAsync();
 		}
 
 		public async Task<List<Comment>> GetComments()

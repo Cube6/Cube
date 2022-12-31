@@ -5,6 +5,7 @@ namespace Cube.Board.Respository
 {
 	public class BoardContext : DbContext, IBoardContext
 	{
+		public DbSet<Project> Projects { get; set; }
 		public DbSet<DisscussionBoard> DisscussionBoards { get; set; }
 		public DbSet<DisscussionBoardItem> DisscussionBoardItems { get; set; }
 		public DbSet<IntegrationEvent> IntegrationEvents { get; set; }
@@ -18,6 +19,14 @@ namespace Cube.Board.Respository
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			var project = new Project
+			{
+				Id = 1,
+				Name = "Cube Lab",
+			};
+
+			modelBuilder.Entity<Project>().HasData(project);
+
 			var board = new DisscussionBoard
 			{
 				Id = 1,
@@ -26,7 +35,6 @@ namespace Cube.Board.Respository
 			};
 
 			modelBuilder.Entity<DisscussionBoard>().HasData(board);
-
 
 			var boardItem1 = new DisscussionBoardItem 
 			{ 

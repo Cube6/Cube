@@ -6,6 +6,7 @@ namespace Cube.Board.Application
 {
 	public interface IBoardAppService
 	{
+		IEnumerable<ProjectDto> GetProjects();
 		IEnumerable<BoardDto> GetBoards(BoardType type);
 		IEnumerable<BoardDto> GetRemovedBoards();
 		Task UpdateBoardAsync(BoardDto disscussionBoard);
