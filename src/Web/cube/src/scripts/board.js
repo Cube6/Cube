@@ -1,5 +1,8 @@
+import ChangeHistory from '../components/About/ChangeHistory.vue';
+
 export default {
-    compontents: {
+    components: {
+        ChangeHistory
     },
     data() {
         return {
