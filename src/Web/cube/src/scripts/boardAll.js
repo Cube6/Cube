@@ -1,7 +1,10 @@
 const signalR = require("@microsoft/signalr");
+import BoardCard from '../components/Board/BoardCard.vue';
 
 export default {
-
+  components: {
+    BoardCard
+  },
   data() {
     return {
       projectId: null,
@@ -105,16 +108,6 @@ export default {
         }
       )
     },
-    getUserAvatar(userName) {
-      let userAvatar = ""
-      try {
-        userAvatar = require('../assets/Person/' + userName.toLowerCase() + '.jpg')
-        return userAvatar
-      } catch (e) {
-        userAvatar = require('../assets/Person/cube.jpg')
-        return userAvatar
-      }
-    },
     renderFunc(message) {
       this.$Notice.success({
         // title: 'Notification',
@@ -164,38 +157,5 @@ export default {
     formatBoardCreateTime(board) {
       return board.DateCreated.substring(0, 10);
 		},
-    getCompletionRateOfAction(board) {
-      var total = board.BoardItems.length;
-      if(total==0)
-      {
-        return 100;
-      }
-      var numOfComplete = board.BoardItems.filter(c => c.Type == 3 && c.State == 2).length;
-
-      var percent = (numOfComplete/total)*100;
-      return Math.round(percent);
-    },
-    getBoardCardFullBG(board) {
-
-      if (board.IsDeleted == false && board.State == 1) {
-        return 'rgb(238,255,242)';
-      }
-      return '#FFFFFF';
-    },
-
-    getBoardCardBG(board) {
-
-      if (board.IsDeleted == false && board.State == 1) {
-        return 'rgb(79 201 13)';
-      }
-      // else if(board.State == 2)
-      // {
-      //     return '#7FEE7A';
-      // }
-      else if (board.IsDeleted) {
-        return '#f3c1c1';
-      }
-      return '#c4ebaf';
-    },
   },
 }
