@@ -136,7 +136,7 @@
 
                                                 <Input v-model="well.Detail" class="boardItemContent wellItem" type="textarea" :readonly="!canEditBoardItem(well)" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
                                                 
-                                                <CommentList :boardItem="well" :boardItemType="1" :listOfItems="WellContent"/>
+                                                <comment-list :boardItem="well" :boardItemType="1" :listOfItems="WellContent"/>
                                             </Card>
                                         </li>
                                     </ul>

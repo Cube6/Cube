@@ -59,13 +59,13 @@ textarea {
 }
 
 .commentContent .ivu-input {
-	background-color: #FFFFFF;
+	background-color: #F3F2F1;
 	/* margin-bottom: 200x; */
 	font-size: 11pt;
 }
 
 .commentContentHighlight .ivu-input {
-	background-color: #F6FEFE;
+	background-color: #d7f4dd;
 	/* margin-bottom: 200x; */
 	font-size: 11pt;
 }

@@ -41,12 +41,12 @@
     </p>
     <ul v-if="boardItem.ToggleComment" >
        <li>
-           <table style="width:100%">
+           <table style="width:100%; margin-top: 10px;">
                <thead>
                    <tr>
-                       <th width="8%">
+                       <th width="2%">
                        </th>
-                       <th width="20px">
+                       <th width="26px">
                        </th>
                        <th width="92%">
                        </th>
