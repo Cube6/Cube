@@ -1,3 +1,5 @@
+import CommentList from '../components/Comment/CommentList.vue';
+
 const signalR = require("@microsoft/signalr");
 const WentWellType = 1;
 const NeedsImproveType = 2;
@@ -18,6 +20,9 @@ const DefaultSortButtonClass = 'fa fa-sort fa-1x';
 const DefaultSortButtonTitle = 'Sort Items';
 
 export default {
+  components: {
+    CommentList
+  },
   data() {
     return {
       loading: false,
@@ -32,7 +37,6 @@ export default {
         ActionDetail: "",
       },
       boardItemTextChanged: false,
-      commentItemTextChanged: false,
       boardName: null,
       boardId: null,
       boardCreatedUser: null,
@@ -71,8 +75,6 @@ export default {
     sessionStorage.setItem('boardDetailPath', JSON.stringify(this.$route.params));
     this.fetchData(true);
     this.init();
-    
-    console.log(this.boardCreatedUser + this.userName);
   },
   destroyed() {
     if (this.connection != null) {
@@ -195,7 +197,6 @@ export default {
     },
 
     updateBoardNameKeydown(event) {
-      console.log("test " + event.keyCode);
       if (event.keyCode == 13) {
         this.updateBoardName();
         event.preventDefault();
@@ -241,11 +242,8 @@ export default {
             assignee: 'Unassigned'
         }
       }).then((res) => {
-        console.log("add");
-        console.log(res.data);
         var listOfItems = this.getListOfItems(type);
         listOfItems.unshift(res.data);
-        console.log(res.data);
         this.renderFunc(boardDetail + ' is created successfully.');
 
         var context = {
@@ -307,7 +305,6 @@ export default {
               this.removeBoardItemById(listOfItems, boardItem.Id);
 
               this.axios.delete('/BoardItem/' + boardItem.Id + '').then(() => {
-                console.log(boardItem.Detail + 'is deleted');
                 this.renderFunc(boardItem.Detail + ' is deleted successfully.');
               }).then(() => {
                 var context = {
@@ -435,191 +432,6 @@ export default {
       })
     },
 
-
-    addWellUp(wellItem) {
-      this.thumbsUpAction(WentWellType, this.WellContent, wellItem, CommentThumbupType);
-    },
-
-    addImproveUp(improveItem) {
-      this.thumbsUpAction(NeedsImproveType, this.ImproveContent, improveItem, CommentThumbupType);
-    },
-
-    addActionUp(actionItem) {
-      this.thumbsUpAction(ActionType, this.ActionContent, actionItem, CommentThumbupType);
-    },
-
-    thumbsUpAction(type, listOfItems, item, commentType) {
-      let username = this.userName;
-      var improveItemCache = listOfItems.find(c => c.Id == item.Id);
-      var listThrumps = improveItemCache.ThumbsUp;
-      var isAdd = true;
-
-      var listItem = listThrumps.find(th => th.CreatedUser == username);
-      if (listItem == null) {
-        var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: commentType };
-        listThrumps.push(likeitem);
-      }
-      else {
-        var index = listThrumps.findIndex(item => {
-          if (item.CreatedUser == username) {
-            return true;
-          }
-        })
-        listThrumps.splice(index, 1);
-        isAdd = false;
-      }
-
-      if (isAdd) {
-        this.addThumps(type, item.Id, commentType);
-      }
-      else {
-        this.deleteThumps(type, item.Id);
-      }
-    },
-
-    addWellComment(wellItem) {
-      this.addComment(WentWellType, this.WellContent, wellItem, CommentMessageType);
-    },
-    addImproveComment(improveItem) {
-      this.addComment(NeedsImproveType, this.ImproveContent, improveItem, CommentMessageType);
-    },
-    addActionComment(actionItem) {
-      this.addComment(ActionType, this.ActionContent, actionItem, CommentMessageType);
-    },
-
-    toggleComment(boardItem) {
-      boardItem.ToggleComment = !boardItem.ToggleComment;
-    },
-
-    addComment(type, listOfItems, boardItem, thumpType) {
-
-      if (!boardItem.Comment.Detail || !boardItem.Comment.Detail.trim()) {
-        return;
-      }
-
-      if (this.loading) {
-        return;
-      }
-
-      this.loading = true;
-
-      this.axios({
-        method: 'post',
-        url: '/Comment',
-        data: {
-          BoardItemId: boardItem.Id,
-          Type: thumpType,
-          Detail: boardItem.Comment.Detail,
-          CreatedUser: this.userName
-        }
-      }).then(res => {
-        var comment = {
-          Id: res.data,
-          CreatedUser: this.userName,
-          Type: thumpType,
-          Detail: boardItem.Comment.Detail,
-          DateCreated: new Date((new Date()).getTime() - 8*60*60*1000),
-          BoardItemId: boardItem.Id
-        };
-        var context = {
-          Operation: AddOperation,
-          BoardId: this.boardId,
-          Type: type,
-          Comment: comment
-        };
-        this.sendCommentMsg(context);
-
-        boardItem.Comment.Detail = "";
-        this.loading = false;
-      }).catch(error => {
-        this.$Message.error('Failed to add comment item. Error:' + error);
-        this.loading = false;
-      });
-    },
-
-    commentItemChanged() {
-      this.commentItemTextChanged = true;
-    },
-
-    updateWellCommentItem(message) {
-      this.updateCommentItem(WentWellType, message);
-    },
-    updateImproveCommentItem(message) {
-      this.updateCommentItem(NeedsImproveType, message);
-    },
-    updateActionCommentItem(message) {
-      this.updateCommentItem(ActionType, message);
-    },
-
-    updateCommentItem(type, comment) {
-
-      if (!this.commentItemTextChanged) {
-        return;
-      }
-
-      this.axios(
-        {
-          method: 'put',
-          url: '/Comment',
-          data: {
-            id: comment.Id,
-            detail: comment.Detail,
-            type: comment.Type,
-            createduser: comment.CreatedUser,
-            boarditemid: comment.BoardItemId
-          }
-        }).then(() => {
-          this.commentItemTextChanged = false;
-        }).then(() => {
-          this.renderFunc(comment.Detail + ' is updated successfully.');
-        }).then(() => {
-
-          var context = {
-            Operation: UpdateOperation,
-            BoardId: this.boardId,
-            Type: type,
-            Comment: comment
-          };
-          this.sendCommentMsg(context);
-        });
-    },
-    canEditComment(comment) {
-      if (comment.CreatedUser == this.userName) {
-        return true;
-      }
-
-      return false;
-    },
-
-    commentAction(type, listOfItems, item, commentType) {
-      let username = this.userName;
-      var improveItemCache = listOfItems.find(c => c.Id == item.Id);
-      var listThrumps = improveItemCache.ThumbsUp;
-      var isAdd = true;
-
-      var listItem = listThrumps.find(th => th.CreatedUser == username);
-      if (listItem == null) {
-        var likeitem = { BoardItemId: item.Id, CreatedUser: username, Id: 0, DateCreated: null, DateModified: null, Type: commentType };
-        listThrumps.push(likeitem);
-      }
-      else {
-        var index = listThrumps.findIndex(item => {
-          if (item.CreatedUser == username) {
-            return true;
-          }
-        })
-        listThrumps.splice(index, 1);
-        isAdd = false;
-      }
-
-      if (isAdd) {
-        this.addThumps(type, item.Id, commentType);
-      }
-      else {
-        this.deleteThumps(type, item.Id);
-      }
-    },
-
     getUserAvatar(userName) {
       let userAvatar = ""
       try {
@@ -663,15 +475,12 @@ export default {
             this.removeBoardItemById(listOfItems, boardItemEvent.BoardItem.Id);
           }
           else if (boardItemEvent.Operation == AddOperation) {
-            console.log('New');
-            console.log(boardItemEvent.BoardItem);
             var index = this.findIndexOfBoardItems(listOfItems, boardItemEvent.BoardItem.Id);
             if (index == -1) {
               listOfItems.unshift(boardItemEvent.BoardItem);
             }
           }
           else if (boardItemEvent.Operation == UpdateOperation) {
-            console.log(boardItemEvent.BoardItem);
             var boarditemToBeUpdated = this.findBoardItemById(listOfItems, boardItemEvent.BoardItem.Id);
             if (boarditemToBeUpdated != null) {
               boarditemToBeUpdated.Detail = boardItemEvent.BoardItem.Detail;
@@ -803,171 +612,8 @@ export default {
     sendBoardItemMsg(context) {
       this.connection.invoke("SendBoardItemMessage", context);
     },
-
-    sendCommentMsg(context) {
-      this.connection.invoke("SendCommentMessage", context);
-    },
-
     sendUserMsg(context) {
       this.connection.invoke("SendUserMessage", context);
-    },
-
-    thumbsUpUserNames(thumbsUp) {
-      var names = '';
-
-      if (thumbsUp.length > 0) {
-        for (var i = 0; i < thumbsUp.length; i++) {
-          names = names + thumbsUp[i].CreatedUser + '\n';
-        }
-      }
-      else {
-        names = 'Like';
-      }
-
-      return names;
-    },
-
-    thumbsUpCount(thumbsUp) {
-
-      var len = thumbsUp.length;
-      if (len > 0) {
-        return len;
-      }
-
-      return '';
-    },
-
-    thumbsUpClass(thumbsUp) {
-      var style = 'fa fa-2x';
-      var index = thumbsUp.find(item => item.CreatedUser == this.userName);
-      if (index != null) {
-        style += ' fa-thumbs-up';
-      }
-      else {
-        style += ' fa fa-thumbs-o-up';
-      }
-
-      if (this.thumbsUpCount(thumbsUp) > 0) {
-        style += ' commentActionHighlightStyle';
-      }
-      else {
-        style += ' commentActionStyle';
-      }
-      return style;
-    },
-
-    commentContentClass(message) {
-      var style = '';
-      if (message.CreatedUser == this.userName) {
-        style = 'commentContentHighlight';
-      }
-      else {
-        style = 'commentContent';
-      }
-      return style;
-    },
-
-    replyClass(thumbsUp) {
-      var index = thumbsUp.find(item => item.CreatedUser == this.userName);
-      if (index != null) {
-        return 'fa fa-comment-o fa-2x commentActionStyle';
-      }
-      else {
-        return 'fa fa-comment-o fa-2x commentActionStyle';
-      }
-    },
-
-    addThumps(type, boardItemId, thumpType) {
-      this.axios({
-        method: 'post',
-        url: '/Comment',
-        data: {
-          BoardItemId: boardItemId,
-          Type: thumpType,
-          CreatedUser: this.userName
-        }
-      }).then(() => {
-        var comment = {
-          CreatedUser: this.userName,
-          Type: thumpType,
-          BoardItemId: boardItemId
-        };
-        var context = {
-          Operation: AddOperation,
-          BoardId: this.boardId,
-          Type: type,
-          Comment: comment
-        };
-        this.sendCommentMsg(context);
-      })
-    },
-    deleteThumps(type, boardItemId) {
-      this.axios({
-        method: 'delete',
-        url: '/Comment',
-        params: {
-          borderItemId: boardItemId,
-          username: this.userName
-        }
-      }).then(() => {
-        var comment = {
-          CreatedUser: this.userName,
-          Type: 0,
-          BoardItemId: boardItemId
-        };
-        var context = {
-          Operation: DeleteOperation,
-          BoardId: this.boardId,
-          Type: type,
-          Comment: comment
-        };
-        this.sendCommentMsg(context);
-      })
-    },
-
-    canDeleteComment(message) {
-
-      if (message.CreatedUser == this.userName) {
-        return true;
-      }
-
-      return false;
-    },
-
-    deleteWellComment(message) {
-      this.deleteComment(WentWellType, message);
-    },
-
-    deleteImproveComment(message) {
-      this.deleteComment(NeedsImproveType, message);
-    },
-
-    deleteActionComment(message) {
-      this.deleteComment(ActionType, message);
-    },
-    deleteComment(type, message) {
-      this.$confirm(
-        {
-          message: 'Are you sure delete comment [' + message.Detail + '] ?',
-          button: {
-            no: 'No',
-            yes: 'Yes'
-          },
-          callback: confirm => {
-            if (confirm) {
-              this.axios.delete('/Comment/' + message.Id + '')
-                .then(() => {
-                  var context = {
-                    Operation: DeleteOperation,
-                    BoardId: this.boardId,
-                    Type: type,
-                    Comment: message
-                  };
-                  this.sendCommentMsg(context);
-                })
-            }
-          }
-        })
     },
     markCompleted() {
       this.$confirm(
@@ -1183,9 +829,6 @@ export default {
         }
       }
     },
-    clickContent(event) {
-      console.log(event);
-    },
     addAssociatedActionItem(improvedItemId) {
       this.addBoardDetail(this.boardDetail.ActionDetail, ActionType, improvedItemId);
     },
@@ -1277,8 +920,6 @@ export default {
     filterAssignees()
     {
       this.assigneesFilter = this.assignees.filter(t=>t.includes(this.assigneeKeyWord.toUpperCase()));
-      console.log(this.assignees);
-      console.log(this.assigneesFilter);
     },
     showAssignees(id){
       var newId = this.generateAssigneeList(id);
@@ -1288,14 +929,10 @@ export default {
       }
 
       this.lastDisplayAssignees = newId;
-
-      console.log('showAssignees' + this.lastDisplayAssignees);
     },
     clearAssignees(){
       this.assigneesFilter = this.assignees;
       this.assigneeKeyWord = null;
-
-      console.log('clearAssignees');
     }
   }
 }

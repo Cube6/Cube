@@ -121,7 +121,7 @@
                                 <td style="vertical-align:top;">
                                     <ul>
                                         <li v-for="well in WellContent" :key="well.Id">
-                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" class="boardItemCard" @click="clickContent" > 
+                                            <Card style="width: 100%; text-align: left; margin:0px 0px 3px 0px;" class="boardItemCard"> 
                                                 <Tooltip :content="well.CreatedUser" placement="bottom">
                                                     <!-- background: #F1F3F1 -->
                                                     <img :src="getUserAvatar(well.CreatedUser)" style="width: 24px; height: 24px; border-radius: 50%; margin-bottom: 5px;" />
@@ -135,94 +135,8 @@
                                                 </Dropdown>
 
                                                 <Input v-model="well.Detail" class="boardItemContent wellItem" type="textarea" :readonly="!canEditBoardItem(well)" spellcheck style="border-style: none" :autosize="true" @on-blur="updateBoardItem(well)" @on-change="boardItemChanged" />
-                                                <p style="height:22px;">
-                                                    <Tooltip :content="thumbsUpUserNames(well.ThumbsUp)" placement="bottom">
-                                                        <a href="#" @click.prevent="addWellUp(well)">
-                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                                <i :class="thumbsUpClass(well.ThumbsUp)" aria-hidden="true"></i>
-                                                                &nbsp;<p>{{thumbsUpCount(well.ThumbsUp)}}</p>
-                                                            </button>
-                                                        </a>
-                                                        <template #content>
-                                                            <p v-for="thumbsUp in well.ThumbsUp" :key="thumbsUp.Id">
-                                                                {{ thumbsUp.CreatedUser }}
-                                                            </p>
-                                                        </template>
-                                                    </Tooltip>
-
-                                                    <!-- Comments -->
-                                                    <Tooltip content="Comment" placement="bottom">
-                                                        <a v-if="!well.ToggleComment && well.Messages.length==0" href="#" @click.prevent="toggleComment(well)">
-                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
-                                                                <i :class="replyClass(well.ThumbsUp)" aria-hidden="true"></i>
-                                                            </button>
-                                                        </a>
-                                                    </Tooltip>
-                                                    <a v-if="!well.ToggleComment && well.Messages.length > 0" href="#" @click.prevent="toggleComment(well)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>{{thumbsUpCount(well.Messages)}} Comments&nbsp;^</p>
-                                                        </button>
-                                                    </a>
-                                                    <a v-if="well.ToggleComment" href="#" @click.prevent="toggleComment(well)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>Collapse All&nbsp;^</p>
-                                                        </button>
-                                                    </a>
-                                                </p>
-
-                                                <!-- Comments -->
-                                                <ul v-if="well.ToggleComment" >
-                                                    <li>
-                                                        <table style="width:100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="8%">
-                                                                    </th>
-                                                                    <th width="20px">
-                                                                    </th>
-                                                                    <th width="92%">
-                                                                    </th>
-                                                                    <th width="10px">
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tr v-for="message in well.Messages" :key="message.Id">
-                                                                <td></td>
-                                                                <td style="vertical-align:top;"> 
-                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; " />
-                                                                </td>
-                                                                <td style="padding-bottom:8px"> 
-                                                                    <span class="commentUserName">
-                                                                        {{message.CreatedUser}}
-                                                                        <Time style="float:right" :time="(new Date(message.DateCreated)).getTime() +8*60*60*1000 " />
-                                                                    </span>
-                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Add a new comment"  @on-blur="updateWellCommentItem(message)" @on-change="commentItemChanged" />
-                                                                    <br/>            
-                                                                </td>
-                                                                <td style="vertical-align:top;">
-                                                                    <a href="#" style="float:right" v-if="canDeleteComment(message)" @click.prevent="deleteWellComment(message)" title="Delete">
-                                                                        <span aria-label="Delete" class="">
-                                                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
-                                                                                <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td> 
-                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 24px; height: 24px; border-radius: 50%; " />
-                                                                </td>
-                                                                <td> 
-                                                                    <Input v-model="well.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addWellComment(well)" />
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </li>
-                                                </ul>
                                                 
+                                                <CommentList :boardItem="well" :boardItemType="1" :listOfItems="WellContent"/>
                                             </Card>
                                         </li>
                                     </ul>
@@ -270,106 +184,8 @@
                                                 </span>
 
                                                 <Input v-model="improve.Detail" :class="getBoardItemClass(2, improve.State)" type="textarea" :readonly="!canEditBoardItem(improve)" spellcheck :autosize="true" @on-blur="updateBoardItem(improve)" @on-change="boardItemChanged" />
-                                                <p style="height:22px;">
-                                                    <Tooltip :content="thumbsUpUserNames(improve.ThumbsUp)" placement="bottom">
-                                                        <a href="#" @click.prevent="addImproveUp(improve)">
-                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                                <i :class="thumbsUpClass(improve.ThumbsUp)" aria-hidden="true"></i>
-                                                                &nbsp;<p>{{thumbsUpCount(improve.ThumbsUp)}}</p>
-                                                            </button>
-                                                        </a>
-                                                        <template #content>
-                                                            <p v-for="thumbsUp in improve.ThumbsUp" :key="thumbsUp.Id">
-                                                                {{ thumbsUp.CreatedUser }}
-                                                            </p>
-                                                        </template>
-                                                    </Tooltip>
-                                                    <!-- <a href="#" style="float:right" @click.prevent="deleteBoardItem(improve)" title="Delete" v-if="improve.CreatedUser==userName && state != 2">
-                                                        <span aria-label="Delete" class="">
-                                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                                <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
-                                                            </button>
-                                                        </span>
-                                                    </a> -->
-
-                                                    <!-- Comments -->
-                                                    <Tooltip content="Comment" placement="bottom">
-                                                        <a v-if="!improve.ToggleComment && improve.Messages.length==0" href="#" @click.prevent="toggleComment(improve)">
-                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
-                                                                <i :class="replyClass(improve.ThumbsUp)" aria-hidden="true"></i>
-                                                            </button>
-                                                        </a>
-                                                    </Tooltip>
-                                                    <a v-if="!improve.ToggleComment && improve.Messages.length > 0" href="#" @click.prevent="toggleComment(improve)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>{{thumbsUpCount(improve.Messages)}} Comments&nbsp;^</p>
-                                                        </button>
-                                                    </a>
-                                                    <a v-if="improve.ToggleComment" href="#" @click.prevent="toggleComment(improve)">
-                                                        <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                            <p>Collapse All&nbsp;^</p>
-                                                        </button>
-                                                    </a>
-                                                    
-                                                    <a href="#" @click.prevent.stop="showAllAssociatedActions(improve.Id)" title="View Actions">
-                                                        <button class="css-b7766g" tabindex="-1" style="float: right; position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
-                                                            <i :class="getViewActionsClass(improve.Id)" aria-hidden="true"></i>
-                                                        </button>
-                                                    </a>
-                                                </p>
-
-                                                <!-- Comments -->
-                                                <ul v-if="improve.ToggleComment" >
-                                                    <li>
-                                                        <table style="width:100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="8%">
-                                                                    </th>
-                                                                    <th width="20px">
-                                                                    </th>
-                                                                    <th width="92%">
-                                                                    </th>
-                                                                    <th width="10px">
-                                                                    </th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tr v-for="message in improve.Messages" :key="message.Id">
-                                                                <td></td>
-                                                                <td style="vertical-align:top;"> 
-                                                                    <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; " />
-                                                                </td>
-                                                                <td style="padding-bottom:8px"> 
-                                                                    <span class="commentUserName">
-                                                                        {{message.CreatedUser}}
-                                                                        <Time style="float:right" :time="(new Date(message.DateCreated)).getTime() +8*60*60*1000 " />
-                                                                    </span>
-                                                                    <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Add a new comment"  @on-blur="updateImproveCommentItem(message)" @on-change="commentItemChanged" />
-                                                                    <br/>
-                                                                </td>
-                                                                <td style="vertical-align:top;">
-                                                                    <a href="#" style="float:right" v-if="canDeleteComment(message)" @click.prevent="deleteImproveComment(message)" title="Delete">
-                                                                        <span aria-label="Delete" class="">
-                                                                            <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
-                                                                                <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td> 
-                                                                    <img :src="getUserAvatar(userName)" :title="userName" style="width: 24px; height: 24px; border-radius: 50%; " />
-                                                                </td>
-                                                                <td> 
-                                                                    <Input v-model="improve.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addImproveComment(improve)" />
-                                                                </td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </table>
-                                                    </li>
-                                                </ul>
+                                                
+                                                <CommentList :boardItem="improve" :boardItemType="2" :listOfItems="ImproveContent"/>
                                             </Card>
                                         </li>
                                     </ul>
@@ -427,100 +243,7 @@
 
                                                     <Input v-model="action.Detail" :class="getBoardItemClass(3, action.State)" type="textarea" :readonly="!canEditBoardItem(action)" spellcheck :autosize="true" @on-blur="updateBoardItem(action)" @on-change="boardItemChanged" />
 
-                                                    <p style="height:22px;">
-                                                        <Tooltip :content="thumbsUpUserNames(action.ThumbsUp)" placement="bottom">
-                                                            <a href="#" @click.prevent="addActionUp(action)">
-                                                                <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 64px;">
-                                                                    <i :class="thumbsUpClass(action.ThumbsUp)" aria-hidden="true"></i>
-                                                                    &nbsp;<p>{{thumbsUpCount(action.ThumbsUp)}}</p>
-                                                                </button>
-                                                            </a>
-                                                            <template #content>
-                                                            <p v-for="thumbsUp in action.ThumbsUp" :key="thumbsUp.Id">
-                                                                {{ thumbsUp.CreatedUser }}
-                                                            </p>
-                                                        </template>
-                                                        </Tooltip>
-                                                        <!-- <a href="#" @click.prevent="deleteBoardItem(action)" title="Delete" style="float:right" v-if="action.CreatedUser==userName && state != 2">
-                                                            <Button type="text" class="css-b7766g" tabindex="-1" aria-label="Delete" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 42px;">
-                                                                <i class="fa fa-trash-o fa-2x" style="color: rgb(239, 83, 80)" aria-hidden="true"></i>
-                                                            </Button>
-                                                        </a> -->
-
-                                                        <!-- Comments -->
-                                                        <Tooltip content="Comment" placement="bottom">
-                                                            <a v-if="!action.ToggleComment && action.Messages.length==0" href="#" @click.prevent="toggleComment(action)">
-                                                                <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;">
-                                                                    <i :class="replyClass(action.ThumbsUp)" aria-hidden="true"></i>
-                                                                </button>
-                                                            </a>
-                                                        </Tooltip>
-                                                        <a v-if="!action.ToggleComment && action.Messages.length > 0" href="#" @click.prevent="toggleComment(action)">
-                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                                <p>{{thumbsUpCount(action.Messages)}} Comments&nbsp;^</p>
-                                                            </button>
-                                                        </a>
-                                                        <a v-if="action.ToggleComment" href="#" @click.prevent="toggleComment(action)">
-                                                            <button class="css-b7766g" tabindex="-1" style="position: relative; padding-left: 0px; padding-right: 0px; min-width: 32px;font-size: 8pt;">
-                                                                <p>Collapse All&nbsp;^</p>
-                                                            </button>
-                                                        </a>
-
-                                  
-                                                    </p>
-
-                                                    <!-- Comments -->
-                                                    <ul v-if="action.ToggleComment" >
-                                                        <li>
-                                                            <table style="width:100%">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th width="8%">
-                                                                        </th>
-                                                                        <th width="20px">
-                                                                        </th>
-                                                                        <th width="92%">
-                                                                        </th>
-                                                                        <th width="10px">
-                                                                        </th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tr v-for="message in action.Messages" :key="message.Id">
-                                                                    <td></td>
-                                                                    <td style="vertical-align:top;"> 
-                                                                        <img :src="getUserAvatar(message.CreatedUser)" :title="message.CreatedUser" style="width: 24px; height: 24px; border-radius: 50%; " />
-                                                                    </td>
-                                                                    <td style="padding-bottom:8px"> 
-                                                                        <span class="commentUserName">
-                                                                        {{message.CreatedUser}}
-                                                                        <Time style="float:right" :time="(new Date(message.DateCreated)).getTime() +8*60*60*1000 " />
-                                                                    </span>
-                                                                        <Input v-model="message.Detail" :class="commentContentClass(message)" type="textarea" :readonly="!canEditComment(message)" :autosize="true" placeholder="Add a new comment"  @on-blur="updateActionCommentItem(message)" @on-change="commentItemChanged" />
-                                                                        <br/>
-                                                                    </td>
-                                                                    <td style="vertical-align:top;">
-                                                                        <a href="#" style="float:right" v-if="canDeleteComment(message)"  @click.prevent="deleteActionComment(message)" title="Delete">
-                                                                            <span aria-label="Delete" class="">
-                                                                                <button class="css-b7766g" tabindex="-1" type="button" aria-label="Delete">
-                                                                                    <i class="fa fa-times fa-1x deleteComment" aria-hidden="true"></i>
-                                                                                </button>
-                                                                            </span>
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td> 
-                                                                        <img :src="getUserAvatar(userName)" :title="userName" style="width: 24px; height: 24px; border-radius: 50%; " />
-                                                                    </td>
-                                                                    <td> 
-                                                                        <Input v-model="action.Comment.Detail" class="commentInputContent" placeholder="Add a new comment" spellcheck :loading="loading" @on-enter="addActionComment(action)" />
-                                                                    </td>
-                                                                    <td></td>
-                                                                </tr>
-                                                            </table>
-                                                        </li>
-                                                    </ul>
+                                                    <CommentList :boardItem="action" :boardItemType="3" :listOfItems="ActionContent"/>
                                                 </Card>
                                             </transition>
                                         </li>
