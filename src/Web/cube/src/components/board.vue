@@ -1,10 +1,10 @@
 ﻿<template>
     <div class="layout">
-        <Header style="height:55px; background-color:#0747A6;">
-            <Menu mode="horizontal" theme="primary" style="height:55px; background-color:#0747A6;" active-name="1">
+        <Header style="height:40px; background-color:#0747A6;">
+            <Menu mode="horizontal" theme="primary" style="height:55px; background-color:transparent;" active-name="1">
                 <div class="layout-logo">
                     <img src="../assets/logo.jpg" style="width:30px; height:30px; border-radius:50%; " />
-                    <span style="position: relative; top:-8px;">
+                    <span style="position: relative; top:-10px;">
                         Cube System
                     </span>
                       <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
@@ -56,11 +56,22 @@
             :style="{background: '#fff', margin:'5px 0', minHeight: '120px',}" v-model="isCollapsed">
                 
                 <Menu active-name="1-1" theme="light" width="auto" style="height:100%" :class="menuitemClasses">
-                    <MenuItem name="1-0" :title="isCollapsed? activeProject :''">
-                        <Icon type="ios-paper" />
-                        <Dropdown v-if="!isCollapsed" trigger="click" placement="bottom">
-                            <span>{{ activeProject }}</span>
+                    <MenuItem name="1-0" :title="isCollapsed? activeProject :''">             
+                        <Dropdown v-if="!isCollapsed"  placement="bottom">
+                            <Icon type="ios-paper" />
+                            <span style="margin-left:5px;">{{ activeProject }}</span>
                             <Icon type="ios-arrow-down" />
+                            <DropdownMenu slot="list" style="minWidth:150px;">            
+                                <DropdownItem v-for="project in projects" :key="project"
+                                                @click.native="setActiveProject(project)">
+                                    {{ project.Name }}
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                        <Dropdown v-if="isCollapsed" trigger="click" placement="right-start">
+                            <span style="padding: 4px 0 0 5px; width:30px;height:30px;background-color:#F1F2F3;border-radius: 50%;">
+                                {{ generateProjectShortName(activeProject) }}
+                            </span>
                             <DropdownMenu slot="list" style="minWidth:150px;">            
                                 <DropdownItem v-for="project in projects" :key="project"
                                                 @click.native="setActiveProject(project)">

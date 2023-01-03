@@ -8,7 +8,7 @@ export default {
         return {
             projects: [],
             activeProject: null,
-            isCollapsed: false,
+            isCollapsed: true,
             userName: null,
             navURL:null,
             navName:null,
@@ -30,10 +30,10 @@ export default {
         this.fetchData();
         this.userName = localStorage.getItem('LOGINUSER').toUpperCase();
 
-        var isMenuCollapsed = localStorage.getItem('IsMenuCollapsed');
+        var isMenuCollapsed = localStorage.getItem('IsMenuCollapsedV1');
         if(isMenuCollapsed !=null)
         {
-            this.isCollapsed = localStorage.getItem('IsMenuCollapsed') == "true";
+            this.isCollapsed = localStorage.getItem('IsMenuCollapsedV1') == "true";
         }
     },
     computed: {
@@ -66,7 +66,7 @@ export default {
         },
         collapsedSider() {
             this.$refs.side1.toggleCollapse();
-            localStorage.setItem('IsMenuCollapsed', this.isCollapsed );
+            localStorage.setItem('IsMenuCollapsedV1', this.isCollapsed );
         },
         fetchData(id) {
             this.fetchProjects();
@@ -147,6 +147,9 @@ export default {
         },
         createAccount() {
             this.$router.push('/register');
+        },
+        generateProjectShortName(projectName){
+            return projectName.split(" ").map((n)=>n[0]).join("");
         }
     },
 }
