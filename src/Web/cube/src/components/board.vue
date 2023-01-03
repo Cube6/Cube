@@ -8,7 +8,7 @@
                         Cube System
                     </span>
                       <span style="position:relative;top:-16px;font-size:8pt;color:#deebff">
-                        v0.9
+                        v1.0
                     </span>
                 </div>
                 <div class="layout-nav">
@@ -177,7 +177,7 @@
             </div>
         </Drawer>
         <Drawer :closable="false" width="640" v-model="showAboutView">
-            <p :style="pStyle">About Cube (v0.9)</p>
+            <p :style="pStyle">About Cube (v1.0)</p>
             <div class="my-drawer-profile">
                 <Row>
                     <Col span="24">

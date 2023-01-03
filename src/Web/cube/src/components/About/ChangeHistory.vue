@@ -4,9 +4,16 @@ export default {
     return {
       history: [
         { 
+            "Date": '2023-01-01', 
+            "Version": "Version 1.0", 
+            "Desc": "Support Multiple Projects",
+            "IsNew": true
+        },
+        { 
             "Date": '2022-12-28', 
             "Version": "Version 0.9", 
-            "Desc": "Support Completion Rate of Action and Assignee" 
+            "Desc": "Support Completion Rate of Action and Assignee" ,
+            "IsNew": true
         },
         { 
             "Date": '2022-10-24', 
@@ -61,7 +68,12 @@ export default {
         <Row v-for="item in history" :key="item">
             <Col span="4">{{ item.Date }}</Col>
             <Col span="4">{{ item.Version }}</Col>
-            <Col span="16">{{  item.Desc }}</Col>
+            <Col span="16">
+              {{  item.Desc }}
+              <Badge v-if="item.IsNew" text="new">      
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </Badge>
+            </Col>
         </Row>
   </div>
 </template>
