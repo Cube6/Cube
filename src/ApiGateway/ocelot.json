@@ -24,6 +24,28 @@
 
     },
     {
+      "DownstreamPathTemplate": "/search/{url}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/search/{url}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "ServiceName": "ElasticService",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin" //LoadBanlancer LeastConnection/RoundRobin/NoLoadBalancer/CookieStickySessions
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 5,
+        "Region": "regionname"
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [ "SuperClient" ],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 2,
+        "Limit": 10000
+      }
+    },
+    {
       "DownstreamPathTemplate": "/user/{everything}",
       "DownstreamScheme": "https",
       "UpstreamPathTemplate": "/user/{everything}",
